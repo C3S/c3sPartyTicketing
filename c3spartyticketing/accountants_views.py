@@ -341,7 +341,7 @@ Dein C3S-Team''',
         body=the_mail_body
     )
     mailer.send(the_mail)
-    print(the_mail.body)
+    #print(the_mail.body)
     # 'else': send user to the form
     return HTTPFound(request.route_url('dashboard',
                                        number=request.cookies['on_page'],

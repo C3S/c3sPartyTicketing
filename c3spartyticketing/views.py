@@ -500,7 +500,7 @@ dem (oder den) Ticket(s).
             body=the_mail_body
         )
         mailer.send(the_mail)
-        print(the_mail.body)
+        #print(the_mail.body)
 
         # make the session go away
         request.session.invalidate()
@@ -524,7 +524,7 @@ def give_ticket(request):
     _ticket = PartyTicket.get_by_code(_code)
 #    _url = 'https://events.c3s.cc/ci/p1402/' + _ticket.email_confirm_code
 #    _url = 'https://192.168.2.128:6544/ci/p1402/' + _ticket.email_confirm_code
-    _url = request.registry.settings['c3spartyticketing.url'] + _ticket.email_confirm_code
+    _url = request.registry.settings['c3spartyticketing.url'] + '/ci/p1402/' + _ticket.email_confirm_code
     # return a pdf file
     pdf_file = make_qr_code_pdf(_url)
     response = Response(content_type='application/pdf')
