@@ -1,0 +1,13 @@
+*.db
+*.egg-info
+*.pyc
+*.py~
+*.sqlite
+*~
+env/
+.coverage
+python-eggs/
+*.log
+*.wsgi
+cover/
+nosetests.xml
