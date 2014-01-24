@@ -1,0 +1,212 @@
+/*  global: override settings for pylons.css */
+/*  (see bootstrap optimizations below)  */
+html, body, #top {
+    background-color:#d9f0c8;
+}
+body{
+    min-height:80%;
+}
+#wrap {
+    min-height: 80%;
+}
+#middle {
+    border-top: 0;
+    border-bottom: 0;
+}
+#top-align-center{
+    text-align: center;
+}
+
+/* the form */
+
+/* the background: green */
+#bottom,
+#wrap {background-color:#d9f0c8;}
+/* subheadings: bright green */
+h2.deform {color:#4dbd38;font-weight:bold;padding-top:10px;}
+/* date of birth display with DatePartsWidget: control sizes */
+input#date_of_birth { width:50px!important;}
+#date_of_birth-month, #date_of_birth-day { width:25px!important;}
+/* form subparts: /fieldset/legend */
+#item-deformField1 > fieldset > legend {color:#4dbd38;font-weight:bold;}
+#item-deformField13 > fieldset > legend {color:#4dbd38;font-weight:bold;}
+#item-deformField18 > fieldset > legend {color:#4dbd38;font-weight:bold;}
+/* general text imput fields: enlarge font a bit */
+input[type=text] {
+    font-size:120%;
+    border-color:#4dbd38;
+    padding: 10px;
+    width:50%;} /* 320px!imp */
+select {
+    font-size:120%;
+    border-color:#4dbd38;
+    padding: 10px;
+    width:50%;
+    height:40px;
+} /* 320px!imp */
+#donation_choice {
+    height:70px;
+    width:200px;
+    background-color:#ffffff;
+}
+#password {
+    font-size:120%;
+    border-color:#4dbd38;
+    padding: 10px;
+    width:50%;} /* 320px!imp */
+/* error messages: enlarge font a bit */
+.error {
+    font-size:120%;}
+/* the number of shares display */
+.num_shares_input {
+    border: 0; color: #4dbd38; font-weight: bold;
+    font-size:120%; width: 30px!important;
+    background-color:#d9f0c8;}
+.num_shares_input#num_shares-calculated {
+    border: 0; color: #4dbd38; font-weight: bold;
+    font-size:120%;text-align:right;width:45px!important;
+    background-color:#d9f0c8;}
+#slider-div-num_shares {width:60%;} /* 430px */
+.ui-slider-handle {
+    border:#d9f0c8;
+    background:#4dbd38!important;}
+/* footer with image */
+#footer {
+    background-color:#d9f0c8!important;
+    background-image:url(/static/g8532.png); background-repeat:repeat-x;
+    height:300px;
+}
+.footer {
+    height:auto;
+    /* margin:40px 40px 20px 250px; */
+    width:auto;
+    /* border:1px solid red; */
+    /* background-color:#ff00ff; */
+    /* background-image:url(/static/g8532.png); background-repeat:no-repeat; */
+    /* background-position:center center; */
+    /* background-attachment:scroll; */
+    vertical-align: bottom!important;
+}
+
+/* part 2 : the success page */
+
+.c3s-subheading-4 {
+    margin-top:20px;
+    color:#4dbd38;
+    font-weight:bold;}
+.greenButton {
+    color:#4dbd38;
+    padding: 10px;
+    border-color:#4dbd38;
+    font-size:140%;
+    font-weight:bold;
+}
+
+/*  bootstrap stuff  */
+body {
+        padding-top: 20px;
+        padding-bottom: 60px;
+}
+/* Custom container */
+.container {
+    margin: 0 auto;
+    max-width: 1000px;
+    min-height: 80%
+}
+.container > hr {
+    margin: 60px 0;
+}
+
+/* buttons (bootstrap) */
+.btn{
+    font-size:23px;
+    line-height:30px;
+    padding:15px;
+}
+
+body {
+    padding-top: 20px;
+    padding-bottom: 60px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+/* Custom container */
+.container {
+    margin: 30px auto;
+    max-width: 1000px;
+}
+.container > hr {
+    margin: 60px 0;
+}
+#slider-div-donation_choice {
+    background-color:#4dbd38;
+    width:60%;} /* 430px */
+#slider-div-donation_choice_pp {
+    background-color:#4dbd38;
+    width:50%;} /* 430px */
+
+/* Main marketing message and sign up button */
+.jumbotron {
+    margin: 80px 0;
+    text-align: center;
+}
+.jumbotron h1 {
+    font-size: 40px;
+    line-height: 1;
+}
+.jumbotron .lead {
+    font-size: 30px;
+    line-height: 1.25;
+}
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+.marketing {
+    margin: 60px 0;
+}
+.marketing p + h4 {
+    margin-top: 28px;
+}
+
+
+/* Customize the navbar links to be fill the entire space of the .navbar */
+.navbar .navbar-inner {
+    padding: 0;
+}
+.navbar .nav {
+    margin: 0;
+    display: table;
+    width: 100%;
+}
+.navbar .nav li {
+    display: table-cell;
+    width: 1%;
+    float: none;
+}
+.navbar .nav li a {
+    font-weight: bold;
+    text-align: center;
+    border-left: 1px solid rgba(255,255,255,.75);
+    border-right: 1px solid rgba(0,0,0,.1);
+}
+.navbar .nav li:first-child a {
+    border-left: 0;
+    border-radius: 3px 0 0 3px;
+}
+.navbar .nav li:last-child a {
+    border-right: 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.help-block {
+    color:#4dbd38;
+}
+.form-group.has-error {
+    background-color:#f2dede;
+    border-color:#eed3d7;
+}
+.panel-heading {color:#4dbd38;font-weight:bold;}
