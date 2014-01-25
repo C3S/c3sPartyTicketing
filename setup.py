@@ -32,6 +32,7 @@ test_requires = [
     'nose',
     'coverage',
     'webtest',
+    'selenium',
 ]
 setup(
     name='c3sPartyTicketing',
