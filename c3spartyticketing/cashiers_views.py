@@ -108,10 +108,15 @@ def check_in(request):
 
     _klass = ticket_type_options.get(_ticket.ticket_type)
     _num_passengers = PartyTicket.num_passengers()
+    _num_open_tickets = int(
+        PartyTicket.get_num_tickets()) - int(_num_passengers)
+    _vacancies = _ticket.num_tickets - _ticket.checked_persons
 
     return {
+        'vacancies': _vacancies,  # the free tickets of this visitor
         'logged_in': logged_in,
         'num_passengers': _num_passengers,
+        'num_open_tickets': _num_open_tickets,
         'code': _code,
         'klass': _klass,
         'paid': _ticket.payment_received,

@@ -7,31 +7,77 @@ import subprocess
 import tempfile
 
 
-def make_qr_code_pdf(_input):
+def make_qr_code_pdf(_ticket, _url):
     """
     this function creates a QR-Code PDF for whatever purpose
 
     append .name to the result to get the filename
     """
-    _img = qrcode.make(_input)
-    #return _img
-    tmp_img = tempfile.NamedTemporaryFile()
-    tmp_pdf = tempfile.NamedTemporaryFile()
-    #import pdb
-    #pdb.set_trace()
-    _img.save(tmp_img)
-    print("tmp_img.name: %s" % tmp_img.name)
+
+    _img = qrcode.make(_url)  # the qr-code image, unsaved
+
+    tmp_img = tempfile.NamedTemporaryFile()  # for the qr-code
+    tmp_pdf = tempfile.NamedTemporaryFile()  # converted to pdf
+
+    _img.save(tmp_img)  # save the qr-code to tempfile
+    #print("tmp_img.name: %s" % tmp_img.name)
     #print("tmp_pdf.name: %s" % tmp_pdf.name)
     tmp_pdf.name = tmp_pdf.name + '.pdf'  # rename so convert knows what to do
-    print("tmp_pdf.name: %s" % tmp_pdf.name)
-    #subprocess.check_call(['convert', tmp_img.name, tmp_pdf.name])
+    #print("tmp_pdf.name: %s" % tmp_pdf.name)
+
+    #
+    # resize/arrange the code on the page so it aligns nicely
+    # when combined with ticket PDF
+    #
+    _caption_code = str(
+        'caption:' + _ticket.email_confirm_code + '*' + str(
+            _ticket.num_tickets))
     subprocess.check_call(
-        ['convert', tmp_img.name,
-         '-page', 'A4',
-         '-geometry', '50x50+100+100>',
-         '-flatten', tmp_pdf.name])
+        ['convert',
+         '-page',
+         'A4+340+470',  # A4, push image right (x) and up (y)
+         tmp_img.name,
+         '-resize', '245x245',
+         '-format', 'pdf',
+         '-size', '320x50',
+         tmp_pdf.name])
     tmp_pdf.seek(0)
-    return tmp_pdf
+    #
+    # stamp the qr-code onto the ticket
+    #
+    tmp_ticket = tempfile.NamedTemporaryFile()
+    subprocess.check_call(
+        ['pdftk', 'c3spartyticketing/pdftk/C3S-ticket-2-Klasse+speisew.pdf',
+         'stamp', tmp_pdf.name,  # use qr-code as stamp
+         'output', tmp_ticket.name
+         ]
+    )
+    #
+    # make image with alphanum code
+    #
+    tmp_code = tempfile.NamedTemporaryFile()
+    tmp_code.name = tmp_code.name + '.pdf'
+    # convert -size 320x50 caption:'ABCDEFGHIJ' CODE.png
+    subprocess.check_call(
+        ['convert',
+         '-size', '220x50',
+         '-page',
+         'A4+364+440',  # A4, push image right (x) and up (y)
+         _caption_code,  # 'caption:ABCDEFGHIJ',
+         #'caption:ABCDEFGHIJ',
+         tmp_code.name]
+    )
+    #
+    # stamp the alphanum code onto the ticket
+    #
+    tmp_ticket2 = tempfile.NamedTemporaryFile()
+    subprocess.check_call(
+        ['pdftk', tmp_ticket.name,  # input
+         'stamp', tmp_code.name,  # use code as stamp
+         'output', tmp_ticket2.name
+         ]
+    )
+    return tmp_ticket2
 
 
 def make_ticket_confirmation_emailbody(_input):

@@ -5,6 +5,7 @@ from c3spartyticketing.models import (
     C3sStaff,
     DBSession,
 )
+from c3spartyticketing.utils import make_qr_code_pdf
 
 from pkg_resources import resource_filename
 import colander
@@ -15,6 +16,7 @@ from pyramid.i18n import (
     get_localizer,
 )
 from pyramid.request import Request
+from pyramid.response import Response
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_request
 from pyramid.httpexceptions import HTTPFound
@@ -306,12 +308,14 @@ def send_ticket_mail_view(request):
     _id = request.matchdict['ticket_id']
     _ticket = PartyTicket.get_by_id(_id)
     if isinstance(_ticket, NoneType):
-        return HTTPFound(request.route_url('dashboard',
-                                           number=request.cookies['on_page'],
-                                           order=request.cookies['order'],
-                                           orderby=request.cookies['orderby'],
-                                           )
-                         )
+        return HTTPFound(
+            request.route_url(
+                'dashboard',
+                number=request.cookies['on_page'],
+                order=request.cookies['order'],
+                orderby=request.cookies['orderby'],
+            )
+        )
 
     mailer = get_mailer(request)
     body_lines = (  # a list of lines
@@ -322,9 +326,9 @@ Wir haben Deine Überweisung erhalten.
  Oder lade jetzt deine Tickets herunter:
 
   ''',
-#        request.route_url('get_ticket',
-#                          email=_ticket.email,
-#                          code=_ticket.email_confirm_code), '''
+        # request.route_url('get_ticket',
+        #                   email=_ticket.email,
+        #                   code=_ticket.email_confirm_code), '''
         request.route_url('give_ticket',
                           #email=_ticket.email,
                           code=_ticket.email_confirm_code), '''
@@ -340,7 +344,12 @@ Dein C3S-Team''',
         recipients=[_ticket.email],
         body=the_mail_body
     )
-    mailer.send(the_mail)
+    try:
+        mailer.send(the_mail)
+        _ticket.ticketmail_sent = True
+        _ticket.ticketmail_sent_date = datetime.now()
+    except:
+        pass
     #print(the_mail.body)
     # 'else': send user to the form
     return HTTPFound(request.route_url('dashboard',
@@ -349,9 +358,7 @@ Dein C3S-Team''',
                                        #orderby=request.cookies['orderby'],
                                        )
                      )
-
-
-
+#
 # @view_config(permission='manage',
 #              route_name='mail_pay_confirmation')
 # def send_ticket_mail(request):
@@ -381,7 +388,26 @@ Dein C3S-Team''',
 #                      )
 
 
-
+@view_config(renderer='templates/.pt',
+             permission='manage',
+             route_name='give_ticket')
+def give_ticket(request):
+    """
+    this view gives a user access to her ticket via URL with code
+    the response is a PDF download
+    """
+    _code = request.matchdict['code']
+    _ticket = PartyTicket.get_by_code(_code)
+#    _url = 'https://events.c3s.cc/ci/p1402/' + _ticket.email_confirm_code
+#    _url = 'https://192.168.2.128:6544/ci/p1402/' + _ticket.email_confirm_code
+    _url = request.registry.settings[
+        'c3spartyticketing.url'] + '/ci/p1402/' + _ticket.email_confirm_code
+    # return a pdf file
+    pdf_file = make_qr_code_pdf(_url)
+    response = Response(content_type='application/pdf')
+    pdf_file.seek(0)  # rewind to beginning
+    response.app_iter = open(pdf_file.name, "r")
+    return response
 
 # @view_config(permission='manage',
 #              route_name='switch_sig')
@@ -428,13 +454,10 @@ def delete_entry(request):
     _entry = PartyTicket.get_by_id(_id)
 
     PartyTicket.delete_by_id(_entry.id)
-    #log.info(
-    #    "entry.id %s was deleted by %s" % (
-    #        _entry.id,
-    #        request.user.login,
-    #    )
-    #)
-
+    log.info(
+        "entry.id %s was deleted by %s" % (_entry.id,
+                                           request.user.login,)
+    )
     return HTTPFound(
         request.route_url('dashboard',
                           number=dashboard_page,))
@@ -478,13 +501,9 @@ def ticket_detail(request):
     This view lets accountants view ticket order details
     how about the payment?
     """
-    #logged_in = authenticated_userid(request)
-    #log.info("detail view.................................................")
-    #print("---- authenticated_userid: " + str(logged_in))
-
     # check if staffer wanted to look at specific ticket id
     tid = request.matchdict['ticket_id']
-    #log.info("the id: %s" % speedfundingid)
+    #log.info("the id: %s" % tid)
 
     _ticket = PartyTicket.get_by_id(tid)
 
@@ -500,7 +519,7 @@ def ticket_detail(request):
         """
         payment_received = colander.SchemaNode(
             colander.Bool(),
-            title=_(u"Have we received payment for the funding item??")
+            title=_(u"Zahlungseingang melden?")
         )
 
     schema = ChangeDetails()
@@ -511,7 +530,7 @@ def ticket_detail(request):
             deform.Button('reset', _(u'Reset'))
         ],
         #use_ajax=True,
-        renderer=zpt_renderer
+        #renderer=zpt_renderer
     )
 
     # if the form has been used and SUBMITTED, check contents

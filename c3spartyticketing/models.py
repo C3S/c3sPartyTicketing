@@ -174,8 +174,8 @@ class PartyTicket(Base):
     payment_received = Column(Boolean, default=False)
     payment_received_date = Column(
         DateTime(), default=datetime(1970, 1, 1))
-    payment_confirmed = Column(Boolean, default=False)
-    payment_confirmed_date = Column(
+    ticketmail_sent = Column(Boolean, default=False)
+    ticketmail_sent_date = Column(
         DateTime(), default=datetime(1970, 1, 1))
     user_comment = Column(Unicode(255))
     accountant_comment = Column(Unicode(255))
@@ -293,6 +293,25 @@ class PartyTicket(Base):
         _num = 0
         for item in _all:
             _num = _num + item.checked_persons
+        return _num
+
+    @classmethod
+    def get_num_tickets(cls):
+        """return number of people/tickets NOT YET paid or checked in"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            _num = _num + item.num_tickets
+        return _num
+
+    @classmethod
+    def get_num_tickets_paid(cls):
+        """return number of people/tickets NOT YET checked in"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            if item.payment_received:
+                _num = _num + item.num_tickets
         return _num
 
     @classmethod

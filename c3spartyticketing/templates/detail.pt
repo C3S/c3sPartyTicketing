@@ -16,12 +16,7 @@
   </tal:block>
   <tal:block metal:fill-slot="top"></tal:block>
   <tal:block metal:fill-slot="middle">
-    <p>
-      Please <a href="${request.route_url('logout')}">log out</a>
-      when you are done.
-      Or go <a href="${request.route_url('dashboard', number=0)}">back to dashboard</a>.
-    </p>
-    <h1>Details for Entry #${ticket.id}</h1>
+    <h1>Details für Ticket #${ticket.id} // </h1>
     <!-- h2>readonly form:</h2>
     <div tal : content="structure readonlyform">the form, readonly</div>
     <h2>edit form:</h2>
@@ -29,23 +24,19 @@
     <h2>html with variables:</h2 -->
     <table class="table-striped">
       <tr  class="table-striped">
-        <td>ticket code</td>
-	<td>${ticket.tcodes}</td>
-      </tr>
-      <tr>
-        <td>firstname</td>
+        <td>Vorname</td>
 	<td>${ticket.firstname}</td>
       </tr>
       <tr>
-        <td>lastname</td>
+        <td>Nachname</td>
 	<td>${ticket.lastname}</td>
       </tr>
       <tr>
-        <td>email</td>
+        <td>Email</td>
 	<td><a href="mailto:${ticket.email}">${ticket.email}</a></td>
       </tr>
       <tr>
-        <td>comment</td>
+        <td>Komment</td>
 	<td>${ticket.user_comment}</td>
       </tr>
       <tr>
@@ -53,11 +44,11 @@
 	<td>${ticket.locale}</td>
       </tr>
       <tr>
-        <td>number of tickets</td>
+        <td>Anzahl Tickets</td>
 	<td>${ticket.num_tickets}</td>
       </tr>
       <tr>
-        <td>ticket type</td>
+        <td>Klasse</td>
 	<td>${ticket.ticket_type}</td>
       </tr>
       <tr>
@@ -65,15 +56,19 @@
 	<td>${ticket.the_total}</td>
       </tr>
       <tr>
-        <td>date of submission</td>
+        <td>Bestelldatum</td>
 	<td>${ticket.date_of_submission}</td>
       </tr>
       <tr>
-        <td>payment received?</td><td>${ticket.payment_received or "No"}</td>
+        <td>Zahlungseingang?</td><td>${ticket.payment_received or "No"}</td>
       </tr>
       <tr>
-        <td>payment received date</td>
+        <td>Zahlungsdatum</td>
 	<td>${ticket.payment_received_date}</td>
+      </tr>
+      <tr>
+        <td>Staff Komment</td>
+	<td>${ticket.accountant_comment}</td>
       </tr>
     </table>
     <div id="form" tal:content="structure form"/>
@@ -82,5 +77,10 @@
     <!--! loading deform -->
     <script type="text/javascript">deform.load()</script>
   </tal:block>
-  <tal:block metal:fill-slot="footer"></tal:block>
+  <tal:block metal:fill-slot="footer">
+      <a href="${request.route_url('dashboard', number=0)}" class="btn btn-info">Dashboard</a>.
+      <a href="${request.route_url('logout')}" class="btn btn-danger">
+        ${request.authenticated_userid} abmelden
+      </a>
+  </tal:block>
 </html>

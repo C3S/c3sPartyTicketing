@@ -15,6 +15,7 @@ def groupfinder(userid, request):
 class Root(object):
     __acl__ = [
         (Allow, 'system.Everyone', 'view'),
+        (Allow, 'group:kasse', 'cashdesk'),
         (Allow, 'group:staff', ALL_PERMISSIONS),
     ]
 

@@ -10,14 +10,14 @@
   </tal:block>
   <tal:block metal:fill-slot="top"></tal:block>
   <tal:block metal:fill-slot="middle">
-    <h4 i18n:translate="join-form-title">Party Check-in</h4>
+    <h3 i18n:translate="join-form-title"><small>Party</small> Check-in</h3>
     <div style="text-align:left;">
       <strong style="color:red;" tal:repeat="message request.session.pop_flash('message_above_login')">
 	${message}
       </strong>
     </div>
     <p>
-      an Bord: ${num_passengers}
+      An Bord: ${num_passengers}. Erwarten: ${num_open_tickets} 
     </p>
     <div tal:condition="paid is True">      <!-- BEZAHLT -->
       <div class="row">
@@ -33,16 +33,26 @@
             Klasse: ${klass}<br />
             Bitte zusteigen...(Anzahl Personen)
           </p>
+        </div>
+        <div class="col-md-2">
           <div tal:condition="(ticket.num_tickets - ticket.checked_persons) is not 0">
-            <form action="${request.url}" method="post" class="form-inline">
-              <input type="text" name="persons" value="${ticket.num_tickets - ticket.checked_persons}"
-                     style="width:50px;"/>
+            <form action="${request.url}" method="post">
+              <!--input type="text" name="persons" value="${ticket.num_tickets - ticket.checked_persons}"
+                     style="width:50px;" class="form-control"/-->
+              <select name="persons" size="3"
+                      style="width:50px;" class="form-control">
+                <option tal:repeat="opt range(vacancies)">${opt+1}</option>
+              </select>
               <input type="submit" name="checkin" value="Check in!" class="btn btn-success"/>
               <input type="hidden" name="code" value="${ticket.email_confirm_code}">
               <!-- input type="submit" name="next" value="Next!" class="btn btn-primary"/ -->
             </form>
+            <br />&nbsp;
+            <br />&nbsp;
           </div>
         </div>
+      </div>
+      <div class="col-md-2">
         <div tal:condition="(ticket.num_tickets - ticket.checked_persons) is 0">
           <a href="#" class="btn btn-danger">Keine Plätze mehr (auf dem Ticket)</a>
         </div>
@@ -68,8 +78,14 @@
   </tal:block>
   <tal:block metal:fill-slot="footer">
     &nbsp;<br />
-    <a href="/kasse" class="btn btn-primary">Code suchen</a>
-    <a href="/kasse" class="btn btn-warning">Next!</a>
-    <a href="/logout" class="btn btn-danger">${logged_in} Abmelden</a>
+    <p>
+      <a href="/kasse" class="btn btn-primary">Code suchen</a>
+    </p>
+    <p>
+      <a href="/kasse" class="btn btn-warning">Next!</a>
+    </p>
+    <p>
+      <a href="/logout" class="btn btn-danger">${logged_in} Abmelden</a>
+    </p>
   </tal:block>
 </html>

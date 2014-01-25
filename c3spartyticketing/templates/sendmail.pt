@@ -10,12 +10,13 @@
           type="text/css" media="screen" charset="utf-8" />
   </tal:block>
   <tal:block metal:fill-slot="middle">
-    <h1 i18n:translate="check-email-title">C3S Party Tickets: Email lesen und überweisen</h1>
+    <h1 i18n:translate="check-email-title">C3S Party Tickets:<small>Email lesen und überweisen</small></h1>
   </tal:block>
   <tal:block metal:fill-slot="bottom">
-    <h3><span i18n:translate="check-email-headline" class="deform">Wir haben Dir eine Email geschickt,</span> ${firstname} ${lastname}!</h3>
+
+    <h3>Wir haben Dir eine Email geschickt, ${firstname} ${lastname}!</h3>
     <p>
-      Du solltest eine Email bekommen haben von
+      Du solltest gleich eine Email bekommen von
       <strong>noreply@c3s.cc</strong> mit dem Betreff
       <strong>C3S Party-Ticket: bitte überweisen!</strong>.
     </p>

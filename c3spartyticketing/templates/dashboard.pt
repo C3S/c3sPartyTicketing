@@ -44,9 +44,9 @@
           <div tal:content="structure autoform">the autocomplete form to search for codes</div>
           <p>
             <a href="${request.route_url('dashboard', number=previous)}"
-               class="btn btn-info">&lt;previous</a>
+               class="btn btn-info">&lt;vorige</a>
             <a href="${request.route_url('dashboard', number=next)}"
-               class="btn btn-info">next&gt;</a>
+               class="btn btn-info">nächste&gt;</a>
           </p>
           <table border="0" cellpadding="10" width="90%" class="table table-striped">
 	    <tr class="table-striped">
@@ -60,13 +60,14 @@
               <td>typ</td>
               <td>zu zahlen</td>
               <td>zahlung<br />erhalten?</td>
+              <td>ticketmail</td>
               <td>bearbeiten</td>
               <td>löschen</td>
             </tr>
 	    <tr tal:repeat="ticket tickets" class="table-striped">
 	      <td><a href="/detail/${ticket.id}">${ticket.id}</a></td>
 	      <td><a href="/detail/${ticket.id}">${ticket.email_confirm_code}</a></td>
-	      <td><a href="/give_ticket/c3sPartyTicket_${ticket.email_confirm_code}">PDF</a></td>
+	      <td><a href="/ticket/${ticket.email}/c3sPartyTicket_${ticket.email_confirm_code}">.pdf</a></td>
 	      <td>${ticket.firstname}</td>
 	      <td>${ticket.lastname}</td>
 	      <td><a href="mailto:${ticket.email}">${ticket.email}</a></td>
@@ -88,25 +89,26 @@
                 </div>
               </td>
               <td>
-                <div tal:condition="ticket.payment_received">
+                <div tal:condition="python: ticket.payment_received is True and ticket.ticketmail_sent is not True">
                   <a href="${request.route_url('send_ticket_mail', ticket_id=ticket.id)}"
-                     title="send mail!">send ticketmail</a>
+                     title="send mail!" style="color:orange;">schicke ticketmail</a>
                 </div>
-                <div tal condition="ticket.ticketmail_sent">
-                  <a href="${request.route_url('send_ticket_mail', ticket_id=ticket.id)}"
-                     title="${ticket.payment_confirmed_date}">done.</a>
+                <div tal:condition="python: ticket.ticketmail_sent is True">
+                  <a style="color:green;"
+                     href="${request.route_url('send_ticket_mail', ticket_id=ticket.id)}"
+                     title="${ticket.ticketmail_sent_date}">ist raus.</a>
                 </div>
               </td>
-	      <td><a href="/detail/${ticket.id}">edit</a></td>
-	      <td><a href="/delete/${ticket.id}">delete</a></td>
+	      <td><a href="/detail/${ticket.id}">bearbeiten</a></td>
+	      <td><a href="/delete/${ticket.id}">löschen</a></td>
 	    </tr>
           </table>
 	  <!-- NEXT PREVIOUS -->
           <p>
             <a href="${request.route_url('dashboard', number=previous)}"
-               class="btn btn-info">&lt;previous</a>
+               class="btn btn-info">&lt;vorige</a>
             <a href="${request.route_url('dashboard', number=next)}"
-               class="btn btn-info">next&gt;</a>
+               class="btn btn-info">nächste&gt;</a>
           </p>
           <p>Showing (up to) ${num_display} at a time. Change to
             <form action="${request.route_url('dashboard', number=0)}"
@@ -117,14 +119,12 @@
                      value="${num_display}"/>
             </form>
           </p>
-          <p>
-            Please <a href="${request.route_url('logout')}">log out</a>
-            when you are done.
-          </p>
         </div>
       </div>
     </tal:block>
     <tal:block metal:fill-slot="footer">
+      <p><a href="${request.route_url('kasse')}" class="btn btn-warning">Kasse</a></p>
+      <p><a href="${request.route_url('logout')}" class="btn btn-danger">Abmelden</a></p>
     </tal:block>
   </body>
 </html>

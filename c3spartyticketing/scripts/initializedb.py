@@ -49,6 +49,15 @@ def main(argv=sys.argv):
             print("could not add group staff.")
             # pass
     with transaction.manager:
+        cashdesk_group = Group(name=u"kasse")
+        try:
+            DBSession.add(cashdesk_group)
+            DBSession.flush()
+            print("adding group kasse")
+        except:
+            print("could not add group kasse.")
+            # pass
+    with transaction.manager:
         # staff personnel
         staffer1 = C3sStaff(
             login=u"rut",
@@ -62,6 +71,22 @@ def main(argv=sys.argv):
             DBSession.flush()
         except:
             print("it borked! (rut)")
+            # pass
+    # one more staffer
+    with transaction.manager:
+        # cashdesk personnel
+        kasse1 = C3sStaff(
+            login=u"kasse",
+            password=u"kasse",
+            email=u"noreply@c3s.cc",
+        )
+        kasse1.groups = [cashdesk_group]
+        try:
+            DBSession.add(kasse1)
+            print("adding staff kasse")
+            DBSession.flush()
+        except:
+            print("it borked! (kasse)")
             # pass
     # one more staffer
     with transaction.manager:
