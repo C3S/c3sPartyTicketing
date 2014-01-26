@@ -62,73 +62,19 @@
       <hr />
       <!-- Example row of columns -->
 
-      <!--
-      <div class="row-fluid">
-        <div class="span4">
-          <h2 i18n:translate='donate-money-heading'>Donate Money</h2>
-          <p i18n:translate='donate-money-paragraph'>We are glad for any amount!
-          </p>
-          <p>
-            <a class="btn btn-large btn-success" href="/donate"
-               i18n:translate='button-donate-transfer'>
-              Donate by money transfer &raquo;
-            </a>
-          </p>
-	  <p>
-            <a class="btn btn-large btn-warning" href="/donate?paypal"
-               i18n:translate='button-donate-paypal'>
-              Donate via PayPal &raquo;
-            </a>
-          </p>
-          <p i18n:translate="c3spartyticketing-paypal-costs-note">
-            Please note: PayPal will deduct a certain part of the payment.
-          </p>
-        </div>
-        <div class="span4">
-          <h2 i18n:translate='tshirt-heading'>Grab a T-Shirt</h2>
-          <p i18n:translate='tshirt-paragraph'>
-            Here's the most picked motif from our crowdfunding for the very last time.
-          </p>
-          <p align="center">
-            <a href="http://archive.c3s.cc/stuff/t_shirt_a.png">
-              <img src="${request.static_url('c3spartyticketing:static/t_shirt_a_cut_small.png')}"
-                   title="click for larger image" />
-            </a>
-            <br />&nbsp;
-            <br />&nbsp;
-            <span style="font-size:250%;">35 &euro;</span>
-          </p>
-          <p>
-            <a class="btn btn-large btn-success" href="/shirt"
-               i18n:translate='button-shirt-transfer'>
-              Pay by money transfer &raquo;
-            </a>
-          </p>
-          <p>
-            <a class="btn btn-large btn-warning" href="/shirt?paypal"
-               i18n:translate='button-shirt-paypal'>
-              Pay via PayPal &raquo;
-            </a>
-          </p>
-          <p i18n:translate="c3spartyticketing-paypal-costs-note">
-            Please note: PayPal will deduct a certain part of the payment.
-          </p>
-        </div>
-        <div class="span4">
-          <h2 i18n:translate='shares-heading'>Become a member!</h2>
-          <p i18n:translate='shares-paragraph'>
-            Here you can fill in your membership application. Print it, send it to us and buy your shares in C3S. If you already have participated in the last crowdfunding you're already in - but of course you can get more shares. You are helping the C3S most by becoming a member.
-          </p>
-          <p><a class="btn btn-large btn-success" href="https://yes.c3s.cc"
-                i18n:translate="button-become-member">
-              Yes, I want to become a member of C3S! &raquo;</a></p>
-          <p><a class="btn btn-large btn-warning"
-                href="http://archive.c3s.cc/legal/beitritt-koerperschaft.pdf"
-                i18n:translate="button-become-member-nonhuman">
-              Membership for Companies &amp; Institutions &raquo;</a></p>
+
+      <div class="alert alert-success">
+        <div>
+          17:30 - Bereitstellung des Zuges: Führung durch die neuen C3S Büroräume<br />
+          18:30 - Abfahrt: Einlass in den Saal<br />
+          20:00 - 1. Halt: Konzert Charlie Rayne<br />
+          20:45 - 2. Halt: Konzert /'angstalt/<br />
+          21:30 - 3. Halt: Konzert Entertainment for the braindead<br />
+          22:30 - 4. Halt: DJ (tba)<br />
+          01:00 - Endstation (Betriebsschluss)<br />
         </div>
       </div>
-      -->
+
 
       <div tal:content="structure form">&nbsp;</div>
       <hr />
