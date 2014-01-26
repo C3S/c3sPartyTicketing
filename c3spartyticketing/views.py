@@ -221,25 +221,9 @@ def party_view(request):
                 '_num_tickets_paid': _num_tickets_paid,
             }
 
-        def make_random_string():
-            """
-            used as email confirmation code
-            """
-            import random
-            import string
-            return ''.join(
-                random.choice(
-                    string.ascii_uppercase + string.digits
-                ) for x in range(10))
-
-        # make confirmation code and
+        from c3spartyticketing.utils import make_random_string
+        # make confirmation code
         randomstring = make_random_string()
-        # check if confirmation code is already used
-        print("checking if ex. conf.code: %s" % PartyTicket.check_for_existing_confirm_code(randomstring))
-        while (PartyTicket.check_for_existing_confirm_code(randomstring)):
-            # create a new one, if the new one already exists in the database
-            print("generating new code")
-            randomstring = make_random_string()  # pragma: no cover
 
         # calculate the total sum
         the_value = {

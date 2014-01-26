@@ -1,10 +1,35 @@
 # -*- coding: utf-8 -*-
 
+from c3spartyticketing.models import PartyTicket
+
 from .gnupg_encrypt import encrypt_with_gnupg
 from pyramid_mailer.message import Message
 import qrcode
 import subprocess
 import tempfile
+import random
+import string
+
+
+def make_random_string():
+    """
+    used as email confirmation code
+    """
+    randomstring = ''.join(
+        random.choice(
+            string.ascii_uppercase + string.digits
+        ) for x in range(10))
+    # check if confirmation code is already used
+    print(
+        "checking if ex. conf"
+        ".code: %s" % PartyTicket.check_for_existing_confirm_code(
+            randomstring))
+    while (PartyTicket.check_for_existing_confirm_code(randomstring)):
+            # create a new one, if the new one already exists in the database
+            print("generating new code")
+            randomstring = make_random_string()  # pragma: no cover
+
+    return randomstring
 
 
 def make_qr_code_pdf(_ticket, _url):

@@ -35,7 +35,11 @@
     </tal:block>
   </head>
   <body>
-    <tal:block metal:fill-slot="top"></tal:block>
+    <tal:block metal:fill-slot="top">
+      <p>
+        Eingecheckt: ${num_passengers}. Erwarten noch: ${num_open_tickets} 
+      </p>
+    </tal:block>
     <tal:block metal:fill-slot="middle">
       <div id="wrap">
         <div id="main">
@@ -45,7 +49,8 @@
       </div>
     </tal:block>
     <tal:block metal:fill-slot="footer">
-      <a href="/logout" class="btn btn-danger">Abmelden</a>
+      <a href="${request.route_url('new_ticket')}" class="btn btn-success">Neues Ticket</a>
+      <a href="${request.route_url('logout')}" class="btn btn-danger">Abmelden</a>
     </tal:block>
   </body>
 </html>

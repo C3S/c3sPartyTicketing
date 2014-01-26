@@ -17,7 +17,7 @@
       </strong>
     </div>
     <p>
-      An Bord: ${num_passengers}. Erwarten: ${num_open_tickets} 
+      Eingecheckt: ${num_passengers}. Erwarten noch: ${num_open_tickets} 
     </p>
     <div tal:condition="paid is True">      <!-- BEZAHLT -->
       <div class="row">
