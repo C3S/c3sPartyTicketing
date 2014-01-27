@@ -321,17 +321,28 @@ def send_ticket_mail_view(request):
     body_lines = (  # a list of lines
         u'''Hallo ''', _ticket.firstname, ' ', _ticket.lastname, u''' !
 
-Wir haben Deine Überweisung erhalten.
-...
- Oder lade jetzt deine Tickets herunter:
+Wir haben Deine Überweisung erhalten. Dankeschön!
 
-  ''',
-        # request.route_url('get_ticket',
-        #                   email=_ticket.email,
-        #                   code=_ticket.email_confirm_code), '''
-        request.route_url('give_ticket',
-                          #email=_ticket.email,
-                          code=_ticket.email_confirm_code), '''
+Es gibt mehrere Möglichkeiten, das Ticket mitzubringen:
+
+1) Lade jetzt dein Ticket herunter und drucke es aus.
+   Wir scannen dann am Eingang den QR-Code und du bist drin.
+
+   ''', request.route_url('get_ticket',
+                          email=_ticket.email,
+                          code=_ticket.email_confirm_code), u'''
+
+2) Lade die mobile version für dein Smartphone (oder Tablet).
+
+   ''', request.route_url('get_ticket_mobile',
+                          email=_ticket.email,
+                          code=_ticket.email_confirm_code), u'''
+
+3) Bringe einfach diesen Code mit: ''' + _ticket.email_confirm_code + u'''
+
+Damit können wir dich am Eingang wiedererkennen. Falls Du ein Ticket für
+*mehrere Personen* bestellt hast, kannst Du diesen Code an diese Personen
+weiterreichen. Aber Vorsicht! Wir zählen mit! ;-)
 
 Bis bald!
 

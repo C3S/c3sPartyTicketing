@@ -66,6 +66,8 @@ def main(global_config, **settings):
     config.add_route('detail', '/detail/{ticket_id}')
     config.add_route('send_ticket_mail', '/ticketmail/{ticket_id}')
     config.add_route('get_ticket', '/ticket/{email}/c3sPartyTicket_{code}')
+    config.add_route('get_ticket_mobile',
+                     '/mticket/{email}/c3sPartyTicket_{code}')
     config.add_route('give_ticket', '/give_ticket/c3sPartyTicket_{code}')
     config.add_route('new_ticket', '/new_ticket')
     config.add_route('switch_pay', '/switch_pay/{ticket_id}')
