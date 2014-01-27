@@ -355,13 +355,19 @@ Dein C3S-Team''',
         recipients=[_ticket.email],
         body=the_mail_body
     )
+    from smtplib import SMTPRecipientsRefused
     try:
-        mailer.send(the_mail)
+        #mailer.send(the_mail)
+        mailer.send_immediately(the_mail, fail_silently=False)
+        #print(the_mail.body)
         _ticket.ticketmail_sent = True
         _ticket.ticketmail_sent_date = datetime.now()
-    except:
-        pass
-    #print(the_mail.body)
+
+    except SMTPRecipientsRefused:  # folks with newly bought tickets (no mail)
+        print('SMTPRecipientsRefused')
+        return HTTPFound(
+            request.route_url('dashboard', number=request.cookies['on_page'],))
+
     # 'else': send user to the form
     return HTTPFound(request.route_url('dashboard',
                                        number=request.cookies['on_page'],

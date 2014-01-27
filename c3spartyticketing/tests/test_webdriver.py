@@ -3,7 +3,7 @@
 import unittest
 from selenium import webdriver
 import time
-from subprocess import call
+import subprocess
 import pageobjects
 __author__ = 'Kristin Kuche'
 
@@ -12,7 +12,8 @@ class SeleniumTestBase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        call(['env/bin/pserve', 'development.ini', 'start'])
+        result = subprocess.check_call(['../env/bin/pserve', 'development.ini', 'start'])
+        print result
         time.sleep(3)
 
     def setUp(self):
@@ -20,7 +21,7 @@ class SeleniumTestBase(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        call(['env/bin/pserve', 'development.ini', 'stop'])
+        subprocess.call(['../env/bin/pserve', 'development.ini', 'stop'])
 
 
 class PartyFormTests(SeleniumTestBase):
@@ -29,7 +30,7 @@ class PartyFormTests(SeleniumTestBase):
     def setUpClass(cls):
         super(PartyFormTests, cls).setUpClass()
         cls.driver = webdriver.Firefox()  # PhantomJS()
-        cls.driver.get('http://localhost:6544/')
+        cls.driver.get('http://0.0.0.0:6544/')
         cls.driver.implicitly_wait(10)  # seconds
 
     @classmethod
@@ -39,7 +40,7 @@ class PartyFormTests(SeleniumTestBase):
 
     def setUp(self):
         super(PartyFormTests, self).setUp()
-        self.driver.get('http://localhost:6544/')
+        self.driver.get('http://0.0.0.0:6544/')
         self.page_under_test = pageobjects.PartyPageObject(self.driver)
 
     def test_form_submission(self):

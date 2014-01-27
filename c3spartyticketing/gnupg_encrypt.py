@@ -24,7 +24,8 @@ def encrypt_with_gnupg(data):
     # we use a temporary folder to store stuff
     keyfolder = tempfile.mkdtemp()
     print(keyfolder)
-    gpg = gnupg.GPG(homedir=keyfolder)
+    #gpg = gnupg.GPG(homedir=keyfolder)
+    gpg = gnupg.GPG()
     gpg.encoding = 'utf-8'
 
     # check if we have the membership key

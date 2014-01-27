@@ -15,7 +15,10 @@ from deform import ValidationFailure
 #    get_localizer,
 #)
 from pyramid.request import Request
-from pyramid.view import view_config
+from pyramid.view import (
+    view_config,
+    forbidden_view_config
+)
 #from pyramid.threadlocal import get_current_request
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import (
@@ -147,6 +150,10 @@ def check_in(request):
         #_ticket.checkin_seen = True
         _ticket.checked_persons += int(_persons)
 
+    _num_passengers = PartyTicket.num_passengers()
+    _num_open_tickets = int(
+        PartyTicket.get_num_tickets()) - int(_num_passengers)
+
     '''
     checkin was called from a prepared URL ('/ci/{event}/{code}')
     '''
@@ -159,7 +166,9 @@ def check_in(request):
             'logged_in': logged_in,
             'status': 'NOT FOUND',
             'code': '',
-            'paid': 'Nein'
+            'paid': 'Nein',
+            'num_passengers': _num_passengers,
+            'num_open_tickets': _num_open_tickets,
         }
     else:
         print("the ticket: %s" % _ticket)
@@ -182,9 +191,6 @@ def check_in(request):
     }
 
     _klass = ticket_type_options.get(_ticket.ticket_type)
-    _num_passengers = PartyTicket.num_passengers()
-    _num_open_tickets = int(
-        PartyTicket.get_num_tickets()) - int(_num_passengers)
     _vacancies = _ticket.num_tickets - _ticket.checked_persons
 
     return {
@@ -197,6 +203,11 @@ def check_in(request):
         'paid': _ticket.payment_received,
         'ticket': _ticket,
     }
+
+
+@forbidden_view_config()
+def kasse_forbidden(request):
+    return HTTPFound(location=request.route_url('k'))
 
 
 @view_config(renderer='templates/kasse.pt',

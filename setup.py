@@ -25,6 +25,7 @@ requires = [
     'qrcode',
     'SQLAlchemy',
     'transaction',
+    'unicodecsv',
     'waitress',
     'zope.sqlalchemy',
 ]
