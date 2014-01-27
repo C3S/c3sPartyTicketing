@@ -28,6 +28,7 @@
     <tal:block metal:define-slot="top">
       <a href="/">
         <img src="${request.static_url('c3spartyticketing:static/images/c3s_logo_horiz_500x100.png')}"
+             class="img-responsive"
 	     alt="Cultural Commons Collecting Society (C3S)"/>
       </a>
     </tal:block>
