@@ -11,10 +11,12 @@ class PartyPageObject(object):
         self.comment_field = self.driver.find_element_by_id("comment")
         self.submit_button = self.driver.find_element_by_id("deformsubmit")
         self.tickets_count_field = self.driver.find_element_by_id("num_tickets")
-
+        self.tickets_sold_field = self.driver.find_element_by_id("qty_tickets_sold")
 
     def submit_form(self):
         self.submit_button.click()
+        if 'confirm' in self.driver.current_url:
+            return ConfirmPageObject(self.driver)
         return PartyPageObject(self.driver)
 
     @property
@@ -73,3 +75,17 @@ class PartyPageObject(object):
             if int(opt.get_attribute('value')) == value:
                 opt.click()
                 return
+
+    @property
+    def tickets_sold(self):
+         return int(self.tickets_sold_field.text)
+
+
+class ConfirmPageObject(object):
+    def __init__(self, driver):
+        self.driver = driver
+        self.submit_button = self.driver.find_element_by_id("deformsendmail")
+
+    def submit_form(self):
+        # ToDo: Return matching PageObject.
+        self.submit_button.click()

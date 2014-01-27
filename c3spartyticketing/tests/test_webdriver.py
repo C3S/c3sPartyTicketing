@@ -29,7 +29,8 @@ class PartyFormTests(SeleniumTestBase):
     def setUpClass(cls):
         super(PartyFormTests, cls).setUpClass()
         cls.driver = webdriver.Firefox()  # PhantomJS()
-        cls.driver.get('http://localhost:6544/')
+        cls.url_to_test = 'http://localhost:6544/'
+        cls.driver.get(cls.url_to_test)
         cls.driver.implicitly_wait(10)  # seconds
 
     @classmethod
@@ -77,3 +78,21 @@ class PartyFormTests(SeleniumTestBase):
     def test_ticketNum_standardValue1(self):
         value = self.page_under_test.ticket_count
         self.assertEqual(1, value)
+
+    def test_ticketsSold_afterBuying_increased(self):
+        before = self.page_under_test.tickets_sold
+        self._fill_form_with_valid_values(tickets_to_buy=3)
+        confirm_page = self.page_under_test.submit_form()
+        confirm_page.submit_form()
+        self.driver.get(self.url_to_test)
+        self.page_under_test = pageobjects.PartyPageObject(self.driver)
+        after = self.page_under_test.tickets_sold
+        self.assertEqual(before + 3, after)
+
+    def _fill_form_with_valid_values(self, tickets_to_buy=4):
+        self.page_under_test.firstname = 'Kristin'
+        self.page_under_test.lastname = 'Kuche'
+        self.page_under_test.comment = 'Just testing ...'
+        self.page_under_test.email = 'kristin.kuche@gmx.net'
+        self.page_under_test.ticket_count = tickets_to_buy
+        self.page_under_test.ticket_type = 3
