@@ -59,27 +59,45 @@
         + '%H:%M:%S'));
         });
       </script>
-      <hr />
-      <!-- Example row of columns -->
-
-
-      <div class="alert alert-success">
-        <div>
-          17:30 - Bereitstellung des Zuges: Führung durch die neuen C3S Büroräume<br />
-          18:30 - Abfahrt: Einlass in den Saal<br />
-          20:00 - 1. Halt: Konzert Charlie Rayne<br />
-          20:45 - 2. Halt: Konzert /'angstalt/<br />
-          21:30 - 3. Halt: Konzert Entertainment for the braindead<br />
-          22:30 - 4. Halt: DJ (tba)<br />
-          01:00 - Endstation (Betriebsschluss)<br />
+    </div>
+    <hr />
+    <!-- Example row of columns -->
+    <div class="row-fluid">
+      <div class="span4">
+        <div class="alert alert-success">
+        <ul class="list-group">
+          <li class="list-group-item">
+            17:30 - Bereitstellung des Zuges: Führung durch die neuen C3S Büroräume</li>
+          <li class="list-group-item">
+            18:30 - Abfahrt: Einlass in den Saal</li>
+          <li class="list-group-item">
+            20:00 - 1. Halt: Konzert Charlie Rayne</li>
+          <li class="list-group-item">
+            20:45 - 2. Halt: Konzert /'angstalt/</li>
+          <li class="list-group-item">
+            21:30 - 3. Halt: Konzert Entertainment for the braindead</li>
+          <li class="list-group-item">
+            22:30 - 4. Halt: DJ (tba)</li>
+          <li class="list-group-item">
+            01:00 - Endstation (Betriebsschluss)</li>
+        </ul>
         </div>
       </div>
-
-
+      <div class="span-4">
+        <iframe width="425" height="350"
+                frameborder="0" scrolling="no"
+                marginheight="0" marginwidth="0"
+                src="http://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
+                style="border: 1px solid black">
+        </iframe><br/>
+        <small>
+          <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+            Größere Karte anzeigen
+          </a>
+        </small>
+      </div>
       <div tal:content="structure form">&nbsp;</div>
       <hr />
-
-
     </div>
   </tal:block>
 </html>

@@ -10,24 +10,70 @@
           type="text/css" media="screen" charset="utf-8" />
   </tal:block>
   <tal:block metal:fill-slot="middle">
-    <h1 i18n:translate="check-email-title">C3S Party Tickets:<small>Email lesen und überweisen</small></h1>
+    <h1>C3S Party Tickets:<small>Email lesen und überweisen</small></h1>
   </tal:block>
   <tal:block metal:fill-slot="bottom">
 
-    <h3>Wir haben Dir eine Email geschickt, ${firstname} ${lastname}!</h3>
+    <h3><small>Wir haben Dir eine Email geschickt,</small> ${firstname} ${lastname}!</h3>
     <p>
       Du solltest gleich eine Email bekommen von
       <strong>noreply@c3s.cc</strong> mit dem Betreff
-      <strong>C3S Party-Ticket: bitte überweisen!</strong>.
+      <strong>"C3S Party-Ticket: bitte überweisen!"</strong>.
     </p>
     <p>
       In dieser Email stehen die Informationen, die Du brauchst,
-      um das Geld für die Tickets zu überweisen.
+      um das Geld für die Tickets zu überweisen. (wichtig: Referenzcode!)
     </p>
     <p>
-      Sobald wir den Eingang der Zahlung bemerken,
+      Sobald wir den <strong>Eingang der Zahlung</strong> bemerken,
       schicken wir Dir eine Email mit
       dem (oder den) Ticket(s).
+      <small>Das Ticket muß spätestens bis zum 10.02. bezahlt sein.
+        (Zahlungseingang auf unserem Konto)</small>
     </p>
+    <p>
+      Solltest du wider Erwarten keine E-Mail erhalten,
+      schreibe uns bitte eine E-Mail an info@c3s.cc.
+    </p>
+    <h2>Vielen Dank für die Bestellung des/r C3S Party-Ticket/s!</h2>
+    <hr />
+    <!-- Example row of columns -->
+    <div class="row-fluid">
+      <div class="span4">
+        <h3><small>Vorläufiger</small> Reiseplan</h3>
+        <div class="alert alert-success">
+          <ul class="list-group">
+            <li class="list-group-item">
+              17:30 - Bereitstellung des Zuges: Führung durch die neuen C3S Büroräume</li>
+            <li class="list-group-item">
+              18:30 - Abfahrt: Einlass in den Saal</li>
+            <li class="list-group-item">
+              20:00 - 1. Halt: Konzert Charlie Rayne</li>
+            <li class="list-group-item">
+              20:45 - 2. Halt: Konzert /'angstalt/</li>
+            <li class="list-group-item">
+              21:30 - 3. Halt: Konzert Entertainment for the braindead</li>
+            <li class="list-group-item">
+              22:30 - 4. Halt: DJ (tba)</li>
+            <li class="list-group-item">
+              01:00 - Endstation (Betriebsschluss)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="span-4">
+        <h3><small>...immer nur...</small> Bahnhof</h3>
+        <iframe width="425" height="350"
+                frameborder="0" scrolling="no"
+                marginheight="0" marginwidth="0"
+                src="http://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
+                style="border: 1px solid black">
+        </iframe><br/>
+        <small>
+          <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+            Größere Karte anzeigen
+          </a>
+        </small>
+      </div>
+
   </tal:block>
 </html>
