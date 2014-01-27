@@ -1,10 +1,35 @@
 # -*- coding: utf-8 -*-
 
+from c3spartyticketing.models import PartyTicket
+
 from .gnupg_encrypt import encrypt_with_gnupg
 from pyramid_mailer.message import Message
 import qrcode
 import subprocess
 import tempfile
+import random
+import string
+
+
+def make_random_string():
+    """
+    used as email confirmation code
+    """
+    randomstring = ''.join(
+        random.choice(
+            string.ascii_uppercase + string.digits
+        ) for x in range(10))
+    # check if confirmation code is already used
+    print(
+        "checking if ex. conf"
+        ".code: %s" % PartyTicket.check_for_existing_confirm_code(
+            randomstring))
+    while (PartyTicket.check_for_existing_confirm_code(randomstring)):
+            # create a new one, if the new one already exists in the database
+            print("generating new code")
+            randomstring = make_random_string()  # pragma: no cover
+
+    return randomstring
 
 
 def make_qr_code_pdf(_ticket, _url):
@@ -16,15 +41,20 @@ def make_qr_code_pdf(_ticket, _url):
 
     _img = qrcode.make(_url)  # the qr-code image, unsaved
 
+    use_pdf = {
+        1: 'c3spartyticketing/pdftk/C3S_Ticket_2_Klasse.pdf',
+        2: 'c3spartyticketing/pdftk/C3S_Ticket_2_Klasse_Speisewagen.pdf',
+        3: 'c3spartyticketing/pdftk/C3S_Ticket_1_Klasse.pdf',
+        4: 'c3spartyticketing/pdftk/C3S_Ticket_GreenMamba.pdf',
+    }
+
+    _pdf_to_use = use_pdf[_ticket.ticket_type]
+
     tmp_img = tempfile.NamedTemporaryFile()  # for the qr-code
     tmp_pdf = tempfile.NamedTemporaryFile()  # converted to pdf
 
     _img.save(tmp_img)  # save the qr-code to tempfile
-    #print("tmp_img.name: %s" % tmp_img.name)
-    #print("tmp_pdf.name: %s" % tmp_pdf.name)
     tmp_pdf.name = tmp_pdf.name + '.pdf'  # rename so convert knows what to do
-    #print("tmp_pdf.name: %s" % tmp_pdf.name)
-
     #
     # resize/arrange the code on the page so it aligns nicely
     # when combined with ticket PDF
@@ -47,7 +77,7 @@ def make_qr_code_pdf(_ticket, _url):
     #
     tmp_ticket = tempfile.NamedTemporaryFile()
     subprocess.check_call(
-        ['pdftk', 'c3spartyticketing/pdftk/C3S-ticket-2-Klasse+speisew.pdf',
+        ['pdftk', _pdf_to_use,
          'stamp', tmp_pdf.name,  # use qr-code as stamp
          'output', tmp_ticket.name
          ]
@@ -73,6 +103,55 @@ def make_qr_code_pdf(_ticket, _url):
     tmp_ticket2 = tempfile.NamedTemporaryFile()
     subprocess.check_call(
         ['pdftk', tmp_ticket.name,  # input
+         'stamp', tmp_code.name,  # use code as stamp
+         'output', tmp_ticket2.name
+         ]
+    )
+    return tmp_ticket2
+
+
+def make_qr_code_pdf_mobile(_ticket, _url):
+    """
+    this function creates a QR-Code PDF for mobile_devices
+
+    append .name to the result to get the filename
+    """
+    _img = qrcode.make(_url)  # the qr-code image, unsaved
+
+    tmp_img = tempfile.NamedTemporaryFile()  # for the qr-code
+    tmp_pdf = tempfile.NamedTemporaryFile()  # converted to pdf
+
+    _img.save(tmp_img)  # save the qr-code to tempfile
+    tmp_pdf.name = tmp_pdf.name + '.pdf'  # rename so convert knows what to do
+
+    # resize/arrange the code on the page so it aligns nicely
+    # when combined with ticket PDF
+    _caption_code = str(
+        'caption:' + _ticket.email_confirm_code + '*' + str(
+            _ticket.num_tickets))
+    subprocess.check_call(
+        ['convert',
+         tmp_img.name,
+         '-format', 'pdf',
+         '-size', '320x50',
+         tmp_pdf.name])
+    tmp_pdf.seek(0)
+    # make image with alphanum code
+    tmp_code = tempfile.NamedTemporaryFile()
+    tmp_code.name = tmp_code.name + '.pdf'
+    # convert -size 320x50 caption:'ABCDEFGHIJ' CODE.png
+    subprocess.check_call(
+        ['convert',
+         '-size', '500x90',
+         '-page',
+         'A4+80+0',  # A4, push image right (x) and up (y)
+         _caption_code,
+         tmp_code.name]
+    )
+    # stamp the alphanum code onto the ticket
+    tmp_ticket2 = tempfile.NamedTemporaryFile()
+    subprocess.check_call(
+        ['pdftk', tmp_pdf.name,  # input
          'stamp', tmp_code.name,  # use code as stamp
          'output', tmp_ticket2.name
          ]

@@ -188,6 +188,7 @@ class PartyTicket(Base):
                  ticket_type,
                  the_total,
                  user_comment,
+                 payment_received=False
                  ):
         self.firstname = firstname
         self.lastname = lastname
@@ -201,8 +202,7 @@ class PartyTicket(Base):
         self.email_is_confirmed = email_is_confirmed
         self.email_confirm_code = email_confirm_code
         self.date_of_submission = datetime.now()
-        self.signature_received = False
-        self.payment_received = False
+        self.payment_received = payment_received
         self.user_comment = user_comment
 
     def _get_password(self):

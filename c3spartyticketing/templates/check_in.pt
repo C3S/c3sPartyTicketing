@@ -17,7 +17,7 @@
       </strong>
     </div>
     <p>
-      An Bord: ${num_passengers}. Erwarten: ${num_open_tickets} 
+      Eingecheckt: ${num_passengers}. Erwarten noch: ${num_open_tickets} 
     </p>
     <div tal:condition="paid is True">      <!-- BEZAHLT -->
       <div class="row">
@@ -34,14 +34,14 @@
             Bitte zusteigen...(Anzahl Personen)
           </p>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2"><!-- if there are still OPEN seats on THIS TICKET -->
           <div tal:condition="(ticket.num_tickets - ticket.checked_persons) is not 0">
             <form action="${request.url}" method="post">
-              <!--input type="text" name="persons" value="${ticket.num_tickets - ticket.checked_persons}"
-                     style="width:50px;" class="form-control"/-->
-              <select name="persons" size="3"
-                      style="width:50px;" class="form-control">
-                <option tal:repeat="opt range(vacancies)">${opt+1}</option>
+              <select name="persons" size="1"
+                      style="width:50px;"
+                      class="form-control">
+                <option selected>1</option>
+                <option tal:repeat="opt range(vacancies-1)">${opt+1}</option>
               </select>
               <input type="submit" name="checkin" value="Check in!" class="btn btn-success"/>
               <input type="hidden" name="code" value="${ticket.email_confirm_code}">

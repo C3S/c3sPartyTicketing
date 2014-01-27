@@ -3,9 +3,9 @@ import json
 from c3spartyticketing.models import (
     PartyTicket,
     C3sStaff,
-    #DBSession,
+    DBSession,
 )
-
+from c3spartyticketing.utils import make_random_string
 #from pkg_resources import resource_filename
 import colander
 import deform
@@ -15,7 +15,10 @@ from deform import ValidationFailure
 #    get_localizer,
 #)
 from pyramid.request import Request
-from pyramid.view import view_config
+from pyramid.view import (
+    view_config,
+    forbidden_view_config
+)
 #from pyramid.threadlocal import get_current_request
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import (
@@ -36,6 +39,80 @@ LOGGING = True
 if LOGGING:  # pragma: no cover
     import logging
     log = logging.getLogger(__name__)
+
+
+@view_config(renderer='templates/new_ticket.pt',
+             permission='cashdesk',
+             route_name='new_ticket')
+def new_ticket(request):
+    """
+    This view lets cachiers make/issue new tickets
+
+    a form permits checkin of people, up to the amount of tickets
+    """
+    logged_in = authenticated_userid(request)
+    print("authenticated_userid: " + str(logged_in))
+
+    print("the request.POST: %s" % request.POST)
+    add_cond = ('persons' in request.POST)
+    if add_cond:
+        _num = request.POST['persons']
+        if 'type1' in request.POST:
+            _type = request.POST['type1']
+            _type_int = 1
+            _type_cost = 5
+        elif 'type2' in request.POST:
+            _type = request.POST['type2']
+            _type_int = 2
+            _type_cost = 15
+        elif 'type3' in request.POST:
+            _type = request.POST['type3']
+            _type_int = 3
+            _type_cost = 50
+        elif 'type4' in request.POST:
+            _type = request.POST['type4']
+            _type_int = 4
+            _type_cost = 100
+        log.info(
+            "%s tickets(s) of cat. %s sold by %s" % (_num, _type, logged_in))
+        _new = PartyTicket(
+            firstname='anon',
+            lastname='anon',
+            email='anon',
+            password='None',
+            locale='de',
+            email_is_confirmed=False,
+            email_confirm_code='cash',
+            num_tickets=int(_num),
+            ticket_type=_type_int,
+            the_total=int(_num)*_type_cost,
+            user_comment='got ticket at entry',
+            date_of_submission=datetime.now(),
+            payment_received=True
+        )
+        #try:
+        dbsession = DBSession()
+        _new.payment_received = True
+        #import pdb
+        #pdb.set_trace()
+        _new.checked_persons = int(_num)
+        _new.payment_received_date = datetime.now()
+        _new.email_confirm_code = 'CASHDESK' + make_random_string()
+        _new.accountant_comment = 'issued by %s' % logged_in
+        dbsession.add(_new)
+
+        #except:
+        #    print("new_ticket: something went wrong")
+            #pass
+    _num_passengers = PartyTicket.num_passengers()
+    _num_open_tickets = int(
+        PartyTicket.get_num_tickets()) - int(_num_passengers)
+
+    return {
+        'logged_in': logged_in,
+        'num_passengers': _num_passengers,
+        'num_open_tickets': _num_open_tickets,
+    }
 
 
 @view_config(renderer='templates/check_in.pt',
@@ -73,6 +150,10 @@ def check_in(request):
         #_ticket.checkin_seen = True
         _ticket.checked_persons += int(_persons)
 
+    _num_passengers = PartyTicket.num_passengers()
+    _num_open_tickets = int(
+        PartyTicket.get_num_tickets()) - int(_num_passengers)
+
     '''
     checkin was called from a prepared URL ('/ci/{event}/{code}')
     '''
@@ -85,7 +166,9 @@ def check_in(request):
             'logged_in': logged_in,
             'status': 'NOT FOUND',
             'code': '',
-            'paid': 'Nein'
+            'paid': 'Nein',
+            'num_passengers': _num_passengers,
+            'num_open_tickets': _num_open_tickets,
         }
     else:
         print("the ticket: %s" % _ticket)
@@ -103,13 +186,11 @@ def check_in(request):
     ticket_type_options = {
         1: _(u'2. Klasse'),
         2: _(u'2. Klasse + Speisewagen'),
-        3: _(u'1. Klasse !!!'),
+        3: _(u'1. Klasse'),
+        4: _(u'Grüne Mamba'),
     }
 
     _klass = ticket_type_options.get(_ticket.ticket_type)
-    _num_passengers = PartyTicket.num_passengers()
-    _num_open_tickets = int(
-        PartyTicket.get_num_tickets()) - int(_num_passengers)
     _vacancies = _ticket.num_tickets - _ticket.checked_persons
 
     return {
@@ -122,6 +203,11 @@ def check_in(request):
         'paid': _ticket.payment_received,
         'ticket': _ticket,
     }
+
+
+@forbidden_view_config()
+def kasse_forbidden(request):
+    return HTTPFound(location=request.route_url('k'))
 
 
 @view_config(renderer='templates/kasse.pt',
@@ -193,9 +279,15 @@ def kasse(request):
     )
     autoformhtml = form.render()
 
+    _num_passengers = PartyTicket.num_passengers()
+    _num_open_tickets = int(
+        PartyTicket.get_num_tickets()) - int(_num_passengers)
+
     return {
         'autoform': autoformhtml,
         'logged_in': logged_in,
+        'num_passengers': _num_passengers,
+        'num_open_tickets': _num_open_tickets
     }
 
 

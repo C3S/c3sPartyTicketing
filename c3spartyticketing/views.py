@@ -4,8 +4,10 @@ from c3spartyticketing.models import (
     DBSession,
     PartyTicket,
 )
-from c3spartyticketing.utils import make_qr_code_pdf
-
+from c3spartyticketing.utils import (
+    make_qr_code_pdf,
+    make_qr_code_pdf_mobile,
+)
 import colander
 from datetime import datetime
 import deform
@@ -129,35 +131,39 @@ def party_view(request):
     )
 
     class PartyTickets(colander.MappingSchema):
-        num_tickets = colander.SchemaNode(
-            colander.Integer(),
-            title=_(u"Ich nehme die folgende Anzahl von Tickets"),
-            description=_(
-                u'Du kannst zwischen 1 und 10 Tickets bestellen. Die Kosten variieren je nach Ticket-Kategorie.'),
-            default="1",
-            widget=deform.widget.SelectSliderWidget(
-                size=3, css_class='num_tickets_input',
-                values=num_ticket_options),
-            validator=colander.Range(
-                min=1,
-                max=10,
-                min_err=_(u"Du brauchst mindestens ein Ticket, um die Reise anzutreten."),
-                max_err=_(u"Höchstens 10 Tickets. (viel los!)"),
-            ),
-            oid="num_tickets")
 
         ticket_type = colander.SchemaNode(
             colander.Integer(),
             title=_(u"Ich reise in der folgenden Kategorie:"),
             description=_(
-                u'Du kannst uns mit dem Kauf von Tickets unterstützen. Überschüsse fliessen in die Büroausstattung.'),
+                u'Du kannst uns mit dem Kauf von Tickets unterstützen. '
+                u'Überschüsse fliessen in die Büroausstattung.'),
             default="1",
             widget=deform.widget.RadioChoiceWidget(
                 size=1, css_class='ticket_types_input',
                 values=ticket_type_options,
                 #inline=True
             ),
-            oid="ticket_type")
+            oid="ticket_type"
+        )
+        num_tickets = colander.SchemaNode(
+            colander.Integer(),
+            title=_(u"Ich nehme die folgende Anzahl von Tickets"),
+            description=_(
+                u'Du kannst zwischen 1 und 10 Tickets bestellen. '
+                u'Die Kosten variieren je nach Ticket-Kategorie.'),
+            default="1",
+            widget=deform.widget.SelectSliderWidget(
+                #size=3, css_class='num_tickets_input',
+                values=num_ticket_options),
+            validator=colander.Range(
+                min=1,
+                max=10,
+                min_err=_(u"Du brauchst mindestens ein Ticket, "
+                          u"um die Reise anzutreten."),
+                max_err=_(u"Höchstens 10 Tickets. (viel los!)"),
+            ),
+            oid="num_tickets")
 
     class TicketForm(colander.Schema):
         """
@@ -172,7 +178,7 @@ def party_view(request):
             #css_class="thisisjustatest"
         )
         ticket_info = PartyTickets(
-            title=_(u"Ticket Informationen")
+            title=_(u"Ticketinformationen")
         )
         #shares = FoodInfo(
         #    title=_(u"Food Stamps")
@@ -221,25 +227,9 @@ def party_view(request):
                 '_num_tickets_paid': _num_tickets_paid,
             }
 
-        def make_random_string():
-            """
-            used as email confirmation code
-            """
-            import random
-            import string
-            return ''.join(
-                random.choice(
-                    string.ascii_uppercase + string.digits
-                ) for x in range(10))
-
-        # make confirmation code and
+        from c3spartyticketing.utils import make_random_string
+        # make confirmation code
         randomstring = make_random_string()
-        # check if confirmation code is already used
-        print("checking if ex. conf.code: %s" % PartyTicket.check_for_existing_confirm_code(randomstring))
-        while (PartyTicket.check_for_existing_confirm_code(randomstring)):
-            # create a new one, if the new one already exists in the database
-            print("generating new code")
-            randomstring = make_random_string()  # pragma: no cover
 
         # calculate the total sum
         the_value = {
@@ -332,12 +322,12 @@ def confirm_view(request):
     print("DEBUG: request.POST is: %s" % request.POST)
 
     if 'reedit' in request.POST:  # user wants to re-edit her data
-        print("the form was submitted, the data needs reediting")
+        #print("the form was submitted, the data needs reediting")
         return HTTPFound(location=request.route_url('party'))
 
-    if 'sendmail' in request.POST:
-        print("the form was submitted, the data confirmed, "
-              "redirecting to sendmail-view")
+    if 'sendmail' in request.POST:  # user wants email w/ transfer info
+        #print("the form was submitted, the data confirmed, "
+        #      "redirecting to sendmail-view")
         return HTTPFound(location=request.route_url('sendmail'))
 
     class PersonalData(colander.MappingSchema):
@@ -372,42 +362,22 @@ def confirm_view(request):
             oid="comment",
         )
 
-    num_ticket_options = (
-        (10, _(u'10 tickets')),
-        (9, _(u'9 tickets')),
-        (8, _(u'8 tickets')),
-        (7, _(u'7 tickets')),
-        (6, _(u'6 tickets')),
-        (5, _(u'5 tickets')),
-        (4, _(u'4 tickets')),
-        (3, _(u'3 tickets')),
-        (2, _(u'2 tickets')),
-        (1, _(u'1 tickets')),
-        #('0', _(u'no ticket')),
-    )
-
     class PartyTickets(colander.MappingSchema):
-        num_tickets = colander.SchemaNode(
-            colander.Integer(),
-            title=_(u"I möchte diese Anzahl Tickets:"),
-            default="1",
-            widget=deform.widget.TextInputWidget(
-                inline=True,
-                readonly=True),  # read-only!
-            oid="num_tickets")
 
         ticket_type_options = (
             (1, _(u'2. Klasse (5€: party, bands)')),
             (2, _(u'2. Klasse + Speisewagen (15€: party, bands, essen)')),
             (3, _(u'1. Klasse (50€: party, bands, essen, kaffee, shirt)')),
-            (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, shirt, jacke)')),
+            (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, shirt, '
+                  u'jacke)')),
         )
 
         ticket_type = colander.SchemaNode(
             colander.Integer(),
             title=_(u"Ich wähle folgende Ticket-Option:"),
             description=_(
-                u'Wir danken für die Unterstützung. Hinweis: Überschüsse gehen in die Büroausstattung.'),
+                u'Wir danken für die Unterstützung. Hinweis: '
+                u'Überschüsse gehen in die Büroausstattung.'),
             default="1",
             widget=deform.widget.RadioChoiceWidget(
                 readonly=True,
@@ -415,13 +385,31 @@ def confirm_view(request):
                 values=ticket_type_options,
                 #inline=True
             ),
-            oid="ticket_type")
+            oid="ticket_type"
+        )
+        num_tickets = colander.SchemaNode(
+            colander.Integer(),
+            title=_(u"Ich möchte diese Anzahl Tickets:"),
+            default="1",
+            widget=deform.widget.TextInputWidget(
+                inline=True,
+                readonly=True),  # read-only!
+            oid="num_tickets"
+        )
+
         the_total = colander.SchemaNode(
             colander.String(),
             widget=deform.widget.TextInputWidget(readonly=True),  # read-only!
-            default=str(request.session['appstruct']['ticket_info']['the_total']) + u"&euro;",
+            default=str(
+                request.session['appstruct']['ticket_info']['the_total']
+            ) + u"&euro;",
             title=_(u"Die Summe"),
-            description=_(u"Der Fahrpreis muss vor Fahrtantritt überwiesen werden."),
+            description=_(
+                u'Das Ticket muß spätestens bis zum 10.02. bezahlt sein '
+                u'(Zahlungseingang auf unserem Konto), '
+                u'sonst verliert es seine Gültigkeit. '
+                u'Die Zahlung erfolgt ausschließlich per Banküberweisung. '
+                u'Die Zahlungsinformationen werden dir per Mail zugeschickt.'),
             oid="summe",
         )
 
@@ -468,6 +456,13 @@ def sendmail_view(request):
     """
     if 'appstruct' in request.session:
         appstruct = request.session['appstruct']
+
+        # save ticketing info in DB
+        #   rather do it here than over in the confirm_view
+        #   because the information is still subject to change there,
+        #   so we get duplicates
+
+        # send email
         mailer = get_mailer(request)
         body_lines = (  # a list of lines
             _(u'Hallo'), ' ', appstruct['person']['firstname'], ' ',
@@ -504,7 +499,27 @@ dem (oder den) Ticket(s).
         )
         mailer.send(the_mail)
         #print(the_mail.body)
-
+        from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
+        # send mail to accountants
+        acc_mail = Message(
+            subject=_('[C3S_PT] neues ticket'),
+            sender="noreply@c3s.cc",
+            recipients=[
+                request.registry.settings['c3spartyticketing.mail_rec']],
+            #body=encrypt_with_gnupg('''code: %s
+            body=u'''code: %s
+klass: %s
+number: %s
+total: %s
+komment: %s
+''' % (appstruct['email_confirm_code'],
+       appstruct['ticket_info']['ticket_type'],
+       appstruct['ticket_info']['num_tickets'],
+       appstruct['ticket_info']['the_total'],
+       appstruct['person']['comment'],
+       )
+        )
+        mailer.send(acc_mail)
         # make the session go away
         request.session.invalidate()
         return {
@@ -515,8 +530,7 @@ dem (oder den) Ticket(s).
     return HTTPFound(location=request.route_url('party'))
 
 
-@view_config(renderer='templates/.pt',
-             route_name='get_ticket')
+@view_config(route_name='get_ticket')
 def get_ticket(request):
     """
     this view gives a user access to her ticket via URL with code
@@ -539,6 +553,32 @@ def get_ticket(request):
 
     # return a pdf file
     pdf_file = make_qr_code_pdf(_ticket, _url)
+    response = Response(content_type='application/pdf')
+    pdf_file.seek(0)  # rewind to beginning
+    response.app_iter = open(pdf_file.name, "r")
+    return response
+
+
+@view_config(route_name='get_ticket_mobile')
+def get_ticket_mobile(request):
+    """
+    this view gives a user access to her ticket via URL with code
+    the response is a PDF download
+    """
+    _code = request.matchdict['code']
+    _email = request.matchdict['email']
+    _ticket = PartyTicket.get_by_code(_code)
+    if isinstance(_ticket, NoneType):
+        return HTTPFound(location=request.route_url('party'))
+    if not (_ticket.email == _email):
+        #print("no match!")
+        return HTTPFound(location=request.route_url('party'))
+
+    _url = request.registry.settings[
+        'c3spartyticketing.url'] + '/ci/p1402/' + _ticket.email_confirm_code
+
+    # return a pdf file
+    pdf_file = make_qr_code_pdf_mobile(_ticket, _url)
     response = Response(content_type='application/pdf')
     pdf_file.seek(0)  # rewind to beginning
     response.app_iter = open(pdf_file.name, "r")
