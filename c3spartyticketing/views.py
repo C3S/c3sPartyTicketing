@@ -101,7 +101,7 @@ def party_view(request):
             missing='',
             validator=colander.Length(max=250),
             widget=deform.widget.TextAreaWidget(rows=3, cols=50),
-            description=_(u"Raum für Kommentare"),
+            description=_(u"Raum für Kommentare (255 Zeichen)"),
             oid="comment",
         )
         _LOCALE_ = colander.SchemaNode(
@@ -506,12 +506,17 @@ dem (oder den) Ticket(s).
             recipients=[
                 request.registry.settings['c3spartyticketing.mail_rec']],
             #body=encrypt_with_gnupg('''code: %s
-            body=u'''code: %s
+            body=u'''name: %s %s
+email: %s
+code: %s
 klass: %s
 number: %s
 total: %s
 komment: %s
-''' % (appstruct['email_confirm_code'],
+''' % (appstruct['person']['firstname'],
+       appstruct['person']['lastname'],
+       appstruct['person']['email'],
+       appstruct['email_confirm_code'],
        appstruct['ticket_info']['ticket_type'],
        appstruct['ticket_info']['num_tickets'],
        appstruct['ticket_info']['the_total'],
