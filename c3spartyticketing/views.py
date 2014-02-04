@@ -127,7 +127,7 @@ def party_view(request):
         (1, _(u'2. Klasse (5€: party, bands)')),
         (2, _(u'2. Klasse + Speisewagen (15€: party, bands, essen)')),
         (3, _(u'1. Klasse (50€: party, bands, essen, kaffee, shirt)')),
-        (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, shirt, jacke)')),
+        (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, jacke)')),
     )
 
     class PartyTickets(colander.MappingSchema):
@@ -368,8 +368,7 @@ def confirm_view(request):
             (1, _(u'2. Klasse (5€: party, bands)')),
             (2, _(u'2. Klasse + Speisewagen (15€: party, bands, essen)')),
             (3, _(u'1. Klasse (50€: party, bands, essen, kaffee, shirt)')),
-            (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, shirt, '
-                  u'jacke)')),
+            (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, jacke)')),
         )
 
         ticket_type = colander.SchemaNode(
