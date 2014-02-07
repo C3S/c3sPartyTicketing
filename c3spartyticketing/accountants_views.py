@@ -299,6 +299,48 @@ def accountants_desk(request):
             }
 
 
+@view_config(renderer='templates/stats.pt',
+             permission='manage',
+             route_name='stats')
+def stats_view(request):
+    """
+    This view lets accountants view statistics:
+    how many tickets of which category, payment status, etc.
+    """
+    #print("who is it? %s" % request.user.login)
+    _number_of_datasets = PartyTicket.get_number()
+    _number_of_tickets = PartyTicket.get_num_tickets()
+    _num_passengers = PartyTicket.num_passengers()
+    _num_open_tickets = int(_number_of_tickets) - int(_num_passengers)
+    _num_tickets_unpaid = PartyTicket.get_num_unpaid()
+    #
+    _num_class_2 = PartyTicket.get_num_class_2()
+    _num_class_2_food = PartyTicket.get_num_class_2_food()
+    _num_class_1 = PartyTicket.get_num_class_1()
+    _num_class_green = PartyTicket.get_num_class_green()
+    #
+    _sum_tickets_total = PartyTicket.get_sum_tickets_total()
+    _sum_tickets_paid = PartyTicket.get_sum_tickets_paid()
+    _sum_tickets_unpaid = PartyTicket.get_sum_tickets_unpaid()
+
+    return {
+        '_number_of_datasets': _number_of_datasets,
+        '_number_of_tickets': _number_of_tickets,
+        '_num_passengers': _num_passengers,
+        '_num_open_tickets': _num_open_tickets,
+        '_num_tickets_unpaid': _num_tickets_unpaid,
+        # ticket categories
+        'num_class_2': _num_class_2,
+        'num_class_2_food': _num_class_2_food,
+        'num_class_1': _num_class_1,
+        'num_class_green': _num_class_green,
+        # focus oon cash
+        'sum_tickets_total': _sum_tickets_total,
+        'sum_tickets_paid': _sum_tickets_paid,
+        'sum_tickets_unpaid': _sum_tickets_unpaid,
+    }
+
+
 @view_config(route_name='send_ticket_mail',
              permission='manage')
 def send_ticket_mail_view(request):

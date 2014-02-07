@@ -287,6 +287,15 @@ class PartyTicket(Base):
         return DBSession.query(cls).count()
 
     @classmethod
+    def get_num_tickets(cls):
+        """return number of single people"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            _num = _num + item.num_tickets
+        return _num
+
+    @classmethod
     def num_passengers(cls):
         """return number of people already checked in"""
         _all = DBSession.query(cls).all()
@@ -296,23 +305,103 @@ class PartyTicket(Base):
         return _num
 
     @classmethod
-    def get_num_tickets(cls):
-        """return number of people/tickets NOT YET paid or checked in"""
+    def num_passengers(cls):
+        """return number of people already checked in"""
         _all = DBSession.query(cls).all()
         _num = 0
         for item in _all:
-            _num = _num + item.num_tickets
+            _num = _num + item.checked_persons
+        return _num
+
+    @classmethod
+    def get_num_unpaid(cls):
+        """return number of people/tickets NOT YET paid"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            if not item.payment_received:
+                _num = _num + item.num_tickets
         return _num
 
     @classmethod
     def get_num_tickets_paid(cls):
-        """return number of people/tickets NOT YET checked in"""
+        """return number of people/tickets PAID, but NOT YET checked in"""
         _all = DBSession.query(cls).all()
         _num = 0
         for item in _all:
             if item.payment_received:
                 _num = _num + item.num_tickets
         return _num
+
+    # ticket categories
+    @classmethod
+    def get_num_class_2(cls):
+        """return number people on ticket class 2"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            if item.ticket_type == 1:
+                _num = _num + item.num_tickets
+        return _num
+
+    @classmethod
+    def get_num_class_2_food(cls):
+        """return number people on ticket class 2 with foodstamp"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            if item.ticket_type == 2:
+                _num = _num + item.num_tickets
+        return _num
+
+    @classmethod
+    def get_num_class_1(cls):
+        """return number people on ticket class 1"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            if item.ticket_type == 3:
+                _num = _num + item.num_tickets
+        return _num
+
+    @classmethod
+    def get_num_class_green(cls):
+        """return number people on ticket class green mamba"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            if item.ticket_type == 4:
+                _num = _num + item.num_tickets
+        return _num
+
+    @classmethod
+    def get_sum_tickets_total(cls):
+        """return number people on ticket class green mamba"""
+        _all = DBSession.query(cls).all()
+        _sum = 0
+        for item in _all:
+            _sum = _sum + item.the_total
+        return _sum
+
+    @classmethod
+    def get_sum_tickets_paid(cls):
+        """return number people on ticket class green mamba"""
+        _all = DBSession.query(cls).all()
+        _sum = 0
+        for item in _all:
+            if item.payment_received:
+                _sum = _sum + item.the_total
+        return _sum
+
+    @classmethod
+    def get_sum_tickets_unpaid(cls):
+        """return number people on ticket class green mamba"""
+        _all = DBSession.query(cls).all()
+        _sum = 0
+        for item in _all:
+            if not item.payment_received:
+                _sum = _sum + item.the_total
+        return _sum
 
     @classmethod
     def ticket_listing(cls, order_by, how_many=10, offset=0):
