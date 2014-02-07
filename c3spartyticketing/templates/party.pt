@@ -29,14 +29,25 @@
       <h1>
         Party!!
       </h1>
-      <p class="lead">
+
+      <img src="${request.static_url('c3spartyticketing:static/images/party_banner.png')}"
+           class="img-responsive hidden-xs"
+	   alt="Party Banner"/>
+
+      <p class="lead visible-xs">
         Hier gibt es Tickets für die C3S Einweihungsparty!
       </p>
-      <p class="lead" style="font-weight:bold;">
+      <p class="lead visible-xs" style="font-weight:bold;">
         +++ 14. Februar 2014 +++
       </p>
       <p class="lead">
-        +++ im Bahnhof Düsseldorf-Gerresheim +++
+        +++ im Alten Bahnhof Düsseldorf-Gerresheim +++
+      </p>
+      <p>
+        Mehr dazu
+        <a href="https://www.c3s.cc/hqeinweihung-2014-02-14-2/">
+          auf unserem Blog
+        </a>
       </p>
     </div>
     <hr />
@@ -65,6 +76,7 @@
     <div class="row-fluid">
       <div class="span4">
         <div class="alert alert-success">
+                <h3><small>Vorläufiger</small> Reiseplan</h3>
         <ul class="list-group">
           <li class="list-group-item">
             17:30 - Bereitstellung des Zuges: Führung durch die neuen C3S Büroräume</li>
@@ -83,8 +95,22 @@
         </ul>
         </div>
       </div>
-      <div class="span-4">
+      <h3><small>Ort:</small> C3S SCE Hauptquartier, Alter Bahnhof, <small>Heyestraße 194, Düsseldorf-Gerresheim</small></h3>
+      <div class="visible-xs">
         <iframe width="425" height="350"
+                frameborder="0" scrolling="no"
+                marginheight="0" marginwidth="0"
+                src="http://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
+                style="border: 1px solid black">
+        </iframe><br/>
+        <small>
+          <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+            Größere Karte anzeigen
+          </a>
+        </small>
+      </div>
+      <div class="hidden-xs">
+        <iframe width="850" height="700"
                 frameborder="0" scrolling="no"
                 marginheight="0" marginwidth="0"
                 src="http://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
