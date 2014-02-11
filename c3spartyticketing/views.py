@@ -7,7 +7,9 @@ from c3spartyticketing.models import (
 from c3spartyticketing.utils import (
     make_qr_code_pdf,
     make_qr_code_pdf_mobile,
+    make_random_string,
 )
+
 import colander
 from datetime import datetime
 import deform
@@ -101,7 +103,7 @@ def party_view(request):
             missing='',
             validator=colander.Length(max=250),
             widget=deform.widget.TextAreaWidget(rows=3, cols=50),
-            description=_(u"Raum für Kommentare"),
+            description=_(u"Raum für Kommentare (255 Zeichen)"),
             oid="comment",
         )
         _LOCALE_ = colander.SchemaNode(
@@ -127,7 +129,7 @@ def party_view(request):
         (1, _(u'2. Klasse (5€: party, bands)')),
         (2, _(u'2. Klasse + Speisewagen (15€: party, bands, essen)')),
         (3, _(u'1. Klasse (50€: party, bands, essen, kaffee, shirt)')),
-        (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, shirt, jacke)')),
+        (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, jacke)')),
     )
 
     class PartyTickets(colander.MappingSchema):
@@ -227,7 +229,6 @@ def party_view(request):
                 '_num_tickets_paid': _num_tickets_paid,
             }
 
-        from c3spartyticketing.utils import make_random_string
         # make confirmation code
         randomstring = make_random_string()
 
@@ -368,8 +369,7 @@ def confirm_view(request):
             (1, _(u'2. Klasse (5€: party, bands)')),
             (2, _(u'2. Klasse + Speisewagen (15€: party, bands, essen)')),
             (3, _(u'1. Klasse (50€: party, bands, essen, kaffee, shirt)')),
-            (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, shirt, '
-                  u'jacke)')),
+            (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, jacke)')),
         )
 
         ticket_type = colander.SchemaNode(
@@ -507,12 +507,17 @@ dem (oder den) Ticket(s).
             recipients=[
                 request.registry.settings['c3spartyticketing.mail_rec']],
             #body=encrypt_with_gnupg('''code: %s
-            body=u'''code: %s
+            body=u'''name: %s %s
+email: %s
+code: %s
 klass: %s
 number: %s
 total: %s
 komment: %s
-''' % (appstruct['email_confirm_code'],
+''' % (appstruct['person']['firstname'],
+       appstruct['person']['lastname'],
+       appstruct['person']['email'],
+       appstruct['email_confirm_code'],
        appstruct['ticket_info']['ticket_type'],
        appstruct['ticket_info']['num_tickets'],
        appstruct['ticket_info']['the_total'],

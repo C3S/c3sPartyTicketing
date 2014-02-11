@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="base"
+      i18n:domain="c3spartyticketing">
+  <head>
+    <title>c3sPartyTicketing Statistics</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <link rel="shortcut icon"
+          href="${request.static_url('c3spartyticketing:static/favicon.ico')}" />
+    <tal:block metal:fill-slot="deform-js-css">
+      <!-- Javascripts -->
+      <script src="${request.static_url('c3spartyticketing:static/jquery-2.0.3/jquery-2.0.3.min.js')}"
+              type="text/javascript"></script>
+      <script src="${request.static_url('c3spartyticketing:static/bootstrap-3.0.3-dist/js/bootstrap.js')}"
+              type="text/javascript"></script>
+      <script src="${request.static_url('deform:static/scripts/typeahead.min.js')}"
+              type="text/javascript"></script>
+      <script src="${request.static_url('deform:static/scripts/deform.js')}"
+              type="text/javascript"></script>
+      <script src="${request.static_url('deform:static/scripts/jquery.form.js')}"
+              type="text/javascript"></script>
+      <!-- Stylesheets -->
+      <link href="${request.static_url('c3spartyticketing:static/bootstrap-3.0.3-dist/css/bootstrap.css')}"
+            rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
+      <link rel="stylesheet" href="${request.static_url('deform:static/css/form.css')}"
+            type="text/css" media="screen" charset="utf-8" />
+      <link rel="stylesheet" href="${request.static_url('deform:static/css/typeahead.css')}"
+            type="text/css" media="screen" charset="utf-8" />
+      <link href="${request.static_url('c3spartyticketing:static/c3sM.css')}"
+            rel="stylesheet" type="text/css" media="screen" charset="utf-8" />
+    </tal:block>
+  </head>
+  <body>
+    <tal:block metal:fill-slot="top"></tal:block>
+    <tal:block metal:fill-slot="middle">
+      <div id="wrap">
+        <div id="main">
+          <h1>Statistiken</h1>
+          <h3><small>Anzahl</small> Sammeltickets/Personentickets</h3>
+          <p>
+            ${_number_of_datasets} DB-Einträge <small>('Sammeltickets' i.S.V. Bestellungen/Buchungen/Überweisungen)</small>. (Mensch kann Tickets für mehrere Personen in einem Rutsch buchen.)<br />
+            ${_number_of_tickets} Personen <small>('Einzeltickets' i.S.V. Einzelpersonen)</small> (bezahlt und unbezahlt)<br />
+            ${_num_passengers} Passagiere an Bord/eingecheckt<small>('Tickets' i.S.V. Einzelpersonen)</small>  (Mehrere Passagiere können ihren Fahrschein vom selben Ticket haben)<br />
+            ${_num_open_tickets} offene Tickets (bezahlt, nicht eingecheckt) <small>(Bezahlte Tickets f. Einzelpersonen)</small>  (bezahlte Einzelpassagen, die noch nicht eingeckeckt haben: Könnte sein, dass die noch kommen!)<br />
+            ${_num_tickets_unpaid} offene Tickets (unbezahlt) <small>(Tickets f. Einzelpersonen ohne Überweisungseingang)</small>  (unbezahlte Einzelpassagen: Könnte sein, dass die noch überweisen.)<br />
+          </p>
+          <h3><small>Anzahl Tickets</small> nach Kategorien</h3>
+          <p>
+            ${num_hobos} x Schwarzfahrer (0€)<br />
+            ${num_class_2} x 2. Klasse (5€)<br />
+            ${num_class_2_food} x 2. Klasse + Speisewagen (15€)<br />
+            ${num_class_1} x 1. Klasse (50€) <br />
+            ${num_class_green} x Grüne Mamba (100€)<br />
+          </p>
+          <h3>Soll und Haben</h3>
+          <p>
+            Summe Tickets insgesammt: 
+            <span style="color:orange">${sum_tickets_total} €</span><br />
+            Summe bezahlter Tickets: <span style="color:green">${sum_tickets_paid} € </span><br />
+            Summe unbezahlter Tickets: <span style="color:red">${sum_tickets_unpaid} € </span> &lt;-- nachfassen! ;-)<br />
+          </p>
+        </div>
+      </div>
+    </tal:block>
+    <tal:block metal:fill-slot="footer">
+      <p><a href="${request.route_url('dashboard', number=0)}"
+            class="btn btn-primary">Dashboard</a></p>
+      <p><a href="${request.route_url('kasse')}" class="btn btn-warning">Kasse</a></p>
+      <p><a href="${request.route_url('logout')}" class="btn btn-danger">Abmelden</a></p>
+    </tal:block>
+  </body>
+</html>

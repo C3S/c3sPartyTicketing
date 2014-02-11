@@ -46,6 +46,7 @@ def make_qr_code_pdf(_ticket, _url):
         2: 'c3spartyticketing/pdftk/C3S_Ticket_2_Klasse_Speisewagen.pdf',
         3: 'c3spartyticketing/pdftk/C3S_Ticket_1_Klasse.pdf',
         4: 'c3spartyticketing/pdftk/C3S_Ticket_GreenMamba.pdf',
+        5: 'c3spartyticketing/pdftk/C3S_Ticket_2_Klasse_Speisewagen_hobo.pdf',
     }
 
     _pdf_to_use = use_pdf[_ticket.ticket_type]

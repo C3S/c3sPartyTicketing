@@ -63,6 +63,7 @@ def main(global_config, **settings):
     config.add_route('logout', '/logout')
     config.add_route('all_codes', '/all_codes')
     config.add_route('dashboard', '/dashboard/{number}')
+    config.add_route('stats', '/stats')
     config.add_route('detail', '/detail/{ticket_id}')
     config.add_route('send_ticket_mail', '/ticketmail/{ticket_id}')
     config.add_route('get_ticket', '/ticket/{email}/c3sPartyTicket_{code}')
@@ -70,6 +71,7 @@ def main(global_config, **settings):
                      '/mticket/{email}/c3sPartyTicket_{code}')
     config.add_route('give_ticket', '/give_ticket/c3sPartyTicket_{code}')
     config.add_route('new_ticket', '/new_ticket')
+    config.add_route('hobo', '/hobo')  # new hobo / schwarzfahrer
     config.add_route('switch_pay', '/switch_pay/{ticket_id}')
     config.add_route('delete_entry', '/delete/{ticket_id}')
     # cashier
