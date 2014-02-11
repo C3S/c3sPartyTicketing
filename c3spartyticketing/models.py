@@ -335,6 +335,16 @@ class PartyTicket(Base):
 
     # ticket categories
     @classmethod
+    def get_num_hobos(cls):
+        """return number of hobos"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            if item.ticket_type == 5:
+                _num = _num + item.num_tickets
+        return _num
+
+    @classmethod
     def get_num_class_2(cls):
         """return number people on ticket class 2"""
         _all = DBSession.query(cls).all()

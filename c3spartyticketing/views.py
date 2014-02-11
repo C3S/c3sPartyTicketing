@@ -7,7 +7,9 @@ from c3spartyticketing.models import (
 from c3spartyticketing.utils import (
     make_qr_code_pdf,
     make_qr_code_pdf_mobile,
+    make_random_string,
 )
+
 import colander
 from datetime import datetime
 import deform
@@ -227,7 +229,6 @@ def party_view(request):
                 '_num_tickets_paid': _num_tickets_paid,
             }
 
-        from c3spartyticketing.utils import make_random_string
         # make confirmation code
         randomstring = make_random_string()
 

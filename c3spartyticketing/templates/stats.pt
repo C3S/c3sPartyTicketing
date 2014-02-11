@@ -50,6 +50,7 @@
           </p>
           <h3><small>Anzahl Tickets</small> nach Kategorien</h3>
           <p>
+            ${num_hobos} x Schwarzfahrer (0€)<br />
             ${num_class_2} x 2. Klasse (5€)<br />
             ${num_class_2_food} x 2. Klasse + Speisewagen (15€)<br />
             ${num_class_1} x 1. Klasse (50€) <br />

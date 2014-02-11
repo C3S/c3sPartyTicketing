@@ -5,8 +5,10 @@ from c3spartyticketing.models import (
     C3sStaff,
     DBSession,
 )
-from c3spartyticketing.utils import make_qr_code_pdf
-
+from c3spartyticketing.utils import (
+    make_qr_code_pdf,
+    make_random_string,
+)
 from pkg_resources import resource_filename
 import colander
 import deform
@@ -314,6 +316,7 @@ def stats_view(request):
     _num_open_tickets = int(_number_of_tickets) - int(_num_passengers)
     _num_tickets_unpaid = PartyTicket.get_num_unpaid()
     #
+    _num_hobos = PartyTicket.get_num_hobos()
     _num_class_2 = PartyTicket.get_num_class_2()
     _num_class_2_food = PartyTicket.get_num_class_2_food()
     _num_class_1 = PartyTicket.get_num_class_1()
@@ -330,15 +333,131 @@ def stats_view(request):
         '_num_open_tickets': _num_open_tickets,
         '_num_tickets_unpaid': _num_tickets_unpaid,
         # ticket categories
+        'num_hobos': _num_hobos,
         'num_class_2': _num_class_2,
         'num_class_2_food': _num_class_2_food,
         'num_class_1': _num_class_1,
         'num_class_green': _num_class_green,
-        # focus oon cash
+        # focus on cash
         'sum_tickets_total': _sum_tickets_total,
         'sum_tickets_paid': _sum_tickets_paid,
         'sum_tickets_unpaid': _sum_tickets_unpaid,
     }
+
+
+@view_config(route_name='hobo',
+             renderer='templates/new_hobo.pt',
+             permission='manage')
+def make_hobo_view(request):
+    """
+    this view adds schwarzfahrers to the gästeliste
+    """
+    class PersonalData(colander.MappingSchema):
+        """
+        colander schema for membership application form
+        """
+        locale_name = 'de'
+        firstname = colander.SchemaNode(
+            colander.String(),
+            title=_(u"Vorame"),
+            oid="firstname",
+        )
+        lastname = colander.SchemaNode(
+            colander.String(),
+            title=_(u"Nachname"),
+            oid="lastname",
+        )
+        email = colander.SchemaNode(
+            colander.String(),
+            title=_(u'Email'),
+            validator=colander.Email(),
+            oid="email",
+        )
+        comment = colander.SchemaNode(
+            colander.String(),
+            title=_("Warum Schwarzfahren?"),
+            missing='',
+            validator=colander.Length(max=250),
+            widget=deform.widget.TextAreaWidget(rows=3, cols=50),
+            description=_(u"(guter grund) (255 Zeichen)"),
+            oid="comment",
+        )
+        _LOCALE_ = colander.SchemaNode(
+            colander.String(),
+            widget=deform.widget.HiddenWidget(),
+            default=locale_name
+        )
+
+    class HoboForm(colander.Schema):
+        """
+        The Form consists of
+        - Personal Data
+        - Ticketing Information
+        - FoodInfo
+        """
+        person = PersonalData(
+            title=_(u"Persönliche Daten"),
+            #description=_(u"this is a test"),
+            #css_class="thisisjustatest"
+        )
+
+    schema = HoboForm()
+
+    form = deform.Form(
+        schema,
+        buttons=[
+            deform.Button('submit', _(u'Absenden')),
+            deform.Button('reset', _(u'Zurücksetzen'))
+        ],
+        #use_ajax=True,
+        renderer=zpt_renderer
+    )
+
+    if 'submit' in request.POST:
+        print "new hobo!?!"
+        controls = request.POST.items()
+        try:
+            appstruct = form.validate(controls)
+            print('validated!')
+            the_total = 0  # nothing to pay
+            # create an appstruct for persistence
+            randomstring = make_random_string()
+            hobo = PartyTicket(
+                firstname=appstruct['person']['firstname'],
+                lastname=appstruct['person']['lastname'],
+                email=appstruct['person']['email'],
+                password='',  # appstruct['person']['password'],
+                locale=appstruct['person']['_LOCALE_'],
+                email_is_confirmed=False,
+                email_confirm_code=randomstring,
+                date_of_submission=datetime.now(),
+                num_tickets=1,
+                ticket_type=5,
+                the_total=the_total,
+                user_comment=appstruct['person']['comment'],
+            )
+            hobo.payment_received = True
+            dbsession = DBSession
+            #try:
+            print "about to add ticket"
+            dbsession.add(hobo)
+            dbsession.flush()
+            print "added ticket"
+            #except InvalidRequestError, e:  # pragma: no cover
+            #    print("InvalidRequestError! %s") % e
+            #except IntegrityError, ie:  # pragma: no cover
+            #print("IntegrityError! %s") % ie
+            return HTTPFound(
+                request.route_url('detail',
+                                  ticket_id=hobo.id)
+            )
+
+        except ValidationFailure, e:
+            return {
+                'hoboform': e.render()
+            }
+
+    return {'hoboform': form.render()}
 
 
 @view_config(route_name='send_ticket_mail',
