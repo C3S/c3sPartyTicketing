@@ -37,7 +37,7 @@
   <body>
     <tal:block metal:fill-slot="top">
       <p>
-        Eingecheckt: ${num_passengers}. Erwarten noch: ${num_open_tickets} 
+        Eingecheckt: <span id="already_checked_in">${num_passengers}</span>. Erwarten noch: <span id="still_awaiting">${num_open_tickets}</span>
       </p>
     </tal:block>
     <tal:block metal:fill-slot="middle">
