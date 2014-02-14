@@ -74,6 +74,8 @@ def main(global_config, **settings):
     config.add_route('hobo', '/hobo')  # new hobo / schwarzfahrer
     config.add_route('switch_pay', '/switch_pay/{ticket_id}')
     config.add_route('delete_entry', '/delete/{ticket_id}')
+    # staff eat staff
+    config.add_route('staff', '/staff')
     # cashier
     config.add_route('kasse', '/kasse')
     config.add_route('k', '/k')

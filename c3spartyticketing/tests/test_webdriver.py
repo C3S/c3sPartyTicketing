@@ -12,7 +12,11 @@ class SeleniumTestBase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        result = subprocess.check_call(['../env/bin/pserve', 'development.ini', 'start'])
+        result = subprocess.check_call(
+            [
+                '../env/bin/pserve',
+                'development.ini', 'start'
+            ])
         print result
         time.sleep(3)
 
@@ -46,7 +50,9 @@ class PartyFormTests(SeleniumTestBase):
     def test_form_submission(self):
         self.page_under_test.firstname_field.send_keys('Kristin')
         self.page_under_test = self.page_under_test.submit_form()
-        self.assertEqual('Kristin', self.page_under_test.firstname_field.get_attribute('value'))
+        self.assertEqual(
+            'Kristin',
+            self.page_under_test.firstname_field.get_attribute('value'))
 
     def test_submitEmptyForm_errorShown(self):
         self.page_under_test = self.page_under_test.submit_form()
@@ -59,7 +65,8 @@ class PartyFormTests(SeleniumTestBase):
         self.page_under_test.comment = 'Just testing ...'
         self.page_under_test.ticket_count = 5
         self.page_under_test.ticket_type = 2
-        self.assertRaises(Exception, self.driver.find_element_by_id, 'error-lastname')
+        self.assertRaises(Exception,
+                          self.driver.find_element_by_id, 'error-lastname')
 
         self.page_under_test = self.page_under_test.submit_form()
 

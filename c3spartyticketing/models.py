@@ -57,6 +57,14 @@ class Group(Base):
     def __init__(self, name):
         self.name = name
 
+    @classmethod
+    def get_cashiers_group(cls, groupname='kasse'):
+        dbsession = DBSession()
+        kasse_group = dbsession.query(
+            cls).filter(cls.name == groupname).first()
+        print('=== get_kasse_group:' + str(kasse_group))
+        return kasse_group
+
 #    @classmethod
 #    def get_Users_group(cls, groupname="User"):
 #        """Choose the right group for users"""
@@ -124,9 +132,23 @@ class C3sStaff(Base):
     password = synonym('_password', descriptor=password)
 
     @classmethod
+    def get_by_id(cls, id):
+        return DBSession.query(cls).filter(cls.id == id).first()
+
+    @classmethod
     def get_by_login(cls, login):
-        #dbSession = DBSession()
         return DBSession.query(cls).filter(cls.login == login).first()
+
+    @classmethod
+    def delete_by_id(cls, id):
+        _del = DBSession.query(cls).filter(cls.id == id).first()
+        _del.groups = []
+        DBSession.query(cls).filter(cls.id == id).delete()
+        return
+
+    @classmethod
+    def get_all(cls):
+        return DBSession.query(cls).all()
 
     @classmethod
     def check_password(cls, login, password):

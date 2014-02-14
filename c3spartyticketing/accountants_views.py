@@ -4,6 +4,7 @@ from c3spartyticketing.models import (
     PartyTicket,
     C3sStaff,
     DBSession,
+    Group,
 )
 from c3spartyticketing.utils import (
     make_qr_code_pdf,
@@ -564,6 +565,90 @@ Dein C3S-Team''',
 #                                        orderby=request.cookies['orderby'],
 #                                        )
 #                      )
+
+
+@view_config(renderer='templates/staff.pt',
+             permission='manage',
+             route_name='staff')
+def staff_view(request):
+    """
+    This view lets admins edit staff/cashier personnel:
+    who may act as cashier etc.?
+    """
+    _staffers = C3sStaff.get_all()
+
+    class Cashier(colander.MappingSchema):
+        login = colander.SchemaNode(
+            colander.String(),
+            title='login',
+        )
+        password = colander.SchemaNode(
+            colander.String(),
+            title='passwort',
+        )
+
+    schema = Cashier()
+
+    cashierform = deform.Form(
+        schema,
+        buttons=[
+            deform.Button('new_cashier', 'erstellen')
+        ]
+    )
+
+    if 'action' in request.POST:
+        print(request.POST['id'])
+        #try:
+        _cashier = C3sStaff.get_by_id(int(request.POST['id']))
+        #except:
+        #    print("exception!")
+        #    return HTTPFound(location=request.route_url('staff'))
+        #print(request.POST['action'])
+        if request.POST['action'] == u'delete':
+            print("will delete staff id %s" % _cashier.id)
+            C3sStaff.delete_by_id(_cashier.id)
+            print("deleted staff id %s" % _cashier.id)
+            return HTTPFound(location=request.route_url('staff'))
+        elif request.POST['action'] == 'edit':
+            cashierform.set_appstruct(_cashier)
+
+    if 'new_cashier' in request.POST:
+        print "new cashier!?!"
+        controls = request.POST.items()
+        try:
+            appstruct = cashierform.validate(controls)
+            print('validated!')
+        except ValidationFailure, e:
+            return {
+                'cashierform': e.render()
+            }
+        #try:
+        # create an appstruct for persistence
+        cashier = C3sStaff(
+            login=appstruct['login'],
+            password=appstruct['password'],
+            email='',
+        )
+        cashier.groups = [Group.get_cashiers_group()]
+        #print "about to add user"
+        DBSession.add(cashier)
+        DBSession.flush()
+        print "added cashier"
+            #except InvalidRequestError, e:  # pragma: no cover
+            #    print("InvalidRequestError! %s") % e
+            #except IntegrityError, ie:  # pragma: no cover
+            #print("IntegrityError! %s") % ie
+        return HTTPFound(
+            request.route_url('staff')
+        )
+        #except:
+        #    print('did not work out.')
+
+    return {
+        'staffers': _staffers,
+        'cashierform': cashierform.render(),
+        'boo': 'moo',
+    }
 
 
 @view_config(renderer='templates/.pt',

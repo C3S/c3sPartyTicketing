@@ -41,10 +41,10 @@
         <div id="main">
           <h1><small>Schwarzfahrer</small> einladen</h1>
           <p>
-            Schwarzfahrer sind Helfer und werden NICHT als Passagiere gezählt, oder? Sie könnten extra gezählt werden.
+            Schwarzfahrer sind Helfer und werden auch als Passagiere gezählt, als eigene Ticket-Kategorie.
           </p>
           <p>
-            Soll direkt eine Mail raus, wenn das ticket angelegt wird? oder einfach mit ins dashboard und wie bisher mail versenden lassen...
+            Sie landen einfach im Dashboard (Status bezahlt) und man kann das ticket per email versenden lassen.
           </p>
           <div tal:content="structure hoboform">
             the form to add a hobo

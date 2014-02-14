@@ -125,6 +125,7 @@
     <tal:block metal:fill-slot="footer">
       <p><a href="${request.route_url('stats')}" class="btn btn-success">Statistiken</a></p>
       <p><a href="${request.route_url('hobo')}" class="btn btn-primary">Schwarzfahrer/Gästeliste</a></p>
+      <p><a href="${request.route_url('staff')}" class="btn btn-primary">Mitarbeitende</a></p>
       <p><a href="${request.route_url('kasse')}" class="btn btn-warning">Kasse</a></p>
       <p><a href="${request.route_url('logout')}" class="btn btn-danger">Abmelden</a></p>
     </tal:block>

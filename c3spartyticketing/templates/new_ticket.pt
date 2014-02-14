@@ -28,10 +28,10 @@
           <option selected>1</option>
           <option tal:repeat="opt range(1, 9)">${opt+1}</option>
         </select>
-        <input type="submit" name="type1" value="2. Klasse" class="btn btn-success"/>
-        <input type="submit" name="type2" value="2. Klasse + Speisewagen" class="btn btn-success"/>
-        <input type="submit" name="type3" value="1. Klasse" class="btn btn-success"/>
-        <input type="submit" name="type4" value="Green Mamba" class="btn btn-success"/>
+        <input type="submit" name="type1" value="2. Klasse (5€)" class="btn btn-success"/>
+        <input type="submit" name="type2" value="2. Klasse + Speisewagen (15€)" class="btn btn-success"/>
+        <input type="submit" name="type3" value="1. Klasse (+ Shirt: 50€)" class="btn btn-success"/>
+        <input type="submit" name="type4" value="Green Mamba (+ Jacke: 100€)" class="btn btn-success"/>
       </form>
       <br />&nbsp;
       <br />&nbsp;
