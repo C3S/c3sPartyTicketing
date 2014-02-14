@@ -113,7 +113,7 @@
           <p>Showing (up to) ${num_display} at a time. Change to
             <form action="${request.route_url('dashboard', number=0)}"
                   method="post">
-              <input name="num_to_show" type="text"
+              <input name="num_to_show" type="text" id="num_to_show"
                      size="3" maxlength="3"
                      class="form-control"
                      value="${num_display}"/>
