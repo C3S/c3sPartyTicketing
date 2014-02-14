@@ -17,7 +17,7 @@
       </strong>
     </div>
     <p>
-      Eingecheckt: ${num_passengers}. Erwarten noch: ${num_open_tickets} 
+      Eingecheckt: <span id="already_checked_in">${num_passengers}</span>. Erwarten noch: <span id="still_awaiting">${num_open_tickets}</span>
     </p>
     <div tal:condition="paid is True">      <!-- BEZAHLT -->
       <div class="row">
@@ -27,10 +27,10 @@
         <div class="col-md-2">
           <p>
             <h3>${ticket.firstname} ${ticket.lastname}</h3>
-            Code: ${ticket.email_confirm_code}<br />
-            Fahrscheine: ${ticket.num_tickets}<br />
-            an Bord: ${ticket.checked_persons}<br />
-            Klasse: ${klass}<br />
+            Code: <span id="email_confim_code">${ticket.email_confirm_code}</span><br />
+            Fahrscheine: <span id="num_tickets">${ticket.num_tickets}</span><br />
+            an Bord: <span id="checked_in_persons">${ticket.checked_persons}</span><br />
+            Klasse: <span id="klass">${klass}</span><br />
             Bitte zusteigen...(Anzahl Personen)
           </p>
         </div>
@@ -41,9 +41,9 @@
                       style="width:130px;"
                       class="form-control">
                 <option selected>1</option>
-                <option tal:repeat="opt range(vacancies-1)">${opt+1}</option>
+                <option tal:repeat="opt range(vacancies-1)" value="${opt+2}">${opt+2}</option>
               </select>
-              <input type="submit" name="checkin" value="Check in!" class="btn btn-success"/>
+              <input id="checkin-btn" type="submit" name="checkin" value="Check in!" class="btn btn-success"/>
               <input type="hidden" name="code" value="${ticket.email_confirm_code}">
               <!-- input type="submit" name="next" value="Next!" class="btn btn-primary"/ -->
             </form>
@@ -71,7 +71,6 @@
         Fahrkarte: ${klass}<br />
         <form action="${request.url}" method="post">
           <input type="submit" name="Bezahlt" value="Hat bezahlt" class="btn btn-success"/>
-          <input type="submit" name="delay" value="Später..." class="btn btn-warning"/>
         </form>
       </div>
     </div>

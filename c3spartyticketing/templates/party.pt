@@ -55,7 +55,7 @@
   <tal:block metal:fill-slot="bottom">
     <div class="row-fluid">
       <h4>
-        <small>Stand der Dinge:</small> ${_num_tickets} tickets bestellt (davon ${_num_tickets_paid} bezahlt)
+        <small>Stand der Dinge:</small><span id="qty_tickets_sold">${_num_tickets}</span> tickets bestellt (davon ${_num_tickets_paid} bezahlt)
           <div id="getting-started">
             <span>%w</span> weeks
             <span>%d</span> days
