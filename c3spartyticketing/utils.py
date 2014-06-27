@@ -42,11 +42,11 @@ def make_qr_code_pdf(_ticket, _url):
     _img = qrcode.make(_url)  # the qr-code image, unsaved
 
     use_pdf = {
-        1: 'c3spartyticketing/pdftk/C3S_Ticket_2_Klasse.pdf',
-        2: 'c3spartyticketing/pdftk/C3S_Ticket_2_Klasse_Speisewagen.pdf',
-        3: 'c3spartyticketing/pdftk/C3S_Ticket_1_Klasse.pdf',
-        4: 'c3spartyticketing/pdftk/C3S_Ticket_GreenMamba.pdf',
-        5: 'c3spartyticketing/pdftk/C3S_Ticket_2_Klasse_Speisewagen_hobo.pdf',
+        1: '/home/yes/github/c3sPartyTicketing/c3spartyticketing/pdftk/C3S_Ticket_2_Klasse.pdf',
+        2: '/home/yes/github/c3sPartyTicketing/c3spartyticketing/pdftk/C3S_Ticket_2_Klasse_Speisewagen.pdf',
+        3: '/home/yes/github/c3sPartyTicketing/c3spartyticketing/pdftk/C3S_Ticket_1_Klasse.pdf',
+        4: '/home/yes/github/c3sPartyTicketing/c3spartyticketing/pdftk/C3S_Ticket_GreenMamba.pdf',
+        5: '/home/yes/github/c3sPartyTicketing/c3spartyticketing/pdftk/C3S_Ticket_2_Klasse_Speisewagen_hobo.pdf',
     }
 
     _pdf_to_use = use_pdf[_ticket.ticket_type]

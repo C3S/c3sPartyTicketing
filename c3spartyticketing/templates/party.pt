@@ -55,7 +55,7 @@
   <tal:block metal:fill-slot="bottom">
     <div class="row-fluid">
       <h4>
-        <small>Stand der Dinge:</small><span id="qty_tickets_sold">${_num_tickets}</span> tickets bestellt (davon ${_num_tickets_paid} bezahlt)
+        <small>Stand der Dinge:</small> <!-- ${_num_tickets} tickets bestellt (davon ${_num_tickets_paid} bezahlt) -->
           <div id="getting-started">
             <span>%w</span> weeks
             <span>%d</span> days
@@ -100,7 +100,7 @@
         <iframe width="425" height="350"
                 frameborder="0" scrolling="no"
                 marginheight="0" marginwidth="0"
-                src="http://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
                 style="border: 1px solid black">
         </iframe><br/>
         <small>
@@ -122,7 +122,11 @@
           </a>
         </small>
       </div>
-      <div tal:content="structure form">&nbsp;</div>
+      <h3>Tickets -- Vorverkauf -- Abendkasse</h3>
+      <!-- div tal:content="structure form">&nbsp;</div -->
+      <p>
+	Der Vorverkauf ist beendet. Tickets gibt es nur noch an der Abendkasse.
+      </p>
       <hr />
     </div>
   </tal:block>

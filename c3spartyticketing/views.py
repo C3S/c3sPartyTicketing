@@ -405,7 +405,7 @@ def confirm_view(request):
             ) + u"&euro;",
             title=_(u"Die Summe"),
             description=_(
-                u'Das Ticket muß spätestens bis zum 10.02. bezahlt sein '
+                u'Das Ticket muß spätestens bis zum 13.02. bezahlt sein '
                 u'(Zahlungseingang auf unserem Konto), '
                 u'sonst verliert es seine Gültigkeit. '
                 u'Die Zahlung erfolgt ausschließlich per Banküberweisung. '
