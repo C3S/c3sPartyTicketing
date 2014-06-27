@@ -123,7 +123,7 @@
         </small>
       </div>
       <h3>Tickets -- Vorverkauf -- Abendkasse</h3>
-      <!-- div tal:content="structure form">&nbsp;</div -->
+      <div tal:content="structure form">&nbsp;</div>
       <p>
 	Der Vorverkauf ist beendet. Tickets gibt es nur noch an der Abendkasse.
       </p>
