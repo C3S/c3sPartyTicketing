@@ -195,8 +195,8 @@ def party_view(request):
     form = deform.Form(
         schema,
         buttons=[
-            deform.Button('submit', _(u'Absenden')),
-            deform.Button('reset', _(u'Zurücksetzen'))
+            deform.Button('submit', _(u'Absenden'))
+            #deform.Button('reset', _(u'Zurücksetzen'))
         ],
         use_ajax=True,
         renderer=zpt_renderer
@@ -558,8 +558,10 @@ dem (oder den) Ticket(s).
             recipients=[appstruct['person']['email']],
             body=the_mail_body
         )
+
         #mailer.send(the_mail) #2DO: mails scharf stellen
         print(the_mail_body.encode('utf-8'))
+        
         from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
         # send mail to accountants
         acc_mail_body = \
