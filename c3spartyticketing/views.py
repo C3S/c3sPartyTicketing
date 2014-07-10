@@ -352,6 +352,8 @@ def party_view(request):
         'form': html,
         '_num_tickets': _num_tickets,
         '_num_tickets_paid': _num_tickets_paid,
+        'firstname': "2DO:VORNAME",
+        'lastname': "2DO:NACHNAME"
         }
 
 
@@ -459,11 +461,11 @@ def confirm_view(request):
             #) + u"&euro;",
             title=_(u"Die Summe"),
             description=_(
-                u'Das Ticket muß spätestens bis zum 13.02. bezahlt sein '
-                u'(Zahlungseingang auf unserem Konto), '
-                u'sonst verliert es seine Gültigkeit. '
-                u'Die Zahlung erfolgt ausschließlich per Banküberweisung. '
-                u'Die Zahlungsinformationen werden dir per Mail zugeschickt.'),
+                u'Deine Bestellung muss spätestens bis zum 18.08.2014 vollständig bezahlt sein'
+                u'(Zahlungseingang auf unserem Konto).'
+                u'Andernfalls müssen wir die gesamte Bestellung stornieren.'
+                u'Die Zahlung erfolgt ausschließlich per Banküberweisung.'
+                u'Die Zahlungsinformationen werden dir per Email zugeschickt.'),
             oid="summe",
         )
 

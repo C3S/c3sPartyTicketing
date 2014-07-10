@@ -10,49 +10,153 @@
           type="text/css" media="screen" charset="utf-8" />
   </tal:block>
   <tal:block metal:fill-slot="middle">
-    <h1>C3S Party Tickets: <small>Email lesen und überweisen</small></h1>
+    <br><br><br><br>
+    <h1>Deine Bestellung bei der C3S SCE:</h1>
+    <h3>Bitte Email lesen und überweisen.</h3>
   </tal:block>
   <tal:block metal:fill-slot="bottom">
 
-    <h3><small>Wir haben Dir eine Email geschickt,</small> ${firstname} ${lastname}!</h3>
+    <h3><small>Hallo</small> ${firstname} ${lastname},</h3>
+    <p>
+      wir haben Dir eine Email geschickt.
+    </p>
     <p>
       Du solltest gleich eine Email bekommen von
       <strong>noreply@c3s.cc</strong> mit dem Betreff
-      <strong>"C3S Party-Ticket: bitte überweisen!"</strong>.
-    </p>
-    <p>
+      <strong>"C3S SCE Barcamp &amp; mehr: Deine Bestellung!"</strong>.
+      <br>
       In dieser Email stehen die Informationen, die Du brauchst,
-      um das Geld für die Tickets zu überweisen. (wichtig: Referenzcode!)
+      um das Geld für Deine Bestellung zu überweisen.
+      (Wichtig: <strong>Referenzcode</strong>!)
     </p>
     <p>
-      Sobald wir den <strong>Eingang der Zahlung</strong> bemerken,
-      schicken wir Dir eine Email mit
-      dem (oder den) Ticket(s).
-      <small>Das Ticket muß spätestens bis zum 13.02. bezahlt sein.
-        (Zahlungseingang auf unserem Konto)</small>
+      Sobald <strong>Deine Zahlung</strong> auf unserem Konto eingeht, 
+      schicken wir Dir eine Email mit dem (oder den) Ticket(s) und ggf.
+      den Gutscheinen für Deine weiteren Bestellungen (Catering, T-Shirt).
+      <br> 
+      Deine Bestellung muss <strong>spätestens zum 18. August</strong> vollständig bezahlt sein. 
+      Es gilt der Zahlungseingang auf unserem Konto.
     </p>
     <p>
       Solltest du wider Erwarten keine E-Mail erhalten,
-      schreibe uns bitte eine E-Mail an info@c3s.cc.
+      schreibe uns bitte eine E-Mail an <a href="mailto:info@c3s.cc">info@c3s.cc</a>.
     </p>
-    <h2>Vielen Dank für die Bestellung des/r C3S Party-Ticket/s!</h2>
+    <h2>Vielen Dank für Deine Bestellung der C3S-Tickets &amp; Goodies!</h2>
+    <h3>Das C3S-Team</h3>
     <hr />
     <!-- Example row of columns -->
-    <div class="row-fluid">
-      <div class="span-4">
-        <h3><small>...immer nur...</small> Bahnhof</h3>
-        <iframe width="425" height="350"
-                frameborder="0" scrolling="no"
-                marginheight="0" marginwidth="0"
-                src="http://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
-                style="border: 1px solid black">
-        </iframe><br/>
-        <small>
-          <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
-            Größere Karte anzeigen
-          </a>
-        </small>
+    <div class="row">
+          
+
+      <div class="col-md-6">
+        <div class="alert alert-success">
+
+        <h1 style="color:#000;">Barcamp</h1>
+
+        <div id="getting-started-bc" style="color:#999">
+          <span>%w</span> weeks
+          <span>%d</span> days
+          <span>%H</span> hours
+        </div>
+        <script type="text/javascript">
+          $('#getting-started-bc').countdown('2014/08/22 12:00', function(event) {
+          $(this).html(event.strftime('Beginn in '
+          + '<span>%w</span> Wochen '
+          + '<span>%d</span> Tag(en) '
+          + '%H:%M:%S'));
+          });
+        </script>
+
+        <h2>22.08.2014 <small>12:00 - 20:00 Uhr</small></h2>
+
+        <h2><small>Ort:</small> C3S SCE HQ <small>Düsseldorf</small></h2>
+
+        Alter Bahnhof, Heyestraße 194, Düsseldorf-Gerresheim
+
+        <div class="visible-xs">
+          <iframe width="425" height="350"
+                  frameborder="0" scrolling="no"
+                  marginheight="0" marginwidth="0"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
+                  style="border: 1px solid black">
+          </iframe><br/>
+          <small>
+            <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+              Größere Karte anzeigen
+            </a>
+          </small>
+        </div>
+        <div class="hidden-xs">
+          <iframe width="90%" height="400"
+                  frameborder="0" scrolling="no"
+                  marginheight="0" marginwidth="0"
+                  src="http://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
+                  style="border: 1px solid black">
+          </iframe><br/>
+          <small>
+            <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+              Größere Karte anzeigen
+            </a>
+          </small>
+        </div>
       </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="alert alert-success">
+
+        <h1 style="color:#000;">Generalversammlung</h1>
+
+        <div id="getting-started-gv" style="color:#999">
+          <span>%w</span> weeks
+          <span>%d</span> days
+          <span>%H</span> hours
+        </div>
+        <script type="text/javascript">
+          $('#getting-started-gv').countdown('2014/08/23 14:00', function(event) {
+          $(this).html(event.strftime('Beginn in '
+          + '<span>%w</span> Wochen '
+          + '<span>%d</span> Tag(en) '
+          + '%H:%M:%S'));
+          });
+        </script>
+
+        <h2>23.08.2014 <small>14:00 - ??:?? Uhr</small></h2>
+
+        <h2><small>Ort:</small> Millowitsch Theater <small>Köln</small></h2>
+
+        <span>Aachener Straße 5, Köln</span>
+
+        <div class="visible-xs">
+          <iframe width="425" height="350"
+                  frameborder="0" scrolling="no"
+                  marginheight="0" marginwidth="0"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=6.93529%2C50.93676%2C6.93863%2C50.93588&amp;layer=mapnik&amp;marker=50.9363222%2C6.9369574"
+                  style="border: 1px solid black">
+          </iframe><br/>
+          <small>
+            <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+              Größere Karte anzeigen
+            </a>
+          </small>
+        </div>
+        <div class="hidden-xs">
+          <iframe width="90%" height="400"
+                  frameborder="0" scrolling="no"
+                  marginheight="0" marginwidth="0"
+                  src="http://www.openstreetmap.org/export/embed.html?bbox=6.93529%2C50.93676%2C6.93863%2C50.93588&amp;layer=mapnik&amp;marker=50.9363222%2C6.9369574"
+                  style="border: 1px solid black">
+          </iframe><br/>
+          <small>
+            <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+              Größere Karte anzeigen
+            </a>
+          </small>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   </tal:block>
 </html>

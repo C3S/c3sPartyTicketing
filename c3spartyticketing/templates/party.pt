@@ -155,14 +155,20 @@
               </small>
             </div>
           </div>
-          </div>
-
         </div>
+
+      </div>
       
 
       
       <div class="row">
         <h3>Tickets</h3>
+        <div class="alert alert-info alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <strong>Hinweis: </strong>
+          Solltest Du nicht ${firstname} ${lastname} sein, melde uns den Fehler bitte unter 
+          <a href="mailto:office@c3s.cc" class="alert-link">office@c3s.cc</a> - danke!
+        </div>
         <div tal:content="structure form">&nbsp;</div>
         <hr />
       </div>
