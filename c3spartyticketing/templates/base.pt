@@ -4,7 +4,7 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal">
   <head>
-    <title i18n:translate="c3spartyticketing-form-title">Party the C3S!</title>
+    <title i18n:translate="c3spartyticketing-form-title">Einladung zur Generalversammlung 2014 der C3S SCE</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <meta name="keywords" content="FlashFunding for C3S SCE"/>

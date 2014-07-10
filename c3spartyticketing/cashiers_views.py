@@ -184,17 +184,21 @@ def check_in(request):
 
     # types of tickets displayed in the backend
     ticket_type_options = {
-        1: _(u'2. Klasse'),
-        2: _(u'2. Klasse + Speisewagen'),
-        3: _(u'1. Klasse'),
-        4: _(u'Grüne Mamba'),
+        ('tgv', _(u'Teilnahme an der GV (0 €)')),
+        ('tbc', _(u'Teilnahme am BC (10 €)')),
+        ('vgv', _(u'Volle Verpflegung GV (10 €)')),
+        ('vbc', _(u'Volle Verpflegung BC (15 €)')),
+        ('ets', _(u'Event-t-shirt (15 €)')),
+        ('all', _(u'All of the above (45 €)')),
+        ('discount', _(u'Rabatt (-5 €)'))
     }
 
-    _klass = ticket_type_options.get(_ticket.ticket_type)
-    _vacancies = _ticket.num_tickets - _ticket.checked_persons
+    #_klass = ticket_type_options.get(_ticket.ticket_type)
+    # _vacancies = _ticket.num_tickets - _ticket.checked_persons
+    _klass = "2DO"
 
     return {
-        'vacancies': _vacancies,  # the free tickets of this visitor
+        #'vacancies': _vacancies,  # the free tickets of this visitor
         'logged_in': logged_in,
         'num_passengers': _num_passengers,
         'num_open_tickets': _num_open_tickets,

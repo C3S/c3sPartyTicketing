@@ -39,30 +39,11 @@
     <tal:block metal:fill-slot="middle">
       <div id="wrap">
         <div id="main">
+          
           <h1>Statistiken</h1>
-          <h3><small>Anzahl</small> Sammeltickets/Personentickets</h3>
-          <p>
-            ${_number_of_datasets} DB-Einträge <small>('Sammeltickets' i.S.V. Bestellungen/Buchungen/Überweisungen)</small>. (Mensch kann Tickets für mehrere Personen in einem Rutsch buchen.)<br />
-            ${_number_of_tickets} Personen <small>('Einzeltickets' i.S.V. Einzelpersonen)</small> (bezahlt und unbezahlt)<br />
-            ${_num_passengers} Passagiere an Bord/eingecheckt<small>('Tickets' i.S.V. Einzelpersonen)</small>  (Mehrere Passagiere können ihren Fahrschein vom selben Ticket haben)<br />
-            ${_num_open_tickets} offene Tickets (bezahlt, nicht eingecheckt) <small>(Bezahlte Tickets f. Einzelpersonen)</small>  (bezahlte Einzelpassagen, die noch nicht eingeckeckt haben: Könnte sein, dass die noch kommen!)<br />
-            ${_num_tickets_unpaid} offene Tickets (unbezahlt) <small>(Tickets f. Einzelpersonen ohne Überweisungseingang)</small>  (unbezahlte Einzelpassagen: Könnte sein, dass die noch überweisen.)<br />
-          </p>
-          <h3><small>Anzahl Tickets</small> nach Kategorien</h3>
-          <p>
-            ${num_hobos} x Schwarzfahrer (0€)<br />
-            ${num_class_2} x 2. Klasse (5€)<br />
-            ${num_class_2_food} x 2. Klasse + Speisewagen (15€)<br />
-            ${num_class_1} x 1. Klasse (50€) <br />
-            ${num_class_green} x Grüne Mamba (100€)<br />
-          </p>
-          <h3>Soll und Haben</h3>
-          <p>
-            Summe Tickets insgesammt: 
-            <span style="color:orange">${sum_tickets_total} €</span><br />
-            Summe bezahlter Tickets: <span style="color:green">${sum_tickets_paid} € </span><br />
-            Summe unbezahlter Tickets: <span style="color:red">${sum_tickets_unpaid} € </span> &lt;-- nachfassen! ;-)<br />
-          </p>
+          
+          2DO
+
         </div>
       </div>
     </tal:block>

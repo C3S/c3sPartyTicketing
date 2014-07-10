@@ -37,6 +37,8 @@ from types import NoneType
 #from translationstring import TranslationStringFactory
 _ = TranslationStringFactory('c3spartyticketing')
 
+from sets import Set
+
 #deform_templates = resource_filename('deform', 'templates')
 
 #c3spartyticketing_templates = resource_filename(
@@ -126,46 +128,48 @@ def party_view(request):
         #('0', _(u'no ticket')),
     )
     ticket_type_options = (
-        (1, _(u'2. Klasse (5€: party, bands)')),
-        (2, _(u'2. Klasse + Speisewagen (15€: party, bands, essen)')),
-        (3, _(u'1. Klasse (50€: party, bands, essen, kaffee, shirt)')),
-        (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, jacke)')),
+        ('tgv', _(u'Teilnahme an der GV (0 €)')),
+        ('tbc', _(u'Teilnahme am BC (10 €)')),
+        ('vgv', _(u'Volle Verpflegung GV (10 €)')),
+        ('vbc', _(u'Volle Verpflegung BC (15 €)')),
+        ('ets', _(u'Event-t-shirt (15 €)')),
+        ('all', _(u'All of the above (45 €)')),
     )
 
     class PartyTickets(colander.MappingSchema):
 
         ticket_type = colander.SchemaNode(
-            colander.Integer(),
+            colander.Set(),
             title=_(u"Ich reise in der folgenden Kategorie:"),
-            description=_(
-                u'Du kannst uns mit dem Kauf von Tickets unterstützen. '
-                u'Überschüsse fliessen in die Büroausstattung.'),
-            default="1",
-            widget=deform.widget.RadioChoiceWidget(
+            #description=_(
+            #    u'Du kannst uns mit dem Kauf von Tickets unterstützen. '
+            #    u'Überschüsse fliessen in die Büroausstattung.'),
+            #default="1",
+            widget=deform.widget.CheckboxChoiceWidget(
                 size=1, css_class='ticket_types_input',
                 values=ticket_type_options,
                 #inline=True
             ),
             oid="ticket_type"
         )
-        num_tickets = colander.SchemaNode(
-            colander.Integer(),
-            title=_(u"Ich nehme die folgende Anzahl von Tickets"),
-            description=_(
-                u'Du kannst zwischen 1 und 10 Tickets bestellen. '
-                u'Die Kosten variieren je nach Ticket-Kategorie.'),
-            default="1",
-            widget=deform.widget.SelectSliderWidget(
-                #size=3, css_class='num_tickets_input',
-                values=num_ticket_options),
-            validator=colander.Range(
-                min=1,
-                max=10,
-                min_err=_(u"Du brauchst mindestens ein Ticket, "
-                          u"um die Reise anzutreten."),
-                max_err=_(u"Höchstens 10 Tickets. (viel los!)"),
-            ),
-            oid="num_tickets")
+        # num_tickets = colander.SchemaNode(
+        #     colander.Integer(),
+        #     title=_(u"Ich nehme die folgende Anzahl von Tickets"),
+        #     description=_(
+        #         u'Du kannst zwischen 1 und 10 Tickets bestellen. '
+        #         u'Die Kosten variieren je nach Ticket-Kategorie.'),
+        #     default="1",
+        #     widget=deform.widget.SelectSliderWidget(
+        #         #size=3, css_class='num_tickets_input',
+        #         values=num_ticket_options),
+        #     validator=colander.Range(
+        #         min=1,
+        #         max=10,
+        #         min_err=_(u"Du brauchst mindestens ein Ticket, "
+        #                   u"um die Reise anzutreten."),
+        #         max_err=_(u"Höchstens 10 Tickets. (viel los!)"),
+        #     ),
+        #     oid="num_tickets")
 
     class TicketForm(colander.Schema):
         """
@@ -213,8 +217,8 @@ def party_view(request):
             print 'done validating form input'
             print("the appstruct from the form: %s \n") % appstruct
             for thing in appstruct:
-                print("the thing: %s") % thing
-                print("type: %s") % type(thing)
+                print(u"the thing: %s") % thing
+                print(u"type: %s") % type(thing)
 
         except ValidationFailure, e:
             print(e)
@@ -232,17 +236,51 @@ def party_view(request):
         # make confirmation code
         randomstring = make_random_string()
 
-        # calculate the total sum
-        the_value = {
-            1: 5,
-            2: 15,
-            3: 50,
-            4: 100,
+        # map option to price
+        the_values = {
+            'tgv': 0,
+            'vgv': 10,
+            'tbc': 10,
+            'vbc': 15,
+            'ets': 15,
+            'all': 45,
         }
-        _the_total = appstruct['ticket_info']['num_tickets'] * the_value.get(
-            appstruct['ticket_info']['ticket_type'])
+        
+        # map option to discount
+        the_discounts = {
+            'all': -5
+        }
+
+        # option 'all' equivalent to all options checked
+        all_options = set(['tgv', 'vgv', 'tbc', 'vbc', 'ets'])
+        checked_options = appstruct['ticket_info']['ticket_type']
+
+        # calculate the total sum and discount
+        print("calculate the total sum and discount")
+        _the_total = 0;
+        _discount = 0;
+        if 'all' in checked_options \
+            or all_options.issubset(checked_options):
+            print("all active")
+            _discount = the_discounts.get('all')
+            _the_total = the_values.get('all')
+            appstruct['ticket_info']['ticket_type'] = set([
+                'tgv', 
+                'vgv', 
+                'tbc', 
+                'vbc', 
+                'ets', 
+                'discount'
+            ])
+        else:
+            for option in checked_options:
+                _the_total += the_values.get(option);
+
         appstruct['ticket_info']['the_total'] = _the_total
         print("_the_total: %s" % _the_total)
+        appstruct['ticket_info']['discount'] = _discount
+        print("_discount: %s" % _discount)
+
         # to store the data in the DB, an object is created
         ticket = PartyTicket(
             firstname=appstruct['person']['firstname'],
@@ -253,8 +291,15 @@ def party_view(request):
             email_is_confirmed=False,
             email_confirm_code=randomstring,
             date_of_submission=datetime.now(),
-            num_tickets=appstruct['ticket_info']['num_tickets'],
-            ticket_type=appstruct['ticket_info']['ticket_type'],
+            num_tickets=1,
+            ticket_type_tgv=('tgv' in appstruct['ticket_info']['ticket_type']),
+            ticket_type_tbc=('tbc' in appstruct['ticket_info']['ticket_type']),
+            ticket_type_vgv=('vgv' in appstruct['ticket_info']['ticket_type']),
+            ticket_type_vbc=('vbc' in appstruct['ticket_info']['ticket_type']),
+            ticket_type_ets=('ets' in appstruct['ticket_info']['ticket_type']),
+            ticket_type_all=('all' in appstruct['ticket_info']['ticket_type']),
+            guestlist=False,
+            discount=_discount,
             the_total=_the_total,
             user_comment=appstruct['person']['comment'],
         )
@@ -366,20 +411,22 @@ def confirm_view(request):
     class PartyTickets(colander.MappingSchema):
 
         ticket_type_options = (
-            (1, _(u'2. Klasse (5€: party, bands)')),
-            (2, _(u'2. Klasse + Speisewagen (15€: party, bands, essen)')),
-            (3, _(u'1. Klasse (50€: party, bands, essen, kaffee, shirt)')),
-            (4, _(u'Grüne Mamba (100€: party, bands, essen, kaffee, jacke)')),
+            ('tgv', _(u'Teilnahme an der GV (0 €)')),
+            ('tbc', _(u'Teilnahme am BC (10 €)')),
+            ('vgv', _(u'Volle Verpflegung GV (10 €)')),
+            ('vbc', _(u'Volle Verpflegung BC (15 €)')),
+            ('ets', _(u'Event-t-shirt (15 €)')),
+            ('all', _(u'All of the above (45 €)')),
+            ('discount', _(u'Rabatt (-5 €)'))
         )
 
         ticket_type = colander.SchemaNode(
-            colander.Integer(),
+            colander.Set(),
             title=_(u"Ich wähle folgende Ticket-Option:"),
             description=_(
-                u'Wir danken für die Unterstützung. Hinweis: '
-                u'Überschüsse gehen in die Büroausstattung.'),
-            default="1",
-            widget=deform.widget.RadioChoiceWidget(
+                u'Wir danken für die Unterstützung.'),
+            default=set(),
+            widget=deform.widget.CheckboxChoiceWidget(
                 readonly=True,
                 size=1, css_class='ticket_types_input',
                 values=ticket_type_options,
@@ -387,22 +434,29 @@ def confirm_view(request):
             ),
             oid="ticket_type"
         )
-        num_tickets = colander.SchemaNode(
-            colander.Integer(),
-            title=_(u"Ich möchte diese Anzahl Tickets:"),
-            default="1",
-            widget=deform.widget.TextInputWidget(
-                inline=True,
-                readonly=True),  # read-only!
-            oid="num_tickets"
-        )
+        # num_tickets = colander.SchemaNode(
+        #     colander.Integer(),
+        #     title=_(u"Ich möchte diese Anzahl Tickets:"),
+        #     default="1",
+        #     widget=deform.widget.TextInputWidget(
+        #         inline=True,
+        #         readonly=True),  # read-only!
+        #     oid="num_tickets"
+        # )
 
         the_total = colander.SchemaNode(
-            colander.String(),
-            widget=deform.widget.TextInputWidget(readonly=True),  # read-only!
-            default=str(
-                request.session['appstruct']['ticket_info']['the_total']
-            ) + u"&euro;",
+            colander.Decimal(),
+            widget=deform.widget.MoneyInputWidget( #2DO: anzeige als geldwert
+                readonly=True,
+                options={
+                    'symbol':'€',
+                    'showSymbol':True,
+                    'symbolStay':True
+                }
+            ),  
+            #default=str(
+            #    request.session['appstruct']['ticket_info']['the_total']
+            #) + u"&euro;",
             title=_(u"Die Summe"),
             description=_(
                 u'Das Ticket muß spätestens bis zum 13.02. bezahlt sein '
@@ -464,18 +518,17 @@ def sendmail_view(request):
 
         # send email
         mailer = get_mailer(request)
-        body_lines = (  # a list of lines
-            _(u'Hallo'), ' ', appstruct['person']['firstname'], ' ',
-            appstruct['person']['lastname'], u''' !
+        the_mail_body = \
+u'''Hallo %s %s !
 
-Wir haben Deine Ticketbestellung erhalten. Bitte überweise jetzt ''',
-            str(appstruct['ticket_info']['the_total']) + u''' Euro
+Wir haben Deine Ticketbestellung erhalten. Bitte überweise jetzt
+            %s Euro
 auf unser Konto bei der
 
 EthikBank eG
 Kontoinhaber: C3S SCE
-Betrag (€): ''' + str(appstruct['ticket_info']['the_total']) + u'''
-Verwendungszweck: Party ''' + appstruct['email_confirm_code'] + u'''
+Betrag (€): %s
+Verwendungszweck: Party %s
 BIC:\t GENO DE F1 ETK
 IBAN:\t DE79830944950003264378
 oder
@@ -484,47 +537,64 @@ BLZ: 83094495
 
 Sobald wir den Eingang der Zahlung bemerken, schicken wir Dir eine Email mit
 dem (oder den) Ticket(s).
-''',
-            _(u"Bis bald!"), u'''
 
-''',
-            _(u"Dein C3S-Team"),
-        )
-        the_mail_body = ''.join([line for line in body_lines])
+
+   Bis bald!
+ 
+   Dein C3S-Team
+''' % (
+        appstruct['person']['firstname'],
+        appstruct['person']['lastname'],
+        appstruct['ticket_info']['the_total'],
+        appstruct['ticket_info']['the_total'],
+        appstruct['email_confirm_code']
+    )
+
         the_mail = Message(
             subject=_(u"C3S Party-Ticket: bitte überweisen!"),
             sender="noreply@c3s.cc",
             recipients=[appstruct['person']['email']],
             body=the_mail_body
         )
-        mailer.send(the_mail)
-        #print(the_mail.body)
+        #mailer.send(the_mail) #2DO: mails scharf stellen
+        print(the_mail_body.encode('utf-8'))
         from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
         # send mail to accountants
+        acc_mail_body = \
+u'''name: %s %s
+email: %s
+code: %s
+gv?: %s
+gv+: %s
+bc?: %s
+bc+: %s
+tshirt: %s
+discount: %s
+total: %s
+komment: %s
+''' % (
+        appstruct['person']['firstname'],
+        appstruct['person']['lastname'],
+        appstruct['person']['email'],
+        appstruct['email_confirm_code'],
+        ('tgv' in appstruct['ticket_info']['ticket_type']),
+        ('vgv' in appstruct['ticket_info']['ticket_type']),
+        ('tbc' in appstruct['ticket_info']['ticket_type']),
+        ('vbc' in appstruct['ticket_info']['ticket_type']),
+        ('tsh' in appstruct['ticket_info']['ticket_type']),
+        appstruct['ticket_info']['discount'],
+        appstruct['ticket_info']['the_total'],
+        appstruct['person']['comment'],
+    )
         acc_mail = Message(
             subject=_('[C3S_PT] neues ticket'),
             sender="noreply@c3s.cc",
-            recipients=[
-                request.registry.settings['c3spartyticketing.mail_rec']],
+            recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
             #body=encrypt_with_gnupg('''code: %s
-            body=u'''name: %s %s
-email: %s
-code: %s
-klass: %s
-number: %s
-total: %s
-komment: %s
-''' % (appstruct['person']['firstname'],
-       appstruct['person']['lastname'],
-       appstruct['person']['email'],
-       appstruct['email_confirm_code'],
-       appstruct['ticket_info']['ticket_type'],
-       appstruct['ticket_info']['num_tickets'],
-       appstruct['ticket_info']['the_total'],
-       appstruct['person']['comment'],
-       )
+            body=acc_mail_body
         )
-        mailer.send(acc_mail)
+        #mailer.send(acc_mail) #2DO: mails scharf stellen
+        print(acc_mail_body.encode('utf-8'))
         # make the session go away
         request.session.invalidate()
         return {

@@ -311,38 +311,25 @@ def stats_view(request):
     how many tickets of which category, payment status, etc.
     """
     #print("who is it? %s" % request.user.login)
-    _number_of_datasets = PartyTicket.get_number()
-    _number_of_tickets = PartyTicket.get_num_tickets()
-    _num_passengers = PartyTicket.num_passengers()
-    _num_open_tickets = int(_number_of_tickets) - int(_num_passengers)
-    _num_tickets_unpaid = PartyTicket.get_num_unpaid()
-    #
-    _num_hobos = PartyTicket.get_num_hobos()
-    _num_class_2 = PartyTicket.get_num_class_2()
-    _num_class_2_food = PartyTicket.get_num_class_2_food()
-    _num_class_1 = PartyTicket.get_num_class_1()
-    _num_class_green = PartyTicket.get_num_class_green()
-    #
-    _sum_tickets_total = PartyTicket.get_sum_tickets_total()
-    _sum_tickets_paid = PartyTicket.get_sum_tickets_paid()
-    _sum_tickets_unpaid = PartyTicket.get_sum_tickets_unpaid()
+    
+    #2DO
 
     return {
-        '_number_of_datasets': _number_of_datasets,
-        '_number_of_tickets': _number_of_tickets,
-        '_num_passengers': _num_passengers,
-        '_num_open_tickets': _num_open_tickets,
-        '_num_tickets_unpaid': _num_tickets_unpaid,
+        #'_number_of_datasets': _number_of_datasets,
+        #'_number_of_tickets': _number_of_tickets,
+        #'_num_passengers': _num_passengers,
+        #'_num_open_tickets': _num_open_tickets,
+        #'_num_tickets_unpaid': _num_tickets_unpaid,
         # ticket categories
-        'num_hobos': _num_hobos,
-        'num_class_2': _num_class_2,
-        'num_class_2_food': _num_class_2_food,
-        'num_class_1': _num_class_1,
-        'num_class_green': _num_class_green,
+        #'num_hobos': _num_hobos,
+        #'num_class_2': _num_class_2,
+        #'num_class_2_food': _num_class_2_food,
+        #'num_class_1': _num_class_1,
+        #'num_class_green': _num_class_green,
         # focus on cash
-        'sum_tickets_total': _sum_tickets_total,
-        'sum_tickets_paid': _sum_tickets_paid,
-        'sum_tickets_unpaid': _sum_tickets_unpaid,
+        #'sum_tickets_total': _sum_tickets_total,
+        #'sum_tickets_paid': _sum_tickets_paid,
+        #'sum_tickets_unpaid': _sum_tickets_unpaid,
     }
 
 
@@ -433,7 +420,14 @@ def make_hobo_view(request):
                 email_confirm_code=randomstring,
                 date_of_submission=datetime.now(),
                 num_tickets=1,
-                ticket_type=5,
+                ticket_type_tgv=True,
+                ticket_type_tbc=True,
+                ticket_type_vgv=False,
+                ticket_type_vbc=False,
+                ticket_type_ets=False,
+                ticket_type_all=False,
+                guestlist=True,
+                discount=0,
                 the_total=the_total,
                 user_comment=appstruct['person']['comment'],
             )

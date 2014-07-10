@@ -24,110 +24,150 @@
     <link rel="stylesheet" type="text/css" media="screen" charset="utf-8"
           href="${request.static_url('c3spartyticketing:static/c3sM.css')}" />
   </tal:block>
+
   <tal:block metal:fill-slot="middle">
     <div class="jumbotron" class="visible-xs visible-sm hidden-md hidden-lg">
-      <h1>
-        Party!!
-      </h1>
-
-      <img src="${request.static_url('c3spartyticketing:static/images/party_banner.png')}"
-           class="img-responsive hidden-xs"
-	   alt="Party Banner"/>
-
-      <p class="lead visible-xs">
-        Hier gibt es Tickets für die C3S Einweihungsparty!
-      </p>
-      <p class="lead visible-xs" style="font-weight:bold;">
-        +++ 14. Februar 2014 +++
-      </p>
-      <p class="lead">
-        +++ im Alten Bahnhof Düsseldorf-Gerresheim +++
-      </p>
-      <p>
-        Mehr dazu
-        <a href="https://www.c3s.cc/hqeinweihung-2014-02-14-2/">
-          auf unserem Blog
-        </a>
-      </p>
+      <h1>Einladung zur Generalversammlung 2014<br>der C3S SCE</h1>
     </div>
     <hr />
   </tal:block>
+
   <tal:block metal:fill-slot="bottom">
+    <!--
     <div class="row-fluid">
       <h4>
-        <small>Stand der Dinge:</small> <!-- ${_num_tickets} tickets bestellt (davon ${_num_tickets_paid} bezahlt) -->
-          <div id="getting-started">
-            <span>%w</span> weeks
-            <span>%d</span> days
-            <span>%H</span> hours
-          </div>        
+        <small>Stand der Dinge:</small> 
+        ${_num_tickets} tickets bestellt (davon ${_num_tickets_paid} bezahlt)
       </h4>
-      <script type="text/javascript">
-        $('#getting-started').countdown('2014/02/14 17:30', function(event) {
-        $(this).html(event.strftime('Einlass in '
-        + '<span>%w</span> Wochen '
-        + '<span>%d</span> Tag(en) '
-        + '%H:%M:%S'));
-        });
-      </script>
     </div>
     <hr />
+    -->
     <!-- Example row of columns -->
     <div class="row-fluid">
-      <div class="span4">
-        <div class="alert alert-success">
-                <h3><small>Vorläufiger</small> Reiseplan</h3>
-        <ul class="list-group">
-          <li class="list-group-item">
-            17:30 - Bereitstellung des Zuges: Führung durch die neuen C3S Büroräume</li>
-          <li class="list-group-item">
-            18:30 - Abfahrt: Einlass in den Saal</li>
-          <li class="list-group-item">
-            20:00 - 1. Halt: Konzert Charlie Rayne</li>
-          <li class="list-group-item">
-            20:45 - 2. Halt: Konzert /'angstalt/</li>
-          <li class="list-group-item">
-            21:30 - 3. Halt: Konzert Entertainment for the braindead</li>
-          <li class="list-group-item">
-            22:30 - 4. Halt: DJ (tba)</li>
-          <li class="list-group-item">
-            01:00 - Endstation (Betriebsschluss)</li>
-        </ul>
+      
+
+        <div class="row">
+          
+
+          <div class="col-md-6">
+            <div class="alert alert-success">
+
+            <h1 style="color:#000;">Barcamp</h1>
+
+            <div id="getting-started-bc" style="color:#999">
+              <span>%w</span> weeks
+              <span>%d</span> days
+              <span>%H</span> hours
+            </div>
+            <script type="text/javascript">
+              $('#getting-started-bc').countdown('2014/08/22 12:00', function(event) {
+              $(this).html(event.strftime('Beginn in '
+              + '<span>%w</span> Wochen '
+              + '<span>%d</span> Tag(en) '
+              + '%H:%M:%S'));
+              });
+            </script>
+
+            <h2>22.08.2014 <small>12:00 - 20:00 Uhr</small></h2>
+
+            <h2><small>Ort:</small> C3S SCE HQ <small>Düsseldorf</small></h2>
+
+            Alter Bahnhof, Heyestraße 194, Düsseldorf-Gerresheim
+
+            <div class="visible-xs">
+              <iframe width="425" height="350"
+                      frameborder="0" scrolling="no"
+                      marginheight="0" marginwidth="0"
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
+                      style="border: 1px solid black">
+              </iframe><br/>
+              <small>
+                <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+                  Größere Karte anzeigen
+                </a>
+              </small>
+            </div>
+            <div class="hidden-xs">
+              <iframe width="90%" height="400"
+                      frameborder="0" scrolling="no"
+                      marginheight="0" marginwidth="0"
+                      src="http://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
+                      style="border: 1px solid black">
+              </iframe><br/>
+              <small>
+                <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+                  Größere Karte anzeigen
+                </a>
+              </small>
+            </div>
+          </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="alert alert-success">
+
+            <h1 style="color:#000;">Generalversammlung</h1>
+
+            <div id="getting-started-gv" style="color:#999">
+              <span>%w</span> weeks
+              <span>%d</span> days
+              <span>%H</span> hours
+            </div>
+            <script type="text/javascript">
+              $('#getting-started-gv').countdown('2014/08/23 14:00', function(event) {
+              $(this).html(event.strftime('Beginn in '
+              + '<span>%w</span> Wochen '
+              + '<span>%d</span> Tag(en) '
+              + '%H:%M:%S'));
+              });
+            </script>
+
+            <h2>23.08.2014 <small>14:00 - ??:?? Uhr</small></h2>
+
+            <h2><small>Ort:</small> Millowitsch Theater <small>Köln</small></h2>
+
+            <span>Aachener Straße 5, Köln</span>
+
+            <div class="visible-xs">
+              <iframe width="425" height="350"
+                      frameborder="0" scrolling="no"
+                      marginheight="0" marginwidth="0"
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=6.93529%2C50.93676%2C6.93863%2C50.93588&amp;layer=mapnik&amp;marker=50.9363222%2C6.9369574"
+                      style="border: 1px solid black">
+              </iframe><br/>
+              <small>
+                <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+                  Größere Karte anzeigen
+                </a>
+              </small>
+            </div>
+            <div class="hidden-xs">
+              <iframe width="90%" height="400"
+                      frameborder="0" scrolling="no"
+                      marginheight="0" marginwidth="0"
+                      src="http://www.openstreetmap.org/export/embed.html?bbox=6.93529%2C50.93676%2C6.93863%2C50.93588&amp;layer=mapnik&amp;marker=50.9363222%2C6.9369574"
+                      style="border: 1px solid black">
+              </iframe><br/>
+              <small>
+                <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+                  Größere Karte anzeigen
+                </a>
+              </small>
+            </div>
+          </div>
+          </div>
+
         </div>
+      
+
+      
+      <div class="row">
+        <h3>Tickets</h3>
+        <div tal:content="structure form">&nbsp;</div>
+        <hr />
       </div>
-      <h3><small>Ort:</small> C3S SCE Hauptquartier, Alter Bahnhof, <small>Heyestraße 194, Düsseldorf-Gerresheim</small></h3>
-      <div class="visible-xs">
-        <iframe width="425" height="350"
-                frameborder="0" scrolling="no"
-                marginheight="0" marginwidth="0"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
-                style="border: 1px solid black">
-        </iframe><br/>
-        <small>
-          <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
-            Größere Karte anzeigen
-          </a>
-        </small>
-      </div>
-      <div class="hidden-xs">
-        <iframe width="850" height="700"
-                frameborder="0" scrolling="no"
-                marginheight="0" marginwidth="0"
-                src="http://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
-                style="border: 1px solid black">
-        </iframe><br/>
-        <small>
-          <a href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
-            Größere Karte anzeigen
-          </a>
-        </small>
-      </div>
-      <h3>Tickets -- Vorverkauf -- Abendkasse</h3>
-      <div tal:content="structure form">&nbsp;</div>
-      <p>
-	Der Vorverkauf ist beendet. Tickets gibt es nur noch an der Abendkasse.
-      </p>
-      <hr />
+
+
     </div>
   </tal:block>
 </html>

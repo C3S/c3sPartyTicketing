@@ -10,7 +10,7 @@
           type="text/css" media="screen" charset="utf-8" />
   </tal:block>
   <tal:block metal:fill-slot="middle">
-    <h1>C3S Party Tickets:<small>Email lesen und überweisen</small></h1>
+    <h1>C3S Party Tickets: <small>Email lesen und überweisen</small></h1>
   </tal:block>
   <tal:block metal:fill-slot="bottom">
 
@@ -39,27 +39,6 @@
     <hr />
     <!-- Example row of columns -->
     <div class="row-fluid">
-      <div class="span4">
-        <h3><small>Vorläufiger</small> Reiseplan</h3>
-        <div class="alert alert-success">
-          <ul class="list-group">
-            <li class="list-group-item">
-              17:30 - Bereitstellung des Zuges: Führung durch die neuen C3S Büroräume</li>
-            <li class="list-group-item">
-              18:30 - Abfahrt: Einlass in den Saal</li>
-            <li class="list-group-item">
-              20:00 - 1. Halt: Konzert Charlie Rayne</li>
-            <li class="list-group-item">
-              20:45 - 2. Halt: Konzert /'angstalt/</li>
-            <li class="list-group-item">
-              21:30 - 3. Halt: Konzert Entertainment for the braindead</li>
-            <li class="list-group-item">
-              22:30 - 4. Halt: DJ (tba)</li>
-            <li class="list-group-item">
-              01:00 - Endstation (Betriebsschluss)</li>
-          </ul>
-        </div>
-      </div>
       <div class="span-4">
         <h3><small>...immer nur...</small> Bahnhof</h3>
         <iframe width="425" height="350"

@@ -190,7 +190,15 @@ class PartyTicket(Base):
     tcodes = Column(Unicode(255), unique=True)
     num_tickets = Column(Integer)
     checked_persons = Column(Integer, default=0)
-    ticket_type = Column(Integer)
+    #ticket_type = Column(Integer)
+    ticket_type_tgv = Column(Boolean, default=False)
+    ticket_type_tbc = Column(Boolean, default=False)
+    ticket_type_vgv = Column(Boolean, default=False)
+    ticket_type_vbc = Column(Boolean, default=False)
+    ticket_type_ets = Column(Boolean, default=False)
+    ticket_type_all = Column(Boolean, default=False)
+    guestlist = Column(Boolean, default=False)
+    discount = Column(Integer)
     the_total = Column(Integer)
     date_of_submission = Column(DateTime(), nullable=False)
     payment_received = Column(Boolean, default=False)
@@ -207,7 +215,14 @@ class PartyTicket(Base):
                  email_is_confirmed, email_confirm_code,
                  date_of_submission,
                  num_tickets,
-                 ticket_type,
+                 ticket_type_tgv,
+                 ticket_type_tbc,
+                 ticket_type_vgv,
+                 ticket_type_vbc,
+                 ticket_type_ets,
+                 ticket_type_all,
+                 guestlist,
+                 discount,
                  the_total,
                  user_comment,
                  payment_received=False
@@ -216,7 +231,14 @@ class PartyTicket(Base):
         self.lastname = lastname
         self.email = email
         self.num_tickets = num_tickets
-        self.ticket_type = ticket_type
+        self.ticket_type_tgv = ticket_type_tgv
+        self.ticket_type_tbc = ticket_type_tbc
+        self.ticket_type_vgv = ticket_type_vgv
+        self.ticket_type_vbc = ticket_type_vbc
+        self.ticket_type_ets = ticket_type_ets
+        self.ticket_type_all = ticket_type_all
+        self.guestlist = guestlist
+        self.discount = discount
         self.the_total = the_total
         self.password = password
         self.last_password_change = datetime.now()
@@ -362,7 +384,7 @@ class PartyTicket(Base):
         _all = DBSession.query(cls).all()
         _num = 0
         for item in _all:
-            if item.ticket_type == 5:
+            if item.guestlist == True:
                 _num = _num + item.num_tickets
         return _num
 

@@ -17,7 +17,7 @@
       </strong>
     </div>
     <p>
-      Eingecheckt: <span id="already_checked_in">${num_passengers}</span>. Erwarten noch: <span id="still_awaiting">${num_open_tickets}</span>
+      Eingecheckt: <span id="already_checked_in">${num_passengers}</span>.
     </p>
     <div tal:condition="paid is True">      <!-- BEZAHLT -->
       <div class="row">
@@ -34,28 +34,6 @@
             Bitte zusteigen...(Anzahl Personen)
           </p>
         </div>
-        <div class="col-md-4"><!-- if there are still OPEN seats on THIS TICKET -->
-          <div tal:condition="(ticket.num_tickets - ticket.checked_persons) is not 0">
-            <form action="${request.url}" method="post">
-              <select name="persons" size="1"
-                      style="width:130px;"
-                      class="form-control">
-                <option selected>1</option>
-                <option tal:repeat="opt range(vacancies-1)" value="${opt+2}">${opt+2}</option>
-              </select>
-              <input id="checkin-btn" type="submit" name="checkin" value="Check in!" class="btn btn-success"/>
-              <input type="hidden" name="code" value="${ticket.email_confirm_code}">
-              <!-- input type="submit" name="next" value="Next!" class="btn btn-primary"/ -->
-            </form>
-            <br />&nbsp;
-            <br />&nbsp;
-          </div>
-        </div>
-      </div>
-      <div class="col-md-2">
-        <div tal:condition="(ticket.num_tickets - ticket.checked_persons) is 0">
-          <a href="#" class="btn btn-danger">Keine Plätze mehr (auf dem Ticket)</a>
-        </div>
       </div>
     </div>
     
@@ -67,7 +45,6 @@
       <div>
         <h2 i18n:translate="get your pdf">Zahlen, bitte!</h2>
         offener Betrag: <span style="color:red">${ticket.the_total} &euro;</span><br />
-        Anzahl Personen: ${ticket.num_tickets}<br />
         Fahrkarte: ${klass}<br />
         <form action="${request.url}" method="post">
           <input type="submit" name="Bezahlt" value="Hat bezahlt" class="btn btn-success"/>

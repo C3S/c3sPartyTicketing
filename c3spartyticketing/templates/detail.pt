@@ -25,50 +25,71 @@
     <table class="table-striped">
       <tr  class="table-striped">
         <td>Vorname</td>
-	<td>${ticket.firstname}</td>
+        <td>${ticket.firstname}</td>
       </tr>
       <tr>
         <td>Nachname</td>
-	<td>${ticket.lastname}</td>
+        <td>${ticket.lastname}</td>
       </tr>
       <tr>
         <td>Email</td>
-	<td><a href="mailto:${ticket.email}">${ticket.email}</a></td>
+        <td><a href="mailto:${ticket.email}">${ticket.email}</a></td>
       </tr>
       <tr>
         <td>Komment</td>
-	<td>${ticket.user_comment}</td>
+        <td>${ticket.user_comment}</td>
       </tr>
       <tr>
         <td>locale</td>
-	<td>${ticket.locale}</td>
+        <td>${ticket.locale}</td>
       </tr>
       <tr>
-        <td>Anzahl Tickets</td>
-	<td>${ticket.num_tickets}</td>
+        <td>Auf der Gästeliste?</td>
+        <td>${'Yes' if ticket.guestlist else "No"}</td>
       </tr>
       <tr>
-        <td>Klasse</td>
-	<td>${ticket.ticket_type}</td>
+        <td>Teilnahme Barcamp</td>
+        <td>${'Yes' if ticket.ticket_type_tbc else "No"}</td>
+      </tr>
+      <tr>
+        <td>Verpflegung Barcamp</td>
+        <td>${'Yes' if ticket.ticket_type_vbc else "No"}</td>
+      </tr>
+      <tr>
+        <td>Teilnahme Generalversammlung</td>
+        <td>${'Yes' if ticket.ticket_type_tgv else "No"}</td>
+      </tr>
+      <tr>
+        <td>Verpflegung Generalversammlung</td>
+        <td>${'Yes' if ticket.ticket_type_vgv else "No"}</td>
+      </tr>
+      <tr>
+        <td>Event-T-Shirt</td>
+        <td>${'Yes' if ticket.ticket_type_ets else "No"}</td>
+      </tr>
+      <tr>
+        <td>Rabatt</td>
+        <td>${ticket.discount}</td>
       </tr>
       <tr>
         <td>zu zahlen</td>
-	<td>${ticket.the_total}</td>
+        <td>${ticket.the_total}</td>
       </tr>
       <tr>
         <td>Bestelldatum</td>
-	<td>${ticket.date_of_submission}</td>
+        <td>${ticket.date_of_submission}</td>
       </tr>
       <tr>
-        <td>Zahlungseingang?</td><td>${ticket.payment_received or "No"}</td>
+        <td>Zahlungseingang?</td>
+        <td>${ticket.payment_received or "No"}</td>
       </tr>
       <tr>
         <td>Zahlungsdatum</td>
-	<td>${ticket.payment_received_date}</td>
+        <td>${ticket.payment_received_date}</td>
       </tr>
       <tr>
         <td>Staff Komment</td>
-	<td>${ticket.accountant_comment}</td>
+        <td>${ticket.accountant_comment}</td>
       </tr>
     </table>
     <div id="form" tal:content="structure form"/>

@@ -210,3 +210,8 @@ body {
     border-color:#eed3d7;
 }
 .panel-heading {color:#4dbd38;font-weight:bold;}
+
+/* Content elements with currency symbol appended */
+.currency-euro:after {
+    content:"€"
+}

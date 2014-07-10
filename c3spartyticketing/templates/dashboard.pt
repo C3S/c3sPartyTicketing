@@ -49,7 +49,7 @@
                class="btn btn-info">nächste&gt;</a>
           </p>
           <table border="0" cellpadding="10" width="90%" class="table table-striped">
-	    <tr class="table-striped">
+	          <tr class="table-striped">
               <td>id</td>
               <td>code</td>
               <td>PDF</td>
@@ -57,7 +57,11 @@
               <td>nachname</td>
               <td>email</td>
               <td>tickets</td>
-              <td>typ</td>
+              <td>GV?</td>
+              <td>GV+</td>
+              <td>BC?</td>
+              <td>BC+</td>
+              <td>tshirt</td>
               <td>zu zahlen</td>
               <td>zahlung<br />erhalten?</td>
               <td>ticketmail</td>
@@ -72,7 +76,26 @@
 	      <td>${ticket.lastname}</td>
 	      <td><a href="mailto:${ticket.email}">${ticket.email}</a></td>
 	      <td>${ticket.num_tickets}</td>
-	      <td>${ticket.ticket_type}</td>
+        <td>
+          <span tal:condition="ticket.ticket_type_tgv" class="glyphicon glyphicon-ok" style="color:#090;"></span>
+          <span tal:condition="not ticket.ticket_type_tgv" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+        </td>
+        <td>
+          <span tal:condition="ticket.ticket_type_vgv" class="glyphicon glyphicon-ok" style="color:#090;"></span>
+          <span tal:condition="not ticket.ticket_type_vgv" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+        </td>
+        <td>
+          <span tal:condition="ticket.ticket_type_tbc" class="glyphicon glyphicon-ok" style="color:#090;"></span>
+          <span tal:condition="not ticket.ticket_type_tbc" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+        </td>
+        <td>
+          <span tal:condition="ticket.ticket_type_vbc" class="glyphicon glyphicon-ok" style="color:#090;"></span>
+          <span tal:condition="not ticket.ticket_type_vbc" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+        </td>
+        <td>
+          <span tal:condition="ticket.ticket_type_ets" class="glyphicon glyphicon-ok" style="color:#090;"></span>
+          <span tal:condition="not ticket.ticket_type_ets" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+        </td>
 	      <td>${ticket.the_total}</td>
 	      <td>
                 <div tal:condition="not ticket.payment_received">
@@ -124,7 +147,7 @@
     </tal:block>
     <tal:block metal:fill-slot="footer">
       <p><a href="${request.route_url('stats')}" class="btn btn-success">Statistiken</a></p>
-      <p><a href="${request.route_url('hobo')}" class="btn btn-primary">Schwarzfahrer/Gästeliste</a></p>
+      <p><a href="${request.route_url('hobo')}" class="btn btn-success">Gästeliste</a></p>
       <p><a href="${request.route_url('staff')}" class="btn btn-primary">Mitarbeitende</a></p>
       <p><a href="${request.route_url('kasse')}" class="btn btn-warning">Kasse</a></p>
       <p><a href="${request.route_url('logout')}" class="btn btn-danger">Abmelden</a></p>

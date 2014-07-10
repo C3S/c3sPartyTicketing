@@ -42,27 +42,31 @@ def make_qr_code_pdf(_ticket, _url):
     _img = qrcode.make(_url)  # the qr-code image, unsaved
 
     use_pdf = {
-        1: '/home/yes/github/c3sPartyTicketing/c3spartyticketing/pdftk/C3S_Ticket_2_Klasse.pdf',
-        2: '/home/yes/github/c3sPartyTicketing/c3spartyticketing/pdftk/C3S_Ticket_2_Klasse_Speisewagen.pdf',
-        3: '/home/yes/github/c3sPartyTicketing/c3spartyticketing/pdftk/C3S_Ticket_1_Klasse.pdf',
-        4: '/home/yes/github/c3sPartyTicketing/c3spartyticketing/pdftk/C3S_Ticket_GreenMamba.pdf',
-        5: '/home/yes/github/c3sPartyTicketing/c3spartyticketing/pdftk/C3S_Ticket_2_Klasse_Speisewagen_hobo.pdf',
+        'bcgv': 'c3spartyticketing/pdftk/C3S_Ticket_BCGV.pdf'
     }
 
-    _pdf_to_use = use_pdf[_ticket.ticket_type]
+    _pdf_to_use = use_pdf['bcgv']
+
+    #import os.path
+    #print(u'_pdf_to_use %s') % _pdf_to_use
+    #print(u'isfile: %s') % os.path.isfile(_pdf_to_use)
 
     tmp_img = tempfile.NamedTemporaryFile()  # for the qr-code
     tmp_pdf = tempfile.NamedTemporaryFile()  # converted to pdf
 
     _img.save(tmp_img)  # save the qr-code to tempfile
+    
+    #print(u'tmp_img %s') % tmp_img.name
+    #print(u'isfile: %s') % os.path.isfile(tmp_img.name)
+
     tmp_pdf.name = tmp_pdf.name + '.pdf'  # rename so convert knows what to do
     #
     # resize/arrange the code on the page so it aligns nicely
     # when combined with ticket PDF
     #
     _caption_code = str(
-        'caption:' + _ticket.email_confirm_code + '*' + str(
-            _ticket.num_tickets))
+        'caption:' + _ticket.email_confirm_code
+        )
     subprocess.check_call(
         ['convert',
          '-page',
@@ -128,8 +132,8 @@ def make_qr_code_pdf_mobile(_ticket, _url):
     # resize/arrange the code on the page so it aligns nicely
     # when combined with ticket PDF
     _caption_code = str(
-        'caption:' + _ticket.email_confirm_code + '*' + str(
-            _ticket.num_tickets))
+        'caption:' + _ticket.email_confirm_code
+        )
     subprocess.check_call(
         ['convert',
          tmp_img.name,
