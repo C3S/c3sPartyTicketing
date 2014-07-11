@@ -279,7 +279,16 @@ def party_view(request):
         form.set_appstruct(appstruct)
         #request.session['appstruct_preset'] = {}  # delete/clear it now
     else:
-        return HTTPFound(location='https://yes.c3s.cc')
+        # testing
+        appstruct = {}
+        appstruct['person'] = {
+            'firstname': 'testVorname',
+            'lastname': 'testNachname',
+            'email': 'alexander.blum@c3s.cc'
+        }
+        form.set_appstruct(appstruct)
+        # production
+        #return HTTPFound(location='https://yes.c3s.cc')
 
     # if the form has NOT been used and submitted, remove error messages if any
     if not 'submit' in request.POST:
@@ -434,8 +443,8 @@ def party_view(request):
         'form': html,
         '_num_tickets': _num_tickets,
         '_num_tickets_paid': _num_tickets_paid,
-        'firstname': "2DO:VORNAME",
-        'lastname': "2DO:NACHNAME"
+        'firstname': appstruct['person']['firstname'],
+        'lastname': appstruct['person']['lastname']
     }
 
 
