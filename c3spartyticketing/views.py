@@ -104,6 +104,14 @@ def party_view(request):
     _num_tickets = PartyTicket.get_num_tickets()
     _num_tickets_paid = PartyTicket.get_num_tickets_paid()
 
+    appstruct = {
+        'firstname': 'Alexander',
+        'lastname': 'Blum',
+        'email': 'alexander.blum@c3s.cc'
+    }
+    request.session['appstruct_preset'] = appstruct
+    #6SPXTXZ7A3
+
     @colander.deferred
     def deferred_missing_firstname(node, kw):
         try:
@@ -189,12 +197,11 @@ def party_view(request):
     #     #('0', _(u'no ticket')),
     # )
     ticket_type_options = (
-        ('tgv', _(u'Teilnahme an der GV (0 €)')),
-        ('tbc', _(u'Teilnahme am BC (10 €)')),
-        ('vgv', _(u'Volle Verpflegung GV (10 €)')),
-        ('vbc', _(u'Volle Verpflegung BC (15 €)')),
-        ('ets', _(u'Event-t-shirt (15 €)')),
-        ('all', _(u'All of the above (45 €)')),
+        ('ticket_gv', _(u'Teilnahme an der Generalversammlung (€0)')),
+        ('ticket_bc', _(u'Teilnahme am Barcamp (€9)')),
+        ('ticket_bc_buffet', _(u'Buffet beim Barcamp (€8,50)')),
+        ('ticket_tshirt', _(u'T-Shirt (€25)')),
+        ('ticket_all', _(u'All-Inclusive-Paket (€40)'))
     )
 
     class PartyTickets(colander.MappingSchema):
@@ -279,16 +286,7 @@ def party_view(request):
         form.set_appstruct(appstruct)
         #request.session['appstruct_preset'] = {}  # delete/clear it now
     else:
-        # testing
-        appstruct = {}
-        appstruct['person'] = {
-            'firstname': 'testVorname',
-            'lastname': 'testNachname',
-            'email': 'alexander.blum@c3s.cc'
-        }
-        form.set_appstruct(appstruct)
-        # production
-        #return HTTPFound(location='https://yes.c3s.cc')
+        return HTTPFound(location='https://yes.c3s.cc')
 
     # if the form has NOT been used and submitted, remove error messages if any
     if not 'submit' in request.POST:
@@ -328,38 +326,41 @@ def party_view(request):
 
         # map option to price
         the_values = {
-            'tgv': 0,
-            'vgv': 10,
-            'tbc': 10,
-            'vbc': 15,
-            'ets': 15,
-            'all': 45,
+            'ticket_gv': 0,
+            'ticket_bc': 9,
+            'ticket_bc_buffet': 8.5,
+            'ticket_tshirt': 25,
+            'ticket_all': 40,
         }
 
         # map option to discount
         the_discounts = {
-            'all': -5
+            'ticket_all': -2.5
         }
 
         # option 'all' equivalent to all options checked
-        all_options = set(['tgv', 'vgv', 'tbc', 'vbc', 'ets'])
+        all_options = set([
+            'ticket_gv',
+            'ticket_bc',
+            'ticket_bc_buffet',
+            'ticket_tshirt'
+        ])
         checked_options = appstruct['ticket_info']['ticket_type']
 
         # calculate the total sum and discount
         print("calculate the total sum and discount")
         _the_total = 0
         _discount = 0
-        if 'all' in checked_options \
+        if 'ticket_all' in checked_options \
            or all_options.issubset(checked_options):
             print("all active")
-            _discount = the_discounts.get('all')
-            _the_total = the_values.get('all')
+            _discount = the_discounts.get('ticket_all')
+            _the_total = the_values.get('ticket_all')
             appstruct['ticket_info']['ticket_type'] = set([
-                'tgv',
-                'vgv',
-                'tbc',
-                'vbc',
-                'ets',
+                'ticket_gv',
+                'ticket_bc',
+                'ticket_bc_buffet',
+                'ticket_tshirt',
                 'discount'
             ])
         else:
@@ -382,12 +383,11 @@ def party_view(request):
             email_confirm_code=randomstring,
             date_of_submission=datetime.now(),
             num_tickets=1,
-            ticket_type_tgv=('tgv' in appstruct['ticket_info']['ticket_type']),
-            ticket_type_tbc=('tbc' in appstruct['ticket_info']['ticket_type']),
-            ticket_type_vgv=('vgv' in appstruct['ticket_info']['ticket_type']),
-            ticket_type_vbc=('vbc' in appstruct['ticket_info']['ticket_type']),
-            ticket_type_ets=('ets' in appstruct['ticket_info']['ticket_type']),
-            ticket_type_all=('all' in appstruct['ticket_info']['ticket_type']),
+            ticket_gv=('ticket_gv' in appstruct['ticket_info']['ticket_type']),
+            ticket_bc=('ticket_bc' in appstruct['ticket_info']['ticket_type']),
+            ticket_bc_buffet=('ticket_bc_buffet' in appstruct['ticket_info']['ticket_type']),
+            ticket_tshirt=('ticket_tshirt' in appstruct['ticket_info']['ticket_type']),
+            ticket_all=('ticket_all' in appstruct['ticket_info']['ticket_type']),
             guestlist=False,
             discount=_discount,
             the_total=_the_total,
@@ -504,13 +504,11 @@ def confirm_view(request):
     class PartyTickets(colander.MappingSchema):
 
         ticket_type_options = (
-            ('tgv', _(u'Teilnahme an der GV (0 €)')),
-            ('tbc', _(u'Teilnahme am BC (10 €)')),
-            ('vgv', _(u'Volle Verpflegung GV (10 €)')),
-            ('vbc', _(u'Volle Verpflegung BC (15 €)')),
-            ('ets', _(u'Event-t-shirt (15 €)')),
-            ('all', _(u'All of the above (45 €)')),
-            ('discount', _(u'Rabatt (-5 €)'))
+            ('ticket_gv', _(u'Teilnahme an der Generalversammlung (€0)')),
+            ('ticket_bc', _(u'Teilnahme am Barcamp (€9)')),
+            ('ticket_bc_buffet', _(u'Buffet beim Barcamp (€8,50)')),
+            ('ticket_tshirt', _(u'T-Shirt (€25)')),
+            ('discount', _(u'Rabatt (€-2,5)'))
         )
 
         ticket_type = colander.SchemaNode(

@@ -14,6 +14,7 @@ from sqlalchemy import (
     Index,
     Text,
     Integer,
+    Float,
     Boolean,
     DateTime,
     Date,
@@ -191,15 +192,14 @@ class PartyTicket(Base):
     num_tickets = Column(Integer)
     checked_persons = Column(Integer, default=0)
     #ticket_type = Column(Integer)
-    ticket_type_tgv = Column(Boolean, default=False)
-    ticket_type_tbc = Column(Boolean, default=False)
-    ticket_type_vgv = Column(Boolean, default=False)
-    ticket_type_vbc = Column(Boolean, default=False)
-    ticket_type_ets = Column(Boolean, default=False)
-    ticket_type_all = Column(Boolean, default=False)
+    ticket_gv = Column(Boolean, default=False)
+    ticket_bc = Column(Boolean, default=False)
+    ticket_bc_buffet = Column(Boolean, default=False)
+    ticket_tshirt = Column(Boolean, default=False)
+    ticket_all = Column(Boolean, default=False)
     guestlist = Column(Boolean, default=False)
-    discount = Column(Integer)
-    the_total = Column(Integer)
+    discount = Column(Float)
+    the_total = Column(Float)
     date_of_submission = Column(DateTime(), nullable=False)
     payment_received = Column(Boolean, default=False)
     payment_received_date = Column(
@@ -215,12 +215,11 @@ class PartyTicket(Base):
                  email_is_confirmed, email_confirm_code,
                  date_of_submission,
                  num_tickets,
-                 ticket_type_tgv,
-                 ticket_type_tbc,
-                 ticket_type_vgv,
-                 ticket_type_vbc,
-                 ticket_type_ets,
-                 ticket_type_all,
+                 ticket_gv,
+                 ticket_bc,
+                 ticket_bc_buffet,
+                 ticket_tshirt,
+                 ticket_all,
                  guestlist,
                  discount,
                  the_total,
@@ -231,12 +230,11 @@ class PartyTicket(Base):
         self.lastname = lastname
         self.email = email
         self.num_tickets = num_tickets
-        self.ticket_type_tgv = ticket_type_tgv
-        self.ticket_type_tbc = ticket_type_tbc
-        self.ticket_type_vgv = ticket_type_vgv
-        self.ticket_type_vbc = ticket_type_vbc
-        self.ticket_type_ets = ticket_type_ets
-        self.ticket_type_all = ticket_type_all
+        self.ticket_gv = ticket_gv
+        self.ticket_bc = ticket_bc
+        self.ticket_bc_buffet = ticket_bc_buffet
+        self.ticket_tshirt = ticket_tshirt
+        self.ticket_all = ticket_all
         self.guestlist = guestlist
         self.discount = discount
         self.the_total = the_total

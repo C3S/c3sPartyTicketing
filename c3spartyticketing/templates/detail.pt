@@ -49,23 +49,19 @@
       </tr>
       <tr>
         <td>Teilnahme Barcamp</td>
-        <td>${'Yes' if ticket.ticket_type_tbc else "No"}</td>
+        <td>${'Yes' if ticket.ticket_bc else "No"}</td>
       </tr>
       <tr>
-        <td>Verpflegung Barcamp</td>
-        <td>${'Yes' if ticket.ticket_type_vbc else "No"}</td>
+        <td>Buffet Barcamp</td>
+        <td>${'Yes' if ticket.ticket_bc_buffet else "No"}</td>
       </tr>
       <tr>
         <td>Teilnahme Generalversammlung</td>
-        <td>${'Yes' if ticket.ticket_type_tgv else "No"}</td>
-      </tr>
-      <tr>
-        <td>Verpflegung Generalversammlung</td>
-        <td>${'Yes' if ticket.ticket_type_vgv else "No"}</td>
+        <td>${'Yes' if ticket.ticket_gv else "No"}</td>
       </tr>
       <tr>
         <td>Event-T-Shirt</td>
-        <td>${'Yes' if ticket.ticket_type_ets else "No"}</td>
+        <td>${'Yes' if ticket.ticket_tshirt else "No"}</td>
       </tr>
       <tr>
         <td>Rabatt</td>

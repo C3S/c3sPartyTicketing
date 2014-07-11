@@ -58,10 +58,9 @@
               <td>email</td>
               <td>tickets</td>
               <td>GV?</td>
-              <td>GV+</td>
               <td>BC?</td>
               <td>BC+</td>
-              <td>tshirt</td>
+              <td>tshirt?</td>
               <td>zu zahlen</td>
               <td>zahlung<br />erhalten?</td>
               <td>offene<br />fahrscheine</td>
@@ -78,24 +77,20 @@
 	      <td><a href="mailto:${ticket.email}">${ticket.email}</a></td>
 	      <td>${ticket.num_tickets}</td>
         <td>
-          <span tal:condition="ticket.ticket_type_tgv" class="glyphicon glyphicon-ok" style="color:#090;"></span>
-          <span tal:condition="not ticket.ticket_type_tgv" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+          <span tal:condition="ticket.ticket_gv" class="glyphicon glyphicon-ok" style="color:#090;"></span>
+          <span tal:condition="not ticket.ticket_gv" class="glyphicon glyphicon-remove" style="color:#700;"></span>
         </td>
         <td>
-          <span tal:condition="ticket.ticket_type_vgv" class="glyphicon glyphicon-ok" style="color:#090;"></span>
-          <span tal:condition="not ticket.ticket_type_vgv" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+          <span tal:condition="ticket.ticket_bc" class="glyphicon glyphicon-ok" style="color:#090;"></span>
+          <span tal:condition="not ticket.ticket_bc" class="glyphicon glyphicon-remove" style="color:#700;"></span>
         </td>
         <td>
-          <span tal:condition="ticket.ticket_type_tbc" class="glyphicon glyphicon-ok" style="color:#090;"></span>
-          <span tal:condition="not ticket.ticket_type_tbc" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+          <span tal:condition="ticket.ticket_bc_buffet" class="glyphicon glyphicon-ok" style="color:#090;"></span>
+          <span tal:condition="not ticket.ticket_bc_buffet" class="glyphicon glyphicon-remove" style="color:#700;"></span>
         </td>
         <td>
-          <span tal:condition="ticket.ticket_type_vbc" class="glyphicon glyphicon-ok" style="color:#090;"></span>
-          <span tal:condition="not ticket.ticket_type_vbc" class="glyphicon glyphicon-remove" style="color:#700;"></span>
-        </td>
-        <td>
-          <span tal:condition="ticket.ticket_type_ets" class="glyphicon glyphicon-ok" style="color:#090;"></span>
-          <span tal:condition="not ticket.ticket_type_ets" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+          <span tal:condition="ticket.ticket_tshirt" class="glyphicon glyphicon-ok" style="color:#090;"></span>
+          <span tal:condition="not ticket.ticket_tshirt" class="glyphicon glyphicon-remove" style="color:#700;"></span>
         </td>
 	      <td>${ticket.the_total}</td>
 	      <td>

@@ -184,13 +184,11 @@ def check_in(request):
 
     # types of tickets displayed in the backend
     ticket_type_options = {
-        ('tgv', _(u'Teilnahme an der GV (0 €)')),
-        ('tbc', _(u'Teilnahme am BC (10 €)')),
-        ('vgv', _(u'Volle Verpflegung GV (10 €)')),
-        ('vbc', _(u'Volle Verpflegung BC (15 €)')),
-        ('ets', _(u'Event-t-shirt (15 €)')),
-        ('all', _(u'All of the above (45 €)')),
-        ('discount', _(u'Rabatt (-5 €)'))
+        ('ticket_gv', _(u'Teilnahme an der Generalversammlung (€0)')),
+        ('ticket_bc', _(u'Teilnahme am Barcamp (€9)')),
+        ('ticket_bc_buffet', _(u'Buffet beim Barcamp (€8,50)')),
+        ('ticket_tshirt', _(u'T-Shirt (€25)')),
+        ('ticket_all', _(u'All-Inclusive-Paket (€40)'))
     }
 
     #_klass = ticket_type_options.get(_ticket.ticket_type)
