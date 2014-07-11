@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="${request.static_url('c3spartyticketing:static/bootstrap-3.0.3-dist/css/bootstrap.css')}" rel="stylesheet"/>
     <!-- JavaScript -->
-    <script src="${request.static_url('c3spartyticketing:static/scripts/jquery-2.0.3.min.js')}"
+    <script src="${request.static_url('c3spartyticketing:static/jquery/jquery-2.1.1.min.js')}"
             type="text/javascript"></script>
     <tal:block metal:define-slot="deform-js-css"></tal:block>
     <tal:block metal:define-slot="meta"></tal:block>
