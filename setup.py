@@ -23,6 +23,7 @@ requires = [
     'pyramid_mailer',
     'pyramid_tm',
     'qrcode',
+    'requests',
     'SQLAlchemy',
     'transaction',
     'unicodecsv',

@@ -14,6 +14,7 @@ import colander
 from datetime import datetime
 import deform
 from deform import ValidationFailure
+import json
 from pkg_resources import resource_filename
 
 from pyramid.httpexceptions import HTTPFound
@@ -27,7 +28,7 @@ from pyramid_mailer.message import Message
 from pyramid.response import Response
 from pyramid.threadlocal import get_current_request
 from pyramid.view import view_config
-
+import requests
 #from sqlalchemy.exc import DBAPIError
 from sqlalchemy.exc import (
     InvalidRequestError,
@@ -61,6 +62,40 @@ zpt_renderer = deform.ZPTRendererFactory(
 )
 
 
+@view_config(route_name='load_user')
+def load_user(request):
+    '''
+    receive link containing token and load user details
+    '''
+    _token = request.matchdict['token']
+    _email = request.matchdict['email']  # XXX use it for sth?
+    #print u"the token: {}".format(_token)
+    #print u"the email: {}".format(_email)
+    data = json.dumps({"token": _token})
+    _auth_header = {
+        'X-Messaging-Token': request.registry.settings['yes_auth_token']
+    }
+    res = requests.put(
+        request.registry.settings['yes_api_url'],
+        data,
+        headers=_auth_header,
+    )
+    #print u"the result: {}".format(res)
+    #print u"the result.reason: {}".format(res.reason)
+    #print u"dir(res): {}".format(dir(res))
+    try:
+        appstruct = {
+            'firstname': res.json()['firstname'],
+            'lastname': res.json()['lastname'],
+            'email': res.json()['email'],
+        }
+        assert(res.json()['email'] == _email)
+        request.session['appstruct_preset'] = appstruct
+        return HTTPFound(location=request.route_url('party'))
+    except:
+        return HTTPFound(location='https://yes.c3s.cc')
+
+
 @view_config(route_name='party', renderer='templates/party.pt')
 def party_view(request):
     """
@@ -68,6 +103,27 @@ def party_view(request):
     """
     _num_tickets = PartyTicket.get_num_tickets()
     _num_tickets_paid = PartyTicket.get_num_tickets_paid()
+
+    @colander.deferred
+    def deferred_missing_firstname(node, kw):
+        try:
+            return request.session['appstruct_preset']['firstname']
+        except:
+            return 'foo'
+
+    @colander.deferred
+    def deferred_missing_lastname(node, kw):
+        try:
+            return request.session['appstruct_preset']['lastname']
+        except:
+            return 'bar'
+
+    @colander.deferred
+    def deferred_missing_email(node, kw):
+        try:
+            return request.session['appstruct_preset']['email']
+        except:
+            return 'moo'
 
     class PersonalData(colander.MappingSchema):
         """
@@ -77,17 +133,22 @@ def party_view(request):
         firstname = colander.SchemaNode(
             colander.String(),
             title=_(u"Vorame"),
+            widget=deform.widget.TextInputWidget(readonly=True),
+            missing=deferred_missing_firstname,
             oid="firstname",
         )
         lastname = colander.SchemaNode(
             colander.String(),
             title=_(u"Nachname"),
+            widget=deform.widget.TextInputWidget(readonly=True),
+            missing=deferred_missing_lastname,
             oid="lastname",
         )
         email = colander.SchemaNode(
             colander.String(),
             title=_(u'Email'),
-            validator=colander.Email(),
+            widget=deform.widget.TextInputWidget(readonly=True),
+            missing=deferred_missing_email,
             oid="email",
         )
         # password = colander.SchemaNode(
@@ -114,19 +175,19 @@ def party_view(request):
             default=locale_name
         )
 
-    num_ticket_options = (
-        ('10', _(u'10 tickets')),
-        ('9', _(u'9 tickets')),
-        ('8', _(u'8 tickets')),
-        ('7', _(u'7 tickets')),
-        ('6', _(u'6 tickets')),
-        ('5', _(u'5 tickets')),
-        ('4', _(u'4 tickets')),
-        ('3', _(u'3 tickets')),
-        ('2', _(u'2 tickets')),
-        ('1', _(u'1 tickets')),
-        #('0', _(u'no ticket')),
-    )
+    # num_ticket_options = (
+    #     ('10', _(u'10 tickets')),
+    #     ('9', _(u'9 tickets')),
+    #     ('8', _(u'8 tickets')),
+    #     ('7', _(u'7 tickets')),
+    #     ('6', _(u'6 tickets')),
+    #     ('5', _(u'5 tickets')),
+    #     ('4', _(u'4 tickets')),
+    #     ('3', _(u'3 tickets')),
+    #     ('2', _(u'2 tickets')),
+    #     ('1', _(u'1 tickets')),
+    #     #('0', _(u'no ticket')),
+    # )
     ticket_type_options = (
         ('tgv', _(u'Teilnahme an der GV (0 €)')),
         ('tbc', _(u'Teilnahme am BC (10 €)')),
@@ -190,7 +251,7 @@ def party_view(request):
         #    title=_(u"Food Stamps")
         #)
 
-    schema = TicketForm()
+    schema = TicketForm().bind()
 
     form = deform.Form(
         schema,
@@ -198,9 +259,27 @@ def party_view(request):
             deform.Button('submit', _(u'Absenden'))
             #deform.Button('reset', _(u'Zurücksetzen'))
         ],
-        use_ajax=True,
+        #use_ajax=True,
         renderer=zpt_renderer
     )
+
+    #print "DEBUG: {}".format(dir(request.session['appstruct_preset']))
+    if 'appstruct_preset' in request.session:
+        #print "found appstruct!"
+        #print "the appstruct: {}".format(request.session['appstruct_preset'])
+        appstruct = {}
+        appstruct['person'] = {
+            'firstname': request.session[
+                'appstruct_preset']['firstname'],
+            'lastname': request.session[
+                'appstruct_preset']['lastname'],
+            'email': request.session[
+                'appstruct_preset']['email'],
+        }
+        form.set_appstruct(appstruct)
+        #request.session['appstruct_preset'] = {}  # delete/clear it now
+    else:
+        return HTTPFound(location='https://yes.c3s.cc')
 
     # if the form has NOT been used and submitted, remove error messages if any
     if not 'submit' in request.POST:
@@ -231,6 +310,8 @@ def party_view(request):
                 'form': e.render(),
                 '_num_tickets': _num_tickets,
                 '_num_tickets_paid': _num_tickets_paid,
+                'firstname': "2DO:VORNAME",
+                'lastname': "2DO:NACHNAME"
             }
 
         # make confirmation code
@@ -245,7 +326,7 @@ def party_view(request):
             'ets': 15,
             'all': 45,
         }
-        
+
         # map option to discount
         the_discounts = {
             'all': -5
@@ -257,24 +338,24 @@ def party_view(request):
 
         # calculate the total sum and discount
         print("calculate the total sum and discount")
-        _the_total = 0;
-        _discount = 0;
+        _the_total = 0
+        _discount = 0
         if 'all' in checked_options \
-            or all_options.issubset(checked_options):
+           or all_options.issubset(checked_options):
             print("all active")
             _discount = the_discounts.get('all')
             _the_total = the_values.get('all')
             appstruct['ticket_info']['ticket_type'] = set([
-                'tgv', 
-                'vgv', 
-                'tbc', 
-                'vbc', 
-                'ets', 
+                'tgv',
+                'vgv',
+                'tbc',
+                'vbc',
+                'ets',
                 'discount'
             ])
         else:
             for option in checked_options:
-                _the_total += the_values.get(option);
+                _the_total += the_values.get(option)
 
         appstruct['ticket_info']['the_total'] = _the_total
         print("_the_total: %s" % _the_total)
@@ -283,9 +364,9 @@ def party_view(request):
 
         # to store the data in the DB, an object is created
         ticket = PartyTicket(
-            firstname=appstruct['person']['firstname'],
-            lastname=appstruct['person']['lastname'],
-            email=appstruct['person']['email'],
+            firstname=request.session['appstruct_preset']['firstname'],
+            lastname=request.session['appstruct_preset']['lastname'],
+            email=request.session['appstruct_preset']['email'],
             password='',  # appstruct['person']['password'],
             locale=appstruct['person']['_LOCALE_'],
             email_is_confirmed=False,
@@ -309,7 +390,7 @@ def party_view(request):
             dbsession.add(ticket)
             print "adding ticket"
             appstruct['email_confirm_code'] = randomstring  # XXX
-            appstruct['email_confirm_code'] = randomstring
+            #                                                 check duplicates
         except InvalidRequestError, e:  # pragma: no cover
             print("InvalidRequestError! %s") % e
         except IntegrityError, ie:  # pragma: no cover
@@ -318,7 +399,8 @@ def party_view(request):
         # redirect to success page, then return the PDF
         # first, store appstruct in session
         request.session['appstruct'] = appstruct
-        request.session['appstruct']['_LOCALE_'] = appstruct['person']['_LOCALE_']
+        request.session[
+            'appstruct']['_LOCALE_'] = appstruct['person']['_LOCALE_']
         #
         # empty the messages queue (as validation worked anyways)
         deleted_msg = request.session.pop_flash()
@@ -338,14 +420,14 @@ def party_view(request):
             appstruct = request.session['appstruct']
             #print("the appstruct: %s") % appstruct
             # pre-fill the form with the values from last time
+            appstruct['person'][
+                'firstname'] = request.session['appstruct_preset']['firstname']
+            appstruct['person'][
+                'lastname'] = request.session['appstruct_preset']['lastname']
+            appstruct['person'][
+                'email'] = request.session['appstruct_preset']['email'],
+
             form.set_appstruct(appstruct)
-            #import pdb
-            #pdb.set_trace()
-            #form = deform.Form(schema,
-            #           buttons=[deform.Button('submit', _(u'Submit'))],
-            #           use_ajax=True,
-            #           renderer=zpt_renderer
-            #           )
 
     html = form.render()
     return {
@@ -354,7 +436,7 @@ def party_view(request):
         '_num_tickets_paid': _num_tickets_paid,
         'firstname': "2DO:VORNAME",
         'lastname': "2DO:NACHNAME"
-        }
+    }
 
 
 @view_config(route_name='confirm',

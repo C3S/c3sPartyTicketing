@@ -158,7 +158,7 @@ def accountants_login(request):
 @view_config(renderer='templates/dashboard.pt',
              permission='manage',
              route_name='dashboard')
-def accountants_desk(request):
+def dashboard_view(request):
     """
     This view lets accountants view applications and set their status:
     has their payment arrived?
@@ -311,16 +311,48 @@ def stats_view(request):
     how many tickets of which category, payment status, etc.
     """
     #print("who is it? %s" % request.user.login)
-    
     #2DO
 
+    _number_of_datasets = PartyTicket.get_number()
+    _number_of_tickets = PartyTicket.get_num_tickets()
+    _num_passengers = PartyTicket.num_passengers()
+    _num_open_tickets = int(_number_of_tickets) - int(_num_passengers)
+    _num_tickets_unpaid = PartyTicket.get_num_unpaid()
+    #
+    #_num_hobos = PartyTicket.get_num_hobos()
+    #_num_hobos_checked = PartyTicket.get_num_hobos_checked()
+    #
+    #_num_class_2 = PartyTicket.get_num_class_2()
+    #_num_class_2_food = PartyTicket.get_num_class_2_food()
+    #_num_class_1 = PartyTicket.get_num_class_1()
+    #_num_class_green = PartyTicket.get_num_class_green()
+    #
+    #_num_class_2_pre = PartyTicket.get_num_class_2_pre()
+    #_num_class_2_food_pre = PartyTicket.get_num_class_2_food_pre()
+    #_num_class_1_pre = PartyTicket.get_num_class_1_pre()
+    #_num_class_green_pre = PartyTicket.get_num_class_green_pre()
+    #
+    #_num_class_2_cash = PartyTicket.get_num_class_2_cash()
+    #_num_class_2_food_cash = PartyTicket.get_num_class_2_food_cash()
+    #_num_class_1_cash = PartyTicket.get_num_class_1_cash()
+    #_num_class_green_cash = PartyTicket.get_num_class_green_cash()
+    #
+    _sum_tickets_total = PartyTicket.get_sum_tickets_total()
+    _sum_tickets_unpaid = PartyTicket.get_sum_tickets_unpaid()
+    _sum_tickets_paid = PartyTicket.get_sum_tickets_paid()
+    _sum_tickets_paid_desk = PartyTicket.get_sum_tickets_paid_desk()
+    _sum_tickets_preorder_cash = PartyTicket.get_sum_tickets_preorder_cash()
+    _sum_tickets_new_cash = PartyTicket.get_sum_tickets_new_cash()
+    #_num_passengers_paid_checkedin = PartyTicket.get_num_passengers_paid_checkedin()
+
     return {
-        #'_number_of_datasets': _number_of_datasets,
-        #'_number_of_tickets': _number_of_tickets,
-        #'_num_passengers': _num_passengers,
-        #'_num_open_tickets': _num_open_tickets,
-        #'_num_tickets_unpaid': _num_tickets_unpaid,
+        '_number_of_datasets': _number_of_datasets,
+        '_number_of_tickets': _number_of_tickets,
+        '_num_passengers': _num_passengers,
+        '_num_open_tickets': _num_open_tickets,
+        '_num_tickets_unpaid': _num_tickets_unpaid,
         # ticket categories
+
         #'num_hobos': _num_hobos,
         #'num_class_2': _num_class_2,
         #'num_class_2_food': _num_class_2_food,
@@ -330,6 +362,87 @@ def stats_view(request):
         #'sum_tickets_total': _sum_tickets_total,
         #'sum_tickets_paid': _sum_tickets_paid,
         #'sum_tickets_unpaid': _sum_tickets_unpaid,
+
+        #'num_hobos': _num_hobos,
+        #'num_hobos_checked': _num_hobos_checked,
+        #
+        #'num_class_2': _num_class_2,
+        #'num_class_2_food': _num_class_2_food,
+        #'num_class_1': _num_class_1,
+        #'num_class_green': _num_class_green,
+        #
+        #'num_class_2_pre': _num_class_2_pre,
+        #'num_class_2_food_pre': _num_class_2_food_pre,
+        #'num_class_1_pre': _num_class_1_pre,
+        #'num_class_green_pre': _num_class_green_pre,
+        #
+        #'num_class_2_cash': _num_class_2_cash,
+        #'num_class_2_food_cash': _num_class_2_food_cash,
+        #'num_class_1_cash': _num_class_1_cash,
+        #'num_class_green_cash': _num_class_green_cash,
+        # focus on cash
+        'sum_tickets_total': _sum_tickets_total,
+        'sum_tickets_unpaid': _sum_tickets_unpaid,
+        'sum_tickets_paid': _sum_tickets_paid,
+        'sum_tickets_paid_desk': _sum_tickets_paid_desk,
+        'sum_tickets_preorder_cash': _sum_tickets_preorder_cash,
+        'sum_tickets_new_cash': _sum_tickets_new_cash,
+        'num_passengers_paid_checkedin': 23  # _num_passengers_paid_checkedin,
+    }
+
+
+@view_config(renderer='templates/print.pt',
+             permission='manage',
+             route_name='print')
+def print_view(request):
+    """
+    This view lets accountants print a ticket list
+    for backup strategies, e.g. offline mode
+    """
+    # get data sets from DB
+    _number_of_datasets = PartyTicket.get_number()
+    _tickets = PartyTicket.ticket_listing(
+        PartyTicket.id.desc(), how_many=_number_of_datasets, offset=0)
+
+    #print("who is it? %s" % request.user.login)
+    _number_of_datasets = PartyTicket.get_number()
+    _number_of_tickets = PartyTicket.get_num_tickets()
+    _num_passengers = PartyTicket.num_passengers()
+    _num_open_tickets = int(_number_of_tickets) - int(_num_passengers)
+    _num_tickets_unpaid = PartyTicket.get_num_unpaid()
+    #
+    #_num_hobos = PartyTicket.get_num_hobos()
+    #_num_class_2 = PartyTicket.get_num_class_2()
+    #_num_class_2_food = PartyTicket.get_num_class_2_food()
+    #_num_class_1 = PartyTicket.get_num_class_1()
+    #_num_class_green = PartyTicket.get_num_class_green()
+    #
+    _sum_tickets_total = PartyTicket.get_sum_tickets_total()
+    _sum_tickets_unpaid = PartyTicket.get_sum_tickets_unpaid()
+    _sum_tickets_paid = PartyTicket.get_sum_tickets_paid()
+    _sum_tickets_paid_desk = PartyTicket.get_sum_tickets_paid_desk()
+    #_num_passengers_paid_checkedin = PartyTicket.get_num_passengers_paid_checkedin()
+
+    return {
+        'tickets': _tickets,
+        '_number_of_datasets': _number_of_datasets,
+        '_number_of_tickets': _number_of_tickets,
+        '_num_passengers': _num_passengers,
+        '_num_open_tickets': _num_open_tickets,
+        '_num_tickets_unpaid': _num_tickets_unpaid,
+        # ticket categories
+        #'num_hobos': _num_hobos,
+        #'num_class_2': _num_class_2,
+        #'num_class_2_food': _num_class_2_food,
+        #'num_class_1': _num_class_1,
+        #'num_class_green': _num_class_green,
+        # focus on cash
+        'sum_tickets_total': _sum_tickets_total,
+        'sum_tickets_unpaid': _sum_tickets_unpaid,
+        'sum_tickets_paid': _sum_tickets_paid,
+        'sum_tickets_paid_desk': _sum_tickets_paid_desk,
+        #'num_passengers_paid_checkedin': _num_passengers_paid_checkedin,
+
     }
 
 

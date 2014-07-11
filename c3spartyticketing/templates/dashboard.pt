@@ -64,6 +64,7 @@
               <td>tshirt</td>
               <td>zu zahlen</td>
               <td>zahlung<br />erhalten?</td>
+              <td>offene<br />fahrscheine</td>
               <td>ticketmail</td>
               <td>bearbeiten</td>
               <td>löschen</td>
@@ -110,6 +111,17 @@
 		         width="20px" height="20px" />
                   </a>
                 </div>
+              </td>
+	      <td>
+                <span tal:condition="ticket.checked_persons is not ticket.num_tickets"
+                      style="color:red;">
+                  <a href="${request.route_url('check_in',
+                           event='p1402',
+                           code=ticket.email_confirm_code
+                           )}">
+                    ${ticket.num_tickets - ticket.checked_persons}
+                  </a>
+                </span>
               </td>
               <td>
                 <div tal:condition="python: ticket.payment_received is True and ticket.ticketmail_sent is not True">

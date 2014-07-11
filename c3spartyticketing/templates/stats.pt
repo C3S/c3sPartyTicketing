@@ -44,14 +44,191 @@
           
           2DO
 
+          <h3><small>Anzahl</small> Sammeltickets/Personentickets</h3>
+          <p>
+            ${_number_of_datasets} DB-Einträge
+            <small>('Sammeltickets' i.S.V. Bestellungen/Buchungen/Überweisungen)</small>.
+            <br />
+            ${_number_of_tickets} Personen
+            <small>('Einzeltickets' i.S.V. Einzelpersonen)</small> (bezahlt und unbezahlt)<br />
+            ${_num_passengers} Passagiere an Bord/eingecheckt
+            <small>('Tickets' i.S.V. Einzelpersonen)</small><br />
+            ${_num_open_tickets} offene Tickets (bezahlt, nicht eingecheckt)
+            <!-- small>(Bezahlte Tickets f. Einzelpersonen)</small-->
+            (Könnte sein, dass die noch kommen!)<br />
+            ${_num_tickets_unpaid} offene Tickets (unbezahlt)
+            <!-- small>(Tickets f. Einzelpersonen ohne Überweisungseingang)</small-->
+            (erwarten überweisung.)<br />
+          </p>
+          <h3><small>Anzahl Tickets</small> nach Kategorien</h3>
+          <p>
+            $ off {num_hobos} x Hobo (0€) (eingecheckt: $ off {num_hobos_checked})<br />
+          </p>
+          <!--
+          div class="row container-fluid">
+          <div class="col-xs-4">
+            <h4>gesammt</h4>
+            <p>
+              $ off {num_class_2} x 2. Klasse (5€)<br />
+              $ off {num_class_2_food} x 2. Klasse + Sp. (15€)<br />
+              $ off {num_class_1} x 1. Klasse (50€) <br />
+              $ off {num_class_green} x Grüne Mamba (100€)<br />
+            </p>
+          </div>
+          <div class="col-xs-4">
+            <h4>Vorbestellt</h4>
+            <p>
+              $ off {num_class_2_pre} x 2. Klasse (5€)<br />
+              $ off {num_class_2_food_pre} x 2. Klasse + Sp. (15€)<br />
+              $ off {num_class_1_pre} x 1. Klasse (50€) <br />
+              $ off {num_class_green_pre} x Grüne Mamba (100€)<br />
+            </p>
+          </div>
+          <div class="col-xs-4">
+            <h4>Abendkasse</h4>
+            <p>
+              $ off {num_class_2_cash} x 2. Klasse (5€)<br />
+              $ off {num_class_2_food_cash} x 2. Klasse + Sp. (15€)<br />
+              $ off {num_class_1_cash} x 1. Klasse (50€) <br />
+              $ off {num_class_green_cash} x Grüne Mamba (100€)<br />
+            </p>
+          </div>
+          </div> -->
+
+          <!--h3>Tabelle</h3-->
+          <p>
+            Die Tickets nach Typ und Order-/Bezahlstatus.
+            <small> Die Spalte 'bez.' wird errechnet aus den 2 folgenden.</small>
+          </p>
+          <table class="table table-striped">
+            <tr class="table-striped">
+              <td>
+                typ/status
+              </td>
+              <td>
+                alle
+              </td>
+              <td>
+                bez.
+              </td>
+              <td>
+                VVK
+              </td>
+              <td>
+                AK
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                2. Kl. (5€)
+              </td>
+              <td>
+                $ off {num_class_2}
+              </td>
+              <td>
+                $ off {num_class_2_pre + num_class_2_cash}
+              </td>
+              <td>
+                $ off {num_class_2_pre}
+              </td>
+              <td>
+                $ off {num_class_2_cash}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                2. Kl.+Sp.(15€)
+              </td>
+              <td>
+                $ off {num_class_2_food}
+              </td>
+              <td>
+                $ off {num_class_2_food_pre + num_class_2_food_cash}
+              </td>
+              <td>
+                $ off {num_class_2_food_pre}
+              </td>
+              <td>
+                $ off {num_class_2_food_cash}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                1. Kl. (50€)
+              </td>
+              <td>
+                $ off {num_class_1}
+              </td>
+              <td>
+                $ off {num_class_1_pre + num_class_1_cash}
+              </td>
+              <td>
+                $ off {num_class_1_pre}
+              </td>
+              <td>
+                $ off {num_class_1_cash}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Grüne M. (100€)
+              </td>
+              <td>
+                $ off {num_class_green}
+              </td>
+              <td>
+                $ off {num_class_green_pre + num_class_green_cash}
+              </td>
+              <td>
+                $ off {num_class_green_pre}
+              </td>
+              <td>
+                $ off {num_class_green_cash}
+              </td>
+            </tr>
+          </table>
+          <h3>Soll und Haben</h3>
+          <p>
+            Summe Tickets insgesammt im System (teilw. unbezahlt): 
+            <span style="color:orange">${sum_tickets_total} €</span><br />
+            Summe unbezahlter Tickets:
+            <span style="color:red">${sum_tickets_unpaid} €</span>
+            &lt;-- nachfassen oder löschen?<br />
+          </p>
+          <p>Summe bezahlter Tickets:
+            <span style="color:green">${sum_tickets_paid} € </span><br />
+          </p>
+          <p>
+            Summe <strong>im Vorverkauf</strong> bestellter Tickets:
+            <span style="color:green">${sum_tickets_paid - sum_tickets_paid_desk} € </span>
+            (incl. Nachzahlungen!)<br />
+            Summe <strong>an der Abendkasse</strong> bezahlter Tickets:
+            <span style="color:green">${sum_tickets_paid_desk} € </span><br />
+          </p>
+          <h3>Abrechnung</h3>
+          <p>
+            <strong>Personen</strong>,
+            die bezahlt UND eingechecked haben (ohne Schwarzfahrer!):
+            ${num_passengers_paid_checkedin}<br />
+            <strong>Summe</strong>,
+            die an der Kasse nachbezahlt oder Zahlung belegt wurde
+            (für vorbestellte Tickets):
+            ${sum_tickets_preorder_cash} <br />
+            <strong>Summe</strong>,
+            die an der Kasse bezahlt wurde (für neue Tickets):
+            ${sum_tickets_new_cash} 
+          </p>
         </div>
       </div>
     </tal:block>
     <tal:block metal:fill-slot="footer">
-      <p><a href="${request.route_url('dashboard', number=0)}"
-            class="btn btn-primary">Dashboard</a></p>
-      <p><a href="${request.route_url('kasse')}" class="btn btn-warning">Kasse</a></p>
-      <p><a href="${request.route_url('logout')}" class="btn btn-danger">Abmelden</a></p>
+      <div class="hidden-print">
+        <p><a href="${request.route_url('dashboard', number=0)}"
+              class="btn btn-primary">Dashboard</a></p>
+        <p><a href="${request.route_url('kasse')}" class="btn btn-warning">Kasse</a></p>
+        <p><a href="${request.route_url('logout')}" class="btn btn-danger">Abmelden</a></p>
+      </div>
     </tal:block>
   </body>
 </html>

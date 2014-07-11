@@ -52,18 +52,20 @@ def main(global_config, **settings):
                           'pyramid.events.NewRequest')
     config.add_static_view('static', 'static', cache_max_age=3600)
     # user views
+    config.add_route('load_user', '/lu/{token}/{email}')
     config.add_route('party', '/')  # the landing page
     config.add_route('confirm', '/confirm')  # shows entered data f. correction
     config.add_route('success', '/success')  # shows success info
     config.add_route('sendmail', '/check_email')
     config.add_route('verify_email_password', '/verify/{email}/{code}')
-    config.add_route('success_pdf', '/C3S_PartyTicket_{namepart}.pdf')
+    config.add_route('success_pdf', '/C3S_Ticket_{namepart}.pdf')
     # backend/staff
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('all_codes', '/all_codes')
     config.add_route('dashboard', '/dashboard/{number}')
     config.add_route('stats', '/stats')
+    config.add_route('print', '/print')
     config.add_route('detail', '/detail/{ticket_id}')
     config.add_route('send_ticket_mail', '/ticketmail/{ticket_id}')
     config.add_route('get_ticket', '/ticket/{email}/c3sPartyTicket_{code}')

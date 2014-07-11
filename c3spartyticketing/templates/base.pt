@@ -4,23 +4,17 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal">
   <head>
-    <title i18n:translate="c3spartyticketing-form-title">Einladung zur Generalversammlung 2014 der C3S SCE</title>
+    <title i18n:translate="">C3S Event Ticketing</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-    <meta name="keywords" content="FlashFunding for C3S SCE"/>
+    <meta name="keywords" content="Ticketing for C3S SCE"/>
     <meta name="description" content="" />
     <link rel="shortcut icon" href="${request.static_url('c3spartyticketing:static/favicon.ico')}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link href="/static/bootstrap-3.0.3-dist/css/bootstrap.css" rel="stylesheet"/>
+    <link href="${request.static_url('c3spartyticketing:static/bootstrap-3.0.3-dist/css/bootstrap.css')}" rel="stylesheet"/>
     <!-- JavaScript -->
-    <script src="${request.static_url('deform:static/scripts/jquery-2.0.3.min.js')}"
+    <script src="${request.static_url('c3spartyticketing:static/scripts/jquery-2.0.3.min.js')}"
             type="text/javascript"></script>
-    <!-- script src="${request.static_url('deform:static/scripts/bootstrap.min.js')}"
-            type="text/javascript"></script -->
-    <!--[if lte IE 6]>
-    <link rel="stylesheet" href="${request.static_url('c3spartyticketing:static/ie6.css')}"
-          type="text/css" media="screen" charset="utf-8" />
-    <![endif]-->
     <tal:block metal:define-slot="deform-js-css"></tal:block>
     <tal:block metal:define-slot="meta"></tal:block>
   </head>

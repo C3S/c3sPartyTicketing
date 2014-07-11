@@ -61,6 +61,9 @@
       <a href="/kasse" class="btn btn-warning">Next!</a>
     </p>
     <p>
+      <a href="/dashboard/0" class="btn btn-warning">Dashboard</a>
+    </p>
+    <p>
       <a href="/logout" class="btn btn-danger">${logged_in} Abmelden</a>
     </p>
   </tal:block>
