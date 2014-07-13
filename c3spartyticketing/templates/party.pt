@@ -145,7 +145,7 @@
               <iframe width="90%" height="400"
                       frameborder="0" scrolling="no"
                       marginheight="0" marginwidth="0"
-                      src="http://www.openstreetmap.org/export/embed.html?bbox=6.93529%2C50.93676%2C6.93863%2C50.93588&amp;layer=mapnik&amp;marker=50.9363222%2C6.9369574"
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=6.93529%2C50.93676%2C6.93863%2C50.93588&amp;layer=mapnik&amp;marker=50.9363222%2C6.9369574"
                       style="border: 1px solid black">
               </iframe><br/>
               <small>
