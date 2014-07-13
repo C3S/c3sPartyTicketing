@@ -529,29 +529,17 @@ def party_view(request):
     #_num_tickets_paid = PartyTicket.get_num_tickets_paid()
 
     # testing
-    if 'appstruct' not in request.session:
-        appstruct = {
-            'firstname': 'Alexander',
-            'lastname': 'Blum',
-            'email': 'alexander.blum@c3s.cc',
-            'token': '6SPXTXZ7A3'
-        }
-        request.session['appstruct_preset'] = appstruct
-    else:
-        appstruct = request.session['appstruct']
+    #if 'appstruct' not in request.session:
+    #    appstruct = {
+    #        'firstname': 'Alexander',
+    #        'lastname': 'Blum',
+    #        'email': 'alexander.blum@c3s.cc',
+    #        'token': '6SPXTXZ7A3'
+    #    }
+    #    request.session['appstruct_preset'] = appstruct
+    #else:
+    #    appstruct = request.session['appstruct']
     # /testing
-
-    schema = ticket_schema(request, appstruct)
-
-    form = deform.Form(
-        schema,
-        buttons=[
-            deform.Button('submit', _(u'Absenden'))
-            #deform.Button('reset', _(u'Zurücksetzen'))
-        ],
-        #use_ajax=True,
-        renderer=zpt_renderer
-    )
 
     #print "DEBUG: {}".format(dir(request.session['appstruct_preset']))
     if 'appstruct_preset' in request.session:
@@ -572,6 +560,18 @@ def party_view(request):
         #request.session['appstruct_preset'] = {}  # delete/clear it now
     else:
         return HTTPFound(location='https://yes.c3s.cc')
+
+    schema = ticket_schema(request, appstruct)
+
+    form = deform.Form(
+        schema,
+        buttons=[
+            deform.Button('submit', _(u'Absenden'))
+            #deform.Button('reset', _(u'Zurücksetzen'))
+        ],
+        #use_ajax=True,
+        renderer=zpt_renderer
+    )
 
     # if the form has NOT been used and submitted, remove error messages if any
     if not 'submit' in request.POST:
