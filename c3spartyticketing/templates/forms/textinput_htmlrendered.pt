@@ -1,0 +1,1 @@
+<div id="${oid|field.oid}" tal:content="structure cstruct"></div>

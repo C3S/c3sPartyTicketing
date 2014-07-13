@@ -61,6 +61,429 @@ zpt_renderer = deform.ZPTRendererFactory(
     translator=translator,
 )
 
+def ticket_schema(request, appstruct, readonly=False):
+
+    ### validator
+
+    def validator(form, value):
+        #print("the value from the validator: %s \n") % value
+        #for thing in value:
+        #    print(u"the thing: %s") % thing
+        #    print(u"type: %s") % type(thing)
+        #print("the form from the validator: %s \n") % form
+        #for thing in form:
+        #    print(u"the thing: %s") % thing
+        #    print(u"type: %s") % type(thing)
+        #    for thing2 in thing:
+        #        print(u"  the thing2: %s") % thing2
+        #        print(u"  type2: %s") % type(thing2)
+
+        # 2DO: herausfinden, wie man per klassenvalidator colander.Invalid ansprechen muss,
+        #      damit deform den error am richtigen ort platziert und die richtigen klassen vergibt
+        exc = colander.Invalid(form)
+        if value['ticket']['ticket_tshirt']:
+            if not value['tshirt']['tshirt_type']:           
+                exc['tshirt'] = "Der Schnitt des T-Shirts muss angegeben werden."
+                raise exc
+            if not value['tshirt']['tshirt_size']:
+                exc['tshirt'] = "Die Größe des T-Shirts muss angegeben werden."
+                raise exc
+        if value['ticket']['ticket_gv'] == 2:
+            if not value['representation']['firstname']:
+                exc['representation'] = "Der Vorname des/r Bevollmächtigten muss angegeben werden."
+                raise exc
+            if not value['representation']['lastname']:
+                exc['representation'] = "Der Nachname des/r Bevollmächtigten muss angegeben werden."
+                raise exc
+            if not value['representation']['street']:
+                exc['representation'] = "Die Straße des/r Bevollmächtigten muss angegeben werden."
+                raise exc
+            if not value['representation']['zip']:
+                exc['representation'] = "Die Plz des/r Bevollmächtigten muss angegeben werden."
+                raise exc
+            if not value['representation']['city']:
+                exc['representation'] = "Die Stadt des/r Bevollmächtigten muss angegeben werden."
+                raise exc
+            if not value['representation']['country']:
+                exc['representation'] = "Das Land des/r Bevollmächtigten muss angegeben werden."
+                raise exc
+            if not value['representation']['representation_type']:
+                exc['representation'] = "Die Beziehung zu dem/r Bevollmächtigten muss angegeben werden."
+                raise exc
+
+    ### deferred
+
+    @colander.deferred
+    def deferred_missing_firstname(node, kw):
+        try:
+            return request.session['appstruct_preset']['firstname']
+        except:
+            return 'foo'
+
+    @colander.deferred
+    def deferred_missing_lastname(node, kw):
+        try:
+            return request.session['appstruct_preset']['lastname']
+        except:
+            return 'bar'
+
+    @colander.deferred
+    def deferred_missing_email(node, kw):
+        try:
+            return request.session['appstruct_preset']['email']
+        except:
+            return 'moo'
+
+    @colander.deferred
+    def deferred_missing_token(node, kw):
+        try:
+            return request.session['appstruct_preset']['token']
+        except:
+            return 'boo'
+
+    ### options
+    
+    ticket_gv_options = (
+        (1, _(u'Ich werde an der Generalversammlung teilnehmen')),
+        (2, _(u'Ich werde an der Generalversammlung nicht persönlich teilnehmen, sondern lasse mich vertreten')),
+        (3, _(u'Ich werde an der Generalversammlung nicht teilnehmen'))
+    )
+
+    ticket_bc_options = (
+        ('attendance', _(u'Teilnahme am Barcamp (€9)')),
+        ('buffet', _(u'Buffet beim Barcamp (€8,50)'))
+    )
+
+    rep_type_options = (
+        ('member', _(u'Mitglied der Genossenschaft')),
+        ('partner', _(u'mein Ehefrau/mein Ehemann')),
+        ('parent', _(u'meine Mutter/mein Vater')),
+        ('child', _(u'meine Tochter/mein Sohn')),
+        ('sibling', _(u'meine Schwester/mein Bruder'))
+    )
+
+    tshirt_type_options = (
+        ('m', _(u'male')),
+        ('f', _(u'female'))
+    )
+
+    tshirt_size_options = (
+        ('S', _(u'S')),
+        ('M', _(u'M')),
+        ('L', _(u'L')),
+        ('XL', _(u'XL')),
+        ('XXL', _(u'XXL')),
+        ('XXXL', _(u'XXXL'))
+    )
+
+    ### formparts
+
+    class TicketData(colander.MappingSchema):
+
+        locale_name = get_locale_name(request)
+        ticket_gv = colander.SchemaNode(
+            colander.Integer(),
+            title=_(u"Generalversammlung:"),
+            widget=deform.widget.RadioChoiceWidget(
+                size=1, css_class='ticket_types_input',
+                values=ticket_gv_options,
+                readonly=readonly
+            ),
+            oid="ticket_gv"
+        )
+        ticket_bc = colander.SchemaNode(
+            colander.Set(),
+            title=_(u"Barcamp:"),
+            widget=deform.widget.CheckboxChoiceWidget(
+                size=1, css_class='ticket_types_input',
+                values=ticket_bc_options,
+                readonly=readonly
+            ),
+            missing='',
+            description=_(
+                u'The buffet consists of e.g., salads, vegetables, dips, '
+                u'chese and meat platters. A free drink is included.'),
+            oid="ticket_bc"
+        )
+        if readonly:
+            ticket_bc.description = None
+            if not appstruct['ticket']['ticket_bc']:
+                ticket_bc = None
+        ticket_tshirt = colander.SchemaNode(
+            colander.Boolean(),
+            title=_(u"Extras:"),
+            widget=deform.widget.CheckboxWidget(
+                readonly=readonly,
+                readonly_template='forms/checkbox_label.pt'
+            ),
+            label="T-Shirt (€25)",
+            missing='',
+            description=_(
+                u'There will be one joint T-shirt design for both events in C3S green, '
+                u'black and white. Exclusively for participants, available only if pre-ordered! '
+                u'You can collect your pre-ordered T-shirt at both the BarCamp '
+                u'and the general assembly.'),
+            oid="ticket_tshirt"
+        )
+        if readonly:
+            ticket_tshirt.description = None
+            if not appstruct['ticket']['ticket_tshirt']:
+                ticket_tshirt = None                
+        ticket_all = colander.SchemaNode(
+            colander.Boolean(),
+            title=_(u"Special Offer:"),
+            widget=deform.widget.CheckboxWidget(
+                readonly=readonly,
+                readonly_template='forms/checkbox_label.pt'
+            ),
+            label="All-Inclusive-Paket (€40)",
+            missing='',
+            description=_(
+                u'The all-inclusive package covers the participation in the BarCamp '
+                u'(including buffet and free drink), participation in the general '
+                u'assembly, and the exclusive event T-shirt as well.'),
+            oid="ticket_all"
+        )
+        if readonly:
+            ticket_all.description = None
+            ticket_all.label = "All-Inclusive-Paket Rabatt (-€2,50)"
+            if not appstruct['ticket']['ticket_all']:
+                ticket_all = None
+        if readonly and appstruct['ticket']['the_total'] > 0:
+            the_total = colander.SchemaNode(
+                colander.Decimal(quant='1.00'),
+                widget=deform.widget.TextInputWidget(
+                    readonly=readonly,
+                    readonly_template="forms/textinput_money.pt",
+                ),
+                title=_(u"Gesamtbetrag"),
+                description=_(
+                    u'Deine Bestellung muss spätestens bis zum 18.08.2014 vollständig bezahlt sein '
+                    u'(Zahlungseingang auf unserem Konto). '
+                    u'Andernfalls müssen wir die gesamte Bestellung stornieren. '
+                    u'Die Zahlung erfolgt ausschließlich per Banküberweisung. '
+                    u'Die Zahlungsinformationen werden dir per Email zugeschickt.'),
+                oid="the-total",
+            )
+        comment = colander.SchemaNode(
+            colander.String(),
+            title=_("Kommentare"),
+            missing='',
+            validator=colander.Length(max=250),
+            widget=deform.widget.TextAreaWidget(
+                rows=3, cols=50,
+                readonly=readonly
+            ),
+            description=_(u"Raum für Kommentare (255 Zeichen)"),
+            oid="comment",
+        )
+        if readonly:
+            comment.description = None
+            if not appstruct['ticket']['comment']:
+                comment = None
+        # hidden fields for personal data
+        token = colander.SchemaNode(
+            colander.String(),
+            widget=deform.widget.HiddenWidget(),
+            default=request.session['appstruct_preset']['token'],
+            missing=deferred_missing_token,
+            oid="firstname",
+        )
+        firstname = colander.SchemaNode(
+            colander.String(),
+            widget=deform.widget.HiddenWidget(),
+            default=request.session['appstruct_preset']['firstname'],
+            missing=deferred_missing_firstname,
+            oid="firstname",
+        )
+        lastname = colander.SchemaNode(
+            colander.String(),
+            widget=deform.widget.HiddenWidget(),
+            default=request.session['appstruct_preset']['lastname'],
+            missing=deferred_missing_lastname,
+            oid="lastname",
+        )
+        email = colander.SchemaNode(
+            colander.String(),
+            widget=deform.widget.HiddenWidget(),
+            default=request.session['appstruct_preset']['email'],
+            missing=deferred_missing_email,
+            oid="email",
+        )
+        _LOCALE_ = colander.SchemaNode(
+            colander.String(),
+            widget=deform.widget.HiddenWidget(),
+            default=locale_name
+        )
+
+    class RepresentationData(colander.MappingSchema):
+        """
+        colander schema of respresentation form
+        """
+        note_top = colander.SchemaNode(
+            colander.String(),
+            title='',
+            widget=deform.widget.TextInputWidget(
+                readonly=True,
+                readonly_template="forms/textinput_htmlrendered.pt"
+            ),
+            default=u'''
+<p>Wir brauchen von Dir folgende Daten de(s/r) Bevollmächtigten:</p>
+''',
+            missing='',
+            oid='rep-note'
+        )
+        note_top.missing=note_top.default # otherwise empty on redit
+        if readonly:
+            note_top = None
+        firstname = colander.SchemaNode(
+            colander.String(),
+            title=_(u"Vorname"),
+            widget=deform.widget.TextInputWidget(
+                readonly=readonly
+            ),
+            missing='',
+            oid="rep-firstname",
+        )
+        lastname = colander.SchemaNode(
+            colander.String(),
+            title=_(u"Nachname"),
+            widget=deform.widget.TextInputWidget(
+                readonly=readonly
+            ),
+            missing='',
+            oid="rep-lastname",
+        )
+        street = colander.SchemaNode(
+            colander.String(),
+            title=_(u'Straße'),
+            widget=deform.widget.TextInputWidget(
+                readonly=readonly
+            ),
+            missing='',
+            oid="rep-street",
+        )
+        zip = colander.SchemaNode(
+            colander.String(),
+            title=_(u'PLZ'),
+            widget=deform.widget.TextInputWidget(
+                readonly=readonly
+            ),
+            missing='',
+            oid="rep-zip",
+        )
+        city = colander.SchemaNode(
+            colander.String(),
+            title=_(u'Stadt'),
+            widget=deform.widget.TextInputWidget(
+                readonly=readonly
+            ),
+            missing='',
+            oid="rep-city",
+        )
+        country = colander.SchemaNode(
+            colander.String(),
+            title=_(u'Land'),
+            widget=deform.widget.TextInputWidget(
+                readonly=readonly
+            ),
+            missing='',
+            oid="rep-country",
+        )
+        representation_type = colander.SchemaNode(
+            colander.String(),
+            title=_(u"Mein(e) Bevollmächtigte(r) ist:"),
+            widget=deform.widget.RadioChoiceWidget(
+                size=1, css_class='ticket_types_input',
+                values=rep_type_options,
+                readonly=readonly
+            ),
+            missing=0,
+            oid="rep-type",
+        )
+        note_bottom = colander.SchemaNode(
+            colander.String(),
+            title='',
+            widget=deform.widget.TextInputWidget(
+                readonly=True,
+                readonly_template="forms/textinput_htmlrendered.pt"
+            ),
+            missing='',
+            default=u'''
+<div class="help-block">
+    <strong>Hinweis:</strong>
+    Du darfst als Deine(n) Bevollmächtigten nur ein Mitglied der Genossenschaft,<br>
+    Deine(n) Ehemann/Ehefrau, ein Elternteil, ein Kind oder einen Geschwisterteil benennen.<br>
+    Jede(r) Bevollmächtigte kann maximal zwei Mitglieder vertreten.
+    (siehe § 13 (6), Satz 3 der <a href="http://url.c3s.cc/satzung" target="_blank" class="alert-link">Satzung</a>)<br>
+    <br>
+    <strong>Nicht vergessen:</strong>
+    Dein(e) Bevollmächtigte(r) muss von eine von Dir unterzeichnete Vollmacht mitbringen<br>
+    - bitte keine Kopie, kein Fax, kein Scan, kein Bild, sondern das Original.<br>
+    Download für eine Vollmacht: <a href="http://url.c3s.cc/vollmacht" target="_blank" class="alert-link">http://url.c3s.cc/vollmacht</a>
+</div>
+''',
+            oid='rep-note'
+        )
+        note_bottom.missing=note_bottom.default # otherwise empty on redit
+        if readonly:
+            note_bottom = None
+
+    class TshirtData(colander.MappingSchema):
+        """
+        colander schema of tshirt form
+        """
+        tshirt_type = colander.SchemaNode(
+            colander.String(),
+            title=_(u"Schnitt:"),
+            widget=deform.widget.RadioChoiceWidget(
+                size=1, css_class='ticket_types_input',
+                values=tshirt_type_options,
+                readonly=readonly
+            ),
+            missing=0,
+            oid="tshirt-type",
+        )  
+        tshirt_size = colander.SchemaNode( 
+            colander.String(),
+            title=_(u"Size:"),
+            widget=deform.widget.RadioChoiceWidget(
+                size=1, css_class='ticket_types_input',
+                values=tshirt_size_options,
+                readonly=readonly
+            ),
+            missing=0,
+            oid="tshirt-size",
+        )
+
+    ### form
+
+    class TicketForm(colander.Schema):
+        """
+        The Form consists of
+        - Ticketing Information
+        - Representation Data
+        - Tshirt Data
+        """
+        ticket = TicketData(
+            title=_(u"Ticketinformationen"),
+            oid="ticket-data"
+        )
+        representation = RepresentationData(
+            title=_(u"Bevollmächtigte(r)"),
+            oid="rep-data"
+        )
+        if readonly and not appstruct['ticket']['ticket_gv'] == 2:
+            representation = None;
+        tshirt = TshirtData(
+            title=_(u"T-Shirt"),
+            oid="tshirt-data"
+        )
+        if readonly and not appstruct['ticket']['ticket_tshirt']:
+            tshirt = None
+
+    return TicketForm(validator=validator).bind()
+
 
 @view_config(route_name='load_user')
 def load_user(request):
@@ -88,6 +511,7 @@ def load_user(request):
             'firstname': res.json()['firstname'],
             'lastname': res.json()['lastname'],
             'email': res.json()['email'],
+            'token': data
         }
         assert(res.json()['email'] == _email)
         request.session['appstruct_preset'] = appstruct
@@ -101,164 +525,23 @@ def party_view(request):
     """
     the view users use to order a ticket
     """
-    _num_tickets = PartyTicket.get_num_tickets()
-    _num_tickets_paid = PartyTicket.get_num_tickets_paid()
+    #_num_tickets = PartyTicket.get_num_tickets()
+    #_num_tickets_paid = PartyTicket.get_num_tickets_paid()
 
-    appstruct = {
-        'firstname': 'Alexander',
-        'lastname': 'Blum',
-        'email': 'alexander.blum@c3s.cc'
-    }
-    request.session['appstruct_preset'] = appstruct
-    #6SPXTXZ7A3
+    # testing
+    if 'appstruct' not in request.session:
+        appstruct = {
+            'firstname': 'Alexander',
+            'lastname': 'Blum',
+            'email': 'alexander.blum@c3s.cc',
+            'token': '6SPXTXZ7A3'
+        }
+        request.session['appstruct_preset'] = appstruct
+    else:
+        appstruct = request.session['appstruct']
+    # /testing
 
-    @colander.deferred
-    def deferred_missing_firstname(node, kw):
-        try:
-            return request.session['appstruct_preset']['firstname']
-        except:
-            return 'foo'
-
-    @colander.deferred
-    def deferred_missing_lastname(node, kw):
-        try:
-            return request.session['appstruct_preset']['lastname']
-        except:
-            return 'bar'
-
-    @colander.deferred
-    def deferred_missing_email(node, kw):
-        try:
-            return request.session['appstruct_preset']['email']
-        except:
-            return 'moo'
-
-    class PersonalData(colander.MappingSchema):
-        """
-        colander schema for membership application form
-        """
-        locale_name = get_locale_name(request)
-        firstname = colander.SchemaNode(
-            colander.String(),
-            title=_(u"Vorame"),
-            widget=deform.widget.TextInputWidget(readonly=True),
-            missing=deferred_missing_firstname,
-            oid="firstname",
-        )
-        lastname = colander.SchemaNode(
-            colander.String(),
-            title=_(u"Nachname"),
-            widget=deform.widget.TextInputWidget(readonly=True),
-            missing=deferred_missing_lastname,
-            oid="lastname",
-        )
-        email = colander.SchemaNode(
-            colander.String(),
-            title=_(u'Email'),
-            widget=deform.widget.TextInputWidget(readonly=True),
-            missing=deferred_missing_email,
-            oid="email",
-        )
-        # password = colander.SchemaNode(
-        #     colander.String(),
-        #     validator=colander.Length(min=3, max=100),
-        #     widget=deform.widget.PasswordWidget(size=20),
-        #     title=_(u"Password (to protect access to your data)"),
-        #     description=_("We need a password to protect your data. After "
-        #                   "verifying your email you will have to enter it."),
-        #     oid="password",
-        # )
-        comment = colander.SchemaNode(
-            colander.String(),
-            title=_("Kommentare"),
-            missing='',
-            validator=colander.Length(max=250),
-            widget=deform.widget.TextAreaWidget(rows=3, cols=50),
-            description=_(u"Raum für Kommentare (255 Zeichen)"),
-            oid="comment",
-        )
-        _LOCALE_ = colander.SchemaNode(
-            colander.String(),
-            widget=deform.widget.HiddenWidget(),
-            default=locale_name
-        )
-
-    # num_ticket_options = (
-    #     ('10', _(u'10 tickets')),
-    #     ('9', _(u'9 tickets')),
-    #     ('8', _(u'8 tickets')),
-    #     ('7', _(u'7 tickets')),
-    #     ('6', _(u'6 tickets')),
-    #     ('5', _(u'5 tickets')),
-    #     ('4', _(u'4 tickets')),
-    #     ('3', _(u'3 tickets')),
-    #     ('2', _(u'2 tickets')),
-    #     ('1', _(u'1 tickets')),
-    #     #('0', _(u'no ticket')),
-    # )
-    ticket_type_options = (
-        ('ticket_gv', _(u'Teilnahme an der Generalversammlung (€0)')),
-        ('ticket_bc', _(u'Teilnahme am Barcamp (€9)')),
-        ('ticket_bc_buffet', _(u'Buffet beim Barcamp (€8,50)')),
-        ('ticket_tshirt', _(u'T-Shirt (€25)')),
-        ('ticket_all', _(u'All-Inclusive-Paket (€40)'))
-    )
-
-    class PartyTickets(colander.MappingSchema):
-
-        ticket_type = colander.SchemaNode(
-            colander.Set(),
-            title=_(u"Ich reise in der folgenden Kategorie:"),
-            #description=_(
-            #    u'Du kannst uns mit dem Kauf von Tickets unterstützen. '
-            #    u'Überschüsse fliessen in die Büroausstattung.'),
-            #default="1",
-            widget=deform.widget.CheckboxChoiceWidget(
-                size=1, css_class='ticket_types_input',
-                values=ticket_type_options,
-                #inline=True
-            ),
-            oid="ticket_type"
-        )
-        # num_tickets = colander.SchemaNode(
-        #     colander.Integer(),
-        #     title=_(u"Ich nehme die folgende Anzahl von Tickets"),
-        #     description=_(
-        #         u'Du kannst zwischen 1 und 10 Tickets bestellen. '
-        #         u'Die Kosten variieren je nach Ticket-Kategorie.'),
-        #     default="1",
-        #     widget=deform.widget.SelectSliderWidget(
-        #         #size=3, css_class='num_tickets_input',
-        #         values=num_ticket_options),
-        #     validator=colander.Range(
-        #         min=1,
-        #         max=10,
-        #         min_err=_(u"Du brauchst mindestens ein Ticket, "
-        #                   u"um die Reise anzutreten."),
-        #         max_err=_(u"Höchstens 10 Tickets. (viel los!)"),
-        #     ),
-        #     oid="num_tickets")
-
-    class TicketForm(colander.Schema):
-        """
-        The Form consists of
-        - Personal Data
-        - Ticketing Information
-        - FoodInfo
-        """
-        person = PersonalData(
-            title=_(u"Persönliche Daten"),
-            #description=_(u"this is a test"),
-            #css_class="thisisjustatest"
-        )
-        ticket_info = PartyTickets(
-            title=_(u"Ticketinformationen")
-        )
-        #shares = FoodInfo(
-        #    title=_(u"Food Stamps")
-        #)
-
-    schema = TicketForm().bind()
+    schema = ticket_schema(request, appstruct)
 
     form = deform.Form(
         schema,
@@ -275,7 +558,9 @@ def party_view(request):
         #print "found appstruct!"
         #print "the appstruct: {}".format(request.session['appstruct_preset'])
         appstruct = {}
-        appstruct['person'] = {
+        appstruct['ticket'] = {
+            'token': request.session[
+                'appstruct_preset']['token'],
             'firstname': request.session[
                 'appstruct_preset']['firstname'],
             'lastname': request.session[
@@ -306,7 +591,7 @@ def party_view(request):
                 print(u"the thing: %s") % thing
                 print(u"type: %s") % type(thing)
 
-        except ValidationFailure, e:
+        except ValidationFailure, e:            
             print(e)
             request.session.flash(
                 _(u"Please note: There were errors, "
@@ -315,10 +600,9 @@ def party_view(request):
                 allow_duplicate=False)
             return{
                 'form': e.render(),
-                '_num_tickets': _num_tickets,
-                '_num_tickets_paid': _num_tickets_paid,
-                'firstname': "2DO:VORNAME",
-                'lastname': "2DO:NACHNAME"
+                'firstname': appstruct['ticket']['firstname'],
+                'lastname': appstruct['ticket']['lastname'],
+                'email': appstruct['ticket']['email']
             }
 
         # make confirmation code
@@ -326,8 +610,8 @@ def party_view(request):
 
         # map option to price
         the_values = {
-            'ticket_gv': 0,
-            'ticket_bc': 9,
+            'ticket_gv_attendance': 0,
+            'ticket_bc_attendance': 9,
             'ticket_bc_buffet': 8.5,
             'ticket_tshirt': 25,
             'ticket_all': 40,
@@ -339,59 +623,75 @@ def party_view(request):
         }
 
         # option 'all' equivalent to all options checked
-        all_options = set([
-            'ticket_gv',
-            'ticket_bc',
-            'ticket_bc_buffet',
-            'ticket_tshirt'
-        ])
-        checked_options = appstruct['ticket_info']['ticket_type']
+        if appstruct['ticket']['ticket_gv'] == 1 \
+            and set(['attendance', 'buffet']).issubset(
+                appstruct['ticket']['ticket_bc']
+            ) \
+            and appstruct['ticket']['ticket_tshirt']:
+            appstruct['ticket']['ticket_all'] = True
+
+        # ensure options equivalent to option 'all'
+        if appstruct['ticket']['ticket_all']:
+            appstruct['ticket']['ticket_gv'] = 1
+            appstruct['ticket']['ticket_tshirt'] = True
+            appstruct['ticket']['ticket_bc'].add('attendance')
+            appstruct['ticket']['ticket_bc'].add('buffet')
+
+        # bc: buffet only when attended
+        if 'attendance' not in appstruct['ticket']['ticket_bc']:
+            appstruct['ticket']['ticket_bc'].discard('buffet')
 
         # calculate the total sum and discount
         print("calculate the total sum and discount")
         _the_total = 0
         _discount = 0
-        if 'ticket_all' in checked_options \
-           or all_options.issubset(checked_options):
+        if appstruct['ticket']['ticket_all']:
             print("all active")
             _discount = the_discounts.get('ticket_all')
             _the_total = the_values.get('ticket_all')
-            appstruct['ticket_info']['ticket_type'] = set([
-                'ticket_gv',
-                'ticket_bc',
-                'ticket_bc_buffet',
-                'ticket_tshirt',
-                'discount'
-            ])
         else:
-            for option in checked_options:
-                _the_total += the_values.get(option)
+            if 'attendance' in appstruct['ticket']['ticket_bc']:
+                _the_total += the_values.get('ticket_bc_attendance')
+            if 'buffet' in appstruct['ticket']['ticket_bc']:
+                _the_total += the_values.get('ticket_bc_buffet')
+            if appstruct['ticket']['ticket_tshirt']:
+                _the_total += the_values.get('ticket_tshirt')
 
-        appstruct['ticket_info']['the_total'] = _the_total
+        appstruct['ticket']['the_total'] = _the_total
         print("_the_total: %s" % _the_total)
-        appstruct['ticket_info']['discount'] = _discount
+        appstruct['ticket']['discount'] = _discount
         print("_discount: %s" % _discount)
 
         # to store the data in the DB, an object is created
         ticket = PartyTicket(
+            token=request.session['appstruct_preset']['token'],
             firstname=request.session['appstruct_preset']['firstname'],
             lastname=request.session['appstruct_preset']['lastname'],
             email=request.session['appstruct_preset']['email'],
             password='',  # appstruct['person']['password'],
-            locale=appstruct['person']['_LOCALE_'],
+            locale=appstruct['ticket']['_LOCALE_'],
             email_is_confirmed=False,
             email_confirm_code=randomstring,
             date_of_submission=datetime.now(),
             num_tickets=1,
-            ticket_gv=('ticket_gv' in appstruct['ticket_info']['ticket_type']),
-            ticket_bc=('ticket_bc' in appstruct['ticket_info']['ticket_type']),
-            ticket_bc_buffet=('ticket_bc_buffet' in appstruct['ticket_info']['ticket_type']),
-            ticket_tshirt=('ticket_tshirt' in appstruct['ticket_info']['ticket_type']),
-            ticket_all=('ticket_all' in appstruct['ticket_info']['ticket_type']),
-            guestlist=False,
+            ticket_gv_attendance=appstruct['ticket']['ticket_gv'],
+            ticket_bc_attendance=('attendance' in appstruct['ticket']['ticket_bc']),
+            ticket_bc_buffet=('buffet' in appstruct['ticket']['ticket_bc']),
+            ticket_tshirt=appstruct['ticket']['ticket_tshirt'],
+            ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
+            ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
+            ticket_all=appstruct['ticket']['ticket_all'],
             discount=_discount,
             the_total=_the_total,
-            user_comment=appstruct['person']['comment'],
+            rep_firstname=appstruct['representation']['firstname'],
+            rep_lastname=appstruct['representation']['lastname'],
+            rep_street=appstruct['representation']['street'],
+            rep_zip=appstruct['representation']['zip'],
+            rep_city=appstruct['representation']['city'],
+            rep_country=appstruct['representation']['country'],
+            rep_type=appstruct['representation']['representation_type'],
+            guestlist=False,
+            user_comment=appstruct['ticket']['comment'],
         )
         dbsession = DBSession
         try:
@@ -409,7 +709,7 @@ def party_view(request):
         # first, store appstruct in session
         request.session['appstruct'] = appstruct
         request.session[
-            'appstruct']['_LOCALE_'] = appstruct['person']['_LOCALE_']
+            'appstruct']['_LOCALE_'] = appstruct['ticket']['_LOCALE_']
         #
         # empty the messages queue (as validation worked anyways)
         deleted_msg = request.session.pop_flash()
@@ -429,11 +729,13 @@ def party_view(request):
             appstruct = request.session['appstruct']
             #print("the appstruct: %s") % appstruct
             # pre-fill the form with the values from last time
-            appstruct['person'][
+            appstruct['ticket'][
+                'token'] = request.session['appstruct_preset']['firstname']
+            appstruct['ticket'][
                 'firstname'] = request.session['appstruct_preset']['firstname']
-            appstruct['person'][
+            appstruct['ticket'][
                 'lastname'] = request.session['appstruct_preset']['lastname']
-            appstruct['person'][
+            appstruct['ticket'][
                 'email'] = request.session['appstruct_preset']['email'],
 
             form.set_appstruct(appstruct)
@@ -441,10 +743,9 @@ def party_view(request):
     html = form.render()
     return {
         'form': html,
-        '_num_tickets': _num_tickets,
-        '_num_tickets_paid': _num_tickets_paid,
-        'firstname': appstruct['person']['firstname'],
-        'lastname': appstruct['person']['lastname']
+        'firstname': appstruct['ticket']['firstname'],
+        'lastname': appstruct['ticket']['lastname'],
+        'email': appstruct['ticket']['email']
     }
 
 
@@ -469,127 +770,22 @@ def confirm_view(request):
         #      "redirecting to sendmail-view")
         return HTTPFound(location=request.route_url('sendmail'))
 
-    class PersonalData(colander.MappingSchema):
-        """
-        colander schema for membership application form
-        """
-        locale_name = get_locale_name(request)
-        firstname = colander.SchemaNode(
-            colander.String(),
-            widget=deform.widget.TextInputWidget(readonly=True),  # read-only!
-            title=_(u"Vorame"),
-            oid="firstname",
-        )
-        lastname = colander.SchemaNode(
-            colander.String(),
-            widget=deform.widget.TextInputWidget(readonly=True),  # read-only!
-            title=_(u"Nachame"),
-            oid="lastname",
-        )
-        email = colander.SchemaNode(
-            colander.String(),
-            widget=deform.widget.TextInputWidget(readonly=True),  # read-only!
-            title=_(u'Email'),
-            validator=colander.Email(),
-            oid="email",
-        )
-        comment = colander.SchemaNode(
-            colander.String(),
-            widget=deform.widget.TextInputWidget(readonly=True),  # read-only!
-            title=_(u"Kommentar"),
-            #description=_("Please leave a message after the beep!"),
-            oid="comment",
-        )
+    schema = ticket_schema(request, request.session['appstruct'], readonly=True)
 
-    class PartyTickets(colander.MappingSchema):
-
-        ticket_type_options = (
-            ('ticket_gv', _(u'Teilnahme an der Generalversammlung (€0)')),
-            ('ticket_bc', _(u'Teilnahme am Barcamp (€9)')),
-            ('ticket_bc_buffet', _(u'Buffet beim Barcamp (€8,50)')),
-            ('ticket_tshirt', _(u'T-Shirt (€25)')),
-            ('discount', _(u'Rabatt (€-2,5)'))
-        )
-
-        ticket_type = colander.SchemaNode(
-            colander.Set(),
-            title=_(u"Ich wähle folgende Ticket-Option:"),
-            description=_(
-                u'Wir danken für die Unterstützung.'),
-            default=set(),
-            widget=deform.widget.CheckboxChoiceWidget(
-                readonly=True,
-                size=1, css_class='ticket_types_input',
-                values=ticket_type_options,
-                #inline=True
-            ),
-            oid="ticket_type"
-        )
-        # num_tickets = colander.SchemaNode(
-        #     colander.Integer(),
-        #     title=_(u"Ich möchte diese Anzahl Tickets:"),
-        #     default="1",
-        #     widget=deform.widget.TextInputWidget(
-        #         inline=True,
-        #         readonly=True),  # read-only!
-        #     oid="num_tickets"
-        # )
-
-        the_total = colander.SchemaNode(
-            colander.Decimal(),
-            widget=deform.widget.MoneyInputWidget( #2DO: anzeige als geldwert
-                readonly=True,
-                options={
-                    'symbol':'€',
-                    'showSymbol':True,
-                    'symbolStay':True
-                }
-            ),  
-            #default=str(
-            #    request.session['appstruct']['ticket_info']['the_total']
-            #) + u"&euro;",
-            title=_(u"Die Summe"),
-            description=_(
-                u'Deine Bestellung muss spätestens bis zum 18.08.2014 vollständig bezahlt sein'
-                u'(Zahlungseingang auf unserem Konto).'
-                u'Andernfalls müssen wir die gesamte Bestellung stornieren.'
-                u'Die Zahlung erfolgt ausschließlich per Banküberweisung.'
-                u'Die Zahlungsinformationen werden dir per Email zugeschickt.'),
-            oid="summe",
-        )
-
-    class TicketForm(colander.Schema):
-        """
-        The Form consists of
-        - Personal Data
-        - Ticketing Information
-        - FoodInfo
-        """
-        person = PersonalData(
-            title=_(u"Persönliche Daten"),
-            #description=_(u"this is a test"),
-            #css_class="thisisjustatest"
-        )
-        ticket_info = PartyTickets(
-            title=_(u"Ticket Informationen")
-        )
-
-    ro_schema = TicketForm()
-
-    ro_form = deform.Form(
-        ro_schema,
+    form = deform.Form(
+        schema,
         buttons=[
             deform.Button('sendmail',
                           _(u'Ja, schick mir eine Email!')),
             deform.Button('reedit',
                           _(u'Warte, ich will nochmal ändern...'))
         ],
-        use_ajax=True,
+        #use_ajax=True,
         renderer=zpt_renderer
     )
 
     return {
-        'readonlyform': ro_form.render(
+        'readonlyform': form.render(
             appstruct=request.session['appstruct'])}
 
 
@@ -612,39 +808,42 @@ def sendmail_view(request):
         the_mail_body = \
 u'''Hallo %s %s !
 
-Wir haben Deine Ticketbestellung erhalten. Bitte überweise jetzt
+Wir haben Deine Ticketbestellung erhalten. Bitte überweise
             %s Euro
-auf unser Konto bei der
+auf unser Konto:
 
-EthikBank eG
+Bank: EthikBank eG
 Kontoinhaber: C3S SCE
-Betrag (€): %s
-Verwendungszweck: Party %s
+Betrag: € %s
+Verwendungszweck: Versammlung und Barcamp2014 %s
 BIC:\t GENO DE F1 ETK
-IBAN:\t DE79830944950003264378
+IBAN:\t DE79 8309 4495 0003 2643 78
 oder
 Kontonummer: 3264378
 BLZ: 83094495
 
-Sobald wir den Eingang der Zahlung bemerken, schicken wir Dir eine Email mit
-dem (oder den) Ticket(s).
+Sobald Deine Zahlung auf unserem Konto eingeht, schicken wir Dir eine Email 
+mit dem (oder den) Ticket(s) und ggf. den Gutscheinen für Deine weiteren 
+Bestellungen (Catering, T-Shirt). Deine Bestellung muss spätestens 
+zum 18. August vollständig bezahlt sein. Es gilt der Zahlungseingang 
+auf unserem Konto.
 
 
    Bis bald!
  
    Dein C3S-Team
 ''' % (
-        appstruct['person']['firstname'],
-        appstruct['person']['lastname'],
-        appstruct['ticket_info']['the_total'],
-        appstruct['ticket_info']['the_total'],
+        appstruct['ticket']['firstname'],
+        appstruct['ticket']['lastname'],
+        appstruct['ticket']['the_total'],
+        appstruct['ticket']['the_total'],
         appstruct['email_confirm_code']
     )
 
         the_mail = Message(
             subject=_(u"C3S Party-Ticket: bitte überweisen!"),
             sender="noreply@c3s.cc",
-            recipients=[appstruct['person']['email']],
+            recipients=[appstruct['ticket']['email']],
             body=the_mail_body
         )
 
@@ -654,30 +853,50 @@ dem (oder den) Ticket(s).
         from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
         # send mail to accountants
         acc_mail_body = \
-u'''name: %s %s
-email: %s
-code: %s
-gv?: %s
-gv+: %s
-bc?: %s
-bc+: %s
-tshirt: %s
-discount: %s
-total: %s
-komment: %s
+u'''MEMBER:
+  name: %s %s
+  email: %s
+  code: %s
+  ga attendance: %s
+  bc attendance: %s
+  bc buffet: %s
+  discount: %s
+  total: %s
+  comment: %s
+
+REPRESENTATION: %s
+  name: %s %s
+  street: %s
+  zip: %s
+  city: %s
+  country: %s
+  type: %s
+
+TSHIRT: %s
+  tshirt type: %s
+  tshirt size: %s
 ''' % (
-        appstruct['person']['firstname'],
-        appstruct['person']['lastname'],
-        appstruct['person']['email'],
+        appstruct['ticket']['firstname'],
+        appstruct['ticket']['lastname'],
+        appstruct['ticket']['email'],
         appstruct['email_confirm_code'],
-        ('tgv' in appstruct['ticket_info']['ticket_type']),
-        ('vgv' in appstruct['ticket_info']['ticket_type']),
-        ('tbc' in appstruct['ticket_info']['ticket_type']),
-        ('vbc' in appstruct['ticket_info']['ticket_type']),
-        ('tsh' in appstruct['ticket_info']['ticket_type']),
-        appstruct['ticket_info']['discount'],
-        appstruct['ticket_info']['the_total'],
-        appstruct['person']['comment'],
+        (appstruct['ticket']['ticket_gv']==1),
+        ('attendance' in appstruct['ticket']['ticket_bc']),
+        ('buffet' in appstruct['ticket']['ticket_bc']),
+        appstruct['ticket']['discount'],
+        appstruct['ticket']['the_total'],
+        appstruct['ticket']['comment'],
+        (appstruct['ticket']['ticket_gv']==2),
+        appstruct['representation']['firstname'],
+        appstruct['representation']['lastname'],
+        appstruct['representation']['street'],
+        appstruct['representation']['zip'],
+        appstruct['representation']['city'],
+        appstruct['representation']['country'],
+        appstruct['representation']['representation_type'],
+        appstruct['ticket']['ticket_tshirt'],
+        appstruct['tshirt']['tshirt_type'],
+        appstruct['tshirt']['tshirt_size'],
     )
         acc_mail = Message(
             subject=_('[C3S_PT] neues ticket'),
@@ -691,8 +910,10 @@ komment: %s
         # make the session go away
         request.session.invalidate()
         return {
-            'firstname': appstruct['person']['firstname'],
-            'lastname': appstruct['person']['lastname'],
+            'firstname': appstruct['ticket']['firstname'],
+            'lastname': appstruct['ticket']['lastname'],
+            'transaction': (appstruct['ticket']['the_total'] > 0),
+            'canceled': (appstruct['ticket']['ticket_gv'] == 3)
         }
     # 'else': send user to the form
     return HTTPFound(location=request.route_url('party'))

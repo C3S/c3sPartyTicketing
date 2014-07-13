@@ -14,41 +14,73 @@
   </tal:block>
   <tal:block metal:fill-slot="middle">
     <br><br><br><br>
-    <h1>Deine Bestellung bei der C3S SCE:</h1>
-    <h3>Bitte Email lesen und überweisen.</h3>
+    <div tal:condition="not canceled">
+      <h1>Deine Bestellung bei der C3S SCE:</h1>
+      <h3 tal:condition="transaction">Bitte Email lesen und überweisen.</h3>
+    </div>
+    <br />
   </tal:block>
-  <tal:block metal:fill-slot="bottom">
+  <tal:block metal:fill-slot="bottom" >
 
-    <h3><small>Hallo</small> ${firstname} ${lastname},</h3>
-    <p>
-      wir haben Dir eine Email geschickt.
-    </p>
-    <p>
-      Du solltest gleich eine Email bekommen von
-      <strong>noreply@c3s.cc</strong> mit dem Betreff
-      <strong>"C3S SCE Barcamp &amp; mehr: Deine Bestellung!"</strong>.
-      <br>
-      In dieser Email stehen die Informationen, die Du brauchst,
-      um das Geld für Deine Bestellung zu überweisen.
-      (Wichtig: <strong>Referenzcode</strong>!)
-    </p>
-    <p>
-      Sobald <strong>Deine Zahlung</strong> auf unserem Konto eingeht, 
-      schicken wir Dir eine Email mit dem (oder den) Ticket(s) und ggf.
-      den Gutscheinen für Deine weiteren Bestellungen (Catering, T-Shirt).
-      <br> 
-      Deine Bestellung muss <strong>spätestens zum 18. August</strong> vollständig bezahlt sein. 
-      Es gilt der Zahlungseingang auf unserem Konto.
-    </p>
-    <p>
-      Solltest du wider Erwarten keine E-Mail erhalten,
-      schreibe uns bitte eine E-Mail an <a href="mailto:info@c3s.cc">info@c3s.cc</a>.
-    </p>
-    <h2>Vielen Dank für Deine Bestellung der C3S-Tickets &amp; Goodies!</h2>
-    <h3>Das C3S-Team</h3>
+    <div class="alert alert-success">
+
+      <h3><small>Hallo</small> ${firstname} ${lastname},</h3>
+
+      <div tal:condition="canceled" style="color:#333;">
+        <br />
+        <p>
+          Du hast Deine Teilnahme an der Generalversammlung abgesagt.
+        </p>
+        <p>
+          Falls Du irrtümlich abgesagt hast oder Deine Entscheidung revidieren möchtest, 
+          melde Dich bitte bei uns unter <a href="mailto:office@c3s.cc">office@c3s.cc</a> .
+        </p>
+
+        <hr />
+        <h2 style="color:#666; margin-left:40px;">Bis zum nächsten Mal,</h2>
+        <h3 style="color:#999; margin-left:80px;">Das C3S-Team</h3>
+
+      </div>
+
+      <div tal:condition="not canceled" style="color:#333;"> 
+
+        <div tal:condition="transaction">
+          <p>
+            wir haben Dir eine Email geschickt.
+          </p>
+          <p>
+            Du solltest gleich eine Email bekommen von
+            <strong>noreply@c3s.cc</strong> mit dem Betreff
+            <strong>"C3S SCE Barcamp &amp; mehr: Deine Bestellung!"</strong>.
+            <br />
+            In dieser Email stehen die Informationen, die Du brauchst,
+            um das Geld für Deine Bestellung zu überweisen.
+            (Wichtig: <strong>Referenzcode</strong>!)
+          </p>
+          <p>
+            Sobald <strong>Deine Zahlung</strong> auf unserem Konto eingeht, 
+            schicken wir Dir eine Email mit dem (oder den) Ticket(s) und ggf.
+            den Gutscheinen für Deine weiteren Bestellungen (Catering, T-Shirt).
+            <br /> 
+            Deine Bestellung muss <strong>spätestens zum 18. August</strong> vollständig bezahlt sein. 
+            Es gilt der Zahlungseingang auf unserem Konto.
+          </p>
+          <p>
+            Solltest du wider Erwarten keine E-Mail erhalten,
+            schreibe uns bitte eine E-Mail an <a href="mailto:info@c3s.cc">info@c3s.cc</a>.
+          </p>
+        </div>
+
+        <hr />
+        <h2 style="color:#666; margin-left:40px;">Vielen Dank für Deine Bestellung der C3S-Tickets &amp; Goodies!</h2>
+        <h3 style="color:#999; margin-left:80px;">Das C3S-Team</h3>
+
+      </div>
+
+    </div>
     <hr />
-    <!-- Example row of columns -->
-    <div class="row">
+
+    <div class="row" tal:condition="not canceled">
           
 
       <div class="col-md-6">
@@ -124,11 +156,11 @@
           });
         </script>
 
-        <h2>23.08.2014 <small>14:00 - 18:00 Uhr<small> <span style="font-size:12px;">(Verlängerung möglich)</span></small></h2>
+        <h2>23.08.2014 <small>14:00 - 18:00 Uhr <span style="font-size:12px;">(Verlängerung möglich)</span></small></h2>
 
         <h2><small>Ort:</small> Millowitsch Theater <small>Köln</small></h2>
 
-        <span>Aachener Straße 5, Köln</span>
+        Aachener Straße 5, Köln
 
         <div class="visible-xs">
           <iframe width="425" height="350"

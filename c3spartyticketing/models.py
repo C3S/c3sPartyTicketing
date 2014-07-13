@@ -177,6 +177,7 @@ class PartyTicket(Base):
     __tablename__ = 'tickets'
     id = Column(Integer, primary_key=True)
     # person info
+    token = Column(Text)
     firstname = Column(Text)
     lastname = Column(Text)
     email = Column(Unicode(255))
@@ -189,17 +190,28 @@ class PartyTicket(Base):
     email_confirm_code = Column(Unicode(255), unique=True)
     # ticket info
     tcodes = Column(Unicode(255), unique=True)
-    num_tickets = Column(Integer)
+    num_tickets = Column(Integer, default=1)
     checked_persons = Column(Integer, default=0)
-    #ticket_type = Column(Integer)
-    ticket_gv = Column(Boolean, default=False)
-    ticket_bc = Column(Boolean, default=False)
+    ticket_gv_attendance = Column(Integer)
+    ticket_bc_attendance = Column(Boolean, default=False)
     ticket_bc_buffet = Column(Boolean, default=False)
     ticket_tshirt = Column(Boolean, default=False)
+    ticket_tshirt_type = Column(Integer)
+    ticket_tshirt_size = Column(Integer)
     ticket_all = Column(Boolean, default=False)
-    guestlist = Column(Boolean, default=False)
     discount = Column(Float)
     the_total = Column(Float)
+    # representation
+    rep_firstname = Column(Text, default='')
+    rep_lastname = Column(Text, default='')
+    rep_street = Column(Text, default='')
+    rep_zip = Column(Text, default='')
+    rep_city = Column(Text, default='')
+    rep_country = Column(Text, default='')
+    rep_type = Column(Integer)
+    # guestlist
+    guestlist = Column(Boolean, default=False)
+    # meta
     date_of_submission = Column(DateTime(), nullable=False)
     payment_received = Column(Boolean, default=False)
     payment_received_date = Column(
@@ -210,19 +222,28 @@ class PartyTicket(Base):
     user_comment = Column(Unicode(255))
     accountant_comment = Column(Unicode(255))
 
-    def __init__(self, firstname, lastname, email, password,
+    def __init__(self, token, firstname, lastname, email, password,
                  locale,
                  email_is_confirmed, email_confirm_code,
                  date_of_submission,
                  num_tickets,
-                 ticket_gv,
-                 ticket_bc,
+                 ticket_gv_attendance,
+                 ticket_bc_attendance,
                  ticket_bc_buffet,
                  ticket_tshirt,
+                 ticket_tshirt_type,
+                 ticket_tshirt_size,
                  ticket_all,
-                 guestlist,
                  discount,
                  the_total,
+                 rep_firstname,
+                 rep_lastname,
+                 rep_street,
+                 rep_zip,
+                 rep_city,
+                 rep_country,
+                 rep_type,
+                 guestlist,
                  user_comment,
                  payment_received=False
                  ):
@@ -230,14 +251,23 @@ class PartyTicket(Base):
         self.lastname = lastname
         self.email = email
         self.num_tickets = num_tickets
-        self.ticket_gv = ticket_gv
-        self.ticket_bc = ticket_bc
+        self.ticket_gv_attendance = ticket_gv_attendance
+        self.ticket_bc_attendance = ticket_bc_attendance
         self.ticket_bc_buffet = ticket_bc_buffet
         self.ticket_tshirt = ticket_tshirt
+        self.ticket_tshirt_type = ticket_tshirt_type
+        self.ticket_tshirt_size = ticket_tshirt_size
         self.ticket_all = ticket_all
-        self.guestlist = guestlist
         self.discount = discount
         self.the_total = the_total
+        self.rep_firstname = rep_firstname
+        self.rep_lastname = rep_lastname
+        self.rep_street = rep_street
+        self.rep_zip = rep_zip
+        self.rep_city = rep_city
+        self.rep_country = rep_country
+        self.rep_type = rep_type
+        self.guestlist = guestlist
         self.password = password
         self.last_password_change = datetime.now()
         self.locale = locale

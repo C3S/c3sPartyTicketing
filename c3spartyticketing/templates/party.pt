@@ -16,7 +16,7 @@
     <script type="text/javascript"
             src="${request.static_url('c3spartyticketing:static/countdown/countdown.js')}"></script>
     <script type="text/javascript"
-            src="${request.static_url('deform:static/scripts/deform.js')}"></script -->
+            src="${request.static_url('deform:static/scripts/deform.js')}"></script>
     <script src="${request.static_url('c3spartyticketing:static/ss/jquery-ui.js')}"></script>
     <link rel="stylesheet" type="text/css" media="screen" charset="utf-8"
           href="${request.static_url('c3spartyticketing:static/c3sM.css')}" />
@@ -24,30 +24,30 @@
 
   <tal:block metal:fill-slot="middle">
     <div class="jumbotron" class="visible-xs visible-sm hidden-md hidden-lg">
+
+      <h1 i18n:translate="">
+        <small>Hello</small> 
+        <span tal:content="firstname" /> <span tal:content="lastname" /> 
+        <small>&lt;${"".join(email)}&gt;*,</small>
+      </h1>
+
       <h1 i18n:translate="">
         <small>Get Your Ticket for the</small> C3S Barcamp and Assembly!
       </h1>
-
+      <div i18n:translate="" style="font-size:12px; margin-top:40px; color:#999;">
+        <strong>* Notice:</strong> In case you are not ${firstname} ${lastname} 
+        please email us at
+        <a href="mailto:office@c3s.cc" class="alert-link">office@c3s.cc</a> - thank you
+      </div>
     </div>
+
     <hr />
   </tal:block>
 
   <tal:block metal:fill-slot="bottom">
-    <!--
     <div class="row-fluid">
-      <h4>
-        <small>Stand der Dinge:</small>
-        ${_num_tickets} tickets bestellt (davon ${_num_tickets_paid} bezahlt)
-      </h4>
-    </div>
-    <hr />
-    -->
-    <!-- Example row of columns -->
-    <div class="row-fluid">
-
 
         <div class="row">
-
 
           <div class="col-md-6">
             <div class="alert alert-success">
@@ -122,11 +122,11 @@
               });
             </script>
 
-            <h2>23.08.2014 <small>14:00 - 18:00 Uhr<small> <span style="font-size:12px;">(Verlängerung möglich)</span></small></h2>
+            <h2>23.08.2014 <small>14:00 - 18:00 Uhr <span style="font-size:12px;">(Verlängerung möglich)</span></small></h2>
 
             <h2><small>Ort:</small> Millowitsch Theater <small>Köln</small></h2>
 
-            <span>Aachener Straße 5, Köln</span>
+            Aachener Straße 5, Köln
 
             <div class="visible-xs">
               <iframe width="425" height="350"
@@ -154,25 +154,89 @@
                 </a>
               </small>
             </div>
+
           </div>
         </div>
-
       </div>
-
-
-
+      
       <div class="row">
         <h3>Tickets</h3>
-        <div class="alert alert-info alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-          <strong>Hinweis: </strong>
-          Solltest Du nicht ${firstname} ${lastname} sein, melde uns den Fehler bitte unter
-          <a href="mailto:office@c3s.cc" class="alert-link">office@c3s.cc</a> - danke!
-        </div>
         <div tal:content="structure form">&nbsp;</div>
         <hr />
       </div>
+      <script type="text/javascript">
 
+        // hide/show representation
+        if( !$('#ticket_gv-1').is(':checked') ) {
+          $('#item-rep-type').closest('.panel-default').hide();
+        }
+        $('#ticket_gv-0, #ticket_gv-1, #ticket_gv-2').change(function() {
+          if( $('#ticket_gv-1').is(':checked') ) {
+            $('#item-rep-type').closest('.panel-default').show();
+          } else {
+            $('#item-rep-type').closest('.panel-default').hide();
+          }
+        })
+
+        // hide/show tshirt
+        if( !$('#ticket_tshirt').is(':checked') ) {
+          $('#item-tshirt-type').closest('.panel-default').hide();
+        }
+        $('#ticket_tshirt').change(function() {
+          if( $(this).is(':checked') ) {
+            $('#item-tshirt-type').closest('.panel-default').show();
+          } else {
+            $('#item-tshirt-type').closest('.panel-default').hide();
+          }
+        })
+
+        // bc: buffet only when attended
+        if( !$('#ticket_bc-0').is(':checked') ) {
+          $('#ticket_bc-1').prop('checked', false);
+          $('#ticket_bc-1').prop('disabled', true);
+        }
+        $('#ticket_bc-0').change(function() {
+          if( $(this).is(':checked') ) {
+            $('#ticket_bc-1').prop('disabled', false);
+          } else {
+            $('#ticket_bc-1').prop('checked', false);
+            $('#ticket_bc-1').prop('disabled', true);
+          }
+        })
+
+        // all-inclusive
+        $('#ticket_all').change(function() {
+          if( $(this).is(':checked') ) {
+            $('#ticket_gv-0').prop('checked', 'true').change();
+            $('#ticket_gv-0').prop('disabled', true);
+            $('#ticket_gv-1').prop('disabled', true);
+            $('#ticket_gv-2').prop('disabled', true);
+            $('#ticket_bc-0').prop('checked', true).change();
+            $('#ticket_bc-0').prop('disabled', true);
+            $('#ticket_bc-1').prop('checked', true).change();
+            $('#ticket_bc-1').prop('disabled', true);
+            $('#ticket_tshirt').prop('checked', true).change();
+            $('#ticket_tshirt').prop('disabled', true);
+          } else {
+            $('#ticket_gv-0').prop('disabled', false);
+            $('#ticket_gv-1').prop('disabled', false);
+            $('#ticket_gv-2').prop('disabled', false);
+            $('#ticket_bc-0').prop('disabled', false);
+            $('#ticket_bc-1').prop('disabled', false);
+            $('#ticket_tshirt').prop('disabled', false);
+          }
+        })
+        if( $('#ticket_all').is(':checked') ) {
+          $('#ticket_all').change()
+        }
+
+        // enable fields on submit
+        $('#deform').submit(function( event ) {
+          $('input').prop('disabled', false);
+        });
+
+
+      </script>
 
     </div>
   </tal:block>
