@@ -28,7 +28,11 @@
       <h1 i18n:translate="">
         <small>Hello</small> 
         <span tal:content="firstname" /> <span tal:content="lastname" /> 
+<<<<<<< Updated upstream
         <small>&lt;${email}&gt;,</small>
+=======
+        <small>&lt;${"".join(email)}&gt;,</small>
+>>>>>>> Stashed changes
       </h1>
 
       <h1 i18n:translate="">
