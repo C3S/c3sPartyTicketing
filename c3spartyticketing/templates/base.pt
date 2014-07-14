@@ -5,7 +5,7 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal">
   <head>
     <title i18n:translate="">C3S Event Ticketing</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <meta name="keywords" content="Ticketing for C3S SCE"/>
     <meta name="description" content="" />

@@ -22,7 +22,7 @@
     <div tal:condition="paid is True">      <!-- BEZAHLT -->
       <div class="row">
         <div class="col-md-2">
-          <img src="${request.static_url('c3spartyticketing:static/images/110px-Ampelmann_gruen.jpg')}">
+          <img src="${request.static_url('c3spartyticketing:static/images/110px-Ampelmann_gruen.jpg')}"/>
         </div>
         <div class="col-md-2">
           <p>
@@ -41,7 +41,7 @@
       <p>
         Nicht Bezahlt. <strong>${paid}</strong><br /> 
       </p>
-      <img src="${request.static_url('c3spartyticketing:static/images/110px-Ampelmann_rot.jpg')}">
+      <img src="${request.static_url('c3spartyticketing:static/images/110px-Ampelmann_rot.jpg')}"/>
       <div>
         <h2 i18n:translate="get your pdf">Zahlen, bitte!</h2>
         offener Betrag: <span style="color:red">${ticket.the_total} &euro;</span><br />
