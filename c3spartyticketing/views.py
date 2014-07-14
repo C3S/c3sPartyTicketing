@@ -801,62 +801,74 @@ def sendmail_view(request):
     """
     if 'appstruct' in request.session:
         appstruct = request.session['appstruct']
+    else:
+        return HTTPFound(location=request.route_url('party'))
 
-        # save ticketing info in DB
-        #   rather do it here than over in the confirm_view
-        #   because the information is still subject to change there,
-        #   so we get duplicates
+    ### email bodies
 
-        # send email
-        mailer = get_mailer(request)
-        the_mail_body = \
+    #######################################################################
+    usermail_with_transaction = \
+u'''Hello %s %s !
+
+we have received your ticket order. Please transfer the amount of
+
+            %s Euros
+
+to our bank account:
+
+Bank:             EthikBank eG
+Account holder:   C3S SCE
+Amount:           € %s
+Purpose of use:   Assembly and Barcamp2014 %s
+BIC:              GENO DE F1 ETK
+IBAN:             DE79 8309 4495 0003 2643 78
+
+As soon as we have received your payment we are going to send you an email 
+with your ticket(s) and your other vouchers (catering, t-shirt). Your order 
+has to be fully paid by 18th August 2014 latest. The date of entry of 
+payment on our account applies.
+
+    See you soon!
+
+    Your C3S Team
+''' % (
+    appstruct['ticket']['firstname'],
+    appstruct['ticket']['lastname'],
+    appstruct['ticket']['the_total'],
+    appstruct['ticket']['the_total'],
+    appstruct['email_confirm_code']
+)
+    
+    #######################################################################
+    usermail_without_transaction = \
 u'''Hallo %s %s !
 
-Wir haben Deine Ticketbestellung erhalten. Bitte überweise
-            %s Euro
-auf unser Konto:
-
-Bank: EthikBank eG
-Kontoinhaber: C3S SCE
-Betrag: € %s
-Verwendungszweck: Versammlung und Barcamp2014 %s
-BIC:\t GENO DE F1 ETK
-IBAN:\t DE79 8309 4495 0003 2643 78
-oder
-Kontonummer: 3264378
-BLZ: 83094495
-
-Sobald Deine Zahlung auf unserem Konto eingeht, schicken wir Dir eine Email 
-mit dem (oder den) Ticket(s) und ggf. den Gutscheinen für Deine weiteren 
-Bestellungen (Catering, T-Shirt). Deine Bestellung muss spätestens 
-zum 18. August vollständig bezahlt sein. Es gilt der Zahlungseingang 
-auf unserem Konto.
-
+Wir haben Deine Ticketbestellung erhalten. 
 
    Bis bald!
  
    Dein C3S-Team
 ''' % (
-        appstruct['ticket']['firstname'],
-        appstruct['ticket']['lastname'],
-        appstruct['ticket']['the_total'],
-        appstruct['ticket']['the_total'],
-        appstruct['email_confirm_code']
-    )
+    appstruct['ticket']['firstname'],
+    appstruct['ticket']['lastname']
+)
 
-        the_mail = Message(
-            subject=_(u"C3S Party-Ticket: bitte überweisen!"),
-            sender="noreply@c3s.cc",
-            recipients=[appstruct['ticket']['email']],
-            body=the_mail_body
-        )
+    #######################################################################
+    usermail_cancelled = \
+u'''Hallo %s %s !
 
-        #mailer.send(the_mail) #2DO: mails scharf stellen
-        print(the_mail_body.encode('utf-8'))
-        
-        from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
-        # send mail to accountants
-        acc_mail_body = \
+?
+
+   Bis bald!
+ 
+   Dein C3S-Team
+''' % (
+    appstruct['ticket']['firstname'],
+    appstruct['ticket']['lastname']
+)
+    
+    #######################################################################
+    accmail_body = \
 u'''MEMBER:
   name: %s %s
   email: %s
@@ -880,47 +892,67 @@ TSHIRT: %s
   tshirt type: %s
   tshirt size: %s
 ''' % (
-        appstruct['ticket']['firstname'],
-        appstruct['ticket']['lastname'],
-        appstruct['ticket']['email'],
-        appstruct['email_confirm_code'],
-        (appstruct['ticket']['ticket_gv']==1),
-        ('attendance' in appstruct['ticket']['ticket_bc']),
-        ('buffet' in appstruct['ticket']['ticket_bc']),
-        appstruct['ticket']['discount'],
-        appstruct['ticket']['the_total'],
-        appstruct['ticket']['comment'],
-        (appstruct['ticket']['ticket_gv']==2),
-        appstruct['representation']['firstname'],
-        appstruct['representation']['lastname'],
-        appstruct['representation']['street'],
-        appstruct['representation']['zip'],
-        appstruct['representation']['city'],
-        appstruct['representation']['country'],
-        appstruct['representation']['representation_type'],
-        appstruct['ticket']['ticket_tshirt'],
-        appstruct['tshirt']['tshirt_type'],
-        appstruct['tshirt']['tshirt_size'],
+    appstruct['ticket']['firstname'],
+    appstruct['ticket']['lastname'],
+    appstruct['ticket']['email'],
+    appstruct['email_confirm_code'],
+    (appstruct['ticket']['ticket_gv']==1),
+    ('attendance' in appstruct['ticket']['ticket_bc']),
+    ('buffet' in appstruct['ticket']['ticket_bc']),
+    appstruct['ticket']['discount'],
+    appstruct['ticket']['the_total'],
+    appstruct['ticket']['comment'],
+    (appstruct['ticket']['ticket_gv']==2),
+    appstruct['representation']['firstname'],
+    appstruct['representation']['lastname'],
+    appstruct['representation']['street'],
+    appstruct['representation']['zip'],
+    appstruct['representation']['city'],
+    appstruct['representation']['country'],
+    appstruct['representation']['representation_type'],
+    appstruct['ticket']['ticket_tshirt'],
+    appstruct['tshirt']['tshirt_type'],
+    appstruct['tshirt']['tshirt_size'],
+)
+
+    ### send mails
+    mailer = get_mailer(request)
+
+    ### send usermail
+    usermail_body = usermail_with_transaction
+    if (appstruct['ticket']['the_total'] == 0):
+        usermail_body = usermail_without_transaction
+    if (appstruct['ticket']['ticket_gv'] == 3):
+        usermail_body = usermail_cancelled
+    usermail_obj = Message(
+        subject=_(u"C3S Party-Ticket: bitte überweisen!"),
+        sender="noreply@c3s.cc",
+        recipients=[appstruct['ticket']['email']],
+        body=usermail_body
     )
-        acc_mail = Message(
-            subject=_('[C3S_PT] neues ticket'),
-            sender="noreply@c3s.cc",
-            recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
-            #body=encrypt_with_gnupg('''code: %s
-            body=acc_mail_body
-        )
-        #mailer.send(acc_mail) #2DO: mails scharf stellen
-        print(acc_mail_body.encode('utf-8'))
-        # make the session go away
-        request.session.invalidate()
-        return {
-            'firstname': appstruct['ticket']['firstname'],
-            'lastname': appstruct['ticket']['lastname'],
-            'transaction': (appstruct['ticket']['the_total'] > 0),
-            'canceled': (appstruct['ticket']['ticket_gv'] == 3)
-        }
-    # 'else': send user to the form
-    return HTTPFound(location=request.route_url('party'))
+    #mailer.send(usermail_obj) #2DO: mails scharf stellen
+    print(usermail_body.encode('utf-8'))
+    
+    ### send accmail
+    from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
+    accmail_obj = Message(
+        subject=_('[C3S_PT] neues ticket'),
+        sender="noreply@c3s.cc",
+        recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
+        #body=encrypt_with_gnupg('''code: %s
+        body=accmail_body
+    )
+    #mailer.send(accmail_obj) #2DO: mails scharf stellen
+    print(accmail_body.encode('utf-8'))
+
+    # make the session go away
+    request.session.invalidate()
+    return {
+        'firstname': appstruct['ticket']['firstname'],
+        'lastname': appstruct['ticket']['lastname'],
+        'transaction': (appstruct['ticket']['the_total'] > 0),
+        'canceled': (appstruct['ticket']['ticket_gv'] == 3)
+    }
 
 
 @view_config(route_name='get_ticket')

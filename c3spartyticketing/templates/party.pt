@@ -32,7 +32,7 @@
       </h1>
 
       <h1 i18n:translate="">
-        <small>Get Your Ticket for the</small> C3S Barcamp and Assembly!
+        <small>get your ticket for the</small> C3S Barcamp and General Assembly!
       </h1>
       <div i18n:translate="" style="font-size:12px; margin-top:40px; color:#999;">
         <strong>* Notice:</strong> In case you are not ${firstname} ${lastname} 
