@@ -49,7 +49,7 @@
       </tr>
       <tr>
         <td>Teilnahme Barcamp</td>
-        <td>${'Yes' if ticket.ticket_bc else "No"}</td>
+        <td>${'Yes' if ticket.ticket_bc_attendance else "No"}</td>
       </tr>
       <tr>
         <td>Buffet Barcamp</td>
@@ -57,7 +57,11 @@
       </tr>
       <tr>
         <td>Teilnahme Generalversammlung</td>
-        <td>${'Yes' if ticket.ticket_gv else "No"}</td>
+        <td>${'Yes' if ticket.ticket_gv_attendance == 1 else "No"}</td>
+      </tr>
+      <tr>
+        <td>Vertretung Generalversammlung</td>
+        <td>${'Yes' if ticket.ticket_gv_attendance == 2 else "No"}</td>
       </tr>
       <tr>
         <td>Event-T-Shirt</td>

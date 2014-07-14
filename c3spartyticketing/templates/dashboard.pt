@@ -56,8 +56,7 @@
               <td>vorname</td>
               <td>nachname</td>
               <td>email</td>
-              <td>tickets</td>
-              <td>GV?</td>
+              <td>GA?</td>
               <td>BC?</td>
               <td>BC+</td>
               <td>tshirt?</td>
@@ -75,14 +74,17 @@
 	      <td>${ticket.firstname}</td>
 	      <td>${ticket.lastname}</td>
 	      <td><a href="mailto:${ticket.email}">${ticket.email}</a></td>
-	      <td>${ticket.num_tickets}</td>
         <td>
-          <span tal:condition="ticket.ticket_gv" class="glyphicon glyphicon-ok" style="color:#090;"></span>
-          <span tal:condition="not ticket.ticket_gv" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+          <span tal:condition="ticket.ticket_gv_attendance == 1" 
+                class="glyphicon glyphicon-ok" style="color:#090;"></span>
+          <span tal:condition="ticket.ticket_gv_attendance == 2" 
+                class="glyphicon glyphicon-flag" style="color:#FFA500;"></span>
+          <span tal:condition="ticket.ticket_gv_attendance == 3" 
+                class="glyphicon glyphicon-remove" style="color:#700;"></span>
         </td>
         <td>
-          <span tal:condition="ticket.ticket_bc" class="glyphicon glyphicon-ok" style="color:#090;"></span>
-          <span tal:condition="not ticket.ticket_bc" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+          <span tal:condition="ticket.ticket_bc_attendance" class="glyphicon glyphicon-ok" style="color:#090;"></span>
+          <span tal:condition="not ticket.ticket_bc_attendance" class="glyphicon glyphicon-remove" style="color:#700;"></span>
         </td>
         <td>
           <span tal:condition="ticket.ticket_bc_buffet" class="glyphicon glyphicon-ok" style="color:#090;"></span>

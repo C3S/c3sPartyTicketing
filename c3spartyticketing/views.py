@@ -938,7 +938,8 @@ TSHIRT: %s
     accmail_obj = Message(
         subject=_('[C3S_PT] neues ticket'),
         sender="noreply@c3s.cc",
-        recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
+        #recipients=[request.registry.settings['c3spartyticketing.mail_rec']], #2DO: wieder ändern
+        recipients=[appstruct['ticket']['email']],
         #body=encrypt_with_gnupg('''code: %s
         body=accmail_body
     )
