@@ -68,9 +68,13 @@
               });
             </script>
 
+            <h2>&nbsp;</h2>
+
             <h2>22.08.2014 <small>12:00 - 20:00 Uhr</small></h2>
 
-            <h2><small>Ort:</small> C3S SCE HQ <small>Düsseldorf</small></h2>
+            <h2 style="margin-bottom:40px;"><small>Ort:</small> C3S SCE HQ <small>Düsseldorf</small></h2>
+
+            
 
             Alter Bahnhof, Heyestraße 194, Düsseldorf-Gerresheim
 
@@ -125,6 +129,8 @@
             <h2>23.08.2014 <small>14:00 - 18:00 Uhr <span style="font-size:12px;">(Verlängerung möglich)</span></small></h2>
 
             <h2><small>Ort:</small> Millowitsch Theater <small>Köln</small></h2>
+
+            <h2 style="margin-bottom:40px;"><small>Im Anschluss</small> Party <small>mit DJ im</small> CAMPI Volksbühne <small>nebenan!</small></h2>
 
             Aachener Straße 5, Köln
 
