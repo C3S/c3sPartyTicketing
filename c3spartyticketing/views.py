@@ -740,7 +740,7 @@ def party_view(request):
             appstruct['ticket'][
                 'lastname'] = request.session['appstruct_preset']['lastname']
             appstruct['ticket'][
-                'email'] = request.session['appstruct_preset']['email'],
+                'email'] = request.session['appstruct_preset']['email']
 
             form.set_appstruct(appstruct)
 

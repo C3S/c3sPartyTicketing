@@ -28,7 +28,7 @@
       <h1 i18n:translate="">
         <small>Hello</small> 
         <span tal:content="firstname" /> <span tal:content="lastname" /> 
-        <small>&lt;${"".join(email)}&gt;*,</small>
+        <small>&lt;${email}&gt;,</small>
       </h1>
 
       <h1 i18n:translate="">
@@ -38,6 +38,8 @@
         <strong>* Notice:</strong> In case you are not ${firstname} ${lastname} 
         please email us at
         <a href="mailto:office@c3s.cc" class="alert-link">office@c3s.cc</a> - thank you
+        <br />
+        Anmeldeschluss ist der 11.08.14
       </div>
     </div>
 
