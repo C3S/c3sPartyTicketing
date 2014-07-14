@@ -24,21 +24,21 @@
 
     <div class="alert alert-success">
 
-      <h3><small>Hallo</small> ${firstname} ${lastname},</h3>
+      <h3><small>Hello</small> ${firstname} ${lastname},</h3>
 
       <div tal:condition="canceled" style="color:#333;">
         <br />
         <p>
-          Du hast Deine Teilnahme an der Generalversammlung abgesagt.
+          you have cancelled your participation at the C3S General Assembly.
         </p>
         <p>
-          Falls Du irrtümlich abgesagt hast oder Deine Entscheidung revidieren möchtest, 
-          melde Dich bitte bei uns unter <a href="mailto:office@c3s.cc">office@c3s.cc</a> .
+          If you did cancel by mistake or you would like to decide the other way around <br />
+          please simply click again the personal link that came with the invitation mail.
         </p>
 
         <hr />
-        <h2 style="color:#666; margin-left:40px;">Bis zum nächsten Mal,</h2>
-        <h3 style="color:#999; margin-left:80px;">Das C3S-Team</h3>
+        <h2 style="color:#666; margin-left:40px;">See you soon,</h2>
+        <h3 style="color:#999; margin-left:80px;">Your C3S Team</h3>
 
       </div>
 

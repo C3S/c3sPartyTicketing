@@ -150,8 +150,8 @@ def ticket_schema(request, appstruct, readonly=False):
     )
 
     ticket_bc_options = (
-        ('attendance', _(u'Teilnahme am Barcamp (€9)')),
-        ('buffet', _(u'Buffet beim Barcamp (€8,50)'))
+        ('attendance', _(u'I will attend the BarCamp (€9)')),
+        ('buffet', _(u'I\'d like to dine from the BarCamp buffet (€8,50)'))
     )
 
     rep_type_options = (
@@ -550,7 +550,7 @@ def party_view(request):
     form = deform.Form(
         schema,
         buttons=[
-            deform.Button('submit', _(u'Absenden'))
+            deform.Button('submit', _(u'Submit'))
             #deform.Button('reset', _(u'Zurücksetzen'))
         ],
         #use_ajax=True,
