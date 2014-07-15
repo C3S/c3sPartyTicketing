@@ -152,7 +152,7 @@ def ticket_schema(request, appstruct, readonly=False):
 
     ticket_bc_options = (
         ('attendance', _(u'I will attend the BarCamp (€9)')),
-        ('buffet', _(u'I\'d like to dine from the BarCamp buffet (€8,50)'))
+        ('buffet', _(u'I\'d like to dine from the BarCamp buffet (€12)'))
     )
 
     ticket_support_options = (
@@ -243,7 +243,7 @@ def ticket_schema(request, appstruct, readonly=False):
                 readonly=readonly,
                 readonly_template='forms/checkbox_label.pt'
             ),
-            label="All-Inclusive-Paket (€40)",
+            label="All-Inclusive-Paket (€42)",
             missing='',
             description=_(
                 u'The all-inclusive package covers the participation in the BarCamp '
@@ -731,9 +731,9 @@ def party_view(request):
         the_values = {
             'ticket_gv_attendance': 0,
             'ticket_bc_attendance': 9,
-            'ticket_bc_buffet': 8.5,
+            'ticket_bc_buffet': 12,
             'ticket_tshirt': 25,
-            'ticket_all': 40,
+            'ticket_all': 42,
         }
 
         # map option to discount
