@@ -79,37 +79,58 @@ def ticket_schema(request, appstruct, readonly=False):
         #        print(u"  the thing2: %s") % thing2
         #        print(u"  type2: %s") % type(thing2)
 
-        # 2DO: herausfinden, wie man per klassenvalidator colander.Invalid ansprechen muss,
-        #      damit deform den error am richtigen ort platziert und die richtigen klassen vergibt
+        # 2DO: herausfinden, wie man per klassenvalidator colander.Invalid 
+        #      ansprechen muss, damit deform den error am richtigen ort 
+        #      platziert und die richtigen klassen vergibt
         exc = colander.Invalid(form)
         if value['ticket']['ticket_tshirt']:
             if not value['tshirt']['tshirt_type']:           
-                exc['tshirt'] = "Der Schnitt des T-Shirts muss angegeben werden."
+                exc['tshirt'] = _(
+                    u'Der Schnitt des T-Shirts muss angegeben werden.'
+                )
                 raise exc
             if not value['tshirt']['tshirt_size']:
-                exc['tshirt'] = "Die Größe des T-Shirts muss angegeben werden."
+                exc['tshirt'] = _(
+                    u'Die Größe des T-Shirts muss angegeben werden.'
+                )
                 raise exc
         if value['ticket']['ticket_gv'] == 2:
             if not value['representation']['firstname']:
-                exc['representation'] = "Der Vorname des/r Bevollmächtigten muss angegeben werden."
+                exc['representation'] = _(
+                    u'Der Vorname des/r Bevollmächtigten muss angegeben werden.'
+                )
                 raise exc
             if not value['representation']['lastname']:
-                exc['representation'] = "Der Nachname des/r Bevollmächtigten muss angegeben werden."
+                exc['representation'] = _(
+                    u'Der Nachname des/r Bevollmächtigten muss angegeben '
+                    u'werden.'
+                )
                 raise exc
             if not value['representation']['street']:
-                exc['representation'] = "Die Straße des/r Bevollmächtigten muss angegeben werden."
+                exc['representation'] = _(
+                    u'Die Straße des/r Bevollmächtigten muss angegeben werden.'
+                )
                 raise exc
             if not value['representation']['zip']:
-                exc['representation'] = "Die Plz des/r Bevollmächtigten muss angegeben werden."
+                exc['representation'] = _(
+                    u'Die Plz des/r Bevollmächtigten muss angegeben werden.'
+                )
                 raise exc
             if not value['representation']['city']:
-                exc['representation'] = "Die Stadt des/r Bevollmächtigten muss angegeben werden."
+                exc['representation'] = _(
+                    u'Die Stadt des/r Bevollmächtigten muss angegeben werden.'
+                )
                 raise exc
             if not value['representation']['country']:
-                exc['representation'] = "Das Land des/r Bevollmächtigten muss angegeben werden."
+                exc['representation'] = _(
+                    u'Das Land des/r Bevollmächtigten muss angegeben werden.'
+                )
                 raise exc
             if not value['representation']['representation_type']:
-                exc['representation'] = "Die Beziehung zu dem/r Bevollmächtigten muss angegeben werden."
+                exc['representation'] = _(
+                    u'Die Beziehung zu dem/r Bevollmächtigten muss angegeben '
+                    u'werden.'
+                )
                 raise exc
 
     ### deferred
@@ -145,14 +166,17 @@ def ticket_schema(request, appstruct, readonly=False):
     ### options
     
     ticket_gv_options = (
-        (1, _(u'Ich werde an der Generalversammlung teilnehmen')),
-        (2, _(u'Ich werde an der Generalversammlung nicht persönlich teilnehmen, sondern lasse mich vertreten')),
-        (3, _(u'Ich werde an der Generalversammlung nicht teilnehmen'))
+        (1, _(u'I will attend the C3S SCE General Assembly.')),
+        (2, _(
+            u'I will not attend the C3S SCE General Assembly personally. '
+            u'I will be represented by an authorized person.'
+        )),
+        (3, _(u'I will not attend the C3S SCE General Assembly.'))
     )
 
     ticket_bc_options = (
-        ('attendance', _(u'I will attend the BarCamp (€9)')),
-        ('buffet', _(u'I\'d like to dine from the BarCamp buffet (€12)'))
+        ('attendance', _(u'I will attend the BarCamp. (€9)')),
+        ('buffet', _(u'I\'d like to dine from the BarCamp buffet. (€12)'))
     )
 
     ticket_support_options = (
@@ -190,7 +214,7 @@ def ticket_schema(request, appstruct, readonly=False):
         locale_name = get_locale_name(request)
         ticket_gv = colander.SchemaNode(
             colander.Integer(),
-            title=_(u"Generalversammlung:"),
+            title=_(u"General Assembly:"),
             widget=deform.widget.RadioChoiceWidget(
                 size=1, css_class='ticket_types_input',
                 values=ticket_gv_options,
@@ -209,7 +233,8 @@ def ticket_schema(request, appstruct, readonly=False):
             missing='',
             description=_(
                 u'The buffet consists of e.g., salads, vegetables, dips, '
-                u'chese and meat platters. A free drink is included.'),
+                u'cheese and meat platters. A free drink is included.'
+            ),
             oid="ticket_bc"
         )
         if readonly:
@@ -226,10 +251,13 @@ def ticket_schema(request, appstruct, readonly=False):
             label="T-Shirt (€25)",
             missing='',
             description=_(
-                u'There will be one joint T-shirt design for both events in C3S green, '
-                u'black and white. Exclusively for participants, available only if pre-ordered! '
-                u'You can collect your pre-ordered T-shirt at both the BarCamp '
-                u'and the general assembly.'),
+                u'There will be one joint T-shirt design for both events in '
+                u'C3S green, black and white. Exclusively for participants, '
+                u'available only if pre-ordered! You can collect your '
+                u'pre-ordered T-shirt at both the BarCamp and the general '
+                u'assembly. If you chose to order a shirt, '
+                u'you can specify its size below.'
+            ),
             oid="ticket_tshirt"
         )
         if readonly:
@@ -243,17 +271,19 @@ def ticket_schema(request, appstruct, readonly=False):
                 readonly=readonly,
                 readonly_template='forms/checkbox_label.pt'
             ),
-            label="All-Inclusive-Paket (€42)",
+            label="All-Inclusive (€42)",
             missing='',
             description=_(
-                u'The all-inclusive package covers the participation in the BarCamp '
-                u'(including buffet and free drink), participation in the general '
-                u'assembly, and the exclusive event T-shirt as well.'),
+                u'The all-inclusive package covers the participation in the '
+                u'Barcamp (including buffet and free drink), participation '
+                u'in the general assembly, and the exclusive event t-shirt as '
+                u'well.'
+            ),
             oid="ticket_all"
         )
         if readonly:
             ticket_all.description = None
-            ticket_all.label = "All-Inclusive-Paket Rabatt (-€2,50)"
+            ticket_all.label = _(u"All-Inclusive Discount (-€2,50)")
             if not appstruct['ticket']['ticket_all']:
                 ticket_all = None
         ticket_support  = colander.SchemaNode(
@@ -268,7 +298,8 @@ def ticket_schema(request, appstruct, readonly=False):
             description=_(
                 u'These ticket options are selectable indepently from the '
                 u'other options. They help the cooperative a great deal to '
-                u'bear the costs occasioned by the events.'),
+                u'bear the costs occasioned by the events.'
+            ),
             oid="ticket_support"
         )
         if readonly:
@@ -282,25 +313,26 @@ def ticket_schema(request, appstruct, readonly=False):
                     readonly=readonly,
                     readonly_template="forms/textinput_money.pt",
                 ),
-                title=_(u"Gesamtbetrag"),
+                title=_(u"Total"),
                 description=_(
-                    u'Deine Bestellung muss spätestens bis zum 18.08.2014 vollständig bezahlt sein '
-                    u'(Zahlungseingang auf unserem Konto). '
-                    u'Andernfalls müssen wir die gesamte Bestellung stornieren. '
-                    u'Die Zahlung erfolgt ausschließlich per Banküberweisung. '
-                    u'Die Zahlungsinformationen werden dir per Email zugeschickt.'),
+                    u'Your order has to be fully paid by 18.08.2014 at the '
+                    u'latest (payment receipt on our account applies)'
+                    u'Otherwise we will have to cancel the entire order. Money '
+                    u'transfer is the only payment method. Payment '
+                    u'informations will be sent to you shortly by e-mail.'
+                ),
                 oid="the-total",
             )
         comment = colander.SchemaNode(
             colander.String(),
-            title=_("Kommentare"),
+            title=_(u"Notes"),
             missing='',
             validator=colander.Length(max=250),
             widget=deform.widget.TextAreaWidget(
                 rows=3, cols=50,
                 readonly=readonly
             ),
-            description=_(u"Raum für Kommentare (255 Zeichen)"),
+            description=_(u"Your notes (255 chars)"),
             oid="comment",
         )
         if readonly:
@@ -451,7 +483,7 @@ def ticket_schema(request, appstruct, readonly=False):
 ''',
             oid='rep-note'
         )
-        note_bottom.missing=note_bottom.default # otherwise empty on redit
+        note_bottom.missing=note_bottom.default # otherwise empty on reedit
         if readonly:
             note_bottom = None
 
@@ -492,7 +524,7 @@ def ticket_schema(request, appstruct, readonly=False):
         - Tshirt Data
         """
         ticket = TicketData(
-            title=_(u"Ticketinformationen"),
+            title=_(u"Ticket Information"),
             oid="ticket-data"
         )
         representation = RepresentationData(
@@ -621,11 +653,7 @@ def party_view(request):
         try:
             if isinstance(_ticket, PartyTicket):  # we have info in the DB, so we load it
                 appstruct['ticket']['ticket_gv'] = _ticket.ticket_gv_attendance
-                #print "---------the attendance option: {}".format(_ticket.ticket_gv_attendance)
-                #print "---------the attendance option type: {}".format(
-                #    type(_ticket.ticket_gv_attendance))
                 if _ticket.ticket_gv_attendance is 2:
-                    #print "yes, 2!"
                     appstruct['representation'] = {}
                     appstruct['representation']['firstname'] = _ticket.rep_firstname
                     appstruct['representation']['lastname'] = _ticket.rep_lastname
@@ -634,7 +662,6 @@ def party_view(request):
                     appstruct['representation']['city'] = _ticket.rep_city
                     appstruct['representation']['country'] = _ticket.rep_country
                     appstruct['representation']['representation_type'] = _ticket.rep_type
-                    print "----- representation type: {}".format(_ticket.rep_type)
                 appstruct['ticket']['ticket_bc'] = []
                 if _ticket.ticket_bc_attendance:
                     appstruct['ticket']['ticket_bc'].append ('attendance')
@@ -983,9 +1010,9 @@ def confirm_view(request):
         schema,
         buttons=[
             deform.Button('sendmail',
-                          _(u'Ja, schick mir eine Email!')),
+                          _(u'Yes, please send me the e-mail!')),
             deform.Button('reedit',
-                          _(u'Warte, ich will nochmal ändern...'))
+                          _(u'Wait, I might have to change...'))
         ],
         #use_ajax=True,
         renderer=zpt_renderer

@@ -4,8 +4,7 @@
      i18n:domain="deform"
      tal:condition="cstruct == true_val">
   <p class="deform-readonly-true form-control-static" 
-       id="${oid}"
-       i18n:translate="">
+       id="${oid}">
     <span tal:condition="hasattr(field, 'schema') and hasattr(field.schema, 'label')"
       tal:replace="field.schema.label" class="checkbox-label" >
     </span>
