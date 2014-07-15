@@ -42,7 +42,7 @@ def make_qr_code_pdf(_ticket, _url):
     _img = qrcode.make(_url)  # the qr-code image, unsaved
 
     use_pdf = {
-        'bcgv': 'c3spartyticketing/pdftk/C3S_Ticket_BCGV.pdf'
+        'bcgv': '/home/ticketing/c3sPartyTicketing/c3spartyticketing/pdftk/C3S_Ticket_BCGV.pdf'
     }
 
     _pdf_to_use = use_pdf['bcgv']
@@ -65,7 +65,7 @@ def make_qr_code_pdf(_ticket, _url):
     # when combined with ticket PDF
     #
     _caption_code = str(
-        'caption:' + _ticket.email_confirm_code
+        'Caption:' + _ticket.email_confirm_code
         )
     subprocess.check_call(
         ['convert',

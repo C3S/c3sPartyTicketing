@@ -519,6 +519,33 @@ def load_user(request):
     _email = request.matchdict['email']  # XXX use it for sth?
     #print u"the token: {}".format(_token)
     #print u"the email: {}".format(_email)
+    
+    # try to find the users ticket in the tickets DB
+    #try:
+    _ticket = PartyTicket.get_by_token(_token)
+    try:
+        print "tried getting an instance from the DB: type: {}".format(
+            type(_ticket))
+        assert isinstance(_ticket, PartyTicket)
+        print "found a valid instance! its id: {}".format(_ticket.id)
+        _id = _ticket.id
+        appstruct = {
+            'firstname': _ticket.firstname,
+            'lastname': _ticket.lastname,
+            'email': _ticket.email,
+            'token': _token,
+            'id': _ticket.id,
+            }
+        assert(_ticket.email == _email)
+        print "found a valid instance with matching email!"
+        request.session['appstruct_preset'] = appstruct
+        return HTTPFound(location=request.route_url('party'))
+
+    except:
+        print "nothing found in DB; loading from MGV API"
+        pass
+
+    #get the info from the membership app
     data = json.dumps({"token": _token})
     _auth_header = {
         'X-Messaging-Token': request.registry.settings['yes_auth_token']
@@ -536,7 +563,8 @@ def load_user(request):
             'firstname': res.json()['firstname'],
             'lastname': res.json()['lastname'],
             'email': res.json()['email'],
-            'token': data
+            'token': _token,
+            'id': 'None',
         }
         assert(res.json()['email'] == _email)
         request.session['appstruct_preset'] = appstruct
@@ -554,23 +582,42 @@ def party_view(request):
     #_num_tickets_paid = PartyTicket.get_num_tickets_paid()
 
     if 'appstruct' not in request.session:
+        print "no appstruct in session"
+        # if we dont have data supplied in the session
+        # look for a preset from the load_user view
         if 'appstruct_preset' in request.session:
+            print "we have a preset appstruct from loading a user"
             appstruct = request.session['appstruct_preset']
-        # testing
+            if 'id' in appstruct and appstruct['id'] is not 'None':
+                print "==== appstruct['id'] is {}".format(appstruct['id'])
+                _ticket = PartyTicket.get_by_id(appstruct['id'])
+                assert isinstance(_ticket, PartyTicket)
+                print "found a valid instance! its id: {}".format(appstruct['id'])
         else:
-            
-            appstruct = {
+            #return HTTPFound(location='https://yes.c3s.cc')
+            # testing
+            #
+            print "no appstruct; using test data"
+            _appstruct = {
                 'firstname': 'TestVorname',
                 'lastname': 'TestNachname',
                 'email': 'alexander.blum@c3s.cc',
                 'token': 'ATOKENTEST'
-            }
-            request.session['appstruct_preset'] = appstruct
-        # /testing
-    else:
-        appstruct = request.session['appstruct']
+                }
+            request.session['appstruct_preset'] = _appstruct
+            #request.session['appstruct'] = _appstruct
+            # /testing
 
-    schema = ticket_schema(request, appstruct)
+    elif 'appstruct' in request.session:
+        appstruct = request.session['appstruct']
+        print "got the appstruct from request.session['appstruct']: {}".format(
+            request.session['appstruct'])
+
+    #print "the appstruct: {}".format(appstruct)
+    try:
+        schema = ticket_schema(request, appstruct)
+    except:
+        schema = ticket_schema(request, {})
 
     form = deform.Form(
         schema,
@@ -597,10 +644,47 @@ def party_view(request):
             'email': request.session[
                 'appstruct_preset']['email'],
         }
-        form.set_appstruct(appstruct)
-        #request.session['appstruct_preset'] = {}  # delete/clear it now
+        try:
+            if isinstance(_ticket, PartyTicket):  # we have info in the DB, so we load it
+                appstruct['ticket']['ticket_gv'] = _ticket.ticket_gv_attendance
+                print "---------the attendance option: {}".format(_ticket.ticket_gv_attendance)
+                #print "---------the attendance option type: {}".format(
+                #    type(_ticket.ticket_gv_attendance))
+                if _ticket.ticket_gv_attendance is 2:
+                    #print "yes, 2!"
+                    appstruct['representation'] = {}
+                    appstruct['representation']['firstname'] = _ticket.rep_firstname
+                    appstruct['representation']['lastname'] = _ticket.rep_lastname
+                    appstruct['representation']['street'] = _ticket.rep_street
+                    appstruct['representation']['zip'] = _ticket.rep_zip
+                    appstruct['representation']['city'] = _ticket.rep_city
+                    appstruct['representation']['country'] = _ticket.rep_country
+                    appstruct['representation']['representation_type'] = _ticket.rep_type
+                    print "----- representation type: {}".format(_ticket.rep_type)
+                if _ticket.ticket_bc_attendance:
+                    appstruct['ticket']['ticket_bc'] = ['attendance']
+                    if _ticket.ticket_bc_buffet:
+                        appstruct['ticket']['ticket_bc'].append('buffet')
+                appstruct['ticket']['ticket_all'] = _ticket.ticket_all
+                appstruct['ticket']['comment'] = _ticket.user_comment
+                if _ticket.ticket_tshirt:
+                    appstruct['ticket']['ticket_tshirt'] = 1
+                #print "=== the shirt type: {}".format(_ticket.ticket_tshirt_type)
+                #print "=== the shirt size: {}".format(_ticket.ticket_tshirt_size)
+                appstruct['tshirt'] = {}
+                appstruct['tshirt']['tshirt_type'] = _ticket.ticket_tshirt_type
+                appstruct['tshirt']['tshirt_size'] = _ticket.ticket_tshirt_size
+            form.set_appstruct(appstruct)
+            # request.session['appstruct_preset'] = {}  # delete/clear it now
+        except:
+            pass
     else:
         return HTTPFound(location='https://yes.c3s.cc')
+
+    # XXX do something if we already have data in the DB...
+    # maybe load it for the form?
+    # at least be able to overwrite it when persisting
+
 
     # if the form has NOT been used and submitted, remove error messages if any
     if not 'submit' in request.POST:
@@ -633,6 +717,8 @@ def party_view(request):
                 'lastname': appstruct['ticket']['lastname'],
                 'email': appstruct['ticket']['email']
             }
+
+        # XXX load instance from DB or rather just save it straignt away?
 
         # make confirmation code
         randomstring = make_random_string()
@@ -738,16 +824,81 @@ def party_view(request):
             user_comment=appstruct['ticket']['comment'],
         )
         dbsession = DBSession
+        
         try:
-            print "about to add ticket"
-            dbsession.add(ticket)
-            print "adding ticket"
-            appstruct['email_confirm_code'] = randomstring  # XXX
-            #                                                 check duplicates
-        except InvalidRequestError, e:  # pragma: no cover
-            print("InvalidRequestError! %s") % e
-        except IntegrityError, ie:  # pragma: no cover
-            print("IntegrityError! %s") % ie
+            if isinstance(_ticket, PartyTicket):
+                in_DB = True
+        except:
+            in_DB = False
+
+        if in_DB:
+            ticket = _ticket
+            # just save those details that changed 
+            ticket.date_of_submission=datetime.now()
+            ticket.ticket_gv_attendance=appstruct['ticket']['ticket_gv']
+            ticket.ticket_bc_attendance=('attendance' in appstruct['ticket']['ticket_bc'])
+            ticket.ticket_bc_buffet=('buffet' in appstruct['ticket']['ticket_bc'])
+            ticket.ticket_tshirt=appstruct['ticket']['ticket_tshirt']
+            ticket.ticket_tshirt_type=appstruct['tshirt']['tshirt_type']
+            ticket.ticket_tshirt_size=appstruct['tshirt']['tshirt_size']
+            ticket.ticket_all=appstruct['ticket']['ticket_all']
+            ticket.discount=_discount
+            ticket.the_total=_the_total
+            ticket.rep_firstname=appstruct['representation']['firstname']
+            ticket.rep_lastname=appstruct['representation']['lastname']
+            ticket.rep_street=appstruct['representation']['street']
+            ticket.rep_zip=appstruct['representation']['zip']
+            ticket.rep_city=appstruct['representation']['city']
+            ticket.rep_country=appstruct['representation']['country']
+            ticket.rep_type=appstruct['representation']['representation_type']
+            ticket.guestlist=False
+            ticket.user_comment=appstruct['ticket']['comment']
+            DBSession.flush()  # save to DB
+            #  set the appstruct for further processing
+            appstruct['email_confirm_code'] = ticket.email_confirm_code
+        else:
+            # to store the data in the DB, an object is created
+            ticket = PartyTicket(
+                token=request.session['appstruct_preset']['token'],
+                firstname=request.session['appstruct_preset']['firstname'],
+                lastname=request.session['appstruct_preset']['lastname'],
+                email=request.session['appstruct_preset']['email'],
+                password='',  # appstruct['person']['password'],
+                locale=appstruct['ticket']['_LOCALE_'],
+                email_is_confirmed=False,
+                email_confirm_code=randomstring,
+                date_of_submission=datetime.now(),
+                num_tickets=1,
+                ticket_gv_attendance=appstruct['ticket']['ticket_gv'],
+                ticket_bc_attendance=('attendance' in appstruct['ticket']['ticket_bc']),
+                ticket_bc_buffet=('buffet' in appstruct['ticket']['ticket_bc']),
+                ticket_tshirt=appstruct['ticket']['ticket_tshirt'],
+                ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
+                ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
+                ticket_all=appstruct['ticket']['ticket_all'],
+                discount=_discount,
+                the_total=_the_total,
+                rep_firstname=appstruct['representation']['firstname'],
+                rep_lastname=appstruct['representation']['lastname'],
+                rep_street=appstruct['representation']['street'],
+                rep_zip=appstruct['representation']['zip'],
+                rep_city=appstruct['representation']['city'],
+                rep_country=appstruct['representation']['country'],
+                rep_type=appstruct['representation']['representation_type'],
+                guestlist=False,
+                user_comment=appstruct['ticket']['comment'],
+                )
+            dbsession = DBSession
+            try:
+                print "about to add ticket"
+                dbsession.add(ticket)
+                print "adding ticket"
+                appstruct['email_confirm_code'] = randomstring  # XXX
+                #                                                 check duplicates
+            except InvalidRequestError, e:  # pragma: no cover
+                print("InvalidRequestError! %s") % e
+            except IntegrityError, ie:  # pragma: no cover
+                print("IntegrityError! %s") % ie
 
         # redirect to success page, then return the PDF
         # first, store appstruct in session
@@ -974,24 +1125,23 @@ SUPPORTER TICKETS:
     usermail_obj = Message(
         subject=_(u"C3S Party-Ticket: bitte überweisen!"),
         sender="noreply@c3s.cc",
-        recipients=[appstruct['ticket']['email']],
+        #recipients=[appstruct['ticket']['email']],
+        recipients=['c@c3s.cc'],  # XXX fixme
         body=usermail_body
     )
-    #mailer.send(usermail_obj) #2DO: mails scharf stellen
-    print(usermail_body.encode('utf-8'))
+    mailer.send(usermail_obj)
+    #print(usermail_body.encode('utf-8'))
     
     ### send accmail
     from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
     accmail_obj = Message(
         subject=_('[C3S_PT] neues ticket'),
         sender="noreply@c3s.cc",
-        #recipients=[request.registry.settings['c3spartyticketing.mail_rec']], #2DO: wieder ändern
-        recipients=[appstruct['ticket']['email']],
-        #body=encrypt_with_gnupg('''code: %s
-        body=accmail_body
+        recipients=[request.registry.settings['c3spartyticketing.mail_rec']], #2DO: wieder ändern
+        body=encrypt_with_gnupg(accmail_body)
     )
-    #mailer.send(accmail_obj) #2DO: mails scharf stellen
-    print(accmail_body.encode('utf-8'))
+    mailer.send(accmail_obj)
+    #print(accmail_body.encode('utf-8'))
 
     # make the session go away
     request.session.invalidate()
