@@ -654,6 +654,14 @@ def party_view(request):
                     if _ticket.ticket_bc_buffet:
                         appstruct['ticket']['ticket_bc'].append('buffet')
                 appstruct['ticket']['ticket_all'] = _ticket.ticket_all
+                appstruct['ticket']['ticket_support'] = []
+                if _ticket.ticket_support:
+                    appstruct['ticket']['ticket_support'].append('1')
+                if _ticket.ticket_support_x:
+                    appstruct['ticket']['ticket_support'].append('2')
+                if _ticket.ticket_support_xl:
+                    appstruct['ticket']['ticket_support'].append('3')
+                appstruct['ticket']['support'] = _ticket.support
                 appstruct['ticket']['comment'] = _ticket.user_comment
                 if _ticket.ticket_tshirt:
                     appstruct['ticket']['ticket_tshirt'] = 1
@@ -795,9 +803,9 @@ def party_view(request):
             ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
             ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
             ticket_all=appstruct['ticket']['ticket_all'],
-            ticket_support=(1 in appstruct['ticket']['ticket_support']),
-            ticket_support_x=(2 in appstruct['ticket']['ticket_support']),
-            ticket_support_xl=(3 in appstruct['ticket']['ticket_support']),
+            ticket_support=('1' in appstruct['ticket']['ticket_support']),
+            ticket_support_x=('2' in appstruct['ticket']['ticket_support']),
+            ticket_support_xl=('3' in appstruct['ticket']['ticket_support']),
             support=_support,
             discount=_discount,
             the_total=_the_total,
@@ -830,6 +838,10 @@ def party_view(request):
             ticket.ticket_tshirt_type=appstruct['tshirt']['tshirt_type']
             ticket.ticket_tshirt_size=appstruct['tshirt']['tshirt_size']
             ticket.ticket_all=appstruct['ticket']['ticket_all']
+            ticket.ticket_support=('1' in appstruct['ticket']['ticket_support'])
+            ticket.ticket_support_x=('2' in appstruct['ticket']['ticket_support'])
+            ticket.ticket_support_xl=('3' in appstruct['ticket']['ticket_support'])
+            ticket.support=_support
             ticket.discount=_discount
             ticket.the_total=_the_total
             ticket.rep_firstname=appstruct['representation']['firstname']
@@ -864,9 +876,9 @@ def party_view(request):
                 ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
                 ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
                 ticket_all=appstruct['ticket']['ticket_all'],
-                ticket_support=(1 in appstruct['ticket']['ticket_support']),
-                ticket_support_x=(2 in appstruct['ticket']['ticket_support']),
-                ticket_support_xl=(3 in appstruct['ticket']['ticket_support']),
+                ticket_support=('1' in appstruct['ticket']['ticket_support']),
+                ticket_support_x=('2' in appstruct['ticket']['ticket_support']),
+                ticket_support_xl=('3' in appstruct['ticket']['ticket_support']),
                 support=_support,
                 discount=_discount,
                 the_total=_the_total,
@@ -1121,19 +1133,23 @@ SUPPORTER TICKETS:
         recipients=['c@c3s.cc'],  # XXX fixme
         body=usermail_body
     )
-    mailer.send(usermail_obj)
-    #print(usermail_body.encode('utf-8'))
+    if request.registry.settings['testing.mail_to_console']:
+        print(usermail_body.encode('utf-8'))   
+    else:
+        mailer.send(usermail_obj)
     
     ### send accmail
     from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
     accmail_obj = Message(
         subject=_('[C3S_PT] neues ticket'),
         sender="noreply@c3s.cc",
-        recipients=[request.registry.settings['c3spartyticketing.mail_rec']], #2DO: wieder ändern
+        recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
         body=encrypt_with_gnupg(accmail_body)
     )
-    mailer.send(accmail_obj)
-    #print(accmail_body.encode('utf-8'))
+    if request.registry.settings['testing.mail_to_console']:
+        print(accmail_body.encode('utf-8'))
+    else:
+        mailer.send(accmail_obj)
 
     # make the session go away
     request.session.invalidate()
