@@ -12,6 +12,7 @@ from c3spartyticketing.utils import (
 
 import colander
 from datetime import datetime
+import dateutil.parser
 import deform
 from deform import ValidationFailure
 import json
@@ -540,7 +541,6 @@ def load_user(request):
         print "found a valid instance with matching email!"
         request.session['appstruct_preset'] = appstruct
         return HTTPFound(location=request.route_url('party'))
-
     except:
         print "nothing found in DB; loading from MGV API"
         pass
@@ -566,6 +566,8 @@ def load_user(request):
             'token': _token,
             'id': 'None',
         }
+        print(_email)
+        print(res.json()['email'])
         assert(res.json()['email'] == _email)
         request.session['appstruct_preset'] = appstruct
         return HTTPFound(location=request.route_url('party'))
@@ -601,22 +603,6 @@ def party_view(request):
         print "got the appstruct from request.session['appstruct']: {}".format(
             request.session['appstruct'])
 
-    #print "the appstruct: {}".format(appstruct)
-    try:
-        schema = ticket_schema(request, appstruct)
-    except:
-        schema = ticket_schema(request, {})
-
-    form = deform.Form(
-        schema,
-        buttons=[
-            deform.Button('submit', _(u'Submit'))
-            #deform.Button('reset', _(u'Zurücksetzen'))
-        ],
-        #use_ajax=True,
-        renderer=zpt_renderer
-    )
-
     #print "DEBUG: {}".format(dir(request.session['appstruct_preset']))
     if 'appstruct_preset' in request.session:
         #print "found appstruct!"
@@ -635,7 +621,7 @@ def party_view(request):
         try:
             if isinstance(_ticket, PartyTicket):  # we have info in the DB, so we load it
                 appstruct['ticket']['ticket_gv'] = _ticket.ticket_gv_attendance
-                print "---------the attendance option: {}".format(_ticket.ticket_gv_attendance)
+                #print "---------the attendance option: {}".format(_ticket.ticket_gv_attendance)
                 #print "---------the attendance option type: {}".format(
                 #    type(_ticket.ticket_gv_attendance))
                 if _ticket.ticket_gv_attendance is 2:
@@ -649,10 +635,11 @@ def party_view(request):
                     appstruct['representation']['country'] = _ticket.rep_country
                     appstruct['representation']['representation_type'] = _ticket.rep_type
                     print "----- representation type: {}".format(_ticket.rep_type)
+                appstruct['ticket']['ticket_bc'] = []
                 if _ticket.ticket_bc_attendance:
-                    appstruct['ticket']['ticket_bc'] = ['attendance']
-                    if _ticket.ticket_bc_buffet:
-                        appstruct['ticket']['ticket_bc'].append('buffet')
+                    appstruct['ticket']['ticket_bc'].append ('attendance')
+                if _ticket.ticket_bc_buffet:
+                    appstruct['ticket']['ticket_bc'].append('buffet')
                 appstruct['ticket']['ticket_all'] = _ticket.ticket_all
                 appstruct['ticket']['ticket_support'] = []
                 if _ticket.ticket_support:
@@ -662,25 +649,46 @@ def party_view(request):
                 if _ticket.ticket_support_xl:
                     appstruct['ticket']['ticket_support'].append('3')
                 appstruct['ticket']['support'] = _ticket.support
+                appstruct['ticket']['the_total'] = _ticket.the_total
                 appstruct['ticket']['comment'] = _ticket.user_comment
-                if _ticket.ticket_tshirt:
-                    appstruct['ticket']['ticket_tshirt'] = 1
-                #print "=== the shirt type: {}".format(_ticket.ticket_tshirt_type)
-                #print "=== the shirt size: {}".format(_ticket.ticket_tshirt_size)
+                appstruct['ticket']['ticket_tshirt'] = _ticket.ticket_tshirt
                 appstruct['tshirt'] = {}
                 appstruct['tshirt']['tshirt_type'] = _ticket.ticket_tshirt_type
                 appstruct['tshirt']['tshirt_size'] = _ticket.ticket_tshirt_size
-            form.set_appstruct(appstruct)
             # request.session['appstruct_preset'] = {}  # delete/clear it now
         except:
             pass
     else:
         return HTTPFound(location='https://yes.c3s.cc')
 
-    # XXX do something if we already have data in the DB...
-    # maybe load it for the form?
-    # at least be able to overwrite it when persisting
+    # date check: redirect to readonly view if deadline is over
+    today = datetime.today().date()
+    registration_end = dateutil.parser.parse(
+        request.registry.settings['registration.end']
+    ).date()
+    if today <= registration_end:
+        print('date check: registration is possible')
+    else:
+        print('date check: registration is finished')
+        request.session['appstruct'] = appstruct
+        return HTTPFound(location=request.route_url('finished'))
 
+    #print "the appstruct: {}".format(appstruct)
+    try:
+        schema = ticket_schema(request, appstruct)
+    except:
+        schema = ticket_schema(request, {})
+
+    form = deform.Form(
+        schema,
+        buttons=[
+            deform.Button('submit', _(u'Submit'))
+            #deform.Button('reset', _(u'Zurücksetzen'))
+        ],
+        #use_ajax=True,
+        renderer=zpt_renderer
+    )
+    form.set_appstruct(appstruct)
 
     # if the form has NOT been used and submitted, remove error messages if any
     if not 'submit' in request.POST:
@@ -1158,6 +1166,29 @@ SUPPORTER TICKETS:
         'lastname': appstruct['ticket']['lastname'],
         'transaction': (appstruct['ticket']['the_total'] > 0),
         'canceled': (appstruct['ticket']['ticket_gv'] == 3)
+    }
+
+
+@view_config(route_name='finished',
+             renderer='templates/finished.pt')
+def finished_view(request):
+    """
+    registration deadline is over. show the ticket readonly.
+    """
+
+    schema = ticket_schema(request, request.session['appstruct'], readonly=True)
+
+    form = deform.Form(
+        schema,
+        buttons=[],
+        #use_ajax=True,
+        renderer=zpt_renderer
+    )
+
+    return {
+        'readonlyform': form.render(
+            appstruct=request.session['appstruct']
+        )
     }
 
 

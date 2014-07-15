@@ -32,6 +32,7 @@ requires = [
     'unicodecsv',
     'waitress',
     'zope.sqlalchemy',
+    'python-dateutil'
 ]
 test_requires = [
     'nose',
