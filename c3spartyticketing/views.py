@@ -154,6 +154,12 @@ def ticket_schema(request, appstruct, readonly=False):
         ('buffet', _(u'I\'d like to dine from the BarCamp buffet (€8,50)'))
     )
 
+    ticket_support_options = (
+        (1, _(u'Supporter Ticket (€5)')),
+        (2, _(u'Supporter Ticket (€10)')),
+        (3, _(u'Supporter Ticket (€100)'))
+    )
+
     rep_type_options = (
         ('member', _(u'Mitglied der Genossenschaft')),
         ('partner', _(u'mein Ehefrau/mein Ehemann')),
@@ -248,6 +254,25 @@ def ticket_schema(request, appstruct, readonly=False):
             ticket_all.description = None
             ticket_all.label = "All-Inclusive-Paket Rabatt (-€2,50)"
             if not appstruct['ticket']['ticket_all']:
+                ticket_all = None
+        ticket_support  = colander.SchemaNode(
+            colander.Set(),
+            title=_(u"Supporter Tickets:"),
+            widget=deform.widget.CheckboxChoiceWidget(
+                size=1, css_class='ticket_types_input',
+                values=ticket_support_options,
+                readonly=readonly
+            ),
+            missing='',
+            description=_(
+                u'These ticket options are selectable indepently from the '
+                u'other options. They help the cooperative a great deal to '
+                u'bear the costs occasioned by the events.'),
+            oid="ticket_support"
+        )
+        if readonly:
+            ticket_support.description = None
+            if not appstruct['ticket']['ticket_support']:
                 ticket_all = None
         if readonly and appstruct['ticket']['the_total'] > 0:
             the_total = colander.SchemaNode(
@@ -712,6 +737,13 @@ def party_view(request):
             'ticket_all': -2.5
         }
 
+        # map supporter tickets to price
+        the_support = {
+            1: 5 ,
+            2: 10,
+            3: 100
+        }
+
         # option 'all' equivalent to all options checked
         if appstruct['ticket']['ticket_gv'] == 1 \
             and set(['attendance', 'buffet']).issubset(
@@ -735,6 +767,10 @@ def party_view(request):
         print("calculate the total sum and discount")
         _the_total = 0
         _discount = 0
+        _support = 0
+        for support in appstruct['ticket']['ticket_support']:
+            _the_total += the_support.get(int(support))
+            _support += the_support.get(int(support))
         if appstruct['ticket']['ticket_all']:
             print("all active")
             _discount = the_discounts.get('ticket_all')
@@ -752,8 +788,43 @@ def party_view(request):
         appstruct['ticket']['discount'] = _discount
         print("_discount: %s" % _discount)
 
-
-        # if we have a matching entry in the database, use that entry 
+        # to store the data in the DB, an object is created
+        ticket = PartyTicket(
+            token=request.session['appstruct_preset']['token'],
+            firstname=request.session['appstruct_preset']['firstname'],
+            lastname=request.session['appstruct_preset']['lastname'],
+            email=request.session['appstruct_preset']['email'],
+            password='',  # appstruct['person']['password'],
+            locale=appstruct['ticket']['_LOCALE_'],
+            email_is_confirmed=False,
+            email_confirm_code=randomstring,
+            date_of_submission=datetime.now(),
+            num_tickets=1,
+            ticket_gv_attendance=appstruct['ticket']['ticket_gv'],
+            ticket_bc_attendance=('attendance' in appstruct['ticket']['ticket_bc']),
+            ticket_bc_buffet=('buffet' in appstruct['ticket']['ticket_bc']),
+            ticket_tshirt=appstruct['ticket']['ticket_tshirt'],
+            ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
+            ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
+            ticket_all=appstruct['ticket']['ticket_all'],
+            ticket_support=(1 in appstruct['ticket']['ticket_support']),
+            ticket_support_x=(2 in appstruct['ticket']['ticket_support']),
+            ticket_support_xl=(3 in appstruct['ticket']['ticket_support']),
+            support=_support,
+            discount=_discount,
+            the_total=_the_total,
+            rep_firstname=appstruct['representation']['firstname'],
+            rep_lastname=appstruct['representation']['lastname'],
+            rep_street=appstruct['representation']['street'],
+            rep_zip=appstruct['representation']['zip'],
+            rep_city=appstruct['representation']['city'],
+            rep_country=appstruct['representation']['country'],
+            rep_type=appstruct['representation']['representation_type'],
+            guestlist=False,
+            user_comment=appstruct['ticket']['comment'],
+        )
+        dbsession = DBSession
+        
         try:
             if isinstance(_ticket, PartyTicket):
                 in_DB = True
@@ -860,7 +931,7 @@ def party_view(request):
             appstruct['ticket'][
                 'lastname'] = request.session['appstruct_preset']['lastname']
             appstruct['ticket'][
-                'email'] = request.session['appstruct_preset']['email'],
+                'email'] = request.session['appstruct_preset']['email']
 
             form.set_appstruct(appstruct)
 
@@ -919,10 +990,9 @@ def sendmail_view(request):
     """
     this view sends a mail to the user and tells her to transfer money
     """
-    if 'appstruct' in request.session:
-        appstruct = request.session['appstruct']
-    else:
+    if 'appstruct' not in request.session:
         return HTTPFound(location=request.route_url('party'))
+    appstruct = request.session['appstruct']        
 
     ### email bodies
 
@@ -1011,6 +1081,11 @@ REPRESENTATION: %s
 TSHIRT: %s
   tshirt type: %s
   tshirt size: %s
+
+SUPPORTER TICKETS:
+  supporter ticket: %s
+  supporter ticket X: %s
+  supporter ticket XL: %s
 ''' % (
     appstruct['ticket']['firstname'],
     appstruct['ticket']['lastname'],
@@ -1033,6 +1108,9 @@ TSHIRT: %s
     appstruct['ticket']['ticket_tshirt'],
     appstruct['tshirt']['tshirt_type'],
     appstruct['tshirt']['tshirt_size'],
+    ('1' in appstruct['ticket']['ticket_support']),
+    ('2' in appstruct['ticket']['ticket_support']),
+    ('3' in appstruct['ticket']['ticket_support'])
 )
 
     ### send mails

@@ -60,6 +60,7 @@
               <td>BC?</td>
               <td>BC+</td>
               <td>tshirt?</td>
+              <td>support</td>
               <td>zu zahlen</td>
               <td>zahlung<br />erhalten?</td>
               <td>offene<br />fahrscheine</td>
@@ -93,6 +94,9 @@
         <td>
           <span tal:condition="ticket.ticket_tshirt" class="glyphicon glyphicon-ok" style="color:#090;"></span>
           <span tal:condition="not ticket.ticket_tshirt" class="glyphicon glyphicon-remove" style="color:#700;"></span>
+        </td>
+        <td>
+          ${ticket.support}
         </td>
 	      <td>${ticket.the_total}</td>
 	      <td>
