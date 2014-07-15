@@ -13,7 +13,6 @@
       src="${request.static_url('c3spartyticketing:static/countdown/countdown.js')}"></script>
   </tal:block>
   <tal:block metal:fill-slot="middle">
-    <br><br><br><br>
     <div tal:condition="not canceled">
       <h1>Deine Bestellung bei der C3S SCE:</h1>
       <h3 tal:condition="transaction">Bitte Email lesen und überweisen.</h3>

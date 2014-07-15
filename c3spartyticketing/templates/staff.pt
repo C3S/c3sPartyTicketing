@@ -77,13 +77,13 @@
                       method="post">
                     <input type="submit"
                            class="btn btn-danger"
-                           value="löschen">
+                           value="löschen"/>
                     <input type="hidden"
                            name="action"
-                           value="delete">
+                           value="delete"/>
                     <input type="hidden"
                            name="id"
-                           value="${staffer.id}">
+                           value="${staffer.id}"/>
                 </form>
               </td>
 	    </tr>
@@ -94,13 +94,13 @@
               the form to add a cashier
             </div>
           </div>
-          <hr>
+          <hr/>
         </div>
       </div>
     </tal:block>
     <tal:block metal:fill-slot="footer">
       <p><a href="${request.route_url('dashboard', number=0)}" class="btn btn-success">Dashboard</a></p>
-      <p><a href="${request.route_url('logout')}" class="btn btn-danger">${request.authenticated_userid} Abmelden</a></p>
+      <p><a href="${request.route_url('logout')}" class="btn btn-danger">Abmelden</a></p>
     </tal:block>
   </body>
 </html>
