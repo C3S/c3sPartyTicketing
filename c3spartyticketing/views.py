@@ -157,8 +157,8 @@ def ticket_schema(request, appstruct, readonly=False):
 
     ticket_support_options = (
         (1, _(u'Supporter Ticket (€5)')),
-        (2, _(u'Supporter Ticket (€10)')),
-        (3, _(u'Supporter Ticket (€100)'))
+        (2, _(u'Supporter Ticket X (€10)')),
+        (3, _(u'Supporter Ticket XL (€100)'))
     )
 
     rep_type_options = (
