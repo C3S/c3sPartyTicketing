@@ -23,18 +23,18 @@
   </tal:block>
 
   <tal:block metal:fill-slot="middle">
-    <div class="jumbotron"> <!--visible-xs visible-sm hidden-md hidden-lg-->
+    <div class="jumbotron"> <!-- visible-xs visible-sm hidden-md hidden-lg -->
 
-      <h1>
+      <h1 i18n:translate="">
         <small>Hello</small> 
         <span tal:content="firstname" /> <span tal:content="lastname" /> 
         <small>&lt;${email}&gt;,</small>
       </h1>
 
-      <h1>
+      <h1 i18n:translate="">
         <small>get your ticket for the</small> C3S Barcamp and General Assembly!
       </h1>
-      <div style="font-size:12px; margin-top:40px; color:#999;">
+      <div i18n:translate="" style="font-size:12px; margin-top:40px; color:#999;">
         <strong>* Notice:</strong> In case you are not ${firstname} ${lastname} 
         please email us at
         <a href="mailto:office@c3s.cc" class="alert-link">office@c3s.cc</a> - thank you

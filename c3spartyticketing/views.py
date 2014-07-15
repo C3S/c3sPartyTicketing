@@ -594,19 +594,7 @@ def party_view(request):
                 assert isinstance(_ticket, PartyTicket)
                 print "found a valid instance! its id: {}".format(appstruct['id'])
         else:
-            #return HTTPFound(location='https://yes.c3s.cc')
-            # testing
-            #
-            print "no appstruct; using test data"
-            _appstruct = {
-                'firstname': 'TestVorname',
-                'lastname': 'TestNachname',
-                'email': 'alexander.blum@c3s.cc',
-                'token': 'ATOKENTEST'
-                }
-            request.session['appstruct_preset'] = _appstruct
-            #request.session['appstruct'] = _appstruct
-            # /testing
+            return HTTPFound(location='https://yes.c3s.cc')
 
     elif 'appstruct' in request.session:
         appstruct = request.session['appstruct']
