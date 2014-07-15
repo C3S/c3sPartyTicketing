@@ -36,6 +36,10 @@
         <td><a href="mailto:${ticket.email}">${ticket.email}</a></td>
       </tr>
       <tr>
+        <td>Token</td>
+        <td>${ticket.token}</td>
+      </tr>
+      <tr>
         <td>Komment</td>
         <td>${ticket.user_comment}</td>
       </tr>
@@ -63,9 +67,48 @@
         <td>Vertretung Generalversammlung</td>
         <td>${'Yes' if ticket.ticket_gv_attendance == 2 else "No"}</td>
       </tr>
+      <tr tal:condition="ticket.ticket_gv_attendance == 2">
+        <td>Vertretung:</td>
+        <td>
+	  <table>
+	    <tr>
+	      <td>Vorname</td>
+	      <td>${ticket.rep_firstname}</td>
+	    </tr>
+	    <tr>
+	      <td>Nachname</td>
+	      <td>${ticket.rep_lastname}</td>
+	    </tr>
+	    <tr>
+	      <td>Straße</td>
+	      <td>${ticket.rep_street}</td>
+	    </tr>
+	    <tr>
+	      <td>PLZ</td>
+	      <td>${ticket.rep_zip}</td>
+	    </tr>
+	    <tr>
+	      <td>Ort</td>
+	      <td>${ticket.rep_city}</td>
+	    </tr>
+	    <tr>
+	      <td>Land</td>
+	      <td>${ticket.rep_country}</td>
+	    </tr>
+	    <tr>
+	      <td>Typ</td>
+	      <td>${ticket.rep_type}</td>
+	    </tr>
+	  </table>
+	</td>
+      </tr>
       <tr>
         <td>Event-T-Shirt</td>
         <td>${'Yes' if ticket.ticket_tshirt else "No"}</td>
+      </tr>
+      <tr tal:condition="ticket.ticket_tshirt">
+        <td>Shirt-Specs</td>
+        <td>Type: ${ticket.ticket_tshirt_type} Size: ${ticket.ticket_tshirt_size}</td>
       </tr>
       <tr>
         <td>Rabatt</td>

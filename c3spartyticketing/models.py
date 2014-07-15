@@ -247,6 +247,7 @@ class PartyTicket(Base):
                  user_comment,
                  payment_received=False
                  ):
+        self.token = token
         self.firstname = firstname
         self.lastname = lastname
         self.email = email
@@ -289,7 +290,7 @@ class PartyTicket(Base):
     @classmethod
     def get_by_code(cls, email_confirm_code):
         """
-        find a member by email confirmation code
+        find a ticket by email confirmation code
 
         this is needed when a user returns from reading her email
         and clicking on a link containing the confirmation code.
@@ -297,6 +298,18 @@ class PartyTicket(Base):
         """
         return DBSession.query(cls).filter(
             cls.email_confirm_code == email_confirm_code).first()
+
+    @classmethod
+    def get_by_token(cls, token):
+        """
+        find a ticket by token
+
+        this is needed when a user returns from reading her email
+        and clicking on a link containing the link with a token.
+        as the code is unique, one record is returned.
+        """
+        return DBSession.query(cls).filter(
+            cls.token == token).first()
 
     #@classmethod
     #def get_by_tcode(cls, tcode):
