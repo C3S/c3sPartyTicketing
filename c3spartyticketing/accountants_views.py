@@ -91,14 +91,14 @@ def accountants_login(request):
         """
         login = colander.SchemaNode(
             colander.String(),
-            title=_(u"login"),
+            title="login",
             oid="login",
         )
         password = colander.SchemaNode(
             colander.String(),
             validator=colander.Length(min=5, max=100),
             widget=deform.widget.PasswordWidget(size=20),
-            title=_(u"password"),
+            title="password",
             oid="password",
         )
 
@@ -107,8 +107,8 @@ def accountants_login(request):
     form = deform.Form(
         schema,
         buttons=[
-            deform.Button('submit', _(u'Submit')),
-            deform.Button('reset', _(u'Reset'))
+            deform.Button('submit', u'Submit'),
+            deform.Button('reset', u'Reset')
         ],
         #use_ajax=True,
         #renderer=zpt_renderer
@@ -460,27 +460,27 @@ def make_hobo_view(request):
         locale_name = 'de'
         firstname = colander.SchemaNode(
             colander.String(),
-            title=_(u"Vorame"),
+            title=u"Vorame",
             oid="firstname",
         )
         lastname = colander.SchemaNode(
             colander.String(),
-            title=_(u"Nachname"),
+            title=u"Nachname",
             oid="lastname",
         )
         email = colander.SchemaNode(
             colander.String(),
-            title=_(u'Email'),
+            title=u'Email',
             validator=colander.Email(),
             oid="email",
         )
         comment = colander.SchemaNode(
             colander.String(),
-            title=_("Warum Schwarzfahren?"),
+            title="Warum Schwarzfahren?",
             missing='',
             validator=colander.Length(max=250),
             widget=deform.widget.TextAreaWidget(rows=3, cols=50),
-            description=_(u"(guter grund) (255 Zeichen)"),
+            description=u"(guter grund) (255 Zeichen)",
             oid="comment",
         )
         _LOCALE_ = colander.SchemaNode(
@@ -497,7 +497,7 @@ def make_hobo_view(request):
         - FoodInfo
         """
         person = PersonalData(
-            title=_(u"Persönliche Daten"),
+            title=u"Persönliche Daten",
             #description=_(u"this is a test"),
             #css_class="thisisjustatest"
         )
@@ -507,8 +507,8 @@ def make_hobo_view(request):
     form = deform.Form(
         schema,
         buttons=[
-            deform.Button('submit', _(u'Absenden')),
-            deform.Button('reset', _(u'Zurücksetzen'))
+            deform.Button('submit', u'Absenden'),
+            deform.Button('reset', u'Zurücksetzen')
         ],
         #use_ajax=True,
         renderer=zpt_renderer
@@ -618,7 +618,7 @@ Dein C3S-Team''',
     )
     the_mail_body = ''.join([line for line in body_lines])
     the_mail = Message(
-        subject=_(u"C3S Party-Ticket: bitte herunterladen!"),
+        subject=u"C3S Party-Ticket: bitte herunterladen!",
         sender="noreply@c3s.cc",
         recipients=[_ticket.email],
         body=the_mail_body
@@ -888,7 +888,7 @@ def ticket_detail(request):
         """
         payment_received = colander.SchemaNode(
             colander.Bool(),
-            title=_(u"Zahlungseingang melden?")
+            title=u"Zahlungseingang melden?"
         )
 
     schema = ChangeDetails()

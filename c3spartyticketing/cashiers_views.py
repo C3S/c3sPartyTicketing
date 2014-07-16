@@ -184,11 +184,11 @@ def check_in(request):
 
     # types of tickets displayed in the backend
     ticket_type_options = {
-        ('ticket_gv', _(u'Teilnahme an der Generalversammlung (€0)')),
-        ('ticket_bc', _(u'Teilnahme am Barcamp (€9)')),
-        ('ticket_bc_buffet', _(u'Buffet beim Barcamp (€8,50)')),
-        ('ticket_tshirt', _(u'T-Shirt (€25)')),
-        ('ticket_all', _(u'All-Inclusive-Paket (€40)'))
+        ('ticket_gv', u'Attendance General Assembly'),
+        ('ticket_bc', u'Attendance BarCamp'),
+        ('ticket_bc_buffet', u'Buffet Barcamp'),
+        ('ticket_tshirt', u'T-Shirt'),
+        ('ticket_all', u'All-Inclusive')
     }
 
     #_klass = ticket_type_options.get(_ticket.ticket_type)
@@ -314,14 +314,14 @@ def cashiers_login(request):
         """
         login = colander.SchemaNode(
             colander.String(),
-            title=_(u"login"),
+            title=u"login",
             oid="login",
         )
         password = colander.SchemaNode(
             colander.String(),
             validator=colander.Length(min=5, max=100),
             widget=deform.widget.PasswordWidget(size=20),
-            title=_(u"password"),
+            title=u"password",
             oid="password",
         )
 
@@ -330,8 +330,8 @@ def cashiers_login(request):
     form = deform.Form(
         schema,
         buttons=[
-            deform.Button('submit', _(u'Submit')),
-            deform.Button('reset', _(u'Reset'))
+            deform.Button('submit', u'Submit'),
+            deform.Button('reset', u'Reset')
         ],
     )
 

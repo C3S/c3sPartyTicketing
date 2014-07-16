@@ -86,50 +86,48 @@ def ticket_schema(request, appstruct, readonly=False):
         if value['ticket']['ticket_tshirt']:
             if not value['tshirt']['tshirt_type']:           
                 exc['tshirt'] = _(
-                    u'Der Schnitt des T-Shirts muss angegeben werden.'
+                    u'Gender of T-Shirt is mandatory.'
                 )
                 raise exc
             if not value['tshirt']['tshirt_size']:
                 exc['tshirt'] = _(
-                    u'Die Größe des T-Shirts muss angegeben werden.'
+                    u'Size of T-Shirt ist mandatory.'
                 )
                 raise exc
         if value['ticket']['ticket_gv'] == 2:
             if not value['representation']['firstname']:
                 exc['representation'] = _(
-                    u'Der Vorname des/r Bevollmächtigten muss angegeben werden.'
+                    u'First name of representative is mandatory.'
                 )
                 raise exc
             if not value['representation']['lastname']:
                 exc['representation'] = _(
-                    u'Der Nachname des/r Bevollmächtigten muss angegeben '
-                    u'werden.'
+                    u'Last name of representative is mandatory.'
                 )
                 raise exc
             if not value['representation']['street']:
                 exc['representation'] = _(
-                    u'Die Straße des/r Bevollmächtigten muss angegeben werden.'
+                    u'Address of representative is mandatory.'
                 )
                 raise exc
             if not value['representation']['zip']:
                 exc['representation'] = _(
-                    u'Die Plz des/r Bevollmächtigten muss angegeben werden.'
+                    u'Postal code of representative is mandatory.'
                 )
                 raise exc
             if not value['representation']['city']:
                 exc['representation'] = _(
-                    u'Die Stadt des/r Bevollmächtigten muss angegeben werden.'
+                    u'City of representative is mandatory.'
                 )
                 raise exc
             if not value['representation']['country']:
                 exc['representation'] = _(
-                    u'Das Land des/r Bevollmächtigten muss angegeben werden.'
+                    u'Country of representative is mandatory.'
                 )
                 raise exc
             if not value['representation']['representation_type']:
                 exc['representation'] = _(
-                    u'Die Beziehung zu dem/r Bevollmächtigten muss angegeben '
-                    u'werden.'
+                    u'Relation of representative is mandatory.'
                 )
                 raise exc
 
@@ -186,11 +184,11 @@ def ticket_schema(request, appstruct, readonly=False):
     )
 
     rep_type_options = (
-        ('member', _(u'Mitglied der Genossenschaft')),
-        ('partner', _(u'mein Ehefrau/mein Ehemann')),
-        ('parent', _(u'meine Mutter/mein Vater')),
-        ('child', _(u'meine Tochter/mein Sohn')),
-        ('sibling', _(u'meine Schwester/mein Bruder'))
+        ('member', _(u'a member of C3S SCE')),
+        ('partner', _(u'my spouse / registered civil partner')),
+        ('parent', _(u'my parent')),
+        ('child', _(u'my child')),
+        ('sibling', _(u'my sibling'))
     )
 
     tshirt_type_options = (
@@ -224,7 +222,7 @@ def ticket_schema(request, appstruct, readonly=False):
         )
         ticket_bc = colander.SchemaNode(
             colander.Set(),
-            title=_(u"Barcamp:"),
+            title=_(u"BarCamp:"),
             widget=deform.widget.CheckboxChoiceWidget(
                 size=1, css_class='ticket_types_input',
                 values=ticket_bc_options,
@@ -248,7 +246,7 @@ def ticket_schema(request, appstruct, readonly=False):
                 readonly=readonly,
                 readonly_template='forms/checkbox_label.pt'
             ),
-            label="T-Shirt (€25)",
+            label="T-shirt (€25)",
             missing='',
             description=_(
                 u'There will be one joint T-shirt design for both events in '
@@ -275,8 +273,8 @@ def ticket_schema(request, appstruct, readonly=False):
             missing='',
             description=_(
                 u'The all-inclusive package covers the participation in the '
-                u'Barcamp (including buffet and free drink), participation '
-                u'in the general assembly, and the exclusive event t-shirt as '
+                u'BarCamp (including buffet and free drink), participation '
+                u'in the general assembly, and the exclusive event T-shirt as '
                 u'well.'
             ),
             oid="ticket_all"
@@ -385,9 +383,13 @@ def ticket_schema(request, appstruct, readonly=False):
                 readonly=True,
                 readonly_template="forms/textinput_htmlrendered.pt"
             ),
-            default=u'''
-<p>Wir brauchen von Dir folgende Daten de(s/r) Bevollmächtigten:</p>
-''',
+            default=\
+            u'<p>'
+            +_(
+                u'Please provide us with the following information for '
+                u'your representative:'
+            )
+            +u'<p>',
             missing='',
             oid='rep-note'
         )
@@ -396,7 +398,7 @@ def ticket_schema(request, appstruct, readonly=False):
             note_top = None
         firstname = colander.SchemaNode(
             colander.String(),
-            title=_(u"Vorname"),
+            title=_(u"First Name"),
             widget=deform.widget.TextInputWidget(
                 readonly=readonly
             ),
@@ -405,7 +407,7 @@ def ticket_schema(request, appstruct, readonly=False):
         )
         lastname = colander.SchemaNode(
             colander.String(),
-            title=_(u"Nachname"),
+            title=_(u"Last Name"),
             widget=deform.widget.TextInputWidget(
                 readonly=readonly
             ),
@@ -414,7 +416,7 @@ def ticket_schema(request, appstruct, readonly=False):
         )
         street = colander.SchemaNode(
             colander.String(),
-            title=_(u'Straße'),
+            title=_(u'Address'),
             widget=deform.widget.TextInputWidget(
                 readonly=readonly
             ),
@@ -423,7 +425,7 @@ def ticket_schema(request, appstruct, readonly=False):
         )
         zip = colander.SchemaNode(
             colander.String(),
-            title=_(u'PLZ'),
+            title=_(u'Postal Code'),
             widget=deform.widget.TextInputWidget(
                 readonly=readonly
             ),
@@ -432,7 +434,7 @@ def ticket_schema(request, appstruct, readonly=False):
         )
         city = colander.SchemaNode(
             colander.String(),
-            title=_(u'Stadt'),
+            title=_(u'City'),
             widget=deform.widget.TextInputWidget(
                 readonly=readonly
             ),
@@ -441,7 +443,7 @@ def ticket_schema(request, appstruct, readonly=False):
         )
         country = colander.SchemaNode(
             colander.String(),
-            title=_(u'Land'),
+            title=_(u'Country'),
             widget=deform.widget.TextInputWidget(
                 readonly=readonly
             ),
@@ -450,7 +452,7 @@ def ticket_schema(request, appstruct, readonly=False):
         )
         representation_type = colander.SchemaNode(
             colander.String(),
-            title=_(u"Mein(e) Bevollmächtigte(r) ist:"),
+            title=_(u"My representative is..."),
             widget=deform.widget.RadioChoiceWidget(
                 size=1, css_class='ticket_types_input',
                 values=rep_type_options,
@@ -467,20 +469,39 @@ def ticket_schema(request, appstruct, readonly=False):
                 readonly_template="forms/textinput_htmlrendered.pt"
             ),
             missing='',
-            default=u'''
-<div class="help-block">
-    <strong>Hinweis:</strong>
-    Du darfst als Deine(n) Bevollmächtigten nur ein Mitglied der Genossenschaft,<br>
-    Deine(n) Ehemann/Ehefrau, ein Elternteil, ein Kind oder einen Geschwisterteil benennen.<br>
-    Jede(r) Bevollmächtigte kann maximal zwei Mitglieder vertreten.
-    (siehe § 13 (6), Satz 3 der <a href="http://url.c3s.cc/satzung" target="_blank" class="alert-link">Satzung</a>)<br>
-    <br>
-    <strong>Nicht vergessen:</strong>
-    Dein(e) Bevollmächtigte(r) muss von eine von Dir unterzeichnete Vollmacht mitbringen<br>
-    - bitte keine Kopie, kein Fax, kein Scan, kein Bild, sondern das Original.<br>
-    Download für eine Vollmacht: <a href="http://url.c3s.cc/vollmacht" target="_blank" class="alert-link">http://url.c3s.cc/vollmacht</a>
-</div>
-''',
+            default=\
+            u'<div class="help-block">'
+                +u'<strong>'+_(u'Please note')+u':</strong> '
+                +_(
+                    u'You may only nominate as your representative members '
+                    u'of the cooperative, your spouse, parents, children or '
+                    u'siblings. Each representative may represent two members '
+                    u'at most (see § 13 (6), sentence 3, of the articles of '
+                )
+                +u'<a href=\''
+                    +_(u'http://url.c3s.cc/satzung')
+                +u'\' target=\'_blank\'>'
+                    +_(u'association')
+                +u'</a>'
+                +_(
+                    u'). Registered civil partners are treated as spouses.'
+                )
+                +u'<br>'
+                +u'<strong>'+_(u'Don\'t forget')+u':</strong> '
+                +_(
+                    u'Your representative has to provide an authorization '
+                    u'certificate signed by you. Please do not bring or send '
+                    u'a copy, fax, scan, or picture. We can only accept the '
+                    u'original document.'
+                )
+                +u'<br>'
+                +_(u'Download authorization form')+u': '
+                +u'<a href=\''
+                    +_(u'http://url.c3s.cc/authorization')
+                +u'\' target=\'_blank\'>'
+                    +_(u'http://url.c3s.cc/authorization')
+                +u'</a>'
+            +u'</div>',
             oid='rep-note'
         )
         note_bottom.missing=note_bottom.default # otherwise empty on reedit
@@ -493,7 +514,7 @@ def ticket_schema(request, appstruct, readonly=False):
         """
         tshirt_type = colander.SchemaNode(
             colander.String(),
-            title=_(u"Schnitt:"),
+            title=_(u"Gender:"),
             widget=deform.widget.RadioChoiceWidget(
                 size=1, css_class='ticket_types_input',
                 values=tshirt_type_options,
@@ -528,7 +549,7 @@ def ticket_schema(request, appstruct, readonly=False):
             oid="ticket-data"
         )
         representation = RepresentationData(
-            title=_(u"Bevollmächtigte(r)"),
+            title=_(u"Representative"),
             oid="rep-data"
         )
         if readonly and not appstruct['ticket']['ticket_gv'] == 2:
@@ -1036,6 +1057,7 @@ def sendmail_view(request):
     ### email bodies
 
     #######################################################################
+    usermail_with_transaction_subject = ""
     usermail_with_transaction = \
 u'''Hello %s %s !
 
@@ -1069,6 +1091,7 @@ payment on our account applies.
 )
     
     #######################################################################
+    usermail_without_transaction_subject = ""
     usermail_without_transaction = \
 u'''Hallo %s %s !
 
@@ -1083,6 +1106,7 @@ Wir haben Deine Ticketbestellung erhalten.
 )
 
     #######################################################################
+    usermail_cancelled_subject = ""
     usermail_cancelled = \
 u'''Hallo %s %s !
 
@@ -1157,12 +1181,15 @@ SUPPORTER TICKETS:
 
     ### send usermail
     usermail_body = usermail_with_transaction
+    usermail_subject = usermail_with_transaction_subject
     if (appstruct['ticket']['the_total'] == 0):
         usermail_body = usermail_without_transaction
+        usermail_subject = usermail_without_transaction_subject
     if (appstruct['ticket']['ticket_gv'] == 3):
         usermail_body = usermail_cancelled
+        usermail_subject = usermail_cancelled_subject
     usermail_obj = Message(
-        subject=_(u"C3S Party-Ticket: bitte überweisen!"),
+        subject=usermail_subject,
         sender="noreply@c3s.cc",
         #recipients=[appstruct['ticket']['email']],
         recipients=['c@c3s.cc'],  # XXX fixme
@@ -1176,7 +1203,7 @@ SUPPORTER TICKETS:
     ### send accmail
     from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
     accmail_obj = Message(
-        subject=_('[C3S_PT] neues ticket'),
+        subject='[C3S_PT] neues ticket',
         sender="noreply@c3s.cc",
         recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
         body=encrypt_with_gnupg(accmail_body)

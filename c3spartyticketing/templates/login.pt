@@ -10,7 +10,7 @@
           type="text/css" media="screen" charset="utf-8" />
   </tal:block>
   <tal:block metal:fill-slot="middle">
-    <h1 i18n:translate="login-form-title">backend</h1>
+    <h1>backend</h1>
   </tal:block>
   <tal:block metal:fill-slot="bottom">
     <div style="text-align:left;">

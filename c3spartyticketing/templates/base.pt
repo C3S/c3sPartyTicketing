@@ -31,8 +31,12 @@
     <tal:block metal:define-slot="footer">
       <div class="footer">
         &copy; <span i18n:translate="">Copyright 2014, C3S SCE.</span> 
-        <a href="https://www.c3s.cc/kontakt/">
-          <span i18n:translate="">Contact</span> &amp; <span i18n:translate="">Imprint</span>
+        <a i18n:translate="" tal:attributes="href https://www.c3s.cc/en/contact-us/" i18n:attributes="href">
+          Contact
+        </a>
+        &amp;
+        <a i18n:translate="" tal:attributes="href https://www.c3s.cc/en/impressum/" i18n:attributes="href">
+          Imprint
         </a>
       </div>
     </tal:block>

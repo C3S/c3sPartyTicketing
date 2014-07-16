@@ -10,7 +10,7 @@
   </tal:block>
   <tal:block metal:fill-slot="top"></tal:block>
   <tal:block metal:fill-slot="middle">
-    <h3 i18n:translate="join-form-title"><small>Party</small> Check-in</h3>
+    <h3><small>Party</small> Check-in</h3>
     <div style="text-align:left;">
       <strong style="color:red;" tal:repeat="message request.session.pop_flash('message_above_login')">
 	${message}
@@ -43,7 +43,7 @@
       </p>
       <img src="${request.static_url('c3spartyticketing:static/images/110px-Ampelmann_rot.jpg')}"/>
       <div>
-        <h2 i18n:translate="get your pdf">Zahlen, bitte!</h2>
+        <h2>Zahlen, bitte!</h2>
         offener Betrag: <span style="color:red">${ticket.the_total} &euro;</span><br />
         Fahrkarte: ${klass}<br />
         <form action="${request.url}" method="post">

@@ -10,7 +10,7 @@
   </tal:block>
   <tal:block metal:fill-slot="top"></tal:block>
   <tal:block metal:fill-slot="middle">
-    <h3 i18n:translate="join-form-title"><small>Party</small> Neues Ticket</h3>
+    <h3><small>Party</small> Neues Ticket</h3>
     <div style="text-align:left;">
       <strong style="color:red;" tal:repeat="message request.session.pop_flash('message_above_login')">
 	${message}
