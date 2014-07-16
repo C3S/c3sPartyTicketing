@@ -30,7 +30,10 @@
     <tal:block metal:define-slot="bottom"></tal:block>
     <tal:block metal:define-slot="footer">
       <div class="footer">
-        &copy; Copyright 2014, C3S SCE. <a href="https://www.c3s.cc/kontakt/">Kontakt &amp; Impressum</a>
+        &copy; <span i18n:translate="">Copyright 2014, C3S SCE.</span> 
+        <a href="https://www.c3s.cc/kontakt/">
+          <span i18n:translate="">Contact</span> &amp; <span i18n:translate="">Imprint</span>
+        </a>
       </div>
     </tal:block>
   </body>

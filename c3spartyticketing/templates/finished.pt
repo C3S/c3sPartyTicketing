@@ -21,17 +21,7 @@
   <tal:block metal:fill-slot="middle">
   </tal:block>
   <tal:block metal:fill-slot="bottom">
-    <h3><span i18n:translate="">Please confirm your information</span>:</h3>
-
+    <h3>Der Anmeldezeitraum ist vorbei. Dein Ticket:</h3>
     <div tal:content="structure readonlyform">the form, readonly</div>
-    <div class="row-fluid">
-      <div class="span4">
-        <h2 i18n:translate="">What's next?</h2>
-        <p i18n:translate="">
-          We will send you an e-mail with more information. 
-          You have to pay your order (and your ticket) before leaving for Cologne/Düsseldorf!
-        </p>
-      </div>
-    </div>
   </tal:block>
 </html>
