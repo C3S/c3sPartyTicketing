@@ -39,6 +39,8 @@ from types import NoneType
 #from translationstring import TranslationStringFactory
 _ = TranslationStringFactory('c3spartyticketing')
 
+from pyramid.renderers import render
+
 from sets import Set
 
 #deform_templates = resource_filename('deform', 'templates')
@@ -303,7 +305,7 @@ def ticket_schema(request, appstruct, readonly=False):
         if readonly:
             ticket_support.description = None
             if not appstruct['ticket']['ticket_support']:
-                ticket_all = None
+                ticket_support = None
         if readonly and appstruct['ticket']['the_total'] > 0:
             the_total = colander.SchemaNode(
                 colander.Decimal(quant='1.00'),
@@ -1052,129 +1054,85 @@ def sendmail_view(request):
     """
     if 'appstruct' not in request.session:
         return HTTPFound(location=request.route_url('party'))
-    appstruct = request.session['appstruct']        
+    appstruct = request.session['appstruct']
 
-    ### email bodies
+    # sanity check of local_name
+    lang = request.registry.settings['pyramid.default_locale_name']
+    langs = request.registry.settings['available_languages'].split()
+    if request.locale_name in langs:
+        lang = request.locale_name
+
+    ### render emails
 
     #######################################################################
-    usermail_with_transaction_subject = ""
-    usermail_with_transaction = \
-u'''Hello %s %s !
+    usermail_with_transaction_subject = _(
+        u'C3S Barcamp 2014: your order'
+    )
+    usermail_with_transaction = render(
+        'templates/mails/usermail_with_transaction-'+lang+'.pt',
+        {
+            'firstname': appstruct['ticket']['firstname'],
+            'lastname': appstruct['ticket']['lastname'],
+            'the_total': appstruct['ticket']['the_total'],
+            'email_confirm_code': appstruct['email_confirm_code']
+        }
+    )
 
-we have received your ticket order. Please transfer the amount of
+    #######################################################################
+    usermail_without_transaction_subject = _(
+        u'C3S Barcamp 2014: your order'
+    )
+    usermail_without_transaction = render(
+        'templates/mails/usermail_without_transaction-'+lang+'.pt',
+        {
+            'firstname': appstruct['ticket']['firstname'],
+            'lastname': appstruct['ticket']['lastname']
+        }
+    )
 
-            %s Euros
-
-to our bank account:
-
-Bank:             EthikBank eG
-Account holder:   C3S SCE
-Amount:           € %s
-Purpose of use:   Assembly and Barcamp2014 %s
-BIC:              GENO DE F1 ETK
-IBAN:             DE79 8309 4495 0003 2643 78
-
-As soon as we have received your payment we are going to send you an email 
-with your ticket(s) and your other vouchers (catering, t-shirt). Your order 
-has to be fully paid by 18th August 2014 latest. The date of entry of 
-payment on our account applies.
-
-    See you soon!
-
-    Your C3S Team
-''' % (
-    appstruct['ticket']['firstname'],
-    appstruct['ticket']['lastname'],
-    appstruct['ticket']['the_total'],
-    appstruct['ticket']['the_total'],
-    appstruct['email_confirm_code']
-)
+    #######################################################################
+    usermail_cancelled_subject = _(
+        u"C3S BarCamp & General Assembly 2014: your cancellation"
+    )
+    usermail_cancelled = render(
+        'templates/mails/usermail_cancelled-'+lang+'.pt',
+        {
+            'firstname': appstruct['ticket']['firstname'],
+            'lastname': appstruct['ticket']['lastname']
+        }
+    )
     
     #######################################################################
-    usermail_without_transaction_subject = ""
-    usermail_without_transaction = \
-u'''Hallo %s %s !
-
-Wir haben Deine Ticketbestellung erhalten. 
-
-   Bis bald!
- 
-   Dein C3S-Team
-''' % (
-    appstruct['ticket']['firstname'],
-    appstruct['ticket']['lastname']
-)
-
-    #######################################################################
-    usermail_cancelled_subject = ""
-    usermail_cancelled = \
-u'''Hallo %s %s !
-
-?
-
-   Bis bald!
- 
-   Dein C3S-Team
-''' % (
-    appstruct['ticket']['firstname'],
-    appstruct['ticket']['lastname']
-)
-    
-    #######################################################################
-    accmail_body = \
-u'''MEMBER:
-  name: %s %s
-  email: %s
-  code: %s
-  ga attendance: %s
-  bc attendance: %s
-  bc buffet: %s
-  discount: %s
-  total: %s
-  comment: %s
-
-REPRESENTATION: %s
-  name: %s %s
-  street: %s
-  zip: %s
-  city: %s
-  country: %s
-  type: %s
-
-TSHIRT: %s
-  tshirt type: %s
-  tshirt size: %s
-
-SUPPORTER TICKETS:
-  supporter ticket: %s
-  supporter ticket X: %s
-  supporter ticket XL: %s
-''' % (
-    appstruct['ticket']['firstname'],
-    appstruct['ticket']['lastname'],
-    appstruct['ticket']['email'],
-    appstruct['email_confirm_code'],
-    (appstruct['ticket']['ticket_gv']==1),
-    ('attendance' in appstruct['ticket']['ticket_bc']),
-    ('buffet' in appstruct['ticket']['ticket_bc']),
-    appstruct['ticket']['discount'],
-    appstruct['ticket']['the_total'],
-    appstruct['ticket']['comment'],
-    (appstruct['ticket']['ticket_gv']==2),
-    appstruct['representation']['firstname'],
-    appstruct['representation']['lastname'],
-    appstruct['representation']['street'],
-    appstruct['representation']['zip'],
-    appstruct['representation']['city'],
-    appstruct['representation']['country'],
-    appstruct['representation']['representation_type'],
-    appstruct['ticket']['ticket_tshirt'],
-    appstruct['tshirt']['tshirt_type'],
-    appstruct['tshirt']['tshirt_size'],
-    ('1' in appstruct['ticket']['ticket_support']),
-    ('2' in appstruct['ticket']['ticket_support']),
-    ('3' in appstruct['ticket']['ticket_support'])
-)
+    accmail_subject = u'[C3S_PT] neues ticket'
+    accmail_body = render(
+        'templates/mails/accmail.pt',
+        {
+            'firstname': appstruct['ticket']['firstname'],
+            'lastname': appstruct['ticket']['lastname'],
+            'email': appstruct['ticket']['email'],
+            'email_confirm_code': appstruct['email_confirm_code'],
+            'gv_attendance': (appstruct['ticket']['ticket_gv']==1),
+            'bc_attendance': ('attendance' in appstruct['ticket']['ticket_bc']),
+            'bc_buffet': ('buffet' in appstruct['ticket']['ticket_bc']),
+            'discount': appstruct['ticket']['discount'],
+            'the_total': appstruct['ticket']['the_total'],
+            'comment': appstruct['ticket']['comment'],
+            'gv_representation': (appstruct['ticket']['ticket_gv']==2),
+            'rep_firstname': appstruct['representation']['firstname'],
+            'rep_lastname': appstruct['representation']['lastname'],
+            'rep_street': appstruct['representation']['street'],
+            'rep_zip': appstruct['representation']['zip'],
+            'rep_city': appstruct['representation']['city'],
+            'rep_country': appstruct['representation']['country'],
+            'rep_type': appstruct['representation']['representation_type'],
+            'tshirt': appstruct['ticket']['ticket_tshirt'],
+            'tshirt_type': appstruct['tshirt']['tshirt_type'],
+            'tshirt_size': appstruct['tshirt']['tshirt_size'],
+            'supporter': ('1' in appstruct['ticket']['ticket_support']),
+            'supporter_x': ('2' in appstruct['ticket']['ticket_support']),
+            'supporter_xl': ('3' in appstruct['ticket']['ticket_support'])
+        }
+    )
 
     ### send mails
     mailer = get_mailer(request)
@@ -1203,7 +1161,7 @@ SUPPORTER TICKETS:
     ### send accmail
     from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
     accmail_obj = Message(
-        subject='[C3S_PT] neues ticket',
+        subject=accmail_subject,
         sender="noreply@c3s.cc",
         recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
         body=encrypt_with_gnupg(accmail_body)
@@ -1214,7 +1172,7 @@ SUPPORTER TICKETS:
         mailer.send(accmail_obj)
 
     # make the session go away
-    request.session.invalidate()
+    #request.session.invalidate()
     return {
         'firstname': appstruct['ticket']['firstname'],
         'lastname': appstruct['ticket']['lastname'],

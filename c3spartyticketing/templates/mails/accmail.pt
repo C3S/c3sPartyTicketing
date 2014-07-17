@@ -1,0 +1,27 @@
+MEMBER:
+  name: ${firstname} ${lastname}
+  email: ${email}
+  code: ${email_confirm_code}
+  ga attendance: ${gv_attendance}
+  bc attendance: ${bc_attendance}
+  bc buffet: ${bc_buffet}
+  discount: ${discount}
+  total: ${the_total}
+  comment: ${comment}
+
+REPRESENTATION: ${gv_representation}
+  name: ${rep_firstname} ${rep_lastname}
+  street: ${rep_street}
+  zip: ${rep_zip}
+  city: ${rep_city}
+  country: ${rep_country}
+  type: ${rep_type}
+
+TSHIRT: ${tshirt}
+  tshirt type: ${tshirt_type}
+  tshirt size: ${tshirt_size}
+
+SUPPORTER TICKETS:
+  supporter ticket: ${supporter}
+  supporter ticket X: ${supporter_x}
+  supporter ticket XL: ${supporter_xl}

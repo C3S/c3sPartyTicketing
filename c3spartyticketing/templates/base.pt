@@ -25,19 +25,23 @@
              class="img-responsive"
 	     alt="Cultural Commons Collecting Society (C3S)"/>
       </a>
+      <div style="text-align:right;">
+        <a href="/?en">
+          <img alt="switch to English language" title="English" src="static/images/en.png" />
+        </a>
+        <a href="/?de">
+          <img alt="auf deutsche Sprache umschalten" title="Deutsch" src="static/images/de.png" />
+        </a>
+      </div>
     </tal:block>
     <tal:block metal:define-slot="middle"></tal:block>
     <tal:block metal:define-slot="bottom"></tal:block>
     <tal:block metal:define-slot="footer">
       <div class="footer">
         &copy; <span i18n:translate="">Copyright 2014, C3S SCE.</span> 
-        <a i18n:translate="" tal:attributes="href https://www.c3s.cc/en/contact-us/" i18n:attributes="href">
-          Contact
-        </a>
+        <a i18n:translate="Contact" i18n:attributes="href" href="https://www.c3s.cc/en/contact-us/">Contact</a>
         &amp;
-        <a i18n:translate="" tal:attributes="href https://www.c3s.cc/en/impressum/" i18n:attributes="href">
-          Imprint
-        </a>
+        <a i18n:translate="Imprint" i18n:attributes="href" href="https://www.c3s.cc/en/impressum/">Imprint</a>
       </div>
     </tal:block>
   </body>

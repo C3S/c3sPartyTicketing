@@ -15,8 +15,8 @@ requires = [
     'deform',
     'gnupg',
     'python-gnupg',
-    'lingua==1.6',
-    #'lingua',
+    #'lingua==1.6',
+    'lingua',
     'Pillow',  # fork of PIL; needed for qrcode
     'pyramid',
     'pyramid_beaker',
