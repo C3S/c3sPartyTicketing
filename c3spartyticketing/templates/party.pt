@@ -228,6 +228,9 @@
         })
 
         // all-inclusive
+        $('#ticket_gv-1, #ticket_gv-2').closest('.radio').addClass('all-inclusive-hide')
+        $('#ticket_gv-0, #ticket_bc-0, #ticket_bc-1, #ticket_tshirt').closest('label').addClass('all-inclusive-emph')
+        $('#item-ticket_bc, #item-ticket_gv, #item-ticket_tshirt').css('border', '0px solid transparent')
         $('#ticket_all').change(function() {
           if( $(this).is(':checked') ) {
             $('#ticket_gv-0').prop('checked', 'true').change();
@@ -240,6 +243,20 @@
             $('#ticket_bc-1').prop('disabled', true);
             $('#ticket_tshirt').prop('checked', true).change();
             $('#ticket_tshirt').prop('disabled', true);
+            $('#item-ticket_bc, #item-ticket_gv, #item-ticket_tshirt').animate(
+              { 
+                'paddingLeft': 20, 
+                'marginLeft': 10, 
+                'borderLeftWidth': '3px', 
+                'borderLeftColor': '#3276b1'
+              }, 600, function() {}
+            )
+            $('.all-inclusive-hide').animate(
+              { 'opacity': 0.4 }, 600, function() {}
+            )
+            $('#req-ticket_all, .all-inclusive-emph').animate(
+              { 'color': '#3276b1' }, 600, function() {}
+            )
           } else {
             $('#ticket_gv-0').prop('disabled', false);
             $('#ticket_gv-1').prop('disabled', false);
@@ -247,6 +264,20 @@
             $('#ticket_bc-0').prop('disabled', false);
             $('#ticket_bc-1').prop('disabled', false);
             $('#ticket_tshirt').prop('disabled', false);
+            $('#item-ticket_bc, #item-ticket_gv, #item-ticket_tshirt').animate(
+              { 
+                'paddingLeft': 0, 
+                'marginLeft': 0, 
+                'borderLeftWidth': '0px',
+                'borderLeftColor': 'transparent'
+              }, 600, function() {}
+            )
+            $('.all-inclusive-hide').animate(
+              { 'opacity': 1 }, 600, function() {}
+            )
+            $('#req-ticket_all, .all-inclusive-emph').animate(
+              { 'color': '#333333' }, 600, function() {}
+            )
           }
         })
         if( $('#ticket_all').is(':checked') ) {
