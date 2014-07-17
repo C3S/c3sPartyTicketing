@@ -44,7 +44,7 @@
           
           2DO
 
-          <h3><small>Anzahl</small> Sammeltickets/Personentickets</h3>
+          <h3><small>Anzahl</small> Tickets</h3>
           <p>
             ${_number_of_datasets} DB-Einträge
             <small>('Sammeltickets' i.S.V. Bestellungen/Buchungen/Überweisungen)</small>.
@@ -63,6 +63,8 @@
           <h3><small>Anzahl Tickets</small> nach Kategorien</h3>
           <p>
             $ off {num_hobos} x Hobo (0€) (eingecheckt: $ off {num_hobos_checked})<br />
+            ${num_normal} x Normal (eingecheckt: ${num_normal_checked})<br />
+            ${num_investing} x Investing (eingecheckt: ${num_investing_checked})<br />
           </p>
           <!--
           div class="row container-fluid">

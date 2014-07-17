@@ -575,7 +575,7 @@ def load_user(request):
     _email = request.matchdict['email']  # XXX use it for sth?
     #print u"the token: {}".format(_token)
     #print u"the email: {}".format(_email)
-    
+
     # try to find the users ticket in the tickets DB
     #try:
     _ticket = PartyTicket.get_by_token(_token)
@@ -584,11 +584,12 @@ def load_user(request):
             type(_ticket))
         assert isinstance(_ticket, PartyTicket)
         print "found a valid instance! its id: {}".format(_ticket.id)
-        _id = _ticket.id
+        #_id = _ticket.id
         appstruct = {
             'firstname': _ticket.firstname,
             'lastname': _ticket.lastname,
             'email': _ticket.email,
+            'mtype': _ticket.membership_type,
             'token': _token,
             'id': _ticket.id,
             }
@@ -611,6 +612,7 @@ def load_user(request):
         headers=_auth_header,
     )
     #print u"the result: {}".format(res)
+    #print u"the result.json(): {}".format(res.json())
     #print u"the result.reason: {}".format(res.reason)
     #print u"dir(res): {}".format(dir(res))
     try:
@@ -618,6 +620,7 @@ def load_user(request):
             'firstname': res.json()['firstname'],
             'lastname': res.json()['lastname'],
             'email': res.json()['email'],
+            'mtype': res.json()['mtype'],
             'token': _token,
             'id': 'None',
         }
@@ -625,6 +628,7 @@ def load_user(request):
         print(res.json()['email'])
         assert(res.json()['email'] == _email)
         request.session['appstruct_preset'] = appstruct
+        request.session['mtype'] = res.json()['mtype']
         return HTTPFound(location=request.route_url('party'))
     except:
         return HTTPFound(location='https://yes.c3s.cc')
@@ -672,6 +676,8 @@ def party_view(request):
                 'appstruct_preset']['lastname'],
             'email': request.session[
                 'appstruct_preset']['email'],
+            'mtype': request.session[
+                'appstruct_preset']['mtype'],
         }
         try:
             if isinstance(_ticket, PartyTicket):  # we have info in the DB, so we load it
@@ -877,6 +883,7 @@ def party_view(request):
             guestlist=False,
             user_comment=appstruct['ticket']['comment'],
         )
+        ticket.membership_type = request.session['mtype']
         dbsession = DBSession
         
         try:
