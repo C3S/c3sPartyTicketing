@@ -429,7 +429,7 @@ class PartyTicket(Base):
         _all = DBSession.query(cls).all()
         _num = 0
         for item in _all:
-            if item.guestlist == True:
+            if item.guestlist:
                 _num = _num + item.num_tickets
         return _num
 

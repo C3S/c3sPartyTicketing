@@ -2,8 +2,9 @@
 from datetime import date
 import os
 from pyramid import testing
-import subprocess
-from subprocess import CalledProcessError
+from sqlalchemy import engine_from_config
+#import subprocess
+#from subprocess import CalledProcessError
 import transaction
 import unittest
 
@@ -27,29 +28,53 @@ class TestUtilities(unittest.TestCase):
         try:
             DBSession.close()
             DBSession.remove()
-            #print("removing old DBSession ===================================")
+            #print("removing old DBSession =================================")
         except:
-            #print("no DBSession to remove ===================================")
+            #print("no DBSession to remove =================================")
             pass
-        from sqlalchemy import create_engine
-        engine = create_engine('sqlite:///test_utils.db')
+        test_settings = {
+            'sqlalchemy.url': 'sqlite:///:memory:',
+            'available_languages': 'da de en es fr',
+            'mailrecipient': 'c@c3s.cc',
+            'mail.debug': True,
+        }
+        engine = engine_from_config(test_settings)
         DBSession.configure(bind=engine)
-        self.session = DBSession  # ()
-
         Base.metadata.create_all(engine)
+        self.req = testing.DummyRequest()
         with transaction.manager:
-            ticket1 = PartyTicket(  # german
+            ticket1 = PartyTicket(
+                token=u'TESTTOKEN456',
                 firstname=u'SomeFirstnäme',
                 lastname=u'SomeLastnäme',
                 email=u'some@shri.de',
-                locale=u"DE",
+                password=u'arandompassword',
+                locale=u"de",
                 email_is_confirmed=False,
                 email_confirm_code=u'ABCDEFGBAR',
-                password=u'arandompassword',
                 date_of_submission=date.today(),
-                num_tickets=5,
-                ticket_type=2,
+                num_tickets=1,
+                ticket_gv_attendance=1,
+                ticket_bc_attendance=True,
+                ticket_bc_buffet=True,
+                ticket_tshirt=True,
+                ticket_tshirt_type=u'm',
+                ticket_tshirt_size=u'xxl',
+                ticket_all=False,
+                ticket_support=False,
+                ticket_support_x=False,
+                ticket_support_xl=False,
+                support=0,
+                discount=0,
                 the_total=75,
+                rep_firstname=u'first',
+                rep_lastname=u'last',
+                rep_street=u'street',
+                rep_zip=u'zip',
+                rep_city=u'city',
+                rep_country=u'country',
+                rep_type=u'sibling',
+                guestlist=False,
                 user_comment=u"äh, was?"
             )
             DBSession.add(ticket1)
@@ -62,7 +87,15 @@ class TestUtilities(unittest.TestCase):
         DBSession.close()
         DBSession.remove()
         testing.tearDown()
-        os.remove('test_utils.db')
+        #os.remove('test_utils.db')
+
+    def test_make_random_string(self):
+        from c3spartyticketing.utils import make_random_string
+        _string = make_random_string()
+        #print "the _string: {}".format(_string)
+        #print "the _string length: {}".format(len(_string))
+        #print dir(_string)
+        #self.assertTrue()
 
     def test_generate_qr_code(self):
         """
@@ -74,11 +107,34 @@ class TestUtilities(unittest.TestCase):
             _ticket,
             "http://192.168.2.128:6544/ci/p1402/ABCDEFGBAR")
         result
+
+    def test_make_qr_code_pdf_mobile(self):
+        """
+        Test QR-Code generation for mobile
+        """
+        from c3spartyticketing.utils import make_qr_code_pdf_mobile
+        _ticket = PartyTicket.get_by_id(1)
+        #import pdb
+        #pdb.set_trace()
+        self.req.registry.settings[
+            'ticket_pdf'] = 'pdftk/C3S_Ticket_BCGV.pdf'
+        result = make_qr_code_pdf_mobile(
+            #self.req,
+            _ticket,
+            "http://192.168.2.128:6544/ci/p1402/ABCDEFGBAR")
+        result
+
         #_img = result.save('r2d2.png')
         #print("size of the resulting PDF: %s" % len(result))
         #import pdb
         #pdb.set_trace()
         # XXX what can we assert here?
+
+    #def test_make_ticket_confirmation_emailbody(self):
+    #    from c3spartyticketing.utils import (
+    #        make_ticket_confirmation_emailbody
+    #    )
+    #    res = make_ticket_confirmation_emailbody('foo')
 
     # def test_generate_pdf_en(self):
     #     """
