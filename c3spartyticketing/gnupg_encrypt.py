@@ -23,15 +23,16 @@ def encrypt_with_gnupg(data):
     """
     # we use a temporary folder to store stuff
     keyfolder = tempfile.mkdtemp()
-    print(keyfolder)
+    #print(keyfolder)
     #gpg = gnupg.GPG(homedir=keyfolder)
+    #gpg = gnupg.GPG(gnupghome=keyfolder)  # might work better locally.
     gpg = gnupg.GPG()
     gpg.encoding = 'utf-8'
 
     # check if we have the membership key
     list_of_keys = gpg.list_keys()
-    if DEBUG:  # pragma: no cover
-        print("=== the list of keys: " + repr(list_of_keys))
+    #if DEBUG:  # pragma: no cover
+    #    print("=== the list of keys: " + repr(list_of_keys))
 
     if not 'C3S-Yes!' in str(list_of_keys):
         # open and read key file

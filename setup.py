@@ -24,6 +24,7 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_mailer',
     'pyramid_tm',
+    'python-dateutil'
     'qrcode',
     'repoze.sendmail<4.2',  # pin down, see
     # https://github.com/repoze/repoze.sendmail/issues/31
@@ -33,7 +34,6 @@ requires = [
     'unicodecsv',
     'waitress',
     'zope.sqlalchemy',
-    'python-dateutil'
 ]
 test_requires = [
     'nose',
