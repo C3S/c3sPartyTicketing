@@ -7,13 +7,13 @@ __author__ = 'Kristin Kuche'
 class PartyPageObject(object):
     def __init__(self, driver):
         self.driver = driver
-        self.firstname_field = self.driver.find_element_by_name("firstname")
-        self.lastname_field = self.driver.find_element_by_name("lastname")
-        self.email_field = self.driver.find_element_by_name("email")
+        #self.firstname_field = self.driver.find_element_by_name("firstname")
+        #self.lastname_field = self.driver.find_element_by_name("lastname")
+        #self.email_field = self.driver.find_element_by_name("email")
         self.comment_field = self.driver.find_element_by_id("comment")
         self.submit_button = self.driver.find_element_by_id("deformsubmit")
-        self.tickets_count_field = self.driver.find_element_by_id("num_tickets")
-        self.tickets_sold_field = self.driver.find_element_by_id("qty_tickets_sold")
+        #self.tickets_count_field = self.driver.find_element_by_id("num_tickets")
+        #self.tickets_sold_field = self.driver.find_element_by_id("qty_tickets_sold")
 
     def submit_form(self):
         self.submit_button.click()
@@ -21,29 +21,29 @@ class PartyPageObject(object):
             return ConfirmPageObject(self.driver)
         return PartyPageObject(self.driver)
 
-    @property
-    def firstname(self):
-        return self.firstname_field.get_attribute('value')
+    # @property
+    # def firstname(self):
+    #     return self.firstname_field.get_attribute('value')
 
-    @firstname.setter
-    def firstname(self, value):
-        self.firstname_field.send_keys(value)
+    # @firstname.setter
+    # def firstname(self, value):
+    #     self.firstname_field.send_keys(value)
 
-    @property
-    def lastname(self):
-        return self.lastname_field.get_attribute('value')
+    # @property
+    # def lastname(self):
+    #     return self.lastname_field.get_attribute('value')
 
-    @lastname.setter
-    def lastname(self, value):
-        self.lastname_field.send_keys(value)
+    # @lastname.setter
+    # def lastname(self, value):
+    #     self.lastname_field.send_keys(value)
 
-    @property
-    def email(self):
-        return self.email_field.get_attribute('value')
+    # @property
+    # def email(self):
+    #     return self.email_field.get_attribute('value')
 
-    @email.setter
-    def email(self, value):
-        self.email_field.send_keys(value)
+    # @email.setter
+    # def email(self, value):
+    #     self.email_field.send_keys(value)
 
     @property
     def comment(self):
@@ -80,7 +80,7 @@ class PartyPageObject(object):
 
     @property
     def tickets_sold(self):
-         return int(self.tickets_sold_field.text)
+        return int(self.tickets_sold_field.text)
 
 
 class LoginPageObject(object):
