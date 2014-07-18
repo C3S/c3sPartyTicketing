@@ -353,7 +353,7 @@ def stats_view(request):
         '_num_tickets_unpaid': _num_tickets_unpaid,
         # normal vs investing
         'num_normal': PartyTicket.get_num_normal(),
-        'num_investing': PartyTicket.get_num_investing_checked(),
+        'num_investing': PartyTicket.get_num_investing(),
         'num_normal_checked': PartyTicket.get_num_normal_checked(),
         'num_investing_checked': PartyTicket.get_num_investing_checked(),
 
