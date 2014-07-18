@@ -940,6 +940,7 @@ def party_view(request):
             DBSession.flush()  # save to DB
             #  set the appstruct for further processing
             appstruct['email_confirm_code'] = ticket.email_confirm_code
+            request.session['mtype'] = ticket.membership_type
         else:
             # to store the data in the DB, an object is created
             ticket = PartyTicket(
