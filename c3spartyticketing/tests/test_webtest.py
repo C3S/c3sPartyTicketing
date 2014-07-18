@@ -396,6 +396,7 @@ class FunctionalTests(unittest.TestCase):
             '<input type="hidden" name="lastname" value="Ehrlich"'
             in res1.body)
 
+
     def test_base_template(self):
         """load the front page, check string exists"""
         res = self.testapp.get('/', status=302)

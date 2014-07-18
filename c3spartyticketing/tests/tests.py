@@ -58,7 +58,7 @@ class TestViews(unittest.TestCase):
         test the load_user view with VALID information
         """
         from c3spartyticketing.views import load_user
-        self.config.add_route('party_view', '/')
+        self.config.add_route('party', '/')
         request = testing.DummyRequest()
         request.registry.settings['yes_auth_token'] = '1234567890ABCDEFGHIJKL'
         request.registry.settings[
@@ -75,12 +75,12 @@ class TestViews(unittest.TestCase):
         #print result
         #print dir(result)
         self.assertTrue('The resource was found at' in str(result))
-        self.assertTrue('https://yes.c3s.cc' in result.location)
+        #self.assertTrue('https://yes.c3s.cc' in result.location)
+        #self.assertTrue('https://yes.c3s.cc' in result.wsgi_response.location)
+        print result.location
         self.assertTrue('302' in result.status)
-        print result.headers
 
-        #import pdb
-        #pdb.set_trace()
+        #print result.headers
 
         self.assertTrue('appstruct_preset' in request.session)
         self.assertTrue('firstname' in request.session['appstruct_preset'])
@@ -96,6 +96,17 @@ class TestViews(unittest.TestCase):
             'yes@c3s.cc' in request.session['appstruct_preset']['email'])
         self.assertTrue(
             'None' in request.session['appstruct_preset']['id'])
+        self.assertTrue(
+            'normal' in request.session['mtype'])
+
+        # off to another view: party_view!
+        from c3spartyticketing.views import party_view
+        request.registry.settings['registration.end'] = '2014-08-08'
+        res2 = party_view(request)
+        print res2
+
+        import pdb
+        pdb.set_trace()
 
 #         self.assertTrue(result['lastname'] is 'bar')
 #         self.assertTrue(result['firstname'] is 'foo')

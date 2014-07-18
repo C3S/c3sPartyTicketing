@@ -581,10 +581,10 @@ def load_user(request):
     #try:
     _ticket = PartyTicket.get_by_token(_token)
     try:
-        print "tried getting an instance from the DB: type: {}".format(
-            type(_ticket))
+        #print "tried getting an instance from the DB: type: {}".format(
+        #    type(_ticket))
         assert isinstance(_ticket, PartyTicket)
-        print "found a valid instance! its id: {}".format(_ticket.id)
+        #print "found a valid instance! its id: {}".format(_ticket.id)
         #_id = _ticket.id
         appstruct = {
             'firstname': _ticket.firstname,
@@ -594,11 +594,11 @@ def load_user(request):
             'id': _ticket.id,
             }
         assert(_ticket.email == _email)
-        print "found a valid instance with matching email!"
+        #print "found a valid instance with matching email!"
         request.session['appstruct_preset'] = appstruct
         return HTTPFound(location=request.route_url('party'))
     except:
-        print "nothing found in DB; loading from MGV API"
+        #print "nothing found in DB; loading from MGV API"
         pass
 
     #get the info from the membership app
@@ -623,11 +623,12 @@ def load_user(request):
             'token': _token,
             'id': 'None',
         }
-        print(_email)
-        print(res.json()['email'])
-        assert(res.json()['email'] == _email)
+        #print(_email)
+        #print(res.json()['email'])
+        assert(res.json()['email'] == _email)  # make sure email matches
         request.session['appstruct_preset'] = appstruct
         request.session['mtype'] = res.json()['mtype']
+        print "ping"
         #print "storing mtype {} in session".format(request.session['mtype'])
         return HTTPFound(location=request.route_url('party'))
     except:
@@ -768,7 +769,7 @@ def party_view(request):
                 print(u"the thing: %s") % thing
                 print(u"type: %s") % type(thing)
 
-        except ValidationFailure, e:            
+        except ValidationFailure, e:
             print(e)
             request.session.flash(
                 _(u"Please note: There were errors, "
@@ -803,7 +804,7 @@ def party_view(request):
 
         # map supporter tickets to price
         the_support = {
-            1: 5 ,
+            1: 5,
             2: 10,
             3: 100
         }
