@@ -31,6 +31,52 @@ def make_random_string():
     return randomstring
 
 
+def ticket_code_prefix(_ticket):
+    '''
+    produce a code to be printed on the tickets,
+    incorporating the barcamp and assembly attendance options
+    and membership type
+    '''
+    code = u''
+    # gv attendance
+    if _ticket.ticket_gv_attendance == 1:
+        code += 'A'
+    elif _ticket.ticket_gv_attendance == 2:
+        code += 'R'
+    elif _ticket.ticket_gv_attendance == 3:
+        code += '0'
+    # barcamp attendance
+    if _ticket.ticket_bc_attendance:
+        code += 'B'
+    else:
+        code += '0'
+    # membership status
+    if 'normal' in _ticket.membership_type:
+        code += 'N'
+    else:
+        code += 'I'
+    return code
+
+
+def ticket_code_suffix(_ticket):
+    '''
+    produce a code to be appended to ticket code
+    showing helper, guest, eichhoernchen
+    '''
+    code = u''
+    #if _ticket.guestlist ...  # not implemented yet, see #628
+    return code
+
+
+def get_ticket_code(_ticket):
+    code = (
+        ticket_code_prefix(_ticket)
+        + _ticket.email_confirm_code
+        + ticket_code_suffix(_ticket)
+    )
+    return code
+
+
 def make_qr_code_pdf(_ticket, _url):
     """
     this function creates a QR-Code PDF for whatever purpose
@@ -67,7 +113,7 @@ def make_qr_code_pdf(_ticket, _url):
     # when combined with ticket PDF
     #
     _caption_code = str(
-        'Caption:' + _ticket.email_confirm_code
+        'Caption:' + get_ticket_code(_ticket)
     )
     subprocess.check_call(
         ['convert',
@@ -134,7 +180,7 @@ def make_qr_code_pdf_mobile(_ticket, _url):
     # resize/arrange the code on the page so it aligns nicely
     # when combined with ticket PDF
     _caption_code = str(
-        'caption:' + _ticket.email_confirm_code
+        'caption:' + get_ticket_code(_ticket)
     )
     subprocess.check_call(
         ['convert',

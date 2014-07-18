@@ -64,6 +64,7 @@ zpt_renderer = deform.ZPTRendererFactory(
     translator=translator,
 )
 
+
 def ticket_schema(request, appstruct, readonly=False):
 
     ### validator
@@ -164,7 +165,7 @@ def ticket_schema(request, appstruct, readonly=False):
             return 'boo'
 
     ### options
-    
+
     ticket_gv_options = (
         (1, _(u'I will attend the C3S SCE General Assembly.')),
         (2, _(
@@ -1264,7 +1265,8 @@ def finished_view(request):
     registration deadline is over. show the ticket readonly.
     """
 
-    schema = ticket_schema(request, request.session['appstruct'], readonly=True)
+    schema = ticket_schema(
+        request, request.session['appstruct'], readonly=True)
 
     form = deform.Form(
         schema,
@@ -1296,10 +1298,11 @@ def get_ticket(request):
         return HTTPFound(location=request.route_url('party'))
 
     # prepare ticket URL with email & code
-    # 'https://events.c3s.cc/ci/p1402/' + _ticket.email + _ticket.email_confirm_code
-    # 'https://192.168.2.128:6544/ci/p1402/' + _ticket.email + _ticket.email_confirm_code
-    _url = request.registry.settings[
-        'c3spartyticketing.url'] + '/ci/p1402/' + _ticket.email_confirm_code
+    _url = (
+        request.registry.settings['c3spartyticketing.url']
+        + '/ci/gvbc14001/'  # this is the 'checkin' route
+        + _ticket.email_confirm_code
+    )
 
     # return a pdf file
     pdf_file = make_qr_code_pdf(_ticket, _url)
@@ -1324,8 +1327,11 @@ def get_ticket_mobile(request):
         #print("no match!")
         return HTTPFound(location=request.route_url('party'))
 
-    _url = request.registry.settings[
-        'c3spartyticketing.url'] + '/ci/p1402/' + _ticket.email_confirm_code
+    _url = (
+        request.registry.settings['c3spartyticketing.url']
+        + '/ci/gvbc14001/'  # this is the 'checkin' route
+        + _ticket.email_confirm_code
+    )
 
     # return a pdf file
     pdf_file = make_qr_code_pdf_mobile(_ticket, _url)
