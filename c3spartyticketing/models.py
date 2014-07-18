@@ -181,6 +181,7 @@ class PartyTicket(Base):
     firstname = Column(Text)
     lastname = Column(Text)
     email = Column(Unicode(255))
+    membership_type = Column(Unicode(255), unique=False)
     _password = Column('password', Unicode(60))
     last_password_change = Column(
         DateTime,
@@ -422,6 +423,39 @@ class PartyTicket(Base):
         return _num
 
     # ticket categories
+    # totals
+    @classmethod
+    def get_num_normal(cls):
+        """return number of normal members w/ ticket"""
+        return DBSession.query(cls).filter(
+            cls.membership_type == 'normal').count()
+
+    @classmethod
+    def get_num_investing(cls):
+        """return number of investing members w/ ticket"""
+        return DBSession.query(cls).filter(
+            cls.membership_type == 'investing').count()
+
+    @classmethod
+    def get_num_normal_checked(cls):
+        """return number of hobos checked in"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            if (item.membership_type == 'investing'):
+                _num = _num + item.checked_persons
+        return _num
+
+    @classmethod
+    def get_num_investing_checked(cls):
+        """return number of hobos checked in"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            if (item.membership_type == 'investing'):
+                _num = _num + item.checked_persons
+        return _num
+
     # totals
     @classmethod
     def get_num_hobos(cls):

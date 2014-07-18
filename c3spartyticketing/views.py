@@ -575,7 +575,7 @@ def load_user(request):
     _email = request.matchdict['email']  # XXX use it for sth?
     #print u"the token: {}".format(_token)
     #print u"the email: {}".format(_email)
-    
+
     # try to find the users ticket in the tickets DB
     #try:
     _ticket = PartyTicket.get_by_token(_token)
@@ -584,11 +584,12 @@ def load_user(request):
             type(_ticket))
         assert isinstance(_ticket, PartyTicket)
         print "found a valid instance! its id: {}".format(_ticket.id)
-        _id = _ticket.id
+        #_id = _ticket.id
         appstruct = {
             'firstname': _ticket.firstname,
             'lastname': _ticket.lastname,
             'email': _ticket.email,
+            'mtype': _ticket.membership_type,
             'token': _token,
             'id': _ticket.id,
             }
@@ -611,6 +612,7 @@ def load_user(request):
         headers=_auth_header,
     )
     #print u"the result: {}".format(res)
+    #print u"the result.json(): {}".format(res.json())
     #print u"the result.reason: {}".format(res.reason)
     #print u"dir(res): {}".format(dir(res))
     try:
@@ -618,6 +620,7 @@ def load_user(request):
             'firstname': res.json()['firstname'],
             'lastname': res.json()['lastname'],
             'email': res.json()['email'],
+            'mtype': res.json()['mtype'],
             'token': _token,
             'id': 'None',
         }
@@ -625,6 +628,7 @@ def load_user(request):
         print(res.json()['email'])
         assert(res.json()['email'] == _email)
         request.session['appstruct_preset'] = appstruct
+        request.session['mtype'] = res.json()['mtype']
         return HTTPFound(location=request.route_url('party'))
     except:
         return HTTPFound(location='https://yes.c3s.cc')
@@ -649,7 +653,8 @@ def party_view(request):
                 print "==== appstruct['id'] is {}".format(appstruct['id'])
                 _ticket = PartyTicket.get_by_id(appstruct['id'])
                 assert isinstance(_ticket, PartyTicket)
-                print "found a valid instance! its id: {}".format(appstruct['id'])
+                print "found a valid instance! its id: {}".format(
+                    appstruct['id'])
         else:
             return HTTPFound(location='https://yes.c3s.cc')
 
@@ -672,22 +677,29 @@ def party_view(request):
                 'appstruct_preset']['lastname'],
             'email': request.session[
                 'appstruct_preset']['email'],
+            'mtype': request.session[
+                'appstruct_preset']['mtype'],
         }
         try:
-            if isinstance(_ticket, PartyTicket):  # we have info in the DB, so we load it
+            if isinstance(_ticket, PartyTicket):
+                # we have info in the DB, so we load it
                 appstruct['ticket']['ticket_gv'] = _ticket.ticket_gv_attendance
                 if _ticket.ticket_gv_attendance is 2:
                     appstruct['representation'] = {}
-                    appstruct['representation']['firstname'] = _ticket.rep_firstname
-                    appstruct['representation']['lastname'] = _ticket.rep_lastname
+                    appstruct['representation'][
+                        'firstname'] = _ticket.rep_firstname
+                    appstruct['representation'][
+                        'lastname'] = _ticket.rep_lastname
                     appstruct['representation']['street'] = _ticket.rep_street
                     appstruct['representation']['zip'] = _ticket.rep_zip
                     appstruct['representation']['city'] = _ticket.rep_city
-                    appstruct['representation']['country'] = _ticket.rep_country
-                    appstruct['representation']['representation_type'] = _ticket.rep_type
+                    appstruct['representation'][
+                        'country'] = _ticket.rep_country
+                    appstruct['representation'][
+                        'representation_type'] = _ticket.rep_type
                 appstruct['ticket']['ticket_bc'] = []
                 if _ticket.ticket_bc_attendance:
-                    appstruct['ticket']['ticket_bc'].append ('attendance')
+                    appstruct['ticket']['ticket_bc'].append('attendance')
                 if _ticket.ticket_bc_buffet:
                     appstruct['ticket']['ticket_bc'].append('buffet')
                 appstruct['ticket']['ticket_all'] = _ticket.ticket_all
@@ -855,7 +867,8 @@ def party_view(request):
             date_of_submission=datetime.now(),
             num_tickets=1,
             ticket_gv_attendance=appstruct['ticket']['ticket_gv'],
-            ticket_bc_attendance=('attendance' in appstruct['ticket']['ticket_bc']),
+            ticket_bc_attendance=(
+                'attendance' in appstruct['ticket']['ticket_bc']),
             ticket_bc_buffet=('buffet' in appstruct['ticket']['ticket_bc']),
             ticket_tshirt=appstruct['ticket']['ticket_tshirt'],
             ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
@@ -877,8 +890,9 @@ def party_view(request):
             guestlist=False,
             user_comment=appstruct['ticket']['comment'],
         )
+        ticket.membership_type = request.session['mtype']
         dbsession = DBSession
-        
+
         try:
             if isinstance(_ticket, PartyTicket):
                 in_DB = True
@@ -887,30 +901,36 @@ def party_view(request):
 
         if in_DB:
             ticket = _ticket
-            # just save those details that changed 
-            ticket.date_of_submission=datetime.now()
-            ticket.ticket_gv_attendance=appstruct['ticket']['ticket_gv']
-            ticket.ticket_bc_attendance=('attendance' in appstruct['ticket']['ticket_bc'])
-            ticket.ticket_bc_buffet=('buffet' in appstruct['ticket']['ticket_bc'])
-            ticket.ticket_tshirt=appstruct['ticket']['ticket_tshirt']
-            ticket.ticket_tshirt_type=appstruct['tshirt']['tshirt_type']
-            ticket.ticket_tshirt_size=appstruct['tshirt']['tshirt_size']
-            ticket.ticket_all=appstruct['ticket']['ticket_all']
-            ticket.ticket_support=('1' in appstruct['ticket']['ticket_support'])
-            ticket.ticket_support_x=('2' in appstruct['ticket']['ticket_support'])
-            ticket.ticket_support_xl=('3' in appstruct['ticket']['ticket_support'])
-            ticket.support=_support
-            ticket.discount=_discount
-            ticket.the_total=_the_total
-            ticket.rep_firstname=appstruct['representation']['firstname']
-            ticket.rep_lastname=appstruct['representation']['lastname']
-            ticket.rep_street=appstruct['representation']['street']
-            ticket.rep_zip=appstruct['representation']['zip']
-            ticket.rep_city=appstruct['representation']['city']
-            ticket.rep_country=appstruct['representation']['country']
-            ticket.rep_type=appstruct['representation']['representation_type']
-            ticket.guestlist=False
-            ticket.user_comment=appstruct['ticket']['comment']
+            # just save those details that changed
+            ticket.date_of_submission = datetime.now()
+            ticket.ticket_gv_attendance = appstruct['ticket']['ticket_gv']
+            ticket.ticket_bc_attendance = (
+                'attendance' in appstruct['ticket']['ticket_bc'])
+            ticket.ticket_bc_buffet = (
+                'buffet' in appstruct['ticket']['ticket_bc'])
+            ticket.ticket_tshirt = appstruct['ticket']['ticket_tshirt']
+            ticket.ticket_tshirt_type = appstruct['tshirt']['tshirt_type']
+            ticket.ticket_tshirt_size = appstruct['tshirt']['tshirt_size']
+            ticket.ticket_all = appstruct['ticket']['ticket_all']
+            ticket.ticket_support = (
+                '1' in appstruct['ticket']['ticket_support'])
+            ticket.ticket_support_x = (
+                '2' in appstruct['ticket']['ticket_support'])
+            ticket.ticket_support_xl = (
+                '3' in appstruct['ticket']['ticket_support'])
+            ticket.support = _support
+            ticket.discount = _discount
+            ticket.the_total = _the_total
+            ticket.rep_firstname = appstruct['representation']['firstname']
+            ticket.rep_lastname = appstruct['representation']['lastname']
+            ticket.rep_street = appstruct['representation']['street']
+            ticket.rep_zip = appstruct['representation']['zip']
+            ticket.rep_city = appstruct['representation']['city']
+            ticket.rep_country = appstruct['representation']['country']
+            ticket.rep_type = appstruct[
+                'representation']['representation_type']
+            ticket.guestlist = False
+            ticket.user_comment = appstruct['ticket']['comment']
             DBSession.flush()  # save to DB
             #  set the appstruct for further processing
             appstruct['email_confirm_code'] = ticket.email_confirm_code
@@ -928,15 +948,19 @@ def party_view(request):
                 date_of_submission=datetime.now(),
                 num_tickets=1,
                 ticket_gv_attendance=appstruct['ticket']['ticket_gv'],
-                ticket_bc_attendance=('attendance' in appstruct['ticket']['ticket_bc']),
-                ticket_bc_buffet=('buffet' in appstruct['ticket']['ticket_bc']),
+                ticket_bc_attendance=(
+                    'attendance' in appstruct['ticket']['ticket_bc']),
+                ticket_bc_buffet=(
+                    'buffet' in appstruct['ticket']['ticket_bc']),
                 ticket_tshirt=appstruct['ticket']['ticket_tshirt'],
                 ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
                 ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
                 ticket_all=appstruct['ticket']['ticket_all'],
                 ticket_support=('1' in appstruct['ticket']['ticket_support']),
-                ticket_support_x=('2' in appstruct['ticket']['ticket_support']),
-                ticket_support_xl=('3' in appstruct['ticket']['ticket_support']),
+                ticket_support_x=(
+                    '2' in appstruct['ticket']['ticket_support']),
+                ticket_support_xl=(
+                    '3' in appstruct['ticket']['ticket_support']),
                 support=_support,
                 discount=_discount,
                 the_total=_the_total,
@@ -956,7 +980,7 @@ def party_view(request):
                 dbsession.add(ticket)
                 print "adding ticket"
                 appstruct['email_confirm_code'] = randomstring  # XXX
-                #                                                 check duplicates
+                #                                    check duplicates
             except InvalidRequestError, e:  # pragma: no cover
                 print("InvalidRequestError! %s") % e
             except IntegrityError, ie:  # pragma: no cover
