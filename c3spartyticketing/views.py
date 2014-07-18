@@ -1248,7 +1248,7 @@ def sendmail_view(request):
         mailer.send(accmail_obj)
 
     # make the session go away
-    #request.session.invalidate()
+    request.session.invalidate()
     return {
         'firstname': appstruct['ticket']['firstname'],
         'lastname': appstruct['ticket']['lastname'],
