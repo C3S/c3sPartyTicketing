@@ -941,6 +941,7 @@ def party_view(request):
             DBSession.flush()  # save to DB
             #  set the appstruct for further processing
             appstruct['email_confirm_code'] = ticket.email_confirm_code
+            request.session['mtype'] = ticket.membership_type
         else:
             # to store the data in the DB, an object is created
             ticket = PartyTicket(
@@ -1222,8 +1223,7 @@ def sendmail_view(request):
     usermail_obj = Message(
         subject=usermail_subject,
         sender=request.registry.settings['c3spartyticketing.mail_sender'],
-        #recipients=[appstruct['ticket']['email']],
-        recipients=['c@c3s.cc'],  # XXX fixme
+        recipients=[appstruct['ticket']['email']],
         body=usermail_body
     )
 
@@ -1249,7 +1249,7 @@ def sendmail_view(request):
         mailer.send(accmail_obj)
 
     # make the session go away
-    #request.session.invalidate()
+    request.session.invalidate()
     return {
         'firstname': appstruct['ticket']['firstname'],
         'lastname': appstruct['ticket']['lastname'],
