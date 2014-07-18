@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
-      xmlns:metal="http://xml.zope.org/namespaces/metal">
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="c3spartyticketing">
   <head>
     <title i18n:translate="">C3S Event Ticketing</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -39,13 +41,15 @@
     <tal:block metal:define-slot="footer">
       <div class="footer">
         &copy; <span i18n:translate="">Copyright 2014, C3S SCE.</span> 
-        <a href="" i18n:attributes="href https://www.c3s.cc/en/contact-us/">
-          Contact
-        </a>
+        <a i18n:attributes="href"
+           i18n:name=""
+           href="https://www.c3s.cc/en/contact-us/"
+            i18n:translate="">Contact</a>
         &amp;
-        <a href="" i18n:attributes="href https://www.c3s.cc/en/impressum/">
-          Imprint
-        </a>
+        <a i18n:attributes="href"
+           i18n:name=""
+           i18n:translate=""
+           href="https://www.c3s.cc/en/impressum/">Imprint</a>
       </div>
     </tal:block>
   </body>
