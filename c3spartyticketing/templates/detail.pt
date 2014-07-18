@@ -36,6 +36,10 @@
         <td><a href="mailto:${ticket.email}">${ticket.email}</a></td>
       </tr>
       <tr>
+        <td>Mitgliedschaft</td>
+        <td>${ticket.membership_type}</td>
+      </tr>
+      <tr>
         <td>Token</td>
         <td>${ticket.token}</td>
       </tr>
