@@ -1218,9 +1218,13 @@ def sendmail_view(request):
         recipients=['c@c3s.cc'],  # XXX fixme
         body=usermail_body
     )
-    if request.registry.settings['testing.mail_to_console']:
+
+    if 'true' in request.registry.settings['testing.mail_to_console']:
+        # ^^ yes, a little ugly, but works; it's a string
+        #print "printing mail"
         print(usermail_body.encode('utf-8'))
     else:
+        #print "sending mail"
         mailer.send(usermail_obj)
 
     ### send accmail
@@ -1231,7 +1235,7 @@ def sendmail_view(request):
         recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
         body=encrypt_with_gnupg(accmail_body)
     )
-    if request.registry.settings['testing.mail_to_console']:
+    if 'true' in request.registry.settings['testing.mail_to_console']:
         print(accmail_body.encode('utf-8'))
     else:
         mailer.send(accmail_obj)
