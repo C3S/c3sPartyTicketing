@@ -1221,8 +1221,7 @@ def sendmail_view(request):
     usermail_obj = Message(
         subject=usermail_subject,
         sender=request.registry.settings['c3spartyticketing.mail_sender'],
-        #recipients=[appstruct['ticket']['email']],
-        recipients=['c@c3s.cc'],  # XXX fixme
+        recipients=[appstruct['ticket']['email']],
         body=usermail_body
     )
 
