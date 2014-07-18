@@ -1219,7 +1219,7 @@ def sendmail_view(request):
     ### pick usermail
     usermail_obj = Message(
         subject=usermail_subject,
-        sender="noreply@c3s.cc",
+        sender=request.registry.settings['c3spartyticketing.mail_sender'],
         #recipients=[appstruct['ticket']['email']],
         recipients=['c@c3s.cc'],  # XXX fixme
         body=usermail_body
@@ -1237,7 +1237,7 @@ def sendmail_view(request):
     from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
     accmail_obj = Message(
         subject=accmail_subject,
-        sender="noreply@c3s.cc",
+        sender=request.registry.settings['c3spartyticketing.mail_sender'],
         recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
         body=encrypt_with_gnupg(accmail_body)
     )
