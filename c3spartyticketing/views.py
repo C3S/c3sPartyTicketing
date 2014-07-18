@@ -1154,7 +1154,7 @@ def sendmail_view(request):
             'lastname': appstruct['ticket']['lastname']
         }
     )
-    
+
     #######################################################################
     accmail_subject = u'[C3S_PT] neues ticket'
     accmail_body = render(
@@ -1164,13 +1164,14 @@ def sendmail_view(request):
             'lastname': appstruct['ticket']['lastname'],
             'email': appstruct['ticket']['email'],
             'email_confirm_code': appstruct['email_confirm_code'],
-            'gv_attendance': (appstruct['ticket']['ticket_gv']==1),
-            'bc_attendance': ('attendance' in appstruct['ticket']['ticket_bc']),
+            'gv_attendance': (appstruct['ticket']['ticket_gv'] == 1),
+            'bc_attendance': (
+                'attendance' in appstruct['ticket']['ticket_bc']),
             'bc_buffet': ('buffet' in appstruct['ticket']['ticket_bc']),
             'discount': appstruct['ticket']['discount'],
             'the_total': appstruct['ticket']['the_total'],
             'comment': appstruct['ticket']['comment'],
-            'gv_representation': (appstruct['ticket']['ticket_gv']==2),
+            'gv_representation': (appstruct['ticket']['ticket_gv'] == 2),
             'rep_firstname': appstruct['representation']['firstname'],
             'rep_lastname': appstruct['representation']['lastname'],
             'rep_street': appstruct['representation']['street'],
@@ -1218,10 +1219,10 @@ def sendmail_view(request):
         body=usermail_body
     )
     if request.registry.settings['testing.mail_to_console']:
-        print(usermail_body.encode('utf-8'))   
+        print(usermail_body.encode('utf-8'))
     else:
         mailer.send(usermail_obj)
-    
+
     ### send accmail
     from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
     accmail_obj = Message(
