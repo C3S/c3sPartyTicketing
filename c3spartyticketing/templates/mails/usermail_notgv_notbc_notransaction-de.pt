@@ -1,6 +1,6 @@
-Hello ${firstname} ${lastname} !
+Hallo ${firstname} ${lastname} !
 
-Du hast Deine Teilnahme an der Generalversammlung abgesagt.
+Du hast Deine Teilnahme an der Generalversammlung und dem Barcamp abgesagt.
 
 Falls Du irrtümlich abgesagt hast oder Du Dich anders entscheiden möchtest, 
 benutze einfach noch einmal den Link aus der Einladungs-Email.

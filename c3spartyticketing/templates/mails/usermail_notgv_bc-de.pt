@@ -1,0 +1,34 @@
+Hallo ${firstname} ${lastname} !
+
+Du hast Deine Teilnahme an der Generalversammlung abgesagt, nimmst aber 
+am Barcamp teil.
+
+Falls Du irrtümlich abgesagt hast oder Du Dich anders entscheiden möchtest, 
+benutze einfach noch einmal den Link aus der Einladungs-Email.
+
+Wir haben Deine Ticketbestellung erhalten. Bitte überweise
+
+            ${the_total} Euro
+
+auf unser Konto:
+
+Bank:			EthikBank eG
+Kontoinhaber:		C3S SCE
+Betrag:			€ ${the_total}
+Verwendungszweck:	Versammlung und Barcamp2014 ${email_confirm_code}
+BIC:			GENO DE F1 ETK
+IBAN:			DE79 8309 4495 0003 2643 78
+
+oder
+
+Kontonummer:		3264378
+BLZ:			83094495
+
+Sobald Deine Zahlung auf unserem Konto eingeht, schicken wir Dir eine Email 
+mit den bestellten Ticket(s) und/oder Gutscheinen für Deine weiteren 
+Bestellungen. Deine Bestellung muss spätestens zum 18. August vollständig 
+bezahlt sein. Es gilt der Zahlungseingang auf unserem Konto.
+
+    Bis bald!
+
+    Dein C3S-Team

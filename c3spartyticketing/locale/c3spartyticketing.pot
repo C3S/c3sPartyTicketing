@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-07-17 09:06+00:00\n"
+"POT-Creation-Date: 2014-07-18 00:14+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,19 @@ msgstr ""
 
 #: ./c3spartyticketing/views.py:1094
 #, c-format
-msgid "C3S BarCamp & General Assembly 2014: your cancellation"
+msgid ""
+"C3S BarCamp & General Assembly: your BarCamp ticket / your cancellation of "
+"general assembly"
+msgstr ""
+
+#: ./c3spartyticketing/views.py:1109
+#, c-format
+msgid "C3S BarCamp & General Assembly: your cancellation / your order"
+msgstr ""
+
+#: ./c3spartyticketing/views.py:1123
+#, c-format
+msgid "C3S BarCamp & General Assembly: your cancellation"
 msgstr ""
 
 #: ./c3spartyticketing/views.py:169
@@ -139,12 +151,12 @@ msgstr ""
 
 #: ./c3spartyticketing/views.py:90
 #, c-format
-msgid "Gender of T-Shirt is mandatory."
+msgid "Gender selection for T-shirt is mandatory."
 msgstr ""
 
 #: ./c3spartyticketing/views.py:95
 #, c-format
-msgid "Size of T-Shirt ist mandatory."
+msgid "Size of T-shirt ist mandatory."
 msgstr ""
 
 #: ./c3spartyticketing/views.py:101
@@ -387,7 +399,7 @@ msgstr ""
 
 #: ./c3spartyticketing/views.py:484
 #, c-format
-msgid "http://url.c3s.cc/satzung"
+msgid "http://url.c3s.cc/statutes"
 msgstr ""
 
 #: ./c3spartyticketing/views.py:477
@@ -408,193 +420,223 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
+#. Default: 
 #: ./c3spartyticketing/templates/base.pt:72
 msgid "https://www.c3s.cc/en/contact-us/"
 msgstr ""
 
-#: ./c3spartyticketing/templates/base.pt:76
+#. Default: 
+#: ./c3spartyticketing/templates/base.pt:78
 msgid "https://www.c3s.cc/en/impressum/"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:17
+#: ./c3spartyticketing/templates/sendmail.pt:18
+#: ./c3spartyticketing/templates/sendmail.pt:29
+#: ./c3spartyticketing/templates/sendmail.pt:37
+#: ./c3spartyticketing/templates/sendmail.pt:48
 msgid "Your order at C3S SCE:"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:20
-msgid "Please check your e-mails and pay your order."
+#: ./c3spartyticketing/templates/sendmail.pt:21
+#: ./c3spartyticketing/templates/sendmail.pt:40
+#: ./c3spartyticketing/templates/sendmail.pt:51
+msgid "Please check your e-mails to get information on your payment."
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:35
+#: ./c3spartyticketing/templates/sendmail.pt:68
 #: ./c3spartyticketing/templates/party.pt:31
 msgid "Hello"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:44
-msgid "you have cancelled your participation at the C3S General Assembly."
-msgstr ""
-
-#: ./c3spartyticketing/templates/sendmail.pt:51
-msgid ""
-"If you did cancel by mistake or you would like to decide the other way around"
-msgstr ""
-
-#: ./c3spartyticketing/templates/sendmail.pt:54
-msgid ""
-"please simply click again the personal link that came with the invitation "
-"mail."
-msgstr ""
-
-#: ./c3spartyticketing/templates/sendmail.pt:62
-msgid "See you soon,"
-msgstr ""
-
-#: ./c3spartyticketing/templates/sendmail.pt:65
-msgid "Your C3S Team"
-msgstr ""
-
-#: ./c3spartyticketing/templates/sendmail.pt:79
+#: ./c3spartyticketing/templates/sendmail.pt:80
 msgid "you should have received a confirmation e-mail from"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:82
+#: ./c3spartyticketing/templates/sendmail.pt:83
 msgid "noreply@c3s.cc"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:84
+#: ./c3spartyticketing/templates/sendmail.pt:85
 msgid "that features the subject"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:87
+#: ./c3spartyticketing/templates/sendmail.pt:88
 msgid "C3S BarCamp 2014: your order"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:92
+#: ./c3spartyticketing/templates/sendmail.pt:93
 msgid ""
 "This e-mail contains all relevant information for the payment of your order."
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:95
+#: ./c3spartyticketing/templates/sendmail.pt:96
 msgid "Important"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:97
+#: ./c3spartyticketing/templates/sendmail.pt:98
 msgid "Referral Code"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:104
+#: ./c3spartyticketing/templates/sendmail.pt:105
 msgid "As soon as"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:106
+#: ./c3spartyticketing/templates/sendmail.pt:107
 msgid "your payment"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:109
+#: ./c3spartyticketing/templates/sendmail.pt:110
 msgid ""
 "is in, we send you an e-mail with your ticket(s) and vouchers for other "
-"orders (food, t-shirt)."
+"orders (food, T-shirt)."
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:115
+#: ./c3spartyticketing/templates/sendmail.pt:116
 msgid "Your order has to be fully paid by"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:118
+#: ./c3spartyticketing/templates/sendmail.pt:119
 msgid "18th August"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:121
+#: ./c3spartyticketing/templates/sendmail.pt:122
 msgid "the latest. Date of payment receipt on our account applies."
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:128
+#: ./c3spartyticketing/templates/sendmail.pt:129
 msgid "In case you did not receive our e-mail, please send a note to"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:138
+#: ./c3spartyticketing/templates/sendmail.pt:139
 msgid "Thank you for your order at C3S SCE!"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:141
-#: ./c3spartyticketing/templates/sendmail.pt:154
+#: ./c3spartyticketing/templates/sendmail.pt:142
+#: ./c3spartyticketing/templates/sendmail.pt:155
 msgid "Your C3S-Team"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:151
+#: ./c3spartyticketing/templates/sendmail.pt:152
 msgid ""
 "Many thanks for ordering C3S-Tickets &amp; Goodies! May the creative karma be"
 " with you."
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:176
+#: ./c3spartyticketing/templates/sendmail.pt:165
+msgid ""
+"you have cancelled your participation at the C3S General Assembly. However, "
+"you are attending the BarCamp."
+msgstr ""
+
+#: ./c3spartyticketing/templates/sendmail.pt:172
+#: ./c3spartyticketing/templates/sendmail.pt:207
+#: ./c3spartyticketing/templates/sendmail.pt:242
+msgid ""
+"If you did cancel by mistake or you would like to decide the other way around"
+msgstr ""
+
+#: ./c3spartyticketing/templates/sendmail.pt:175
+#: ./c3spartyticketing/templates/sendmail.pt:210
+#: ./c3spartyticketing/templates/sendmail.pt:245
+msgid ""
+"please simply click again the personal link that came with the invitation "
+"mail."
+msgstr ""
+
+#: ./c3spartyticketing/templates/sendmail.pt:180
+#: ./c3spartyticketing/templates/sendmail.pt:215
+msgid ""
+"You will receive more information on your order and how to pay in an e-mail."
+msgstr ""
+
+#: ./c3spartyticketing/templates/sendmail.pt:187
+#: ./c3spartyticketing/templates/sendmail.pt:222
+#: ./c3spartyticketing/templates/sendmail.pt:252
+msgid "See you soon,"
+msgstr ""
+
+#: ./c3spartyticketing/templates/sendmail.pt:190
+#: ./c3spartyticketing/templates/sendmail.pt:225
+#: ./c3spartyticketing/templates/sendmail.pt:255
+msgid "Your C3S Team"
+msgstr ""
+
+#: ./c3spartyticketing/templates/sendmail.pt:200
+#: ./c3spartyticketing/templates/sendmail.pt:235
+msgid ""
+"you have cancelled your participation in the C3S General Assembly as well as "
+"a participation in the BarCamp."
+msgstr ""
+
+#: ./c3spartyticketing/templates/sendmail.pt:274
 #: ./c3spartyticketing/templates/party.pt:96
 msgid "BarCamp"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:185
-#: ./c3spartyticketing/templates/sendmail.pt:299
+#: ./c3spartyticketing/templates/sendmail.pt:283
+#: ./c3spartyticketing/templates/sendmail.pt:397
 #: ./c3spartyticketing/templates/party.pt:105
 #: ./c3spartyticketing/templates/party.pt:219
 msgid "Starts in"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:190
-#: ./c3spartyticketing/templates/sendmail.pt:304
+#: ./c3spartyticketing/templates/sendmail.pt:288
+#: ./c3spartyticketing/templates/sendmail.pt:402
 #: ./c3spartyticketing/templates/party.pt:110
 #: ./c3spartyticketing/templates/party.pt:224
 msgid "weeks"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:195
-#: ./c3spartyticketing/templates/sendmail.pt:309
+#: ./c3spartyticketing/templates/sendmail.pt:293
+#: ./c3spartyticketing/templates/sendmail.pt:407
 #: ./c3spartyticketing/templates/party.pt:115
 #: ./c3spartyticketing/templates/party.pt:229
 msgid "days(s)"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:209
+#: ./c3spartyticketing/templates/sendmail.pt:307
 #: ./c3spartyticketing/templates/party.pt:129
 msgid "22.08.2014"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:212
+#: ./c3spartyticketing/templates/sendmail.pt:310
 #: ./c3spartyticketing/templates/party.pt:132
 msgid "12am - 8pm"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:220
-#: ./c3spartyticketing/templates/sendmail.pt:335
+#: ./c3spartyticketing/templates/sendmail.pt:318
+#: ./c3spartyticketing/templates/sendmail.pt:433
 #: ./c3spartyticketing/templates/party.pt:140
 #: ./c3spartyticketing/templates/party.pt:255
 msgid "Location"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:224
+#: ./c3spartyticketing/templates/sendmail.pt:322
 #: ./c3spartyticketing/templates/party.pt:144
 msgid "C3S SCE HQ"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:227
+#: ./c3spartyticketing/templates/sendmail.pt:325
 #: ./c3spartyticketing/templates/party.pt:147
 msgid "Düsseldorf"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:233
-#: ./c3spartyticketing/templates/sendmail.pt:368
+#: ./c3spartyticketing/templates/sendmail.pt:331
+#: ./c3spartyticketing/templates/sendmail.pt:466
 #: ./c3spartyticketing/templates/party.pt:153
 #: ./c3spartyticketing/templates/party.pt:288
 msgid "Adress"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:235
+#: ./c3spartyticketing/templates/sendmail.pt:333
 #: ./c3spartyticketing/templates/party.pt:155
 msgid "Alter Bahnhof, Heyestraße 194, Düsseldorf-Gerresheim"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:247
-#: ./c3spartyticketing/templates/sendmail.pt:264
-#: ./c3spartyticketing/templates/sendmail.pt:382
-#: ./c3spartyticketing/templates/sendmail.pt:399
+#: ./c3spartyticketing/templates/sendmail.pt:345
+#: ./c3spartyticketing/templates/sendmail.pt:362
+#: ./c3spartyticketing/templates/sendmail.pt:480
+#: ./c3spartyticketing/templates/sendmail.pt:497
 #: ./c3spartyticketing/templates/party.pt:167
 #: ./c3spartyticketing/templates/party.pt:184
 #: ./c3spartyticketing/templates/party.pt:302
@@ -602,64 +644,64 @@ msgstr ""
 msgid "Display enlarged map"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:285
+#: ./c3spartyticketing/templates/sendmail.pt:383
 #: ./c3spartyticketing/templates/party.pt:205
 msgid "General Assembly"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:288
-#: ./c3spartyticketing/templates/sendmail.pt:353
+#: ./c3spartyticketing/templates/sendmail.pt:386
+#: ./c3spartyticketing/templates/sendmail.pt:451
 #: ./c3spartyticketing/templates/party.pt:208
 #: ./c3spartyticketing/templates/party.pt:273
 msgid "Party"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:319
+#: ./c3spartyticketing/templates/sendmail.pt:417
 #: ./c3spartyticketing/templates/party.pt:239
 msgid "23.08.2014"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:322
+#: ./c3spartyticketing/templates/sendmail.pt:420
 #: ./c3spartyticketing/templates/party.pt:242
 msgid "2pm - 6pm"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:326
+#: ./c3spartyticketing/templates/sendmail.pt:424
 #: ./c3spartyticketing/templates/party.pt:246
 msgid "extension possible"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:339
+#: ./c3spartyticketing/templates/sendmail.pt:437
 #: ./c3spartyticketing/templates/party.pt:259
 msgid "Millowitsch Theater"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:342
+#: ./c3spartyticketing/templates/sendmail.pt:440
 #: ./c3spartyticketing/templates/party.pt:262
 msgid "Cologne"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:350
+#: ./c3spartyticketing/templates/sendmail.pt:448
 #: ./c3spartyticketing/templates/party.pt:270
 msgid "Afterwards, we'll"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:356
+#: ./c3spartyticketing/templates/sendmail.pt:454
 #: ./c3spartyticketing/templates/party.pt:276
 msgid "w/DJ at the"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:359
+#: ./c3spartyticketing/templates/sendmail.pt:457
 #: ./c3spartyticketing/templates/party.pt:279
 msgid "CAMPI Volksbühne"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:362
+#: ./c3spartyticketing/templates/sendmail.pt:460
 #: ./c3spartyticketing/templates/party.pt:282
 msgid "next door!"
 msgstr ""
 
-#: ./c3spartyticketing/templates/sendmail.pt:370
+#: ./c3spartyticketing/templates/sendmail.pt:468
 #: ./c3spartyticketing/templates/party.pt:290
 msgid "Aachener Straße 5, Cologne"
 msgstr ""

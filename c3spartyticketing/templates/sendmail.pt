@@ -13,11 +13,30 @@
       src="${request.static_url('c3spartyticketing:static/countdown/countdown.js')}"></script>
   </tal:block>
   <tal:block metal:fill-slot="middle">
-    <div tal:condition="not canceled">
+
+    <div tal:condition="not canceled and transaction">
       <h1 i18n:translate="">Your order at C3S SCE:</h1>
-      <h3 i18n:translate="" tal:condition="transaction">Please check your e-mails and pay your order.</h3>
+      <h3 i18n:translate="">Please check your e-mails to get information on your payment.</h3>
     </div>
+
+    <div tal:condition="not canceled and not transaction">
+      <h1 i18n:translate="">Your order at C3S SCE:</h1>
+    </div>
+
+    <div tal:condition="canceled and bc_attendance">
+      <h1 i18n:translate="">Your order at C3S SCE:</h1>
+      <h3 i18n:translate="">Please check your e-mails to get information on your payment.</h3>
+    </div>
+
+    <div tal:condition="canceled and not bc_attendance and transaction">
+      <h1 i18n:translate="">Your order at C3S SCE:</h1>
+      <h3 i18n:translate="">Please check your e-mails to get information on your payment.</h3>
+    </div>
+
+    <div tal:condition="canceled and not bc_attendance and not transaction"></div>
+
     <br />
+
   </tal:block>
   <tal:block metal:fill-slot="bottom" >
 
@@ -25,57 +44,85 @@
 
       <h3><small i18n:translate="">Hello</small> ${firstname} ${lastname},</h3>
 
-      <div tal:condition="canceled" style="color:#333;">
+      <div tal:condition="not canceled and transaction">
+        <p>
+          <span i18n:translate="">you should have received a confirmation e-mail from</span>
+          <strong i18n:translate="">noreply@c3s.cc</strong> <span i18n:translate="">that features the subject</span>
+          "<strong i18n:translate="">C3S BarCamp 2014: your order</strong>".
+          <br />
+          <span i18n:translate="">This e-mail contains all relevant information for the payment of your order.</span> 
+          (<span i18n:translate="">Important</span>: <strong i18n:translate="">Referral Code</strong>!)
+        </p>
+        <p>
+          <span i18n:translate="">As soon as</span> <strong i18n:translate="">your payment</strong> 
+          <span i18n:translate="">is in, we send you an e-mail with your ticket(s) 
+          and vouchers for other orders (food, T-shirt).</span>
+          <br />
+          <span i18n:translate="">Your order has to be fully paid by</span> 
+          <strong i18n:translate="">18th August</strong> 
+          <span i18n:translate="">the latest. Date of payment receipt on our account applies.</span>
+        </p>
+        <p>
+          <span i18n:translate="">In case you did not receive our e-mail, please send a note to</span> 
+          <a href="mailto:office@c3s.cc">office@c3s.cc</a>.
+        </p>
+        <hr />
+        <h2 i18n:translate="" style="color:#666; margin-left:40px;">Thank you for your order at C3S SCE!</h2>
+        <h3 i18n:translate="" style="color:#999; margin-left:80px;">Your C3S-Team</h3>
+      </div>
+
+      <div tal:condition="not canceled and not transaction">
+        <hr />
+        <h2 i18n:translate="" style="color:#666; margin-left:40px;">Many thanks for ordering C3S-Tickets &amp; Goodies! May the creative karma be with you.</h2>
+        <h3 i18n:translate="" style="color:#999; margin-left:80px;">Your C3S-Team</h3>
+      </div>
+
+      <div tal:condition="canceled and bc_attendance">
         <br />
         <p i18n:translate="">
-          you have cancelled your participation at the C3S General Assembly.
+          you have cancelled your participation at the C3S General Assembly. However, you are attending the BarCamp.
         </p>
         <p>
           <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around</span><br />
           <span i18n:translate="">please simply click again the personal link that came with the invitation mail.</span>
         </p>
-
+        <p i18n:translate="">
+          You will receive more information on your order and how to pay in an e-mail.
+        </p>
         <hr />
         <h2 i18n:translate="" style="color:#666; margin-left:40px;">See you soon,</h2>
         <h3 i18n:translate="" style="color:#999; margin-left:80px;">Your C3S Team</h3>
-
       </div>
 
-      <div tal:condition="not canceled" style="color:#333;"> 
+      <div tal:condition="canceled and not bc_attendance and transaction">
+        <br />
+        <p i18n:translate="">
+          you have cancelled your participation in the C3S General Assembly as well as a participation in the BarCamp.
+        </p>
+        <p>
+          <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around</span><br />
+          <span i18n:translate="">please simply click again the personal link that came with the invitation mail.</span>
+        </p>
+        <p i18n:translate="">
+          You will receive more information on your order and how to pay in an e-mail.
+        </p>
+        <hr />
+        <h2 i18n:translate="" style="color:#666; margin-left:40px;">See you soon,</h2>
+        <h3 i18n:translate="" style="color:#999; margin-left:80px;">Your C3S Team</h3>
+      </div>
 
-        <div tal:condition="transaction">
-          <p>
-            <span i18n:translate="">you should have received a confirmation e-mail from</span>
-            <strong i18n:translate="">noreply@c3s.cc</strong> <span i18n:translate="">that features the subject</span>
-            "<strong i18n:translate="">C3S BarCamp 2014: your order</strong>".
-            <br />
-            <span i18n:translate="">This e-mail contains all relevant information for the payment of your order.</span> 
-            (<span i18n:translate="">Important</span>: <strong i18n:translate="">Referral Code</strong>!)
-          </p>
-          <p>
-            <span i18n:translate="">As soon as</span> <strong i18n:translate="">your payment</strong> 
-            <span i18n:translate="">is in, we send you an e-mail with your ticket(s) 
-            and vouchers for other orders (food, t-shirt).</span>
-            <br />
-            <span i18n:translate="">Your order has to be fully paid by</span> 
-            <strong i18n:translate="">18th August</strong> 
-            <span i18n:translate="">the latest. Date of payment receipt on our account applies.</span>
-          </p>
-          <p>
-            <span i18n:translate="">In case you did not receive our e-mail, please send a note to</span> 
-            <a href="mailto:office@c3s.cc">office@c3s.cc</a>.
-          </p>
-          <hr />
-          <h2 i18n:translate="" style="color:#666; margin-left:40px;">Thank you for your order at C3S SCE!</h2>
-          <h3 i18n:translate="" style="color:#999; margin-left:80px;">Your C3S-Team</h3>
-        </div>
-
-        <div tal:condition="not transaction"> 
-          <hr />
-          <h2 i18n:translate="" style="color:#666; margin-left:40px;">Many thanks for ordering C3S-Tickets &amp; Goodies! May the creative karma be with you.</h2>
-          <h3 i18n:translate="" style="color:#999; margin-left:80px;">Your C3S-Team</h3>
-        </div>
-
+      <div tal:condition="canceled and not bc_attendance and not transaction">
+        <br />
+        <p i18n:translate="">
+          you have cancelled your participation in the C3S General Assembly as well as a participation in the BarCamp.
+        </p>
+        <p>
+          <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around</span><br />
+          <span i18n:translate="">please simply click again the personal link that came with the invitation mail.</span>
+        </p>
+        <hr />
+        <h2 i18n:translate="" style="color:#666; margin-left:40px;">See you soon,</h2>
+        <h3 i18n:translate="" style="color:#999; margin-left:80px;">Your C3S Team</h3>
       </div>
 
     </div>

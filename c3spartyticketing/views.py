@@ -88,12 +88,12 @@ def ticket_schema(request, appstruct, readonly=False):
         if value['ticket']['ticket_tshirt']:
             if not value['tshirt']['tshirt_type']:           
                 exc['tshirt'] = _(
-                    u'Gender of T-Shirt is mandatory.'
+                    u'Gender selection for T-shirt is mandatory.'
                 )
                 raise exc
             if not value['tshirt']['tshirt_size']:
                 exc['tshirt'] = _(
-                    u'Size of T-Shirt ist mandatory.'
+                    u'Size of T-shirt ist mandatory.'
                 )
                 raise exc
         if value['ticket']['ticket_gv'] == 2:
@@ -481,7 +481,7 @@ def ticket_schema(request, appstruct, readonly=False):
                     u'at most (see § 13 (6), sentence 3, of the articles of '
                 )
                 +u'<a href=\''
-                    +_(u'http://url.c3s.cc/satzung')
+                    +_(u'http://url.c3s.cc/statutes')
                 +u'\' target=\'_blank\'>'
                     +_(u'association')
                 +u'</a>'
@@ -1065,11 +1065,11 @@ def sendmail_view(request):
     ### render emails
 
     #######################################################################
-    usermail_with_transaction_subject = _(
+    usermail_gv_transaction_subject = _(
         u'C3S Barcamp 2014: your order'
     )
-    usermail_with_transaction = render(
-        'templates/mails/usermail_with_transaction-'+lang+'.pt',
+    usermail_gv_transaction = render(
+        'templates/mails/usermail_gv_transaction-'+lang+'.pt',
         {
             'firstname': appstruct['ticket']['firstname'],
             'lastname': appstruct['ticket']['lastname'],
@@ -1079,11 +1079,11 @@ def sendmail_view(request):
     )
 
     #######################################################################
-    usermail_without_transaction_subject = _(
+    usermail_gv_notransaction_subject = _(
         u'C3S Barcamp 2014: your order'
     )
-    usermail_without_transaction = render(
-        'templates/mails/usermail_without_transaction-'+lang+'.pt',
+    usermail_gv_notransaction = render(
+        'templates/mails/usermail_gv_notransaction-'+lang+'.pt',
         {
             'firstname': appstruct['ticket']['firstname'],
             'lastname': appstruct['ticket']['lastname']
@@ -1091,11 +1091,40 @@ def sendmail_view(request):
     )
 
     #######################################################################
-    usermail_cancelled_subject = _(
-        u"C3S BarCamp & General Assembly 2014: your cancellation"
+    usermail_notgv_bc_subject = _(
+        u'C3S BarCamp & General Assembly: your BarCamp ticket / '
+        u'your cancellation of general assembly'
     )
-    usermail_cancelled = render(
-        'templates/mails/usermail_cancelled-'+lang+'.pt',
+    usermail_notgv_bc = render(
+        'templates/mails/usermail_notgv_bc-'+lang+'.pt',
+        {
+            'firstname': appstruct['ticket']['firstname'],
+            'lastname': appstruct['ticket']['lastname'],
+            'the_total': appstruct['ticket']['the_total'],
+            'email_confirm_code': appstruct['email_confirm_code']
+        }
+    )
+
+    #######################################################################
+    usermail_notgv_notbc_transaction_subject = _(
+        u'C3S BarCamp & General Assembly: your cancellation / your order'
+    )
+    usermail_notgv_notbc_transaction = render(
+        'templates/mails/usermail_notgv_notbc_transaction-'+lang+'.pt',
+        {
+            'firstname': appstruct['ticket']['firstname'],
+            'lastname': appstruct['ticket']['lastname'],
+            'the_total': appstruct['ticket']['the_total'],
+            'email_confirm_code': appstruct['email_confirm_code']
+        }
+    )
+
+    #######################################################################
+    usermail_notgv_notbc_notransaction_subject = _(
+        u'C3S BarCamp & General Assembly: your cancellation'
+    )
+    usermail_notgv_notbc_notransaction = render(
+        'templates/mails/usermail_notgv_notbc_notransaction-'+lang+'.pt',
         {
             'firstname': appstruct['ticket']['firstname'],
             'lastname': appstruct['ticket']['lastname']
@@ -1137,15 +1166,26 @@ def sendmail_view(request):
     ### send mails
     mailer = get_mailer(request)
 
-    ### send usermail
-    usermail_body = usermail_with_transaction
-    usermail_subject = usermail_with_transaction_subject
-    if (appstruct['ticket']['the_total'] == 0):
-        usermail_body = usermail_without_transaction
-        usermail_subject = usermail_without_transaction_subject
-    if (appstruct['ticket']['ticket_gv'] == 3):
-        usermail_body = usermail_cancelled
-        usermail_subject = usermail_cancelled_subject
+    ### pick usermail
+    usermail_body = usermail_gv_transaction
+    usermail_subject = usermail_gv_transaction_subject
+    if (appstruct['ticket']['ticket_gv'] != 3):
+        if (appstruct['ticket']['the_total'] == 0):
+            usermail_body = usermail_gv_notransaction
+            usermail_subject = usermail_gv_notransaction_subject
+    else:
+        if (appstruct['ticket']['ticket_bc']):
+            usermail_body = usermail_notgv_bc
+            usermail_subject = usermail_notgv_bc_subject
+        else:
+            if (appstruct['ticket']['the_total'] > 0):
+                usermail_body = usermail_notgv_notbc_transaction
+                usermail_subject = usermail_notgv_notbc_transaction_subject
+            else:
+                usermail_body = usermail_notgv_notbc_notransaction
+                usermail_subject = usermail_notgv_notbc_notransaction_subject
+
+    ### pick usermail
     usermail_obj = Message(
         subject=usermail_subject,
         sender="noreply@c3s.cc",
@@ -1177,7 +1217,8 @@ def sendmail_view(request):
         'firstname': appstruct['ticket']['firstname'],
         'lastname': appstruct['ticket']['lastname'],
         'transaction': (appstruct['ticket']['the_total'] > 0),
-        'canceled': (appstruct['ticket']['ticket_gv'] == 3)
+        'canceled': (appstruct['ticket']['ticket_gv'] == 3),
+        'bc_attendance': appstruct['ticket']['ticket_bc']
     }
 
 

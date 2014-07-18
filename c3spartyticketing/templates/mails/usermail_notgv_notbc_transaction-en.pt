@@ -1,6 +1,12 @@
 Hello ${firstname} ${lastname} !
 
-we have received your ticket order. Please transfer the amount of
+you have cancelled your participation in the C3S General Assembly as well as a 
+participation in the BarCamp.
+
+If you did cancel by mistake or you would like to decide the other way around
+please simply click again the personal link that came with the invitation mail.
+
+We have received your ticket order. Please transfer the amount of
 
             ${the_total} Euros
 
@@ -14,7 +20,7 @@ BIC:			GENO DE F1 ETK
 IBAN:			DE79 8309 4495 0003 2643 78
 
 As soon as we have received your payment we are going to send you an email 
-with your ticket(s) and your other vouchers (catering, t-shirt). Your order 
+with your ticket(s) and and/or vouchers for the rest of your order. Your order 
 has to be fully paid by 18th August 2014 latest. The date of entry of 
 payment on our account applies.
 

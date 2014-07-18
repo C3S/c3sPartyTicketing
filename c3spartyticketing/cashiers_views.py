@@ -187,7 +187,7 @@ def check_in(request):
         ('ticket_gv', u'Attendance General Assembly'),
         ('ticket_bc', u'Attendance BarCamp'),
         ('ticket_bc_buffet', u'Buffet Barcamp'),
-        ('ticket_tshirt', u'T-Shirt'),
+        ('ticket_tshirt', u'T-shirt'),
         ('ticket_all', u'All-Inclusive')
     }
 
