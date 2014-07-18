@@ -24,7 +24,7 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_mailer',
     'pyramid_tm',
-    'python-dateutil'
+    'python-dateutil',
     'qrcode',
     'repoze.sendmail<4.2',  # pin down, see
     # https://github.com/repoze/repoze.sendmail/issues/31
