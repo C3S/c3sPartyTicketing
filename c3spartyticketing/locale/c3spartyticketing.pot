@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-07-18 08:03+02:00\n"
+"POT-Creation-Date: 2014-07-19 05:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,227 +15,208 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 
-#: ./c3spartyticketing/cashiers_views.py:348
-#: ./c3spartyticketing/accountants_views.py:127
-#: ./c3spartyticketing/accountants_views.py:925
-#: ./c3spartyticketing/views.py:776
-#, c-format
-msgid "Please note: There were errors, please check the form below."
-msgstr ""
-
-#: ./c3spartyticketing/accountants_views.py:904
-#: ./c3spartyticketing/views.py:747
-#, c-format
-msgid "Submit"
-msgstr ""
-
-#: ./c3spartyticketing/accountants_views.py:905
-#, c-format
-msgid "Reset"
-msgstr ""
-
-#: ./c3spartyticketing/views.py:1092 ./c3spartyticketing/views.py:1106
+#: ./c3spartyticketing/views.py:1114 ./c3spartyticketing/views.py:1128
 #, c-format
 msgid "C3S Barcamp 2014: your order"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1118
+#: ./c3spartyticketing/views.py:1140
 #, c-format
 msgid ""
 "C3S BarCamp & General Assembly: your BarCamp ticket / your cancellation of "
 "general assembly"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1133
+#: ./c3spartyticketing/views.py:1155
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation / your order"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1147
+#: ./c3spartyticketing/views.py:1169
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:169
+#: ./c3spartyticketing/views.py:131
 #, c-format
 msgid "I will attend the C3S SCE General Assembly."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:170
+#: ./c3spartyticketing/views.py:132
 #, c-format
 msgid ""
 "I will not attend the C3S SCE General Assembly personally. I will be "
 "represented by an authorized person."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:174
+#: ./c3spartyticketing/views.py:136
 #, c-format
 msgid "I will not attend the C3S SCE General Assembly."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:178
+#: ./c3spartyticketing/views.py:140
 #, c-format
 msgid "I will attend the BarCamp. (€9)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:179
+#: ./c3spartyticketing/views.py:141
 #, c-format
 msgid "I'd like to dine from the BarCamp buffet. (€12)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:183
+#: ./c3spartyticketing/views.py:145
 #, c-format
 msgid "Supporter Ticket (€5)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:184
+#: ./c3spartyticketing/views.py:146
 #, c-format
 msgid "Supporter Ticket X (€10)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:185
+#: ./c3spartyticketing/views.py:147
 #, c-format
 msgid "Supporter Ticket XL (€100)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:189
+#: ./c3spartyticketing/views.py:151
 #, c-format
 msgid "a member of C3S SCE"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:190
+#: ./c3spartyticketing/views.py:152
 #, c-format
 msgid "my spouse / registered civil partner"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:191
+#: ./c3spartyticketing/views.py:153
 #, c-format
 msgid "my parent"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:192
+#: ./c3spartyticketing/views.py:154
 #, c-format
 msgid "my child"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:193
+#: ./c3spartyticketing/views.py:155
 #, c-format
 msgid "my sibling"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:197
+#: ./c3spartyticketing/views.py:159
 #, c-format
 msgid "male"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:198
+#: ./c3spartyticketing/views.py:160
 #, c-format
 msgid "female"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:202
+#: ./c3spartyticketing/views.py:164
 #, c-format
 msgid "S"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:203
+#: ./c3spartyticketing/views.py:165
 #, c-format
 msgid "M"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:204
+#: ./c3spartyticketing/views.py:166
 #, c-format
 msgid "L"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:205
+#: ./c3spartyticketing/views.py:167
 #, c-format
 msgid "XL"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:206
+#: ./c3spartyticketing/views.py:168
 #, c-format
 msgid "XXL"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:207
+#: ./c3spartyticketing/views.py:169
 #, c-format
 msgid "XXXL"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:286
+#: ./c3spartyticketing/views.py:248
 #, c-format
 msgid "All-Inclusive Discount (-€2,50)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:90
+#: ./c3spartyticketing/views.py:82
 #, c-format
 msgid "Gender selection for T-shirt is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:95
+#: ./c3spartyticketing/views.py:87
 #, c-format
 msgid "Size of T-shirt ist mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:101
+#: ./c3spartyticketing/views.py:93
 #, c-format
 msgid "First name of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:106
+#: ./c3spartyticketing/views.py:98
 #, c-format
 msgid "Last name of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:111
+#: ./c3spartyticketing/views.py:103
 #, c-format
 msgid "Address of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:116
+#: ./c3spartyticketing/views.py:108
 #, c-format
 msgid "Postal code of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:121
+#: ./c3spartyticketing/views.py:113
 #, c-format
 msgid "City of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:126
+#: ./c3spartyticketing/views.py:118
 #, c-format
 msgid "Country of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:131
+#: ./c3spartyticketing/views.py:123
 #, c-format
 msgid "Relation of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:217
+#: ./c3spartyticketing/views.py:179
 #, c-format
 msgid "General Assembly:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:227
+#: ./c3spartyticketing/views.py:189
 #, c-format
 msgid "BarCamp:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:234
+#: ./c3spartyticketing/views.py:196
 #, c-format
 msgid ""
 "The buffet consists of e.g., salads, vegetables, dips, cheese and meat "
 "platters. A free drink is included."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:246
+#: ./c3spartyticketing/views.py:208
 #, c-format
 msgid "Extras:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:253
+#: ./c3spartyticketing/views.py:215
 #, c-format
 msgid ""
 "There will be one joint T-shirt design for both events in C3S green, black "
@@ -244,12 +225,12 @@ msgid ""
 "assembly. If you chose to order a shirt, you can specify its size below."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:269
+#: ./c3spartyticketing/views.py:231
 #, c-format
 msgid "Special Offer:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:276
+#: ./c3spartyticketing/views.py:238
 #, c-format
 msgid ""
 "The all-inclusive package covers the participation in the BarCamp (including "
@@ -257,94 +238,101 @@ msgid ""
 "exclusive event T-shirt as well."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:291
+#: ./c3spartyticketing/views.py:253
 #, c-format
 msgid "Supporter Tickets:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:298
+#: ./c3spartyticketing/views.py:260
 #, c-format
 msgid ""
 "These ticket options are selectable indepently from the other options. They "
 "help the cooperative a great deal to bear the costs occasioned by the events."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:328
+#: ./c3spartyticketing/views.py:290
 #, c-format
 msgid "Notes"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:335
+#: ./c3spartyticketing/views.py:297
 #, c-format
 msgid "Your notes (255 chars)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:403
+#: ./c3spartyticketing/views.py:350
+#, c-format
+msgid ""
+"<p>Please provide us with the following information for your "
+"representative:<p>"
+msgstr ""
+
+#: ./c3spartyticketing/views.py:364
 #, c-format
 msgid "First Name"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:412
+#: ./c3spartyticketing/views.py:373
 #, c-format
 msgid "Last Name"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:421
+#: ./c3spartyticketing/views.py:382
 #, c-format
 msgid "Address"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:430
+#: ./c3spartyticketing/views.py:391
 #, c-format
 msgid "Postal Code"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:439
+#: ./c3spartyticketing/views.py:400
 #, c-format
 msgid "City"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:448
+#: ./c3spartyticketing/views.py:409
 #, c-format
 msgid "Country"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:457
+#: ./c3spartyticketing/views.py:418
 #, c-format
 msgid "My representative is..."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:519
+#: ./c3spartyticketing/views.py:480
 #, c-format
 msgid "Gender:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:530
+#: ./c3spartyticketing/views.py:491
 #, c-format
 msgid "Size:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:550
+#: ./c3spartyticketing/views.py:512
 #, c-format
 msgid "Ticket Information"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:554
+#: ./c3spartyticketing/views.py:516
 #, c-format
 msgid "Representative"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:560
+#: ./c3spartyticketing/views.py:522
 #, c-format
 msgid "T-Shirt"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:316
+#: ./c3spartyticketing/views.py:278
 #, c-format
 msgid "Total"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:317
+#: ./c3spartyticketing/views.py:279
 #, c-format
 msgid ""
 "Your order has to be fully paid by 18.08.2014 at the latest (payment receipt "
@@ -353,33 +341,57 @@ msgid ""
 "to you shortly by e-mail."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1060
+#: ./c3spartyticketing/views.py:820
+#: ./c3spartyticketing/accountants_views.py:904
 #, c-format
-msgid "Yes, please send me the e-mail!"
+msgid "Submit"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1062
+#: ./c3spartyticketing/views.py:850
+#: ./c3spartyticketing/accountants_views.py:127
+#: ./c3spartyticketing/accountants_views.py:925
+#: ./c3spartyticketing/cashiers_views.py:348
+#, c-format
+msgid "Please note: There were errors, please check the form below."
+msgstr ""
+
+#: ./c3spartyticketing/views.py:1082
+#, c-format
+msgid "Submit & Buy"
+msgstr ""
+
+#: ./c3spartyticketing/views.py:1084
 #, c-format
 msgid "Wait, I might have to change..."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:390
-#, c-format
-msgid ""
-"Please provide us with the following information for your representative:"
-msgstr ""
-
-#: ./c3spartyticketing/views.py:504 ./c3spartyticketing/views.py:502
+#: ./c3spartyticketing/views.py:465 ./c3spartyticketing/views.py:463
 #, c-format
 msgid "http://url.c3s.cc/authorization"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:500
+#: ./c3spartyticketing/views.py:540
+#, c-format
+msgid ""
+"You can't edit the order form after hitting the button \"Submit & Buy\" "
+"below. However, you can click the personal link you received as part of the "
+"invitation link. There you can view but not edit your order. A full refund of"
+" your money once transferred is not possible. Only in case the BarCamp is "
+"cancelled by C3S SCE a refund for the BarCamp ticket and food is possible. If"
+" you have any questions please contact"
+msgstr ""
+
+#: ./c3spartyticketing/views.py:537
+#, c-format
+msgid "We will send tickets and vouchers in time by e-mail"
+msgstr ""
+
+#: ./c3spartyticketing/views.py:461
 #, c-format
 msgid "Download authorization form"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:493
+#: ./c3spartyticketing/views.py:454
 #, c-format
 msgid ""
 "Your representative has to provide an authorization certificate signed by "
@@ -387,27 +399,27 @@ msgid ""
 "accept the original document."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:492
+#: ./c3spartyticketing/views.py:453
 #, c-format
 msgid "Don't forget"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:488
+#: ./c3spartyticketing/views.py:449
 #, c-format
 msgid "). Registered civil partners are treated as spouses."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:486
+#: ./c3spartyticketing/views.py:447
 #, c-format
 msgid "association"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:484
+#: ./c3spartyticketing/views.py:445
 #, c-format
 msgid "http://url.c3s.cc/statutes"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:477
+#: ./c3spartyticketing/views.py:438
 #, c-format
 msgid ""
 "You may only nominate as your representative members of the cooperative, your"
@@ -415,80 +427,14 @@ msgid ""
 " members at most (see § 13 (6), sentence 3, of the articles of "
 msgstr ""
 
-#: ./c3spartyticketing/views.py:476
+#: ./c3spartyticketing/views.py:437
 #, c-format
 msgid "Please note"
 msgstr ""
 
-#. Default: Thank You!
-#: ./c3spartyticketing/templates/success.pt:13
-msgid "success-page-thanks"
-msgstr ""
-
-#. Default: Success
-#: ./c3spartyticketing/templates/success.pt:20
-msgid "success-headline"
-msgstr ""
-
-#. Default: We just sent you an email with further information.
-#: ./c3spartyticketing/templates/success.pt:38
-msgid "success-further-information-p1"
-msgstr ""
-
-#. Default: Start over again! &raquo;
-#: ./c3spartyticketing/templates/success.pt:43
-msgid "start-over"
-msgstr ""
-
-#: ./c3spartyticketing/templates/confirm.pt:23
-msgid "Please confirm your information"
-msgstr ""
-
-#: ./c3spartyticketing/templates/confirm.pt:35
-msgid "What's next?"
-msgstr ""
-
-#: ./c3spartyticketing/templates/confirm.pt:38
-msgid ""
-"We will send you an e-mail with more information. You have to pay your order "
-"(and your ticket) before leaving for Cologne/Düsseldorf!"
-msgstr ""
-
-#. Default: Party C3S!
-#: ./c3spartyticketing/templates/verify_password.pt:11
-msgid "join-form-title"
-msgstr ""
-
-#. Default: Get your ticket...
-#: ./c3spartyticketing/templates/verify_password.pt:29
-msgid "get your pdf"
-msgstr ""
-
-#. Default: Password
-#: ./c3spartyticketing/templates/verify_password.pt:34
-msgid "password"
-msgstr ""
-
-#. Default: Load your ticket...
-#: ./c3spartyticketing/templates/verify_password.pt:47
-msgid "load-your-PDF"
-msgstr ""
-
-#. Default: To make your ticket valid, please transfer the money. We will send
-#. a confirmation email once we get it!
-#: ./c3spartyticketing/templates/verify_password.pt:59
-msgid "load-pdf-further-instructions"
-msgstr ""
-
-#. Default: When transfering money for your ticket to us, please use the
-#. following confirmation code as reference:
-#: ./c3spartyticketing/templates/verify_password.pt:68
-msgid "load-pdf-further-instructions-confirmcode"
-msgstr ""
-
-#. Default: You can find this and more information on page two of your ticket.
-#: ./c3spartyticketing/templates/verify_password.pt:78
-msgid "load-pdf-further-instructions-on-page-2"
+#: ./c3spartyticketing/accountants_views.py:905
+#, c-format
+msgid "Reset"
 msgstr ""
 
 #: ./c3spartyticketing/templates/base.pt:6
@@ -499,27 +445,19 @@ msgstr ""
 msgid "Copyright 2014, C3S SCE."
 msgstr ""
 
-#. Default: 
-#. 
 #: ./c3spartyticketing/templates/base.pt:72
-#: ./c3spartyticketing/templates/base.pt:83
 msgid "https://www.c3s.cc/en/contact-us/"
 msgstr ""
 
-#. Default: 
-#. 
-#: ./c3spartyticketing/templates/base.pt:78
-#: ./c3spartyticketing/templates/base.pt:87
-msgid "https://www.c3s.cc/en/impressum/"
-msgstr ""
-
-#: ./c3spartyticketing/templates/base.pt:83
-#: ./c3spartyticketing/templates/base.pt:90
+#: ./c3spartyticketing/templates/base.pt:72
 msgid "Contact"
 msgstr ""
 
-#: ./c3spartyticketing/templates/base.pt:87
-#: ./c3spartyticketing/templates/base.pt:94
+#: ./c3spartyticketing/templates/base.pt:76
+msgid "https://www.c3s.cc/en/impressum/"
+msgstr ""
+
+#: ./c3spartyticketing/templates/base.pt:76
 msgid "Imprint"
 msgstr ""
 
@@ -537,7 +475,7 @@ msgid "Please check your e-mails to get information on your payment."
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:71
-#: ./c3spartyticketing/templates/party.pt:31
+#: ./c3spartyticketing/templates/party.pt:33
 msgid "Hello"
 msgstr ""
 
@@ -571,7 +509,7 @@ msgid "Referral Code"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:105
-msgid "As soon as"
+msgid "After receiving"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:107
@@ -580,8 +518,8 @@ msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:110
 msgid ""
-"is in, we send you an e-mail with your ticket(s) and vouchers for other "
-"orders (food, T-shirt)."
+"we are going to send you an email with your ticket(s) and/or vouchers for the"
+" rest of your order. You will receive your ticket(s) in time."
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:116
@@ -589,11 +527,11 @@ msgid "Your order has to be fully paid by"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:119
-msgid "18th August"
+msgid "18th August 2014"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:122
-msgid "the latest. Date of payment receipt on our account applies."
+msgid "at latest. The date of entry of payment on our account applies."
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:129
@@ -611,8 +549,8 @@ msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:152
 msgid ""
-"Many thanks for ordering C3S-Tickets &amp; Goodies! May the creative karma be"
-" with you."
+"Many thanks for attending the general assembly -- looking forward to meet you"
+" in Cologne!"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:165
@@ -625,15 +563,14 @@ msgstr ""
 #: ./c3spartyticketing/templates/sendmail.pt:207
 #: ./c3spartyticketing/templates/sendmail.pt:242
 msgid ""
-"If you did cancel by mistake or you would like to decide the other way around"
+"If you did cancel by mistake or you would like to decide the other way "
+"around,"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:175
 #: ./c3spartyticketing/templates/sendmail.pt:210
 #: ./c3spartyticketing/templates/sendmail.pt:245
-msgid ""
-"please simply click again the personal link that came with the invitation "
-"mail."
+msgid "please contact our team at office@c3s.cc until 11th August, 2014."
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:180
@@ -662,67 +599,67 @@ msgid ""
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:274
-#: ./c3spartyticketing/templates/party.pt:96
+#: ./c3spartyticketing/templates/party.pt:98
 msgid "BarCamp"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:283
 #: ./c3spartyticketing/templates/sendmail.pt:397
-#: ./c3spartyticketing/templates/party.pt:105
-#: ./c3spartyticketing/templates/party.pt:219
+#: ./c3spartyticketing/templates/party.pt:107
+#: ./c3spartyticketing/templates/party.pt:221
 msgid "Starts in"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:288
 #: ./c3spartyticketing/templates/sendmail.pt:402
-#: ./c3spartyticketing/templates/party.pt:110
-#: ./c3spartyticketing/templates/party.pt:224
+#: ./c3spartyticketing/templates/party.pt:112
+#: ./c3spartyticketing/templates/party.pt:226
 msgid "weeks"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:293
 #: ./c3spartyticketing/templates/sendmail.pt:407
-#: ./c3spartyticketing/templates/party.pt:115
-#: ./c3spartyticketing/templates/party.pt:229
+#: ./c3spartyticketing/templates/party.pt:117
+#: ./c3spartyticketing/templates/party.pt:231
 msgid "days(s)"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:307
-#: ./c3spartyticketing/templates/party.pt:129
+#: ./c3spartyticketing/templates/party.pt:131
 msgid "22.08.2014"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:310
-#: ./c3spartyticketing/templates/party.pt:132
+#: ./c3spartyticketing/templates/party.pt:134
 msgid "12am - 8pm"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:318
 #: ./c3spartyticketing/templates/sendmail.pt:433
-#: ./c3spartyticketing/templates/party.pt:140
-#: ./c3spartyticketing/templates/party.pt:255
+#: ./c3spartyticketing/templates/party.pt:142
+#: ./c3spartyticketing/templates/party.pt:257
 msgid "Location"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:322
-#: ./c3spartyticketing/templates/party.pt:144
+#: ./c3spartyticketing/templates/party.pt:146
 msgid "C3S SCE HQ"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:325
-#: ./c3spartyticketing/templates/party.pt:147
+#: ./c3spartyticketing/templates/party.pt:149
 msgid "Düsseldorf"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:331
 #: ./c3spartyticketing/templates/sendmail.pt:466
-#: ./c3spartyticketing/templates/party.pt:153
-#: ./c3spartyticketing/templates/party.pt:288
+#: ./c3spartyticketing/templates/party.pt:155
+#: ./c3spartyticketing/templates/party.pt:290
 msgid "Adress"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:333
-#: ./c3spartyticketing/templates/party.pt:155
+#: ./c3spartyticketing/templates/party.pt:157
 msgid "Alter Bahnhof, Heyestraße 194, Düsseldorf-Gerresheim"
 msgstr ""
 
@@ -730,106 +667,124 @@ msgstr ""
 #: ./c3spartyticketing/templates/sendmail.pt:362
 #: ./c3spartyticketing/templates/sendmail.pt:480
 #: ./c3spartyticketing/templates/sendmail.pt:497
-#: ./c3spartyticketing/templates/party.pt:167
-#: ./c3spartyticketing/templates/party.pt:184
-#: ./c3spartyticketing/templates/party.pt:302
-#: ./c3spartyticketing/templates/party.pt:319
+#: ./c3spartyticketing/templates/party.pt:169
+#: ./c3spartyticketing/templates/party.pt:186
+#: ./c3spartyticketing/templates/party.pt:304
+#: ./c3spartyticketing/templates/party.pt:321
 msgid "Display enlarged map"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:383
-#: ./c3spartyticketing/templates/party.pt:205
+#: ./c3spartyticketing/templates/party.pt:207
 msgid "General Assembly"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:386
 #: ./c3spartyticketing/templates/sendmail.pt:451
-#: ./c3spartyticketing/templates/party.pt:208
-#: ./c3spartyticketing/templates/party.pt:273
+#: ./c3spartyticketing/templates/party.pt:210
+#: ./c3spartyticketing/templates/party.pt:275
 msgid "Party"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:417
-#: ./c3spartyticketing/templates/party.pt:239
+#: ./c3spartyticketing/templates/party.pt:241
 msgid "23.08.2014"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:420
-#: ./c3spartyticketing/templates/party.pt:242
+#: ./c3spartyticketing/templates/party.pt:244
 msgid "2pm - 6pm"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:424
-#: ./c3spartyticketing/templates/party.pt:246
+#: ./c3spartyticketing/templates/party.pt:248
 msgid "extension possible"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:437
-#: ./c3spartyticketing/templates/party.pt:259
+#: ./c3spartyticketing/templates/party.pt:261
 msgid "Millowitsch Theater"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:440
-#: ./c3spartyticketing/templates/party.pt:262
+#: ./c3spartyticketing/templates/party.pt:264
 msgid "Cologne"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:448
-#: ./c3spartyticketing/templates/party.pt:270
+#: ./c3spartyticketing/templates/party.pt:272
 msgid "Afterwards, we'll"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:454
-#: ./c3spartyticketing/templates/party.pt:276
+#: ./c3spartyticketing/templates/party.pt:278
 msgid "w/DJ at the"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:457
-#: ./c3spartyticketing/templates/party.pt:279
+#: ./c3spartyticketing/templates/party.pt:281
 msgid "CAMPI Volksbühne"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:460
-#: ./c3spartyticketing/templates/party.pt:282
+#: ./c3spartyticketing/templates/party.pt:284
 msgid "next door!"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:468
-#: ./c3spartyticketing/templates/party.pt:290
+#: ./c3spartyticketing/templates/party.pt:292
 msgid "Aachener Straße 5, Cologne"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:45
+#: ./c3spartyticketing/templates/confirm.pt:23
+msgid "Please confirm your information"
+msgstr ""
+
+#: ./c3spartyticketing/templates/confirm.pt:35
+msgid "What's next?"
+msgstr ""
+
+#: ./c3spartyticketing/templates/confirm.pt:38
+msgid ""
+"We will send you an e-mail with more information. You have to pay your order "
+"(and your ticket) before leaving for Cologne/Düsseldorf!"
+msgstr ""
+
+#: ./c3spartyticketing/templates/party.pt:47
 msgid "get your ticket for the"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:48
+#: ./c3spartyticketing/templates/party.pt:50
 msgid "C3S BarCamp and General Assembly!"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:55
+#: ./c3spartyticketing/templates/party.pt:57
 msgid "Notice"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:57
+#: ./c3spartyticketing/templates/party.pt:59
 msgid "In case you are not"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:60
+#: ./c3spartyticketing/templates/party.pt:62
 msgid "please email us at"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:63
+#: ./c3spartyticketing/templates/party.pt:65
 msgid "office@c3s.cc"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:65
+#: ./c3spartyticketing/templates/party.pt:67
 msgid "thank you"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:70
+#: ./c3spartyticketing/templates/party.pt:72
 msgid ""
 "Please let us know in time whether you will participate. We must know as soon"
 " as possible whether the location will be large enough. If possible, please "
 "respond by August 11th at the latest."
+msgstr ""
+
+#: ./c3spartyticketing/templates/finished.pt:23
+msgid "Your Ticket:"
 msgstr ""

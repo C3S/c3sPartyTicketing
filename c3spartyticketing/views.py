@@ -73,19 +73,7 @@ def ticket_schema(request, appstruct, readonly=False):
     ### validator
 
     def validator(form, value):
-        #print("the value from the validator: %s \n") % value
-        #for thing in value:
-        #    print(u"the thing: %s") % thing
-        #    print(u"type: %s") % type(thing)
-        #print("the form from the validator: %s \n") % form
-        #for thing in form:
-        #    print(u"the thing: %s") % thing
-        #    print(u"type: %s") % type(thing)
-        #    for thing2 in thing:
-        #        print(u"  the thing2: %s") % thing2
-        #        print(u"  type2: %s") % type(thing2)
-
-        # 2DO: herausfinden, wie man per klassenvalidator colander.Invalid 
+        # XXX: herausfinden, wie man per klassenvalidator colander.Invalid 
         #      ansprechen muss, damit deform den error am richtigen ort 
         #      platziert und die richtigen klassen vergibt
         exc = colander.Invalid(form)
@@ -359,16 +347,30 @@ def ticket_schema(request, appstruct, readonly=False):
                 readonly=True,
                 readonly_template="forms/textinput_htmlrendered.pt"
             ),
-            default=\
-            u'<p>'
-            +_(
-                u'Please provide us with the following information for '
-                u'your representative:'
-            )
-            +u'<p>',
+            default=u'''
+            <p>
+               Please provide us with the following information for your
+               representative:
+            <p>''',
             missing='',
             oid='rep-note'
         )
+        if get_locale_name(request) == 'de':
+            note_top = colander.SchemaNode(
+                colander.String(),
+                title='',
+                widget=deform.widget.TextInputWidget(
+                    readonly=True,
+                    readonly_template="forms/textinput_htmlrendered.pt"
+                ),
+                default=u'''
+            <p>
+                Wir brauchen von Dir folgende Daten de(s/r) Bevollmächtigten:
+            <p>''',
+                missing='',
+                oid='rep-note'
+            )
+        #note_top.default = None
         note_top.missing=note_top.default # otherwise empty on redit
         if readonly:
             note_top = None
@@ -445,41 +447,66 @@ def ticket_schema(request, appstruct, readonly=False):
                 readonly_template="forms/textinput_htmlrendered.pt"
             ),
             missing='',
-            default=\
-            u'<div class="help-block">'
-                +u'<strong>'+_(u'Please note')+u':</strong> '
-                +_(
-                    u'You may only nominate as your representative members '
-                    u'of the cooperative, your spouse, parents, children or '
-                    u'siblings. Each representative may represent two members '
-                    u'at most (see § 13 (6), sentence 3, of the articles of '
-                )
-                +u'<a href=\''
-                    +_(u'http://url.c3s.cc/statutes')
-                +u'\' target=\'_blank\'>'
-                    +_(u'association')
-                +u'</a>'
-                +_(
-                    u'). Registered civil partners are treated as spouses.'
-                )
-                +u'<br>'
-                +u'<strong>'+_(u'Don\'t forget')+u':</strong> '
-                +_(
-                    u'Your representative has to provide an authorization '
-                    u'certificate signed by you. Please do not bring or send '
-                    u'a copy, fax, scan, or picture. We can only accept the '
-                    u'original document.'
-                )
-                +u'<br>'
-                +_(u'Download authorization form')+u': '
-                +u'<a href=\''
-                    +_(u'http://url.c3s.cc/authorization')
-                +u'\' target=\'_blank\'>'
-                    +_(u'http://url.c3s.cc/authorization')
-                +u'</a>'
-            +u'</div>',
+            default=u'''
+            <div class="help-block">
+                <strong>Please note:</strong>
+                You may only nominate as your representative members 
+                of the cooperative, your spouse, parents, children or 
+                siblings. Each representative may represent two members 
+                at most (see § 13 (6), sentence 3, of the articles of 
+                <a href='http://url.c3s.cc/statutes' target='_blank'>
+                    association
+                </a>).
+                Registered civil partners are treated as spouses.
+                <br>
+                <strong>Don't forget:</strong> 
+                Your representative has to provide an authorization 
+                certificate signed by you. Please do not bring or send 
+                a copy, fax, scan, or picture. We can only accept the 
+                original document.
+                <br>
+                Download authorization form: 
+                <a href='http://url.c3s.cc/authorization' target='_blank'>
+                    http://url.c3s.cc/authorization
+                </a>
+            </div>''',
             oid='rep-note'
         )
+        if get_locale_name(request) == 'de':
+            note_bottom = colander.SchemaNode(
+                colander.String(),
+                title='',
+                widget=deform.widget.TextInputWidget(
+                    readonly=True,
+                    readonly_template="forms/textinput_htmlrendered.pt"
+                ),
+                missing='',
+                default=u'''
+            <div class="help-block">
+                <strong>Hinweis:</strong> 
+                Du darfst als Deine(n) Bevollmächtigten nur ein 
+                Mitglied der Genossenschaft, Deine(n) Ehemann/Ehefrau, 
+                ein Elternteil, ein Kind oder einen Geschwisterteil 
+                benennen. Jede(r) Bevollmächtigte kann maximal zwei 
+                Mitglieder vertreten (siehe § 13 (6), Satz 3 der 
+                <a href='http://url.c3s.cc/satzung' target='_blank'>
+                    Satzung
+                </a>). 
+                Eingetragene Lebenspartner werden wie Ehegatten behandelt.
+                <br>
+                <strong>Nicht vergessen:</strong> 
+                Dein(e) Bevollmächtigte(r) muss von eine von Dir 
+                unterzeichnete Vollmacht mitbringen - bitte keine 
+                Kopie, kein Fax, kein Scan, kein Bild, sondern das 
+                Original. 
+                <br>
+                Download für den Vordruck einer Vollmacht: 
+                <a href='http://url.c3s.cc/vollmacht' target='_blank'>
+                    http://url.c3s.cc/vollmacht
+                </a>
+            </div>''',
+                oid='rep-note'
+            )
         note_bottom.missing=note_bottom.default # otherwise empty on reedit
         if readonly:
             note_bottom = None
@@ -511,6 +538,7 @@ def ticket_schema(request, appstruct, readonly=False):
             oid="tshirt-size",
         )
 
+
     ### form
 
     class TicketForm(colander.Schema):
@@ -522,11 +550,11 @@ def ticket_schema(request, appstruct, readonly=False):
         """
         ticket = TicketData(
             title=_(u"Ticket Information"),
-            oid="ticket-data"
+            oid="ticket-data",
         )
         representation = RepresentationData(
             title=_(u"Representative"),
-            oid="rep-data"
+            oid="rep-data",
         )
         if readonly and not appstruct['ticket']['ticket_gv'] == 2:
             representation = None;
@@ -536,6 +564,66 @@ def ticket_schema(request, appstruct, readonly=False):
         )
         if readonly and not appstruct['ticket']['ticket_tshirt']:
             tshirt = None
+        finalnote = colander.SchemaNode(
+            colander.String(),
+            title='',
+            widget=deform.widget.TextInputWidget(
+                readonly=True,
+                readonly_template="forms/textinput_htmlrendered.pt"
+            ),
+            default=u'''
+            <div class="alert alert-info" role="alert">
+                <strong>
+                    We will send tickets and vouchers in time by e-mail
+                </strong><br />
+                You can't edit the order form after hitting the button 
+                "Submit & Buy" below. However, you can click the personal 
+                link you received as part of the invitation link. There you 
+                can view but not edit your order. A full refund of your 
+                money once transferred is not possible. Only in case the 
+                BarCamp is cancelled by C3S SCE a refund for the BarCamp 
+                ticket and food is possible. If you have any questions 
+                please contact
+                <a href="mailto:office@c3s.cc" class="alert-link">
+                    office@c3s.cc
+                </a>
+            </div>''',
+            missing='',
+            oid='final-note'
+        )
+        if get_locale_name(request) == 'de':
+            finalnote = colander.SchemaNode(
+                colander.String(),
+                title='',
+                widget=deform.widget.TextInputWidget(
+                    readonly=True,
+                    readonly_template="forms/textinput_htmlrendered.pt"
+                ),
+                default=u'''
+            <div class="alert alert-info" role="alert">
+                <strong>
+                    Wir versenden die Tickets und Gutscheine rechtzeitig per 
+                    Email.
+                </strong><br />
+                Sobald Du das Bestellformular mit dem Button "Absenden & 
+                Kaufen" unten absendest, kannst Du an der Bestellung im 
+                Formular keine Änderung mehr vornehmen. Du kannst Deine 
+                Bestellung jedoch unter Deinem persönlichen Link aus der 
+                Einladungs-Mail weiterhin aufrufen und anschauen. Eine 
+                Erstattung der überwiesenen Summe ist nicht möglich. Nur 
+                im Fall der Absage des Barcamps durch die C3S SCE werden 
+                die Kosten für Ticket und Essen erstattet. Falls Du Fragen 
+                zu Deiner Bestellung hast, wende Dich bitte an 
+                <a href="mailto:office@c3s.cc" class="alert-link">
+                    office@c3s.cc
+                </a>
+            </div>''',
+                missing='',
+                oid='final-note'
+            )
+        finalnote.missing=finalnote.default # otherwise empty on redit
+        if not readonly:
+            finalnote = None
 
     return TicketForm(validator=validator).bind()
 
@@ -543,10 +631,10 @@ def ticket_schema(request, appstruct, readonly=False):
 def ticket_appstruct(request, view=''):
     '''
         Ensures the consistent creation of a valid ticket appstruct.
-        Tries in the following order:
+        Tries creation in the following order:
         1. Use from possibly edited session (reedit, refresh).
         2. If id not given, create new from userdata
-        3. Create from dbenty
+        3. If id given, create from dbenty
         4. Redirect to access denied url
     '''
     print('--- creating appstract --------------------------------------------')
@@ -634,7 +722,7 @@ def ticket_appstruct(request, view=''):
     return appstruct
 
 
-def pick_route(request, view=''):
+def check_route(request, view=''):
     '''
         A. checks:
             1.  userdata check:
@@ -784,7 +872,7 @@ def party_view(request):
     """
 
     ### pick route
-    route = pick_route(request, 'party')
+    route = check_route(request, 'party')
     if isinstance(route, HTTPRedirection):
         return route
 
@@ -1045,7 +1133,7 @@ def confirm_view(request):
     """
 
     ### pick route
-    route = pick_route(request, 'confirm')
+    route = check_route(request, 'confirm')
     if isinstance(route, HTTPRedirection):
         return route
 
@@ -1058,7 +1146,7 @@ def confirm_view(request):
         schema,
         buttons=[
             deform.Button('sendmail',
-                          _(u'Yes, please send me the e-mail!')),
+                          _(u'Submit & Buy')),
             deform.Button('reedit',
                           _(u'Wait, I might have to change...'))
         ],
@@ -1259,7 +1347,7 @@ def finished_view(request):
     """
 
     ### pick route
-    route = pick_route(request, 'finished')
+    route = check_route(request, 'finished')
     if isinstance(route, HTTPRedirection):
         return route
 
