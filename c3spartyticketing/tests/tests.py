@@ -35,9 +35,11 @@ class TestViews(unittest.TestCase):
         from c3spartyticketing.views import load_user
         self.config.add_route('party_view', '/')
         request = testing.DummyRequest()
-        request.registry.settings['yes_auth_token'] = '1234567890ABCDEFGHIJKL'
-        request.registry.settings[
-            'yes_api_url'] = 'https://prototyp01.c3s.cc/lm'
+        request.registry.settings = {
+            'yes_auth_token': '1234567890ABCDEFGHIJKL',
+            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'registration.access_denied_url': 'https://yes.c3s.cc',
+        }
         request.matchdict['token'] = 'ABCDEF'
         request.matchdict['email'] = 'foo@bar.de'
         # request.session['appstruct'] = {
@@ -60,9 +62,11 @@ class TestViews(unittest.TestCase):
         from c3spartyticketing.views import load_user
         self.config.add_route('party_view', '/')
         request = testing.DummyRequest()
-        request.registry.settings['yes_auth_token'] = '1234567890ABCDEFGHIJKL'
-        request.registry.settings[
-            'yes_api_url'] = 'https://prototyp01.c3s.cc/lm'
+        request.registry.settings = {
+            'yes_auth_token': '1234567890ABCDEFGHIJKL',
+            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'registration.access_denied_url': 'https://yes.c3s.cc',
+        }
         request.matchdict['token'] = 'TR00107035121GP'
         request.matchdict['email'] = 'yes@c3s.cc'
         # request.session['appstruct'] = {
@@ -82,20 +86,20 @@ class TestViews(unittest.TestCase):
         #import pdb
         #pdb.set_trace()
 
-        self.assertTrue('appstruct_preset' in request.session)
-        self.assertTrue('firstname' in request.session['appstruct_preset'])
-        self.assertTrue('lastname' in request.session['appstruct_preset'])
-        self.assertTrue('email' in request.session['appstruct_preset'])
-        self.assertTrue('id' in request.session['appstruct_preset'])
+        self.assertTrue('userdata' in request.session)
+        self.assertTrue('firstname' in request.session['userdata'])
+        self.assertTrue('lastname' in request.session['userdata'])
+        self.assertTrue('email' in request.session['userdata'])
+        self.assertTrue('id' in request.session['userdata'])
 
         self.assertTrue(
-            'Erwin' in request.session['appstruct_preset']['firstname'])
+            'Erwin' in request.session['userdata']['firstname'])
         self.assertTrue(
-            'Ehrlich' in request.session['appstruct_preset']['lastname'])
+            'Ehrlich' in request.session['userdata']['lastname'])
         self.assertTrue(
-            'yes@c3s.cc' in request.session['appstruct_preset']['email'])
+            'yes@c3s.cc' in request.session['userdata']['email'])
         self.assertTrue(
-            'None' in request.session['appstruct_preset']['id'])
+            'None' in request.session['userdata']['id'])
 
 #         self.assertTrue(result['lastname'] is 'bar')
 #         self.assertTrue(result['firstname'] is 'foo')

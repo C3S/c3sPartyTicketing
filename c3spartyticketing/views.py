@@ -723,20 +723,20 @@ def load_user(request):
     _ticket = PartyTicket.get_by_token(_token)
     print('searching db for user ...')
     try:
-        assert isinstance(_ticket, PartyTicket)
-        assert(_ticket.token == _token)
-        assert(_ticket.email == _email)
-        print "found a valid dbentry (id: {})".format(_ticket.id)
-        userdata = {
-            'token': _ticket.token,
-            'id': _ticket.id,
-            'firstname': _ticket.firstname,
-            'lastname': _ticket.lastname,
-            'email': _ticket.email,
-            'mtype': _ticket.membership_type
-        }
-        request.session['userdata'] = userdata
-        return HTTPFound(location=request.route_url('party'))
+        if isinstance(_ticket, PartyTicket):
+            assert(_ticket.token == _token)
+            assert(_ticket.email == _email)
+            print "found a valid dbentry (id: {})".format(_ticket.id)
+            userdata = {
+                'token': _ticket.token,
+                'id': _ticket.id,
+                'firstname': _ticket.firstname,
+                'lastname': _ticket.lastname,
+                'email': _ticket.email,
+                'mtype': _ticket.membership_type
+            }
+            request.session['userdata'] = userdata
+            return HTTPFound(location=request.route_url('party'))
     except:
         print "no valid dbentry found."
         pass
