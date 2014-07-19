@@ -101,7 +101,7 @@ class TestViews(unittest.TestCase):
         self.assertTrue(
             'None' in request.session['userdata']['id'])
         self.assertTrue(
-            'normal' in request.session['mtype'])
+            'normal' in request.session['userdata']['mtype'])
 
         # off to another view: party_view!
         from c3spartyticketing.views import party_view
