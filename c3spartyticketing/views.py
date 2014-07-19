@@ -763,7 +763,7 @@ def check_route(request, view=''):
         )
 
     # dbentry check:
-    if view is not 'finished':
+    if view is not 'finished' and not 'confirm':
         if 'true' in request.registry.settings[
                 'registration.finish_on_submit']:
             if PartyTicket.has_token(userdata['token']):
