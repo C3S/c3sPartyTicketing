@@ -45,7 +45,6 @@ _ = TranslationStringFactory('c3spartyticketing')
 from pyramid.renderers import render
 
 from sets import Set
-from pprint import pprint
 
 #deform_templates = resource_filename('deform', 'templates')
 
@@ -750,6 +749,12 @@ def check_route(request, view=''):
     # userdata check:
     if 'userdata' in request.session:
         userdata = request.session['userdata']
+        assert('token' in userdata)
+        assert('id' in userdata)
+        assert('firstname' in userdata)
+        assert('lastname' in userdata)
+        assert('email' in userdata)
+        assert('mtype' in userdata)
     else:
         print('userdata test: user not found. redirecting...')
         return HTTPFound(
@@ -1343,7 +1348,7 @@ def sendmail_view(request):
              renderer='templates/finished.pt')
 def finished_view(request):
     """
-    registration deadline is over. show the ticket readonly.
+    show the ticket readonly.
     """
 
     ### pick route
@@ -1368,6 +1373,39 @@ def finished_view(request):
             appstruct=appstruct
         )
     }
+
+
+@view_config(route_name='finished',
+             renderer='templates/finished.pt')
+def finished_view(request):
+    """
+    registration deadline is over.
+    """
+
+    ### pick route
+    route = check_route(request, 'finished')
+    if isinstance(route, HTTPRedirection):
+        return route
+
+    ### generate appstruct
+    appstruct = ticket_appstruct(request, 'finished')
+
+    ### generate form
+    schema = ticket_schema(request, appstruct, readonly=True)
+    form = deform.Form(
+        schema,
+        buttons=[],
+        #use_ajax=True,
+        renderer=zpt_renderer
+    )
+
+    return {
+        'readonlyform': form.render(
+            appstruct=appstruct
+        )
+    }
+
+    
 
 
 @view_config(route_name='get_ticket')

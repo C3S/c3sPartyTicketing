@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-19 05:28+00:00\n"
+"POT-Creation-Date: 2014-07-19 06:40+00:00\n"
 "PO-Revision-Date: 2014-07-19 07:19+0100\n"
 "Last-Translator: Alexander Blum <alexander.blum@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
@@ -19,12 +19,12 @@ msgstr ""
 "Generated-By: Babel 1.3\n"
 "X-Generator: Poedit 1.6.5\n"
 
-#: c3spartyticketing/views.py:1114 c3spartyticketing/views.py:1128
+#: c3spartyticketing/views.py:1181 c3spartyticketing/views.py:1195
 #, c-format
 msgid "C3S Barcamp 2014: your order"
 msgstr "C3S Barcamp 2014: Deine Bestellung"
 
-#: c3spartyticketing/views.py:1140
+#: c3spartyticketing/views.py:1207
 #, c-format
 msgid ""
 "C3S BarCamp & General Assembly: your BarCamp ticket / your cancellation of "
@@ -33,12 +33,12 @@ msgstr ""
 "C3S Barcamp & Generalversammlung: Dein Barcamp-Ticket / Deine Absage der "
 "Generalversammlung"
 
-#: c3spartyticketing/views.py:1155
+#: c3spartyticketing/views.py:1222
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation / your order"
 msgstr "C3S Barcamp & Generalversammlung: Deine Absage / Deine Bestellung"
 
-#: c3spartyticketing/views.py:1169
+#: c3spartyticketing/views.py:1236
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation"
 msgstr "C3S Barcamp & Generalversammlung: Deine Absage"
@@ -281,69 +281,62 @@ msgstr "Kommentare"
 msgid "Your notes (255 chars)"
 msgstr "Raum für Kommentare (255 Zeichen)"
 
-#: c3spartyticketing/views.py:350
-#, c-format
-msgid ""
-"<p>Please provide us with the following information for your representative:"
-"<p>"
-msgstr "<p>Wir brauchen von Dir folgende Daten de(s/r) Bevollmächtigten:</p>"
-
-#: c3spartyticketing/views.py:364
+#: c3spartyticketing/views.py:379
 #, c-format
 msgid "First Name"
 msgstr "Vorname"
 
-#: c3spartyticketing/views.py:373
+#: c3spartyticketing/views.py:388
 #, c-format
 msgid "Last Name"
 msgstr "Nachname"
 
-#: c3spartyticketing/views.py:382
+#: c3spartyticketing/views.py:397
 #, c-format
 msgid "Address"
 msgstr "Straße"
 
-#: c3spartyticketing/views.py:391
+#: c3spartyticketing/views.py:406
 #, c-format
 msgid "Postal Code"
 msgstr "Straße"
 
-#: c3spartyticketing/views.py:400
+#: c3spartyticketing/views.py:415
 #, c-format
 msgid "City"
 msgstr "Stadt"
 
-#: c3spartyticketing/views.py:409
+#: c3spartyticketing/views.py:424
 #, c-format
 msgid "Country"
 msgstr "Land"
 
-#: c3spartyticketing/views.py:418
+#: c3spartyticketing/views.py:433
 #, c-format
 msgid "My representative is..."
 msgstr "Mein(e) Bevollmächtigte(r) ist:"
 
-#: c3spartyticketing/views.py:480
+#: c3spartyticketing/views.py:520
 #, c-format
 msgid "Gender:"
 msgstr "Schnitt:"
 
-#: c3spartyticketing/views.py:491
+#: c3spartyticketing/views.py:531
 #, c-format
 msgid "Size:"
 msgstr "Größe:"
 
-#: c3spartyticketing/views.py:512
+#: c3spartyticketing/views.py:552
 #, c-format
 msgid "Ticket Information"
 msgstr "Ticketinformationen"
 
-#: c3spartyticketing/views.py:516
+#: c3spartyticketing/views.py:556
 #, c-format
 msgid "Representative"
 msgstr "Bevollmächtigte(r)"
 
-#: c3spartyticketing/views.py:522
+#: c3spartyticketing/views.py:562
 #, c-format
 msgid "T-Shirt"
 msgstr "T-Shirt"
@@ -366,12 +359,12 @@ msgstr ""
 "Bestellung stornieren. Die Zahlung erfolgt ausschließlich per "
 "Banküberweisung. Die Zahlungsinformationen werden dir per Email zugeschickt."
 
-#: c3spartyticketing/views.py:820 c3spartyticketing/accountants_views.py:904
+#: c3spartyticketing/views.py:887 c3spartyticketing/accountants_views.py:904
 #, c-format
 msgid "Submit"
 msgstr "Absenden"
 
-#: c3spartyticketing/views.py:850 c3spartyticketing/accountants_views.py:127
+#: c3spartyticketing/views.py:917 c3spartyticketing/accountants_views.py:127
 #: c3spartyticketing/accountants_views.py:925
 #: c3spartyticketing/cashiers_views.py:348
 #, c-format
@@ -380,96 +373,15 @@ msgstr ""
 "Bitte beachten: Die Angaben im folgenden Formular sind fehlerhaft, bitte "
 "überpfüfen."
 
-#: c3spartyticketing/views.py:1082
+#: c3spartyticketing/views.py:1149
 #, c-format
 msgid "Submit & Buy"
 msgstr "Absenden & Kaufen"
 
-#: c3spartyticketing/views.py:1084
+#: c3spartyticketing/views.py:1151
 #, c-format
 msgid "Wait, I might have to change..."
 msgstr "Warte, ich will nochmal ändern..."
-
-#: c3spartyticketing/views.py:465 c3spartyticketing/views.py:463
-#, c-format
-msgid "http://url.c3s.cc/authorization"
-msgstr "http://url.c3s.cc/vollmacht"
-
-#: c3spartyticketing/views.py:540
-#, c-format
-msgid ""
-"You can't edit the order form after hitting the button \"Submit & Buy\" "
-"below. However, you can click the personal link you received as part of the "
-"invitation link. There you can view but not edit your order. A full refund "
-"of your money once transferred is not possible. Only in case the BarCamp is "
-"cancelled by C3S SCE a refund for the BarCamp ticket and food is possible. "
-"If you have any questions please contact"
-msgstr ""
-"Sobald Du das Bestellformular mit dem Button \"Absenden & Kaufen\" unten "
-"absendest, kannst Du an der Bestellung im Formular keine Änderung mehr "
-"vornehmen. Du kannst Deine Bestellung jedoch unter Deinem persönlichen Link "
-"aus der Einladungs-Mail weiterhin aufrufen und anschauen. Eine Erstattung "
-"der überwiesenen Summe ist nicht möglich. Nur im Fall der Absage des "
-"Barcamps durch die C3S SCE werden die Kosten für Ticket und Essen erstattet. "
-"Falls Du Fragen zu Deiner Bestellung hast, wende Dich bitte an "
-
-#: c3spartyticketing/views.py:537
-#, c-format
-msgid "We will send tickets and vouchers in time by e-mail"
-msgstr "Wir versenden die Tickets und Gutscheine rechtzeitig per Email"
-
-#: c3spartyticketing/views.py:461
-#, c-format
-msgid "Download authorization form"
-msgstr "Download für den Vordruck einer Vollmacht"
-
-#: c3spartyticketing/views.py:454
-#, c-format
-msgid ""
-"Your representative has to provide an authorization certificate signed by "
-"you. Please do not bring or send a copy, fax, scan, or picture. We can only "
-"accept the original document."
-msgstr ""
-"Dein(e) Bevollmächtigte(r) muss von eine von Dir unterzeichnete Vollmacht "
-"mitbringen - bitte keine Kopie, kein Fax, kein Scan, kein Bild, sondern das "
-"Original."
-
-#: c3spartyticketing/views.py:453
-#, c-format
-msgid "Don't forget"
-msgstr "Nicht vergessen"
-
-#: c3spartyticketing/views.py:449
-#, c-format
-msgid "). Registered civil partners are treated as spouses."
-msgstr "). Eingetragene Lebenspartner werden wie Ehegatten behandelt."
-
-#: c3spartyticketing/views.py:447
-#, c-format
-msgid "association"
-msgstr "Satzung"
-
-#: c3spartyticketing/views.py:445
-#, c-format
-msgid "http://url.c3s.cc/statutes"
-msgstr "http://url.c3s.cc/satzung"
-
-#: c3spartyticketing/views.py:438
-#, c-format
-msgid ""
-"You may only nominate as your representative members of the cooperative, "
-"your spouse, parents, children or siblings. Each representative may "
-"represent two members at most (see § 13 (6), sentence 3, of the articles of "
-msgstr ""
-"Du darfst als Deine(n) Bevollmächtigten nur ein Mitglied der Genossenschaft,"
-"Deine(n) Ehemann/Ehefrau, ein Elternteil, ein Kind oder einen "
-"Geschwisterteil benennen.Jede(r) Bevollmächtigte kann maximal zwei "
-"Mitglieder vertreten (siehe § 13 (6), Satz 3 der"
-
-#: c3spartyticketing/views.py:437
-#, c-format
-msgid "Please note"
-msgstr "Hinweis"
 
 #: c3spartyticketing/accountants_views.py:905
 #, c-format
@@ -846,6 +758,73 @@ msgstr ""
 #: c3spartyticketing/templates/finished.pt:23
 msgid "Your Ticket:"
 msgstr "Dein Ticket:"
+
+#~ msgid ""
+#~ "<p>Please provide us with the following information for your "
+#~ "representative:<p>"
+#~ msgstr ""
+#~ "<p>Wir brauchen von Dir folgende Daten de(s/r) Bevollmächtigten:</p>"
+
+#~ msgid "http://url.c3s.cc/authorization"
+#~ msgstr "http://url.c3s.cc/vollmacht"
+
+#~ msgid ""
+#~ "You can't edit the order form after hitting the button \"Submit & Buy\" "
+#~ "below. However, you can click the personal link you received as part of "
+#~ "the invitation link. There you can view but not edit your order. A full "
+#~ "refund of your money once transferred is not possible. Only in case the "
+#~ "BarCamp is cancelled by C3S SCE a refund for the BarCamp ticket and food "
+#~ "is possible. If you have any questions please contact"
+#~ msgstr ""
+#~ "Sobald Du das Bestellformular mit dem Button \"Absenden & Kaufen\" unten "
+#~ "absendest, kannst Du an der Bestellung im Formular keine Änderung mehr "
+#~ "vornehmen. Du kannst Deine Bestellung jedoch unter Deinem persönlichen "
+#~ "Link aus der Einladungs-Mail weiterhin aufrufen und anschauen. Eine "
+#~ "Erstattung der überwiesenen Summe ist nicht möglich. Nur im Fall der "
+#~ "Absage des Barcamps durch die C3S SCE werden die Kosten für Ticket und "
+#~ "Essen erstattet. Falls Du Fragen zu Deiner Bestellung hast, wende Dich "
+#~ "bitte an "
+
+#~ msgid "We will send tickets and vouchers in time by e-mail"
+#~ msgstr "Wir versenden die Tickets und Gutscheine rechtzeitig per Email"
+
+#~ msgid "Download authorization form"
+#~ msgstr "Download für den Vordruck einer Vollmacht"
+
+#~ msgid ""
+#~ "Your representative has to provide an authorization certificate signed by "
+#~ "you. Please do not bring or send a copy, fax, scan, or picture. We can "
+#~ "only accept the original document."
+#~ msgstr ""
+#~ "Dein(e) Bevollmächtigte(r) muss von eine von Dir unterzeichnete Vollmacht "
+#~ "mitbringen - bitte keine Kopie, kein Fax, kein Scan, kein Bild, sondern "
+#~ "das Original."
+
+#~ msgid "Don't forget"
+#~ msgstr "Nicht vergessen"
+
+#~ msgid "). Registered civil partners are treated as spouses."
+#~ msgstr "). Eingetragene Lebenspartner werden wie Ehegatten behandelt."
+
+#~ msgid "association"
+#~ msgstr "Satzung"
+
+#~ msgid "http://url.c3s.cc/statutes"
+#~ msgstr "http://url.c3s.cc/satzung"
+
+#~ msgid ""
+#~ "You may only nominate as your representative members of the cooperative, "
+#~ "your spouse, parents, children or siblings. Each representative may "
+#~ "represent two members at most (see § 13 (6), sentence 3, of the articles "
+#~ "of "
+#~ msgstr ""
+#~ "Du darfst als Deine(n) Bevollmächtigten nur ein Mitglied der "
+#~ "Genossenschaft,Deine(n) Ehemann/Ehefrau, ein Elternteil, ein Kind oder "
+#~ "einen Geschwisterteil benennen.Jede(r) Bevollmächtigte kann maximal zwei "
+#~ "Mitglieder vertreten (siehe § 13 (6), Satz 3 der"
+
+#~ msgid "Please note"
+#~ msgstr "Hinweis"
 
 #~ msgid "Yes, please send me the e-mail!"
 #~ msgstr "Ja, schick mir die Email."

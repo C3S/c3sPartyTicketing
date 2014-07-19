@@ -87,6 +87,7 @@ class AccountantsFunctionalTests(FunctionalTestBase):
                 guestlist=False,
                 user_comment=u"no comment",
             )
+            ticket1.membership_type = 'normal'
             DBSession.add(ticket1)
             DBSession.flush()
         with transaction.manager:
@@ -440,6 +441,362 @@ class FunctionalTests(unittest.TestCase):
         #print res1.body
         self.failUnless(
             'The resource was found at https://yes.c3s.cc' in res1.body)
+
+    def test_load_user_is_only_entry_point(self):
+        """
+        test all routes but load_user() and expect all to redirect to 
+        access denied url
+        """
+        res = self.testapp.reset()  # delete cookie
+        res = self.testapp.get('/', status=302)
+        self.failUnless('The resource was found at' in res.body)
+        res1 = res.follow()
+        self.failUnless(
+            'The resource was found at https://yes.c3s.cc' in res1.body)
+        res = self.testapp.get('/confirm', status=302)
+        self.failUnless('The resource was found at' in res.body)
+        res1 = res.follow()
+        self.failUnless(
+            'The resource was found at https://yes.c3s.cc' in res1.body)
+        res = self.testapp.get('/finished', status=302)
+        self.failUnless('The resource was found at' in res.body)
+        res1 = res.follow()
+        self.failUnless(
+            'The resource was found at https://yes.c3s.cc' in res1.body)
+        res = self.testapp.get('/check_email', status=302)
+        self.failUnless('The resource was found at' in res.body)
+        res1 = res.follow()
+        self.failUnless(
+            'The resource was found at https://yes.c3s.cc' in res1.body)
+
+    def test_check_route_without_userdata(self):
+        """
+        check_route() without userdata should redirect to acces denied url
+        """
+        from pyramid.httpexceptions import (
+            HTTPRedirection,
+            HTTPFound
+        )
+        from c3spartyticketing.views import check_route
+        self.config.add_route('party_view', '/')
+        request = testing.DummyRequest()
+        request.registry.settings = {
+            'yes_auth_token': '1234567890ABCDEFGHIJKL',
+            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'registration.access_denied_url': 'https://yes.c3s.cc',
+        }
+        request.matchdict['token'] = 'TR00107035121GP'
+        request.matchdict['email'] = 'yes@c3s.cc'
+        result = check_route(request)
+        self.assertTrue(isinstance(result, HTTPFound))
+        self.assertTrue(
+            result.location == request.registry.settings[
+                'registration.access_denied_url']
+        )
+
+    def test_check_route_with_incomplete_userdata(self):
+        """
+        check_route() with incomplete userdate should throw assertion Errors
+        """
+        from pyramid.httpexceptions import (
+            HTTPRedirection,
+            HTTPFound
+        )
+        from c3spartyticketing.views import check_route
+        self.config.add_route('party_view', '/')
+        request = testing.DummyRequest()
+        request.registry.settings = {
+            'yes_auth_token': '1234567890ABCDEFGHIJKL',
+            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'registration.access_denied_url': 'https://yes.c3s.cc',
+        }
+        request.matchdict['token'] = 'TR00107035121GP'
+        request.matchdict['email'] = 'yes@c3s.cc'
+
+        request.session['userdata'] = {
+            'id': None,
+            'firstname': 'Erwin',
+            'lastname': 'Ehrlich',
+            'email': 'yes@c3s.cc',
+            'mtype': 'normal'
+        }
+        with self.assertRaises(AssertionError):
+            check_route(request)
+
+        request.session['userdata'] = {
+            'token': 'TR00107035121GP',
+            'firstname': 'Erwin',
+            'lastname': 'Ehrlich',
+            'email': 'yes@c3s.cc',
+            'mtype': 'normal'
+        }
+        with self.assertRaises(AssertionError):
+            check_route(request)
+
+        request.session['userdata'] = {
+            'token': 'TR00107035121GP',
+            'id': None,
+            'lastname': 'Ehrlich',
+            'email': 'yes@c3s.cc',
+            'mtype': 'normal'
+        }
+        with self.assertRaises(AssertionError):
+            check_route(request)
+
+        request.session['userdata'] = {
+            'token': 'TR00107035121GP',
+            'id': None,
+            'firstname': 'Erwin',
+            'email': 'yes@c3s.cc',
+            'mtype': 'normal'
+        }
+        with self.assertRaises(AssertionError):
+            check_route(request)
+
+        request.session['userdata'] = {
+            'token': 'TR00107035121GP',
+            'id': None,
+            'firstname': 'Erwin',
+            'lastname': 'Ehrlich',
+            'mtype': 'normal'
+        }
+        with self.assertRaises(AssertionError):
+            check_route(request)
+
+        request.session['userdata'] = {
+            'token': 'TR00107035121GP',
+            'id': None,
+            'firstname': 'Erwin',
+            'lastname': 'Ehrlich',
+            'email': 'yes@c3s.cc',
+        }
+        with self.assertRaises(AssertionError):
+            check_route(request)
+
+        request.session['userdata'] = {
+            'token': 'TR00107035121GP',
+            'id': None,
+            'firstname': 'Erwin',
+            'lastname': 'Ehrlich',
+        }
+        with self.assertRaises(AssertionError):
+            check_route(request)
+
+    def test_check_route_finish_on_submit_true(self):
+        """
+        check_route() with finish_on_submit switch turned 
+        on, and with existing db entry should redirect to finished view
+        implies complete user data
+        """
+        from pyramid.httpexceptions import (
+            HTTPRedirection,
+            HTTPFound
+        )
+        from c3spartyticketing.views import check_route
+        self.config.add_route('party_view', '/')
+        self.config.add_route('finished', '/finished')
+        request = testing.DummyRequest()
+        request.registry.settings = {
+            'yes_auth_token': '1234567890ABCDEFGHIJKL',
+            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'registration.access_denied_url': 'https://yes.c3s.cc',
+            'registration.finish_on_submit': 'true'
+        }
+        request.matchdict['token'] = 'TESTTOKEN456'
+        request.matchdict['email'] = 'yes@c3s.cc'
+        request.session['userdata'] = {
+            'token': 'TESTTOKEN456',
+            'id': 1,
+            'firstname': 'SomeFirstnäme',
+            'lastname': 'SomeLastnäme',
+            'email': 'some@shri.de',
+            'mtype': 'normal',
+        }
+        result = check_route(request)
+        self.assertTrue(isinstance(result, HTTPFound))
+        self.assertTrue(result.location == 'http://example.com/finished')
+
+
+    def test_check_route_registration_end_future(self):
+        """
+        check_route() with registration end in future, should pass 
+        without redirection
+        implies complete userdata
+        implies finish_on_submit false and/or no db entry
+        """
+        from pyramid.httpexceptions import (
+            HTTPRedirection,
+            HTTPFound
+        )
+        from c3spartyticketing.views import check_route
+        self.config.add_route('party_view', '/')
+        self.config.add_route('finished', '/finished')
+        request = testing.DummyRequest()
+        request.registry.settings = {
+            'yes_auth_token': '1234567890ABCDEFGHIJKL',
+            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'registration.access_denied_url': 'https://yes.c3s.cc',
+            'registration.finish_on_submit': 'false',
+            'registration.end': '2100-01-01'
+        }
+
+        # db entry
+        request.matchdict['token'] = 'TESTTOKEN456'
+        request.matchdict['email'] = 'yes@c3s.cc'
+        request.session['userdata'] = {
+            'token': 'TESTTOKEN456',
+            'id': 1,
+            'firstname': 'SomeFirstnäme',
+            'lastname': 'SomeLastnäme',
+            'email': 'some@shri.de',
+            'mtype': 'normal',
+        }
+        result = check_route(request)
+        self.assertTrue(result == None)
+
+        # no db entry
+        request.matchdict['token'] = 'NOTINDB'
+        request.matchdict['email'] = 'yes@c3s.cc'
+        request.session['userdata'] = {
+            'token': 'NOTINDB',
+            'id': None,
+            'firstname': 'SomeFirstnäme',
+            'lastname': 'SomeLastnäme',
+            'email': 'some@shri.de',
+            'mtype': 'normal',
+        }
+        result = check_route(request)
+        self.assertTrue(result == None)
+
+    def test_check_route_registration_end_today(self):
+        """
+        check_route() with registration end today, should pass 
+        without redirection
+        implies complete userdata
+        implies finish_on_submit false and/or no db entry
+        """
+        from pyramid.httpexceptions import (
+            HTTPRedirection,
+            HTTPFound
+        )
+        from c3spartyticketing.views import check_route
+        from datetime import datetime
+        self.config.add_route('party_view', '/')
+        self.config.add_route('finished', '/finished')
+        request = testing.DummyRequest()
+        today = datetime.today().date()
+        request.registry.settings = {
+            'yes_auth_token': '1234567890ABCDEFGHIJKL',
+            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'registration.access_denied_url': 'https://yes.c3s.cc',
+            'registration.finish_on_submit': 'false',
+            'registration.end': str(today)
+        }
+
+        # db entry
+        request.matchdict['token'] = 'TESTTOKEN456'
+        request.matchdict['email'] = 'yes@c3s.cc'
+        request.session['userdata'] = {
+            'token': 'TESTTOKEN456',
+            'id': 1,
+            'firstname': 'SomeFirstnäme',
+            'lastname': 'SomeLastnäme',
+            'email': 'some@shri.de',
+            'mtype': 'normal',
+        }
+        result = check_route(request)
+        self.assertTrue(result == None)
+
+        # no db entry
+        request.matchdict['token'] = 'NOTINDB'
+        request.matchdict['email'] = 'yes@c3s.cc'
+        request.session['userdata'] = {
+            'token': 'NOTINDB',
+            'id': None,
+            'firstname': 'SomeFirstnäme',
+            'lastname': 'SomeLastnäme',
+            'email': 'some@shri.de',
+            'mtype': 'normal',
+        }
+        result = check_route(request)
+        self.assertTrue(result == None)
+
+    def test_check_route_registration_end_past(self):
+        """
+        check_route() with registration end past, should redirect to finished
+        view
+        implies complete userdata
+        implies finish_on_submit false and/or no db entry
+        """
+        from pyramid.httpexceptions import (
+            HTTPRedirection,
+            HTTPFound
+        )
+        from c3spartyticketing.views import check_route
+        from datetime import datetime, timedelta
+        self.config.add_route('party_view', '/')
+        self.config.add_route('finished', '/finished')
+        request = testing.DummyRequest()
+        yesterday = (datetime.today() - timedelta(1)).date()
+        print yesterday
+        request.registry.settings = {
+            'yes_auth_token': '1234567890ABCDEFGHIJKL',
+            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'registration.access_denied_url': 'https://yes.c3s.cc',
+            'registration.finish_on_submit': 'false',
+            'registration.end': str(yesterday)
+        }
+
+        # db entry
+        request.matchdict['token'] = 'TESTTOKEN456'
+        request.matchdict['email'] = 'yes@c3s.cc'
+        request.session['userdata'] = {
+            'token': 'TESTTOKEN456',
+            'id': 1,
+            'firstname': 'SomeFirstnäme',
+            'lastname': 'SomeLastnäme',
+            'email': 'some@shri.de',
+            'mtype': 'normal',
+        }
+        result = check_route(request)
+        self.assertTrue(isinstance(result, HTTPFound))
+        self.assertTrue(result.location == 'http://example.com/finished')
+
+        # no db entry
+        request.matchdict['token'] = 'NOTINDB'
+        request.matchdict['email'] = 'yes@c3s.cc'
+        request.session['userdata'] = {
+            'token': 'NOTINDB',
+            'id': None,
+            'firstname': 'SomeFirstnäme',
+            'lastname': 'SomeLastnäme',
+            'email': 'some@shri.de',
+            'mtype': 'normal',
+        }
+        result = check_route(request)
+        self.assertTrue(isinstance(result, HTTPFound))
+        self.assertTrue(result.location == 'http://example.com/finished')
+
+    # def test_check_route_with_userdata(self):
+    #     from pyramid.httpexceptions import (
+    #         HTTPRedirection,
+    #         HTTPFound
+    #     )
+    #     from c3spartyticketing.views import check_route
+    #     self.config.add_route('party_view', '/')
+    #     request = testing.DummyRequest()
+    #     request.registry.settings = {
+    #         'yes_auth_token': '1234567890ABCDEFGHIJKL',
+    #         'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+    #         'registration.access_denied_url': 'https://yes.c3s.cc',
+    #     }
+    #     request.matchdict['token'] = 'TR00107035121GP'
+    #     request.matchdict['email'] = 'yes@c3s.cc'
+    #     result = check_route(request)
+    #     self.assertTrue(isinstance(result, HTTPFound))
+    #     self.assertTrue('https://yes.c3s.cc' in result.location)
+        
+    #     print result
 
 # so let's test the app's obedience to the language requested by the browser
 # i.e. will it respond to http header Accept-Language?
