@@ -952,6 +952,7 @@ def party_view(request):
             print('save to db: updated.')
             #  set the appstruct for further processing
             appstruct['email_confirm_code'] = ticket.email_confirm_code
+            request.session['mtype'] = ticket.membership_type
         else:
             # to store the data in the DB, an object is created
             ticket = PartyTicket(
@@ -1214,8 +1215,7 @@ def sendmail_view(request):
     usermail_obj = Message(
         subject=usermail_subject,
         sender=request.registry.settings['c3spartyticketing.mail_sender'],
-        #recipients=[appstruct['ticket']['email']],
-        recipients=['c@c3s.cc'],  # XXX fixme
+        recipients=[appstruct['ticket']['email']],
         body=usermail_body
     )
 
