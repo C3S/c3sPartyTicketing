@@ -72,12 +72,12 @@ def ticket_schema(request, appstruct, readonly=False):
     ### validator
 
     def validator(form, value):
-        # XXX: herausfinden, wie man per klassenvalidator colander.Invalid 
-        #      ansprechen muss, damit deform den error am richtigen ort 
+        # XXX: herausfinden, wie man per klassenvalidator colander.Invalid
+        #      ansprechen muss, damit deform den error am richtigen ort
         #      platziert und die richtigen klassen vergibt
         exc = colander.Invalid(form)
         if value['ticket']['ticket_tshirt']:
-            if not value['tshirt']['tshirt_type']:           
+            if not value['tshirt']['tshirt_type']:
                 exc['tshirt'] = _(
                     u'Gender selection for T-shirt is mandatory.'
                 )
@@ -125,7 +125,7 @@ def ticket_schema(request, appstruct, readonly=False):
                 raise exc
 
     ### options
-    
+
     ticket_gv_options = (
         (1, _(u'I will attend the C3S SCE General Assembly.')),
         (2, _(
@@ -224,7 +224,7 @@ def ticket_schema(request, appstruct, readonly=False):
         if readonly:
             ticket_tshirt.description = None
             if not appstruct['ticket']['ticket_tshirt']:
-                ticket_tshirt = None                
+                ticket_tshirt = None
         ticket_all = colander.SchemaNode(
             colander.Boolean(),
             title=_(u"Special Offer:"),
@@ -449,22 +449,22 @@ def ticket_schema(request, appstruct, readonly=False):
             default=u'''
             <div class="help-block">
                 <strong>Please note:</strong>
-                You may only nominate as your representative members 
-                of the cooperative, your spouse, parents, children or 
-                siblings. Each representative may represent two members 
-                at most (see § 13 (6), sentence 3, of the articles of 
+                You may only nominate as your representative members
+                of the cooperative, your spouse, parents, children or
+                siblings. Each representative may represent two members
+                at most (see § 13 (6), sentence 3, of the articles of
                 <a href='http://url.c3s.cc/statutes' target='_blank'>
                     association
                 </a>).
                 Registered civil partners are treated as spouses.
                 <br>
-                <strong>Don't forget:</strong> 
-                Your representative has to provide an authorization 
-                certificate signed by you. Please do not bring or send 
-                a copy, fax, scan, or picture. We can only accept the 
+                <strong>Don't forget:</strong>
+                Your representative has to provide an authorization
+                certificate signed by you. Please do not bring or send
+                a copy, fax, scan, or picture. We can only accept the
                 original document.
                 <br>
-                Download authorization form: 
+                Download authorization form:
                 <a href='http://url.c3s.cc/authorization' target='_blank'>
                     http://url.c3s.cc/authorization
                 </a>
@@ -482,24 +482,24 @@ def ticket_schema(request, appstruct, readonly=False):
                 missing='',
                 default=u'''
             <div class="help-block">
-                <strong>Hinweis:</strong> 
-                Du darfst als Deine(n) Bevollmächtigten nur ein 
-                Mitglied der Genossenschaft, Deine(n) Ehemann/Ehefrau, 
-                ein Elternteil, ein Kind oder einen Geschwisterteil 
-                benennen. Jede(r) Bevollmächtigte kann maximal zwei 
-                Mitglieder vertreten (siehe § 13 (6), Satz 3 der 
+                <strong>Hinweis:</strong>
+                Du darfst als Deine(n) Bevollmächtigten nur ein
+                Mitglied der Genossenschaft, Deine(n) Ehemann/Ehefrau,
+                ein Elternteil, ein Kind oder einen Geschwisterteil
+                benennen. Jede(r) Bevollmächtigte kann maximal zwei
+                Mitglieder vertreten (siehe § 13 (6), Satz 3 der
                 <a href='http://url.c3s.cc/satzung' target='_blank'>
                     Satzung
-                </a>). 
+                </a>).
                 Eingetragene Lebenspartner werden wie Ehegatten behandelt.
                 <br>
-                <strong>Nicht vergessen:</strong> 
-                Dein(e) Bevollmächtigte(r) muss von eine von Dir 
-                unterzeichnete Vollmacht mitbringen - bitte keine 
-                Kopie, kein Fax, kein Scan, kein Bild, sondern das 
-                Original. 
+                <strong>Nicht vergessen:</strong>
+                Dein(e) Bevollmächtigte(r) muss von eine von Dir
+                unterzeichnete Vollmacht mitbringen - bitte keine
+                Kopie, kein Fax, kein Scan, kein Bild, sondern das
+                Original.
                 <br>
-                Download für den Vordruck einer Vollmacht: 
+                Download für den Vordruck einer Vollmacht:
                 <a href='http://url.c3s.cc/vollmacht' target='_blank'>
                     http://url.c3s.cc/vollmacht
                 </a>
@@ -524,8 +524,8 @@ def ticket_schema(request, appstruct, readonly=False):
             ),
             missing=0,
             oid="tshirt-type",
-        )  
-        tshirt_size = colander.SchemaNode( 
+        )
+        tshirt_size = colander.SchemaNode(
             colander.String(),
             title=_(u"Size:"),
             widget=deform.widget.RadioChoiceWidget(
@@ -575,13 +575,13 @@ def ticket_schema(request, appstruct, readonly=False):
                 <strong>
                     We will send tickets and vouchers in time by e-mail
                 </strong><br />
-                You can't edit the order form after hitting the button 
-                "Submit & Buy" below. However, you can click the personal 
-                link you received as part of the invitation link. There you 
-                can view but not edit your order. A full refund of your 
-                money once transferred is not possible. Only in case the 
-                BarCamp is cancelled by C3S SCE a refund for the BarCamp 
-                ticket and food is possible. If you have any questions 
+                You can't edit the order form after hitting the button
+                "Submit & Buy" below. However, you can click the personal
+                link you received as part of the invitation link. There you
+                can view but not edit your order. A full refund of your
+                money once transferred is not possible. Only in case the
+                BarCamp is cancelled by C3S SCE a refund for the BarCamp
+                ticket and food is possible. If you have any questions
                 please contact
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
@@ -601,18 +601,18 @@ def ticket_schema(request, appstruct, readonly=False):
                 default=u'''
             <div class="alert alert-info" role="alert">
                 <strong>
-                    Wir versenden die Tickets und Gutscheine rechtzeitig per 
+                    Wir versenden die Tickets und Gutscheine rechtzeitig per
                     Email.
                 </strong><br />
-                Sobald Du das Bestellformular mit dem Button "Absenden & 
-                Kaufen" unten absendest, kannst Du an der Bestellung im 
-                Formular keine Änderung mehr vornehmen. Du kannst Deine 
-                Bestellung jedoch unter Deinem persönlichen Link aus der 
-                Einladungs-Mail weiterhin aufrufen und anschauen. Eine 
-                Erstattung der überwiesenen Summe ist nicht möglich. Nur 
-                im Fall der Absage des Barcamps durch die C3S SCE werden 
-                die Kosten für Ticket und Essen erstattet. Falls Du Fragen 
-                zu Deiner Bestellung hast, wende Dich bitte an 
+                Sobald Du das Bestellformular mit dem Button "Absenden &
+                Kaufen" unten absendest, kannst Du an der Bestellung im
+                Formular keine Änderung mehr vornehmen. Du kannst Deine
+                Bestellung jedoch unter Deinem persönlichen Link aus der
+                Einladungs-Mail weiterhin aufrufen und anschauen. Eine
+                Erstattung der überwiesenen Summe ist nicht möglich. Nur
+                im Fall der Absage des Barcamps durch die C3S SCE werden
+                die Kosten für Ticket und Essen erstattet. Falls Du Fragen
+                zu Deiner Bestellung hast, wende Dich bitte an
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
                 </a>
@@ -636,7 +636,7 @@ def ticket_appstruct(request, view=''):
         3. If id given, create from dbenty
         4. Redirect to access denied url
     '''
-    print('--- creating appstract --------------------------------------------')
+    print('--- creating appstract ------------------------------------------')
 
     userdata = request.session['userdata']
     assert(userdata)
@@ -678,7 +678,7 @@ def ticket_appstruct(request, view=''):
                 'buffet'
             ],
             'ticket_all': _ticket.ticket_all,
-            'ticket_support' : [
+            'ticket_support': [
                 '1',
                 '2',
                 '3'
@@ -725,11 +725,11 @@ def check_route(request, view=''):
     '''
         A. checks:
             1.  userdata check:
-                userdata has to be set in load_user. load_user() is the only 
+                userdata has to be set in load_user. load_user() is the only
                 entrance door. if userdata is not set,
                 redirect to access denied url
 
-            2.  dbentry check: 
+            2.  dbentry check:
                 if finish_on_submit is active and user has already submitted,
                 redirect to finished view
 
@@ -737,10 +737,10 @@ def check_route(request, view=''):
                 if registration period is over,
                 redirect to finished view
 
-        B. individual routes: 
+        B. individual routes:
             redirects based on keywords in POST
     '''
-    print('--- pick route ----------------------------------------------------')
+    print('--- pick route --------------------------------------------------')
     if view:
         print('called from view: %s') % view
 
@@ -758,12 +758,14 @@ def check_route(request, view=''):
     else:
         print('userdata test: user not found. redirecting...')
         return HTTPFound(
-            location=request.registry.settings['registration.access_denied_url']
+            location=request.registry.settings[
+                'registration.access_denied_url']
         )
 
     # dbentry check:
     if view is not 'finished':
-        if 'true' in request.registry.settings['registration.finish_on_submit']:
+        if 'true' in request.registry.settings[
+                'registration.finish_on_submit']:
             if PartyTicket.has_token(userdata['token']):
                 print('dbentry check: ticket already exists. redirecting...')
                 return HTTPFound(location=request.route_url('finished'))
@@ -790,11 +792,11 @@ def check_route(request, view=''):
     if view is 'confirm':
 
         # reedit: user wants to re-edit her data
-        if 'reedit' in request.POST: 
+        if 'reedit' in request.POST:
             return HTTPFound(location=request.route_url('party'))
 
         # sendmail: user wants email w/ transfer info
-        if 'sendmail' in request.POST:  
+        if 'sendmail' in request.POST:
             return HTTPFound(location=request.route_url('sendmail'))
 
     return
@@ -807,7 +809,7 @@ def load_user(request):
     userdata. userdata should only be changed in this view. load_user is the
     only entrance door.
     '''
-    print('--- load user -----------------------------------------------------')
+    print('--- load user ---------------------------------------------------')
 
     _token = request.matchdict['token']
     _email = request.matchdict['email']
@@ -864,7 +866,7 @@ def load_user(request):
     except:
         print('no valid entry found. redirecting ...')
         pass
-        
+
     return HTTPFound(
         location=request.registry.settings['registration.access_denied_url']
     )
@@ -916,7 +918,7 @@ def party_view(request):
             #     print(u"the thing: %s") % thing
             #     print(u"type: %s") % type(thing)
 
-        except ValidationFailure, e:            
+        except ValidationFailure, e:
             print(e)
             request.session.flash(
                 _(u"Please note: There were errors, "
@@ -949,7 +951,7 @@ def party_view(request):
 
         # map supporter tickets to price
         the_support = {
-            1: 5 ,
+            1: 5,
             2: 10,
             3: 100
         }
