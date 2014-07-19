@@ -91,6 +91,7 @@ $(document).ready(function(){
       { 'color': '#3276b1' }, 600, function() {}
     )
     $('#ticket_all').prop('disabled', true)
+    $('#item-tshirt-type').closest('.panel-default').show();
   }
 
   function allinc_off(){
@@ -109,6 +110,7 @@ $(document).ready(function(){
       { 'color': '#333333' }, 600, function() {}
     )
     $('#ticket_all').prop('disabled', false)
+    $('#item-tshirt-type').closest('.panel-default').hide();
   }
 
 })
