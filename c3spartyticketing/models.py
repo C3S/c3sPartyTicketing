@@ -324,6 +324,17 @@ class PartyTicket(Base):
         return DBSession.query(cls).filter(
             cls.token == token).first()
 
+    @classmethod
+    def has_token(cls, token):
+        """
+        check, if a ticket with given token already exists
+
+        this is needed to redirect to a readonly form, if a user
+        has already submitted the form
+        """
+        return DBSession.query(cls).filter(
+            cls.token == token).count()
+
     #@classmethod
     #def get_by_tcode(cls, tcode):
     #    """

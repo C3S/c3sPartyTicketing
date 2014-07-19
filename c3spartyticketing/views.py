@@ -18,7 +18,10 @@ from deform import ValidationFailure
 import json
 from pkg_resources import resource_filename
 
-from pyramid.httpexceptions import HTTPFound
+from pyramid.httpexceptions import (
+    HTTPRedirection,
+    HTTPFound
+)
 from pyramid.i18n import (
     TranslationStringFactory,
     get_localizer,
@@ -42,6 +45,7 @@ _ = TranslationStringFactory('c3spartyticketing')
 from pyramid.renderers import render
 
 from sets import Set
+from pprint import pprint
 
 #deform_templates = resource_filename('deform', 'templates')
 
@@ -63,7 +67,6 @@ zpt_renderer = deform.ZPTRendererFactory(
     ],
     translator=translator,
 )
-
 
 def ticket_schema(request, appstruct, readonly=False):
 
@@ -134,38 +137,8 @@ def ticket_schema(request, appstruct, readonly=False):
                 )
                 raise exc
 
-    ### deferred
-
-    @colander.deferred
-    def deferred_missing_firstname(node, kw):
-        try:
-            return request.session['appstruct_preset']['firstname']
-        except:
-            return 'foo'
-
-    @colander.deferred
-    def deferred_missing_lastname(node, kw):
-        try:
-            return request.session['appstruct_preset']['lastname']
-        except:
-            return 'bar'
-
-    @colander.deferred
-    def deferred_missing_email(node, kw):
-        try:
-            return request.session['appstruct_preset']['email']
-        except:
-            return 'moo'
-
-    @colander.deferred
-    def deferred_missing_token(node, kw):
-        try:
-            return request.session['appstruct_preset']['token']
-        except:
-            return 'boo'
-
     ### options
-
+    
     ticket_gv_options = (
         (1, _(u'I will attend the C3S SCE General Assembly.')),
         (2, _(
@@ -344,29 +317,29 @@ def ticket_schema(request, appstruct, readonly=False):
         token = colander.SchemaNode(
             colander.String(),
             widget=deform.widget.HiddenWidget(),
-            default=request.session['appstruct_preset']['token'],
-            missing=deferred_missing_token,
+            default=request.session['userdata']['token'],
+            missing='',
             oid="firstname",
         )
         firstname = colander.SchemaNode(
             colander.String(),
             widget=deform.widget.HiddenWidget(),
-            default=request.session['appstruct_preset']['firstname'],
-            missing=deferred_missing_firstname,
+            default=request.session['userdata']['firstname'],
+            missing='',
             oid="firstname",
         )
         lastname = colander.SchemaNode(
             colander.String(),
             widget=deform.widget.HiddenWidget(),
-            default=request.session['appstruct_preset']['lastname'],
-            missing=deferred_missing_lastname,
+            default=request.session['userdata']['lastname'],
+            missing='',
             oid="lastname",
         )
         email = colander.SchemaNode(
             colander.String(),
             widget=deform.widget.HiddenWidget(),
-            default=request.session['appstruct_preset']['email'],
-            missing=deferred_missing_email,
+            default=request.session['userdata']['email'],
+            missing='',
             oid="email",
         )
         _LOCALE_ = colander.SchemaNode(
@@ -567,42 +540,210 @@ def ticket_schema(request, appstruct, readonly=False):
     return TicketForm(validator=validator).bind()
 
 
+def ticket_appstruct(request, view=''):
+    '''
+        Ensures the consistent creation of a valid ticket appstruct.
+        Tries in the following order:
+        1. Use from possibly edited session (reedit, refresh).
+        2. If id not given, create new from userdata
+        3. Create from dbenty
+        4. Redirect to access denied url
+    '''
+    print('--- creating appstract --------------------------------------------')
+
+    userdata = request.session['userdata']
+    assert(userdata)
+    print "userdata: {}".format(userdata)
+
+    if 'appstruct' in request.session:
+        # Use from possibly edited session (reedit, refresh).
+        print('using session:')
+        appstruct = request.session['appstruct']
+        if appstruct is None:
+            return HTTPFound(
+                location=request.registry.settings[
+                    'registration.access_denied_url'
+                ]
+            )
+        print "-- appstruct: {}".format(appstruct)
+        return appstruct
+
+    userdata = request.session['userdata']
+    if userdata['id'] is 'None':
+        # If id not given, create new from userdata
+        print("using userdata for new form.")
+        appstruct = {
+            'ticket': request.session['userdata']
+        }
+        print "-- appstruct: {}".format(appstruct)
+        return appstruct
+
+    # Create from dbenty
+    assert(userdata['id'])
+    _ticket = PartyTicket.get_by_id(userdata['id'])
+    assert isinstance(_ticket, PartyTicket)
+    print "using dbentry (id {}):".format(userdata['id'])
+    appstruct = {
+        'ticket': {
+            'ticket_gv': _ticket.ticket_gv_attendance,
+            'ticket_bc': [
+                'attendance',
+                'buffet'
+            ],
+            'ticket_all': _ticket.ticket_all,
+            'ticket_support' : [
+                '1',
+                '2',
+                '3'
+            ],
+            'support': _ticket.support,
+            'the_total': _ticket.the_total,
+            'comment': _ticket.user_comment,
+            'ticket_tshirt': _ticket.ticket_tshirt,
+            'firstname': _ticket.firstname,
+            'lastname': _ticket.lastname,
+            'token': _ticket.token,
+            'email': _ticket.email
+        },
+        'representation': {
+            'firstname': _ticket.rep_firstname,
+            'lastname': _ticket.rep_lastname,
+            'street': _ticket.rep_street,
+            'zip': _ticket.rep_zip,
+            'city': _ticket.rep_city,
+            'country': _ticket.rep_country,
+            'representation_type': _ticket.rep_type
+        },
+        'tshirt': {
+            'tshirt_type': _ticket.ticket_tshirt_type,
+            'tshirt_size': _ticket.ticket_tshirt_size
+        }
+    }
+    if not _ticket.ticket_bc_attendance:
+        appstruct['ticket']['ticket_bc'].remove('attendance')
+    if not _ticket.ticket_bc_buffet:
+        appstruct['ticket']['ticket_bc'].remove('buffet')
+    if not _ticket.ticket_support:
+        appstruct['ticket']['ticket_support'].remove('1')
+    if not _ticket.ticket_support_x:
+        appstruct['ticket']['ticket_support'].remove('2')
+    if not _ticket.ticket_support_xl:
+        appstruct['ticket']['ticket_support'].remove('3')
+
+    print "-- appstruct: {}".format(appstruct)
+    return appstruct
+
+
+def pick_route(request, view=''):
+    '''
+        A. checks:
+            1.  userdata check:
+                userdata has to be set in load_user. load_user() is the only 
+                entrance door. if userdata is not set,
+                redirect to access denied url
+
+            2.  dbentry check: 
+                if finish_on_submit is active and user has already submitted,
+                redirect to finished view
+
+            3.  date check:
+                if registration period is over,
+                redirect to finished view
+
+        B. individual routes: 
+            redirects based on keywords in POST
+    '''
+    print('--- pick route ----------------------------------------------------')
+    if view:
+        print('called from view: %s') % view
+
+    ### checks
+
+    # userdata check:
+    if 'userdata' in request.session:
+        userdata = request.session['userdata']
+    else:
+        print('userdata test: user not found. redirecting...')
+        return HTTPFound(
+            location=request.registry.settings['registration.access_denied_url']
+        )
+
+    # dbentry check:
+    if view is not 'finished':
+        if 'true' in request.registry.settings['registration.finish_on_submit']:
+            if PartyTicket.has_token(userdata['token']):
+                print('dbentry check: ticket already exists. redirecting...')
+                return HTTPFound(location=request.route_url('finished'))
+            else:
+                print('token check: ticket does not exist')
+        else:
+            print('token check: deactivated')
+
+    # date check:
+    if view is not 'finished':
+        today = datetime.today().date()
+        registration_end = dateutil.parser.parse(
+            request.registry.settings['registration.end']
+        ).date()
+        if today > registration_end:
+            print('date check: registration is finished. redirecting ...')
+            return HTTPFound(location=request.route_url('finished'))
+        else:
+            print('date check: registration is still possible')
+
+    ### individual routes
+
+    # confirm view:
+    if view is 'confirm':
+
+        # reedit: user wants to re-edit her data
+        if 'reedit' in request.POST: 
+            return HTTPFound(location=request.route_url('party'))
+
+        # sendmail: user wants email w/ transfer info
+        if 'sendmail' in request.POST:  
+            return HTTPFound(location=request.route_url('sendmail'))
+
+    return
+
+
 @view_config(route_name='load_user')
 def load_user(request):
     '''
-    receive link containing token and load user details
+    receive link containing token and load user details. saves details in
+    userdata. userdata should only be changed in this view. load_user is the
+    only entrance door.
     '''
-    _token = request.matchdict['token']
-    _email = request.matchdict['email']  # XXX use it for sth?
-    #print u"the token: {}".format(_token)
-    #print u"the email: {}".format(_email)
+    print('--- load user -----------------------------------------------------')
 
-    # try to find the users ticket in the tickets DB
-    #try:
+    _token = request.matchdict['token']
+    _email = request.matchdict['email']
+
+    ### load userdata from dbentry
     _ticket = PartyTicket.get_by_token(_token)
+    print('searching db for user ...')
     try:
-        print "tried getting an instance from the DB: type: {}".format(
-            type(_ticket))
         assert isinstance(_ticket, PartyTicket)
-        print "found a valid instance! its id: {}".format(_ticket.id)
-        #_id = _ticket.id
-        appstruct = {
+        assert(_ticket.token == _token)
+        assert(_ticket.email == _email)
+        print "found a valid dbentry (id: {})".format(_ticket.id)
+        userdata = {
+            'token': _ticket.token,
+            'id': _ticket.id,
             'firstname': _ticket.firstname,
             'lastname': _ticket.lastname,
             'email': _ticket.email,
-            'token': _token,
-            'id': _ticket.id,
-            }
-        assert(_ticket.email == _email)
-        print "found a valid instance with matching email!"
-        request.session['appstruct_preset'] = appstruct
+            'mtype': _ticket.membership_type
+        }
+        request.session['userdata'] = userdata
         return HTTPFound(location=request.route_url('party'))
     except:
-        print "nothing found in DB; loading from MGV API"
+        print "no valid dbentry found."
         pass
 
-    #get the info from the membership app
+    ### load userdata from membership app
     data = json.dumps({"token": _token})
+    print('querying MGV API ...')
     _auth_header = {
         'X-Messaging-Token': request.registry.settings['yes_auth_token']
     }
@@ -616,22 +757,24 @@ def load_user(request):
     #print u"the result.reason: {}".format(res.reason)
     #print u"dir(res): {}".format(dir(res))
     try:
-        appstruct = {
+        userdata = {
+            'token': _token,
+            'id': 'None',
             'firstname': res.json()['firstname'],
             'lastname': res.json()['lastname'],
             'email': res.json()['email'],
-            'token': _token,
-            'id': 'None',
+            'mtype': res.json()['mtype']
         }
-        print(_email)
-        print(res.json()['email'])
         assert(res.json()['email'] == _email)
-        request.session['appstruct_preset'] = appstruct
-        request.session['mtype'] = res.json()['mtype']
-        #print "storing mtype {} in session".format(request.session['mtype'])
+        request.session['userdata'] = userdata
         return HTTPFound(location=request.route_url('party'))
     except:
-        return HTTPFound(location='https://yes.c3s.cc')
+        print('no valid entry found. redirecting ...')
+        pass
+        
+    return HTTPFound(
+        location=request.registry.settings['registration.access_denied_url']
+    )
 
 
 @view_config(route_name='party', renderer='templates/party.pt')
@@ -639,111 +782,21 @@ def party_view(request):
     """
     the view users use to order a ticket
     """
-    #_num_tickets = PartyTicket.get_num_tickets()
-    #_num_tickets_paid = PartyTicket.get_num_tickets_paid()
 
-    if 'appstruct' not in request.session:
-        print "no appstruct in session"
-        # if we dont have data supplied in the session
-        # look for a preset from the load_user view
-        if 'appstruct_preset' in request.session:
-            print "we have a preset appstruct from loading a user"
-            appstruct = request.session['appstruct_preset']
-            if 'id' in appstruct and appstruct['id'] is not 'None':
-                print "==== appstruct['id'] is {}".format(appstruct['id'])
-                _ticket = PartyTicket.get_by_id(appstruct['id'])
-                assert isinstance(_ticket, PartyTicket)
-                print "found a valid instance! its id: {}".format(
-                    appstruct['id'])
-        else:
-            return HTTPFound(location='https://yes.c3s.cc')
+    ### pick route
+    route = pick_route(request, 'party')
+    if isinstance(route, HTTPRedirection):
+        return route
 
-    elif 'appstruct' in request.session:
-        appstruct = request.session['appstruct']
-        print "got the appstruct from request.session['appstruct']: {}".format(
-            request.session['appstruct'])
+    ### generate appstruct
+    appstruct = ticket_appstruct(request, 'party')
 
-    #print "DEBUG: {}".format(dir(request.session['appstruct_preset']))
-    if 'appstruct_preset' in request.session:
-        #print "found appstruct!"
-        #print "the appstruct: {}".format(request.session['appstruct_preset'])
-        appstruct = {}
-        appstruct['ticket'] = {
-            'token': request.session[
-                'appstruct_preset']['token'],
-            'firstname': request.session[
-                'appstruct_preset']['firstname'],
-            'lastname': request.session[
-                'appstruct_preset']['lastname'],
-            'email': request.session[
-                'appstruct_preset']['email'],
-        }
-        try:
-            if isinstance(_ticket, PartyTicket):
-                # we have info in the DB, so we load it
-                appstruct['ticket']['ticket_gv'] = _ticket.ticket_gv_attendance
-                if _ticket.ticket_gv_attendance is 2:
-                    appstruct['representation'] = {}
-                    appstruct['representation'][
-                        'firstname'] = _ticket.rep_firstname
-                    appstruct['representation'][
-                        'lastname'] = _ticket.rep_lastname
-                    appstruct['representation']['street'] = _ticket.rep_street
-                    appstruct['representation']['zip'] = _ticket.rep_zip
-                    appstruct['representation']['city'] = _ticket.rep_city
-                    appstruct['representation'][
-                        'country'] = _ticket.rep_country
-                    appstruct['representation'][
-                        'representation_type'] = _ticket.rep_type
-                appstruct['ticket']['ticket_bc'] = []
-                if _ticket.ticket_bc_attendance:
-                    appstruct['ticket']['ticket_bc'].append('attendance')
-                if _ticket.ticket_bc_buffet:
-                    appstruct['ticket']['ticket_bc'].append('buffet')
-                appstruct['ticket']['ticket_all'] = _ticket.ticket_all
-                appstruct['ticket']['ticket_support'] = []
-                if _ticket.ticket_support:
-                    appstruct['ticket']['ticket_support'].append('1')
-                if _ticket.ticket_support_x:
-                    appstruct['ticket']['ticket_support'].append('2')
-                if _ticket.ticket_support_xl:
-                    appstruct['ticket']['ticket_support'].append('3')
-                appstruct['ticket']['support'] = _ticket.support
-                appstruct['ticket']['the_total'] = _ticket.the_total
-                appstruct['ticket']['comment'] = _ticket.user_comment
-                appstruct['ticket']['ticket_tshirt'] = _ticket.ticket_tshirt
-                appstruct['tshirt'] = {}
-                appstruct['tshirt']['tshirt_type'] = _ticket.ticket_tshirt_type
-                appstruct['tshirt']['tshirt_size'] = _ticket.ticket_tshirt_size
-            # request.session['appstruct_preset'] = {}  # delete/clear it now
-        except:
-            pass
-    else:
-        return HTTPFound(location='https://yes.c3s.cc')
-
-    # date check: redirect to readonly view if deadline is over
-    today = datetime.today().date()
-    registration_end = dateutil.parser.parse(
-        request.registry.settings['registration.end']
-    ).date()
-    if today <= registration_end:
-        print('date check: registration is possible')
-    else:
-        print('date check: registration is finished')
-        request.session['appstruct'] = appstruct
-        return HTTPFound(location=request.route_url('finished'))
-
-    #print "the appstruct: {}".format(appstruct)
-    try:
-        schema = ticket_schema(request, appstruct)
-    except:
-        schema = ticket_schema(request, {})
-
+    ### generate form
+    schema = ticket_schema(request, appstruct)
     form = deform.Form(
         schema,
         buttons=[
             deform.Button('submit', _(u'Submit'))
-            #deform.Button('reset', _(u'Zurücksetzen'))
         ],
         #use_ajax=True,
         renderer=zpt_renderer
@@ -759,14 +812,16 @@ def party_view(request):
         print "submitted!"
         controls = request.POST.items()
         print controls
+
+        # validate user input
         try:
             print 'about to validate form input'
             appstruct = form.validate(controls)
             print 'done validating form input'
             print("the appstruct from the form: %s \n") % appstruct
-            for thing in appstruct:
-                print(u"the thing: %s") % thing
-                print(u"type: %s") % type(thing)
+            # for thing in appstruct:
+            #     print(u"the thing: %s") % thing
+            #     print(u"type: %s") % type(thing)
 
         except ValidationFailure, e:            
             print(e)
@@ -781,8 +836,6 @@ def party_view(request):
                 'lastname': appstruct['ticket']['lastname'],
                 'email': appstruct['ticket']['email']
             }
-
-        # XXX load instance from DB or rather just save it straignt away?
 
         # make confirmation code
         randomstring = make_random_string()
@@ -852,78 +905,37 @@ def party_view(request):
         appstruct['ticket']['discount'] = _discount
         print("_discount: %s" % _discount)
 
-        # # to store the data in the DB, an object is created
-        # ticket = PartyTicket(
-        #     token=request.session['appstruct_preset']['token'],
-        #     firstname=request.session['appstruct_preset']['firstname'],
-        #     lastname=request.session['appstruct_preset']['lastname'],
-        #     email=request.session['appstruct_preset']['email'],
-        #     password='',  # appstruct['person']['password'],
-        #     locale=appstruct['ticket']['_LOCALE_'],
-        #     email_is_confirmed=False,
-        #     email_confirm_code=randomstring,
-        #     date_of_submission=datetime.now(),
-        #     num_tickets=1,
-        #     ticket_gv_attendance=appstruct['ticket']['ticket_gv'],
-        #     ticket_bc_attendance=(
-        #         'attendance' in appstruct['ticket']['ticket_bc']),
-        #     ticket_bc_buffet=('buffet' in appstruct['ticket']['ticket_bc']),
-        #     ticket_tshirt=appstruct['ticket']['ticket_tshirt'],
-        #     ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
-        #     ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
-        #     ticket_all=appstruct['ticket']['ticket_all'],
-        #     ticket_support=('1' in appstruct['ticket']['ticket_support']),
-        #     ticket_support_x=('2' in appstruct['ticket']['ticket_support']),
-        #     ticket_support_xl=('3' in appstruct['ticket']['ticket_support']),
-        #     support=_support,
-        #     discount=_discount,
-        #     the_total=_the_total,
-        #     rep_firstname=appstruct['representation']['firstname'],
-        #     rep_lastname=appstruct['representation']['lastname'],
-        #     rep_street=appstruct['representation']['street'],
-        #     rep_zip=appstruct['representation']['zip'],
-        #     rep_city=appstruct['representation']['city'],
-        #     rep_country=appstruct['representation']['country'],
-        #     rep_type=appstruct['representation']['representation_type'],
-        #     guestlist=False,
-        #     user_comment=appstruct['ticket']['comment'],
-        # )
-        # print "trying to store mtype {} to db".format(
-        #     request.session['mtype'])
-        # ticket.membership_type = request.session['mtype']
-        # dbsession = DBSession
-
         '''
         now we want to save stuff in the DB, so we need to check
         if there is a matching entry already.
         if yes, update that one
         '''
-
-        try:
-            if isinstance(_ticket, PartyTicket):
-                in_DB = True
-        except:
-            in_DB = False
-
-        if in_DB:
-            ticket = _ticket
+        if PartyTicket.has_token(request.session['userdata']['token']):
+            ticket = PartyTicket.get_by_token(
+                request.session['userdata']['token']
+            )
             # just save those details that changed
             ticket.date_of_submission = datetime.now()
             ticket.ticket_gv_attendance = appstruct['ticket']['ticket_gv']
             ticket.ticket_bc_attendance = (
-                'attendance' in appstruct['ticket']['ticket_bc'])
+                'attendance' in appstruct['ticket']['ticket_bc']
+            )
             ticket.ticket_bc_buffet = (
-                'buffet' in appstruct['ticket']['ticket_bc'])
+                'buffet' in appstruct['ticket']['ticket_bc']
+            )
             ticket.ticket_tshirt = appstruct['ticket']['ticket_tshirt']
             ticket.ticket_tshirt_type = appstruct['tshirt']['tshirt_type']
             ticket.ticket_tshirt_size = appstruct['tshirt']['tshirt_size']
             ticket.ticket_all = appstruct['ticket']['ticket_all']
             ticket.ticket_support = (
-                '1' in appstruct['ticket']['ticket_support'])
+                '1' in appstruct['ticket']['ticket_support']
+            )
             ticket.ticket_support_x = (
-                '2' in appstruct['ticket']['ticket_support'])
+                '2' in appstruct['ticket']['ticket_support']
+            )
             ticket.ticket_support_xl = (
-                '3' in appstruct['ticket']['ticket_support'])
+                '3' in appstruct['ticket']['ticket_support']
+            )
             ticket.support = _support
             ticket.discount = _discount
             ticket.the_total = _the_total
@@ -933,20 +945,20 @@ def party_view(request):
             ticket.rep_zip = appstruct['representation']['zip']
             ticket.rep_city = appstruct['representation']['city']
             ticket.rep_country = appstruct['representation']['country']
-            ticket.rep_type = appstruct[
-                'representation']['representation_type']
+            ticket.rep_type = appstruct['representation']['representation_type']
             ticket.guestlist = False
             ticket.user_comment = appstruct['ticket']['comment']
             DBSession.flush()  # save to DB
+            print('save to db: updated.')
             #  set the appstruct for further processing
             appstruct['email_confirm_code'] = ticket.email_confirm_code
         else:
             # to store the data in the DB, an object is created
             ticket = PartyTicket(
-                token=request.session['appstruct_preset']['token'],
-                firstname=request.session['appstruct_preset']['firstname'],
-                lastname=request.session['appstruct_preset']['lastname'],
-                email=request.session['appstruct_preset']['email'],
+                token=request.session['username']['token'],
+                firstname=request.session['username']['firstname'],
+                lastname=request.session['username']['lastname'],
+                email=request.session['username']['email'],
                 password='',  # appstruct['person']['password'],
                 locale=appstruct['ticket']['_LOCALE_'],
                 email_is_confirmed=False,
@@ -983,9 +995,8 @@ def party_view(request):
             ticket.membership_type = request.session['mtype']
             #dbsession = DBSession
             try:
-                print "about to add ticket"
                 DBSession.add(ticket)
-                print "adding ticket"
+                print('save to db: created.')
                 appstruct['email_confirm_code'] = randomstring  # XXX
                 #                                    check duplicates
             except InvalidRequestError, e:  # pragma: no cover
@@ -1013,19 +1024,7 @@ def party_view(request):
         deleted_msg = request.session.pop_flash()
         del deleted_msg
         if ('appstruct' in request.session):
-            #print("form was not submitted, but found appstruct in session.")
             appstruct = request.session['appstruct']
-            #print("the appstruct: %s") % appstruct
-            # pre-fill the form with the values from last time
-            appstruct['ticket'][
-                'token'] = request.session['appstruct_preset']['firstname']
-            appstruct['ticket'][
-                'firstname'] = request.session['appstruct_preset']['firstname']
-            appstruct['ticket'][
-                'lastname'] = request.session['appstruct_preset']['lastname']
-            appstruct['ticket'][
-                'email'] = request.session['appstruct_preset']['email']
-
             form.set_appstruct(appstruct)
 
     html = form.render()
@@ -1044,22 +1043,16 @@ def confirm_view(request):
     the form was submitted correctly. show the result.
     """
 
-    if not 'appstruct' in request.session:
-        return HTTPFound(location=request.route_url('party'))
+    ### pick route
+    route = pick_route(request, 'confirm')
+    if isinstance(route, HTTPRedirection):
+        return route
 
-    print("DEBUG: request.POST is: %s" % request.POST)
+    ### generate appstruct
+    appstruct = ticket_appstruct(request, 'confirm')
 
-    if 'reedit' in request.POST:  # user wants to re-edit her data
-        #print("the form was submitted, the data needs reediting")
-        return HTTPFound(location=request.route_url('party'))
-
-    if 'sendmail' in request.POST:  # user wants email w/ transfer info
-        #print("the form was submitted, the data confirmed, "
-        #      "redirecting to sendmail-view")
-        return HTTPFound(location=request.route_url('sendmail'))
-
+    ### generate form
     schema = ticket_schema(request, request.session['appstruct'], readonly=True)
-
     form = deform.Form(
         schema,
         buttons=[
@@ -1087,7 +1080,7 @@ def sendmail_view(request):
         return HTTPFound(location=request.route_url('party'))
     appstruct = request.session['appstruct']
 
-    # sanity check of local_name
+    # sanity check of local_name; XXX put into subscripber.py
     lang = request.registry.settings['pyramid.default_locale_name']
     langs = request.registry.settings['available_languages'].split()
     if request.locale_name in langs:
@@ -1248,7 +1241,7 @@ def sendmail_view(request):
         mailer.send(accmail_obj)
 
     # make the session go away
-    #request.session.invalidate()
+    request.session.invalidate()
     return {
         'firstname': appstruct['ticket']['firstname'],
         'lastname': appstruct['ticket']['lastname'],
@@ -1265,9 +1258,16 @@ def finished_view(request):
     registration deadline is over. show the ticket readonly.
     """
 
-    schema = ticket_schema(
-        request, request.session['appstruct'], readonly=True)
+    ### pick route
+    route = pick_route(request, 'finished')
+    if isinstance(route, HTTPRedirection):
+        return route
 
+    ### generate appstruct
+    appstruct = ticket_appstruct(request, 'finished')
+
+    ### generate form
+    schema = ticket_schema(request, appstruct, readonly=True)
     form = deform.Form(
         schema,
         buttons=[],
@@ -1277,7 +1277,7 @@ def finished_view(request):
 
     return {
         'readonlyform': form.render(
-            appstruct=request.session['appstruct']
+            appstruct=appstruct
         )
     }
 
@@ -1298,11 +1298,10 @@ def get_ticket(request):
         return HTTPFound(location=request.route_url('party'))
 
     # prepare ticket URL with email & code
-    _url = (
-        request.registry.settings['c3spartyticketing.url']
-        + '/ci/gvbc14001/'  # this is the 'checkin' route
-        + _ticket.email_confirm_code
-    )
+    # 'https://events.c3s.cc/ci/p1402/' + _ticket.email + _ticket.email_confirm_code
+    # 'https://192.168.2.128:6544/ci/p1402/' + _ticket.email + _ticket.email_confirm_code
+    _url = request.registry.settings[
+        'c3spartyticketing.url'] + '/ci/p1402/' + _ticket.email_confirm_code
 
     # return a pdf file
     pdf_file = make_qr_code_pdf(_ticket, _url)
@@ -1327,11 +1326,8 @@ def get_ticket_mobile(request):
         #print("no match!")
         return HTTPFound(location=request.route_url('party'))
 
-    _url = (
-        request.registry.settings['c3spartyticketing.url']
-        + '/ci/gvbc14001/'  # this is the 'checkin' route
-        + _ticket.email_confirm_code
-    )
+    _url = request.registry.settings[
+        'c3spartyticketing.url'] + '/ci/p1402/' + _ticket.email_confirm_code
 
     # return a pdf file
     pdf_file = make_qr_code_pdf_mobile(_ticket, _url)
