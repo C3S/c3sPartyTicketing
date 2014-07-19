@@ -1051,10 +1051,10 @@ def party_view(request):
         else:
             # to store the data in the DB, an object is created
             ticket = PartyTicket(
-                token=request.session['username']['token'],
-                firstname=request.session['username']['firstname'],
-                lastname=request.session['username']['lastname'],
-                email=request.session['username']['email'],
+                token=request.session['userdata']['token'],
+                firstname=request.session['userdata']['firstname'],
+                lastname=request.session['userdata']['lastname'],
+                email=request.session['userdata']['email'],
                 password='',  # appstruct['person']['password'],
                 locale=appstruct['ticket']['_LOCALE_'],
                 email_is_confirmed=False,
