@@ -302,6 +302,8 @@ class FunctionalTests(unittest.TestCase):
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
             'yes_api_url': 'https://prototyp01.c3s.cc/lm',
             'registration.end': '2014-08-04',
+            'registration.finish_on_submit': 'true',
+            'registration.access_denied_url': 'https://yes.c3s.cc',
         }
         engine = engine_from_config(my_settings)
         DBSession.configure(bind=engine)

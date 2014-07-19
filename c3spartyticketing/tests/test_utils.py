@@ -77,6 +77,7 @@ class TestUtilities(unittest.TestCase):
                 guestlist=False,
                 user_comment=u"äh, was?"
             )
+            ticket1.membership_type = 'normal'
             DBSession.add(ticket1)
             DBSession.flush()
 

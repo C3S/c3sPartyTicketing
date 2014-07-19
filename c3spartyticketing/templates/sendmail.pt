@@ -54,13 +54,13 @@
           (<span i18n:translate="">Important</span>: <strong i18n:translate="">Referral Code</strong>!)
         </p>
         <p>
-          <span i18n:translate="">As soon as</span> <strong i18n:translate="">your payment</strong> 
-          <span i18n:translate="">is in, we send you an e-mail with your ticket(s) 
-          and vouchers for other orders (food, T-shirt).</span>
+          <span i18n:translate="">After receiving</span> <strong i18n:translate="">your payment</strong>,
+          <span i18n:translate="">we are going to send you an email with your ticket(s) 
+          and/or vouchers for the rest of your order. You will receive your ticket(s) in time.</span>
           <br />
           <span i18n:translate="">Your order has to be fully paid by</span> 
-          <strong i18n:translate="">18th August</strong> 
-          <span i18n:translate="">the latest. Date of payment receipt on our account applies.</span>
+          <strong i18n:translate="">18th August 2014</strong> 
+          <span i18n:translate="">at latest. The date of entry of payment on our account applies.</span>
         </p>
         <p>
           <span i18n:translate="">In case you did not receive our e-mail, please send a note to</span> 
@@ -73,7 +73,7 @@
 
       <div tal:condition="not canceled and not transaction">
         <hr />
-        <h2 i18n:translate="" style="color:#666; margin-left:40px;">Many thanks for ordering C3S-Tickets &amp; Goodies! May the creative karma be with you.</h2>
+        <h2 i18n:translate="" style="color:#666; margin-left:40px;">Many thanks for attending the general assembly -- looking forward to meet you in Cologne!</h2>
         <h3 i18n:translate="" style="color:#999; margin-left:80px;">Your C3S-Team</h3>
       </div>
 
@@ -83,8 +83,8 @@
           you have cancelled your participation at the C3S General Assembly. However, you are attending the BarCamp.
         </p>
         <p>
-          <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around</span><br />
-          <span i18n:translate="">please simply click again the personal link that came with the invitation mail.</span>
+          <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around,</span><br />
+          <span i18n:translate="">please contact our team at office@c3s.cc until 11th August, 2014.</span>
         </p>
         <p i18n:translate="">
           You will receive more information on your order and how to pay in an e-mail.
@@ -100,8 +100,8 @@
           you have cancelled your participation in the C3S General Assembly as well as a participation in the BarCamp.
         </p>
         <p>
-          <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around</span><br />
-          <span i18n:translate="">please simply click again the personal link that came with the invitation mail.</span>
+          <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around,</span><br />
+          <span i18n:translate="">please contact our team at office@c3s.cc until 11th August, 2014.</span>
         </p>
         <p i18n:translate="">
           You will receive more information on your order and how to pay in an e-mail.
@@ -117,8 +117,8 @@
           you have cancelled your participation in the C3S General Assembly as well as a participation in the BarCamp.
         </p>
         <p>
-          <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around</span><br />
-          <span i18n:translate="">please simply click again the personal link that came with the invitation mail.</span>
+          <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around,</span><br />
+          <span i18n:translate="">please contact our team at office@c3s.cc until 11th August, 2014.</span>
         </p>
         <hr />
         <h2 i18n:translate="" style="color:#666; margin-left:40px;">See you soon,</h2>
