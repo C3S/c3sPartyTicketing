@@ -104,10 +104,11 @@ class TestViews(unittest.TestCase):
             'normal' in request.session['userdata']['mtype'])
 
         # off to another view: party_view!
-        from c3spartyticketing.views import party_view
-        request.registry.settings['registration.end'] = '2014-08-08'
-        res2 = party_view(request)
-        print res2
+        #from c3spartyticketing.views import party_view
+        #request.registry.settings['registration.end'] = '2014-08-08'
+        #request.registry.settings['registration.finish_on_submit'] = 'false'
+        #res2 = party_view(request)
+        #print res2
 
 
 #         self.assertTrue(result['lastname'] is 'bar')
