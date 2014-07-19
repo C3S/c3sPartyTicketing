@@ -110,7 +110,9 @@ $(document).ready(function(){
       { 'color': '#333333' }, 600, function() {}
     )
     $('#ticket_all').prop('disabled', false)
-    $('#item-tshirt-type').closest('.panel-default').hide();
+    if( !$('#ticket_tshirt').is(':checked') ) {
+      $('#item-tshirt-type').closest('.panel-default').hide();
+    }
   }
 
 })
