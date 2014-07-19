@@ -1088,7 +1088,7 @@ def party_view(request):
                 guestlist=False,
                 user_comment=appstruct['ticket']['comment'],
                 )
-            ticket.membership_type = request.session['mtype']
+            ticket.membership_type = request.session['userdata']['mtype']
             #dbsession = DBSession
             try:
                 DBSession.add(ticket)
