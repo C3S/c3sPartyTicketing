@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-07-19 06:40+00:00\n"
+"POT-Creation-Date: 2014-07-20 11:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,208 +15,208 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 
-#: ./c3spartyticketing/views.py:1181 ./c3spartyticketing/views.py:1195
+#: ./c3spartyticketing/views.py:1189 ./c3spartyticketing/views.py:1203
 #, c-format
 msgid "C3S Barcamp 2014: your order"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1207
+#: ./c3spartyticketing/views.py:1215
 #, c-format
 msgid ""
 "C3S BarCamp & General Assembly: your BarCamp ticket / your cancellation of "
 "general assembly"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1222
+#: ./c3spartyticketing/views.py:1230
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation / your order"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1236
+#: ./c3spartyticketing/views.py:1244
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:131
+#: ./c3spartyticketing/views.py:130
 #, c-format
 msgid "I will attend the C3S SCE General Assembly."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:132
+#: ./c3spartyticketing/views.py:131
 #, c-format
 msgid ""
 "I will not attend the C3S SCE General Assembly personally. I will be "
 "represented by an authorized person."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:136
+#: ./c3spartyticketing/views.py:135
 #, c-format
 msgid "I will not attend the C3S SCE General Assembly."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:140
+#: ./c3spartyticketing/views.py:139
 #, c-format
 msgid "I will attend the BarCamp. (€9)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:141
+#: ./c3spartyticketing/views.py:140
 #, c-format
 msgid "I'd like to dine from the BarCamp buffet. (€12)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:145
+#: ./c3spartyticketing/views.py:144
 #, c-format
 msgid "Supporter Ticket (€5)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:146
+#: ./c3spartyticketing/views.py:145
 #, c-format
 msgid "Supporter Ticket X (€10)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:147
+#: ./c3spartyticketing/views.py:146
 #, c-format
 msgid "Supporter Ticket XL (€100)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:151
+#: ./c3spartyticketing/views.py:150
 #, c-format
 msgid "a member of C3S SCE"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:152
+#: ./c3spartyticketing/views.py:151
 #, c-format
 msgid "my spouse / registered civil partner"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:153
+#: ./c3spartyticketing/views.py:152
 #, c-format
 msgid "my parent"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:154
+#: ./c3spartyticketing/views.py:153
 #, c-format
 msgid "my child"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:155
+#: ./c3spartyticketing/views.py:154
 #, c-format
 msgid "my sibling"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:159
+#: ./c3spartyticketing/views.py:158
 #, c-format
 msgid "male"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:160
+#: ./c3spartyticketing/views.py:159
 #, c-format
 msgid "female"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:164
+#: ./c3spartyticketing/views.py:163
 #, c-format
 msgid "S"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:165
+#: ./c3spartyticketing/views.py:164
 #, c-format
 msgid "M"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:166
+#: ./c3spartyticketing/views.py:165
 #, c-format
 msgid "L"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:167
+#: ./c3spartyticketing/views.py:166
 #, c-format
 msgid "XL"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:168
+#: ./c3spartyticketing/views.py:167
 #, c-format
 msgid "XXL"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:169
+#: ./c3spartyticketing/views.py:168
 #, c-format
 msgid "XXXL"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:248
+#: ./c3spartyticketing/views.py:247
 #, c-format
 msgid "All-Inclusive Discount (-€2,50)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:82
+#: ./c3spartyticketing/views.py:81
 #, c-format
 msgid "Gender selection for T-shirt is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:87
+#: ./c3spartyticketing/views.py:86
 #, c-format
 msgid "Size of T-shirt ist mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:93
+#: ./c3spartyticketing/views.py:92
 #, c-format
 msgid "First name of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:98
+#: ./c3spartyticketing/views.py:97
 #, c-format
 msgid "Last name of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:103
+#: ./c3spartyticketing/views.py:102
 #, c-format
 msgid "Address of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:108
+#: ./c3spartyticketing/views.py:107
 #, c-format
 msgid "Postal code of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:113
+#: ./c3spartyticketing/views.py:112
 #, c-format
 msgid "City of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:118
+#: ./c3spartyticketing/views.py:117
 #, c-format
 msgid "Country of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:123
+#: ./c3spartyticketing/views.py:122
 #, c-format
 msgid "Relation of representative is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:179
+#: ./c3spartyticketing/views.py:178
 #, c-format
 msgid "General Assembly:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:189
+#: ./c3spartyticketing/views.py:188
 #, c-format
 msgid "BarCamp:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:196
+#: ./c3spartyticketing/views.py:195
 #, c-format
 msgid ""
 "The buffet consists of e.g., salads, vegetables, dips, cheese and meat "
 "platters. A free drink is included."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:208
+#: ./c3spartyticketing/views.py:207
 #, c-format
 msgid "Extras:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:215
+#: ./c3spartyticketing/views.py:214
 #, c-format
 msgid ""
 "There will be one joint T-shirt design for both events in C3S green, black "
@@ -225,12 +225,12 @@ msgid ""
 "assembly. If you chose to order a shirt, you can specify its size below."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:231
+#: ./c3spartyticketing/views.py:230
 #, c-format
 msgid "Special Offer:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:238
+#: ./c3spartyticketing/views.py:237
 #, c-format
 msgid ""
 "The all-inclusive package covers the participation in the BarCamp (including "
@@ -238,94 +238,94 @@ msgid ""
 "exclusive event T-shirt as well."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:253
+#: ./c3spartyticketing/views.py:252
 #, c-format
 msgid "Supporter Tickets:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:260
+#: ./c3spartyticketing/views.py:259
 #, c-format
 msgid ""
 "These ticket options are selectable indepently from the other options. They "
 "help the cooperative a great deal to bear the costs occasioned by the events."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:290
+#: ./c3spartyticketing/views.py:289
 #, c-format
 msgid "Notes"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:297
+#: ./c3spartyticketing/views.py:296
 #, c-format
 msgid "Your notes (255 chars)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:379
+#: ./c3spartyticketing/views.py:378
 #, c-format
 msgid "First Name"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:388
+#: ./c3spartyticketing/views.py:387
 #, c-format
 msgid "Last Name"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:397
+#: ./c3spartyticketing/views.py:396
 #, c-format
 msgid "Address"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:406
+#: ./c3spartyticketing/views.py:405
 #, c-format
 msgid "Postal Code"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:415
+#: ./c3spartyticketing/views.py:414
 #, c-format
 msgid "City"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:424
+#: ./c3spartyticketing/views.py:423
 #, c-format
 msgid "Country"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:433
+#: ./c3spartyticketing/views.py:432
 #, c-format
 msgid "My representative is..."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:520
+#: ./c3spartyticketing/views.py:519
 #, c-format
 msgid "Gender:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:531
+#: ./c3spartyticketing/views.py:530
 #, c-format
 msgid "Size:"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:552
+#: ./c3spartyticketing/views.py:551
 #, c-format
 msgid "Ticket Information"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:556
+#: ./c3spartyticketing/views.py:555
 #, c-format
 msgid "Representative"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:562
+#: ./c3spartyticketing/views.py:561
 #, c-format
 msgid "T-Shirt"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:278
+#: ./c3spartyticketing/views.py:277
 #, c-format
 msgid "Total"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:279
+#: ./c3spartyticketing/views.py:278
 #, c-format
 msgid ""
 "Your order has to be fully paid by 18.08.2014 at the latest (payment receipt "
@@ -334,13 +334,13 @@ msgid ""
 "to you shortly by e-mail."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:887
+#: ./c3spartyticketing/views.py:895
 #: ./c3spartyticketing/accountants_views.py:904
 #, c-format
 msgid "Submit"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:917
+#: ./c3spartyticketing/views.py:925
 #: ./c3spartyticketing/accountants_views.py:127
 #: ./c3spartyticketing/accountants_views.py:925
 #: ./c3spartyticketing/cashiers_views.py:348
@@ -348,12 +348,12 @@ msgstr ""
 msgid "Please note: There were errors, please check the form below."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1149
+#: ./c3spartyticketing/views.py:1157
 #, c-format
 msgid "Submit & Buy"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1151
+#: ./c3spartyticketing/views.py:1159
 #, c-format
 msgid "Wait, I might have to change..."
 msgstr ""
@@ -431,6 +431,7 @@ msgid "Important"
 msgstr ""
 
 #: ./c3spartyticketing/templates/sendmail.pt:98
+#: ./c3spartyticketing/templates/finished.pt:19
 msgid "Referral Code"
 msgstr ""
 
@@ -711,6 +712,6 @@ msgid ""
 "respond by August 11th at the latest."
 msgstr ""
 
-#: ./c3spartyticketing/templates/finished.pt:23
+#: ./c3spartyticketing/templates/finished.pt:28
 msgid "Your Ticket:"
 msgstr ""

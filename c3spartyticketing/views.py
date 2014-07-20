@@ -763,7 +763,7 @@ def check_route(request, view=''):
         )
 
     # dbentry check:
-    if view is not 'finished' and not 'confirm':
+    if view is not 'finished' and view is not 'confirm':
         if 'true' in request.registry.settings[
                 'registration.finish_on_submit']:
             if PartyTicket.has_token(userdata['token']):
@@ -828,7 +828,8 @@ def load_user(request):
                 'firstname': _ticket.firstname,
                 'lastname': _ticket.lastname,
                 'email': _ticket.email,
-                'mtype': _ticket.membership_type
+                'mtype': _ticket.membership_type,
+                'email_confirm_code': _ticket.email_confirm_code
             }
             request.session['userdata'] = userdata
             return HTTPFound(location=request.route_url('party'))
@@ -1404,7 +1405,8 @@ def finished_view(request):
     return {
         'readonlyform': form.render(
             appstruct=appstruct
-        )
+        ),
+        'token': request.session['userdata']['email_confirm_code']
     }
 
     

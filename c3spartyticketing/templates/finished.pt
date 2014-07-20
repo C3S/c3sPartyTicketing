@@ -19,6 +19,7 @@
           type="text/javascript"></script>
   </tal:block>
   <tal:block metal:fill-slot="middle">
+    <h3><span i18n:translate="">Referral Code</span>: <code>${token}</code></h3>
   </tal:block>
   <tal:block metal:fill-slot="bottom">
     <h3 i18n:translate="">Your Ticket:</h3>
