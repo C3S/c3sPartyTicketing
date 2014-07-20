@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-07-20 15:07+00:00\n"
+"POT-Creation-Date: 2014-07-20 15:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,34 +15,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 
-#: ./c3spartyticketing/views.py:1165
+#: ./c3spartyticketing/views.py:1166
 #, c-format
 msgid "Submit & Buy"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1203 ./c3spartyticketing/views.py:1217
+#: ./c3spartyticketing/views.py:1204
 #, c-format
-msgid "C3S Barcamp 2014: your order"
+msgid "C3S General Assembly & Barcamp 2014: your participation & order"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1229
+#: ./c3spartyticketing/views.py:1218
+#, c-format
+msgid "C3S General Assembly & Barcamp 2014: your participation"
+msgstr ""
+
+#: ./c3spartyticketing/views.py:1230
 #, c-format
 msgid ""
-"C3S BarCamp & General Assembly: your BarCamp ticket / your cancellation of "
-"general assembly"
+"C3S General Assembly & Barcamp 2014: your BarCamp ticket / your cancellation "
+"of the general assembly"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1244
+#: ./c3spartyticketing/views.py:1245
 #, c-format
-msgid "C3S BarCamp & General Assembly: your cancellation / your order"
+msgid "C3S General Assembly & Barcamp 2014: your cancellation / your order"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1258
+#: ./c3spartyticketing/views.py:1259
 #, c-format
-msgid "C3S BarCamp & General Assembly: your cancellation"
+msgid "C3S General Assembly & Barcamp 2014: your cancellation"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1167 ./c3spartyticketing/views.py:905
+#: ./c3spartyticketing/views.py:1168 ./c3spartyticketing/views.py:905
 #: ./c3spartyticketing/accountants_views.py:904
 #, c-format
 msgid "Submit"
@@ -363,7 +368,7 @@ msgstr ""
 msgid "Please note: There were errors, please check the form below."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1173
+#: ./c3spartyticketing/views.py:1174
 #, c-format
 msgid "Wait, I might have to change..."
 msgstr ""

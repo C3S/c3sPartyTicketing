@@ -1202,7 +1202,7 @@ def sendmail_view(request):
 
     #######################################################################
     usermail_gv_transaction_subject = _(
-        u'C3S Barcamp 2014: your order'
+        u'C3S General Assembly & Barcamp 2014: your participation & order'
     )
     usermail_gv_transaction = render(
         'templates/mails/usermail_gv_transaction-'+lang+'.pt',
@@ -1216,7 +1216,7 @@ def sendmail_view(request):
 
     #######################################################################
     usermail_gv_notransaction_subject = _(
-        u'C3S Barcamp 2014: your order'
+        u'C3S General Assembly & Barcamp 2014: your participation'
     )
     usermail_gv_notransaction = render(
         'templates/mails/usermail_gv_notransaction-'+lang+'.pt',
@@ -1228,8 +1228,8 @@ def sendmail_view(request):
 
     #######################################################################
     usermail_notgv_bc_subject = _(
-        u'C3S BarCamp & General Assembly: your BarCamp ticket / '
-        u'your cancellation of general assembly'
+        u'C3S General Assembly & Barcamp 2014: your BarCamp ticket / '
+        u'your cancellation of the general assembly'
     )
     usermail_notgv_bc = render(
         'templates/mails/usermail_notgv_bc-'+lang+'.pt',
@@ -1243,7 +1243,7 @@ def sendmail_view(request):
 
     #######################################################################
     usermail_notgv_notbc_transaction_subject = _(
-        u'C3S BarCamp & General Assembly: your cancellation / your order'
+        u'C3S General Assembly & Barcamp 2014: your cancellation / your order'
     )
     usermail_notgv_notbc_transaction = render(
         'templates/mails/usermail_notgv_notbc_transaction-'+lang+'.pt',
@@ -1257,7 +1257,7 @@ def sendmail_view(request):
 
     #######################################################################
     usermail_notgv_notbc_notransaction_subject = _(
-        u'C3S BarCamp & General Assembly: your cancellation'
+        u'C3S General Assembly & Barcamp 2014: your cancellation'
     )
     usermail_notgv_notbc_notransaction = render(
         'templates/mails/usermail_notgv_notbc_notransaction-'+lang+'.pt',
