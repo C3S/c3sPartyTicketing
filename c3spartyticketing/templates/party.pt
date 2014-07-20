@@ -6,7 +6,7 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       metal:use-macro="base"
       i18n:domain="c3spartyticketing"
-      tal:define="formerror formerror|False">
+      tal:define="formerror formerror|False; reedit reedit|False;">
   <tal:block metal:fill-slot="deform-js-css">
     <link rel="stylesheet" type="text/css" media="screen" charset="utf-8"
           href="${request.static_url('deform:static/css/form.css')}" />
@@ -25,7 +25,7 @@
           href="${request.static_url('c3spartyticketing:static/c3sM.css')}" />
   </tal:block>
 
-  <tal:block metal:fill-slot="middle" tal:condition="not formerror">
+  <tal:block metal:fill-slot="middle" tal:condition="not formerror and not reedit">
     <div class="jumbotron">
 
       <h1>
@@ -55,7 +55,7 @@
   <tal:block metal:fill-slot="bottom">
     <div class="row-fluid">
 
-      <div class="row" tal:condition="not formerror">
+      <div class="row" tal:condition="not formerror and not reedit">
 
         <div class="col-md-6">
           <div class="alert alert-success">

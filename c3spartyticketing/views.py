@@ -803,11 +803,11 @@ def check_route(request, view=''):
 
         # reedit: user wants to re-edit her data
         if 'reedit' in request.POST:
-            return HTTPFound(location=request.route_url('party'))
+            return HTTPFound(location=request.route_url('party')+'?reedit')
 
-        # sendmail: user wants email w/ transfer info
-        if 'sendmail' in request.POST:
-            return HTTPFound(location=request.route_url('sendmail'))
+        # order: user confirmed the data
+        if 'confirmed' in request.POST:
+            return HTTPFound(location=request.route_url('success'))
 
     return
 
@@ -827,6 +827,8 @@ def load_user(request):
     ### delete any previous appstruct
     if 'userdata' in request.session:
         request.session['userdata'] = None
+    if 'derivedvalues' in request.session:
+        request.session['derivedvalues'] = None
 
     ### load userdata from dbentry
     _ticket = PartyTicket.get_by_token(_token)
@@ -923,7 +925,8 @@ def party_view(request):
         controls = request.POST.items()
         print controls
 
-        # validate user input
+        ### validation of user input
+
         try:
             print 'about to validate form input'
             appstruct = form.validate(controls)
@@ -948,8 +951,7 @@ def party_view(request):
                 'formerror': True
             }
 
-        # make confirmation code
-        randomstring = make_random_string()
+        ### derived values
 
         # map option to price
         the_values = {
@@ -1016,118 +1018,18 @@ def party_view(request):
         appstruct['ticket']['discount'] = _discount
         print("_discount: %s" % _discount)
 
-        '''
-        now we want to save stuff in the DB, so we need to check
-        if there is a matching entry already.
-        if yes, update that one
-        '''
-        if PartyTicket.has_token(request.session['userdata']['token']):
-            ticket = PartyTicket.get_by_token(
-                request.session['userdata']['token']
-            )
-            # just save those details that changed
-            ticket.date_of_submission = datetime.now()
-            ticket.ticket_gv_attendance = appstruct['ticket']['ticket_gv']
-            ticket.ticket_bc_attendance = (
-                'attendance' in appstruct['ticket']['ticket_bc']
-            )
-            ticket.ticket_bc_buffet = (
-                'buffet' in appstruct['ticket']['ticket_bc']
-            )
-            ticket.ticket_tshirt = appstruct['ticket']['ticket_tshirt']
-            ticket.ticket_tshirt_type = appstruct['tshirt']['tshirt_type']
-            ticket.ticket_tshirt_size = appstruct['tshirt']['tshirt_size']
-            ticket.ticket_all = appstruct['ticket']['ticket_all']
-            ticket.ticket_support = (
-                '1' in appstruct['ticket']['ticket_support']
-            )
-            ticket.ticket_support_x = (
-                '2' in appstruct['ticket']['ticket_support']
-            )
-            ticket.ticket_support_xl = (
-                '3' in appstruct['ticket']['ticket_support']
-            )
-            ticket.support = _support
-            ticket.discount = _discount
-            ticket.the_total = _the_total
-            ticket.rep_firstname = appstruct['representation']['firstname']
-            ticket.rep_lastname = appstruct['representation']['lastname']
-            ticket.rep_email = appstruct['representation']['email']
-            ticket.rep_street = appstruct['representation']['street']
-            ticket.rep_zip = appstruct['representation']['zip']
-            ticket.rep_city = appstruct['representation']['city']
-            ticket.rep_country = appstruct['representation']['country']
-            ticket.rep_type = appstruct['representation']['representation_type']
-            ticket.guestlist = False
-            ticket.user_comment = appstruct['ticket']['comment']
-            DBSession.flush()  # save to DB
-            print('save to db: updated.')
-            #  set the appstruct for further processing
-            appstruct['email_confirm_code'] = ticket.email_confirm_code
-            request.session['mtype'] = ticket.membership_type
-        else:
-            # to store the data in the DB, an object is created
-            ticket = PartyTicket(
-                token=request.session['userdata']['token'],
-                firstname=request.session['userdata']['firstname'],
-                lastname=request.session['userdata']['lastname'],
-                email=request.session['userdata']['email'],
-                password='',  # appstruct['person']['password'],
-                locale=appstruct['ticket']['_LOCALE_'],
-                email_is_confirmed=False,
-                email_confirm_code=randomstring,
-                date_of_submission=datetime.now(),
-                num_tickets=1,
-                ticket_gv_attendance=appstruct['ticket']['ticket_gv'],
-                ticket_bc_attendance=(
-                    'attendance' in appstruct['ticket']['ticket_bc']),
-                ticket_bc_buffet=(
-                    'buffet' in appstruct['ticket']['ticket_bc']),
-                ticket_tshirt=appstruct['ticket']['ticket_tshirt'],
-                ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
-                ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
-                ticket_all=appstruct['ticket']['ticket_all'],
-                ticket_support=('1' in appstruct['ticket']['ticket_support']),
-                ticket_support_x=(
-                    '2' in appstruct['ticket']['ticket_support']),
-                ticket_support_xl=(
-                    '3' in appstruct['ticket']['ticket_support']),
-                support=_support,
-                discount=_discount,
-                the_total=_the_total,
-                rep_firstname=appstruct['representation']['firstname'],
-                rep_lastname=appstruct['representation']['lastname'],
-                rep_street=appstruct['representation']['street'],
-                rep_zip=appstruct['representation']['zip'],
-                rep_city=appstruct['representation']['city'],
-                rep_country=appstruct['representation']['country'],
-                rep_type=appstruct['representation']['representation_type'],
-                guestlist=False,
-                user_comment=appstruct['ticket']['comment'],
-                )
-            ticket.rep_email = appstruct['representation']['email']
-            ticket.membership_type = request.session['userdata']['mtype']
-            #dbsession = DBSession
-            try:
-                DBSession.add(ticket)
-                print('save to db: created.')
-                appstruct['email_confirm_code'] = randomstring  # XXX
-                #                                    check duplicates
-            except InvalidRequestError, e:  # pragma: no cover
-                print("InvalidRequestError! %s") % e
-            except IntegrityError, ie:  # pragma: no cover
-                print("IntegrityError! %s") % ie
-
-        # redirect to success page, then return the PDF
-        # first, store appstruct in session
+        request.session['derivedvalues'] = {
+            'the_total': _the_total,
+            'discount': _discount,
+            'support': _support
+        }
         request.session['appstruct'] = appstruct
-        request.session[
-            'appstruct']['_LOCALE_'] = appstruct['ticket']['_LOCALE_']
-        #
+
         # empty the messages queue (as validation worked anyways)
         deleted_msg = request.session.pop_flash()
-        del deleted_msg
-        return HTTPFound(  # redirect to success page
+        del deleted_msg        
+
+        return HTTPFound(  # redirect to confirm page
             location=request.route_url('confirm'),
         )
 
@@ -1146,7 +1048,8 @@ def party_view(request):
         'form': html,
         'firstname': appstruct['ticket']['firstname'],
         'lastname': appstruct['ticket']['lastname'],
-        'email': appstruct['ticket']['email']
+        'email': appstruct['ticket']['email'],
+        'reedit': ('reedit' in request.GET)
     }
 
 
@@ -1154,7 +1057,7 @@ def party_view(request):
              renderer='templates/confirm.pt')
 def confirm_view(request):
     """
-    the form was submitted correctly. show the result.
+    the form was submitted correctly. show the result for the user to confirm
     """
 
     ### pick route
@@ -1173,9 +1076,8 @@ def confirm_view(request):
     form = deform.Form(
         schema,
         buttons=[
-            deform.Button('sendmail', button_submit_text),
-            deform.Button('reedit',
-                          _(u'Wait, I might have to change...'))
+            deform.Button('confirmed', button_submit_text),
+            deform.Button('reedit', _(u'Wait, I might have to change...'))
         ],
         #use_ajax=True,
         renderer=zpt_renderer
@@ -1186,23 +1088,134 @@ def confirm_view(request):
             appstruct=request.session['appstruct'])}
 
 
-@view_config(route_name='sendmail',
-             renderer='templates/sendmail.pt')
+@view_config(route_name='success',
+             renderer='templates/success.pt')
 def sendmail_view(request):
     """
-    this view sends a mail to the user and tells her to transfer money
+    the user has confirmed the order
+        1. save to db (update, if token exists in db; create otherwise)
+        2. send emails (usermail, accmail)
+        3. show userfeedback
     """
-    if 'appstruct' not in request.session:
-        return HTTPFound(location=request.route_url('party'))
-    appstruct = request.session['appstruct']
+
+    ### pick route
+    route = check_route(request, 'success')
+    if isinstance(route, HTTPRedirection):
+        return route
+
+    ### generate appstruct
+    appstruct = ticket_appstruct(request, 'success')
+    
+    ### save to db
+
+    # make confirmation code
+    randomstring = make_random_string()
+
+    # update, if token exists in db; create otherwise
+    if PartyTicket.has_token(request.session['userdata']['token']):
+        ticket = PartyTicket.get_by_token(
+            request.session['userdata']['token']
+        )
+        # just save those details that changed
+        ticket.date_of_submission = datetime.now()
+        ticket.ticket_gv_attendance = appstruct['ticket']['ticket_gv']
+        ticket.ticket_bc_attendance = (
+            'attendance' in appstruct['ticket']['ticket_bc']
+        )
+        ticket.ticket_bc_buffet = (
+            'buffet' in appstruct['ticket']['ticket_bc']
+        )
+        ticket.ticket_tshirt = appstruct['ticket']['ticket_tshirt']
+        ticket.ticket_tshirt_type = appstruct['tshirt']['tshirt_type']
+        ticket.ticket_tshirt_size = appstruct['tshirt']['tshirt_size']
+        ticket.ticket_all = appstruct['ticket']['ticket_all']
+        ticket.ticket_support = (
+            '1' in appstruct['ticket']['ticket_support']
+        )
+        ticket.ticket_support_x = (
+            '2' in appstruct['ticket']['ticket_support']
+        )
+        ticket.ticket_support_xl = (
+            '3' in appstruct['ticket']['ticket_support']
+        )
+        ticket.support = request.session['derivedvalues']['support']
+        ticket.discount = request.session['derivedvalues']['discount']
+        ticket.the_total = request.session['derivedvalues']['the_total']
+        ticket.rep_firstname = appstruct['representation']['firstname']
+        ticket.rep_lastname = appstruct['representation']['lastname']
+        ticket.rep_email = appstruct['representation']['email']
+        ticket.rep_street = appstruct['representation']['street']
+        ticket.rep_zip = appstruct['representation']['zip']
+        ticket.rep_city = appstruct['representation']['city']
+        ticket.rep_country = appstruct['representation']['country']
+        ticket.rep_type = appstruct['representation']['representation_type']
+        ticket.guestlist = False
+        ticket.user_comment = appstruct['ticket']['comment']
+        DBSession.flush()  # save to DB
+        print('save to db: updated.')
+        #  set the appstruct for further processing
+        appstruct['email_confirm_code'] = ticket.email_confirm_code
+        request.session['mtype'] = ticket.membership_type
+    else:
+        # to store the data in the DB, an object is created
+        ticket = PartyTicket(
+            token=request.session['userdata']['token'],
+            firstname=request.session['userdata']['firstname'],
+            lastname=request.session['userdata']['lastname'],
+            email=request.session['userdata']['email'],
+            password='',  # appstruct['person']['password'],
+            locale=appstruct['ticket']['_LOCALE_'],
+            email_is_confirmed=False,
+            email_confirm_code=randomstring,
+            date_of_submission=datetime.now(),
+            num_tickets=1,
+            ticket_gv_attendance=appstruct['ticket']['ticket_gv'],
+            ticket_bc_attendance=(
+                'attendance' in appstruct['ticket']['ticket_bc']),
+            ticket_bc_buffet=(
+                'buffet' in appstruct['ticket']['ticket_bc']),
+            ticket_tshirt=appstruct['ticket']['ticket_tshirt'],
+            ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
+            ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
+            ticket_all=appstruct['ticket']['ticket_all'],
+            ticket_support=('1' in appstruct['ticket']['ticket_support']),
+            ticket_support_x=(
+                '2' in appstruct['ticket']['ticket_support']),
+            ticket_support_xl=(
+                '3' in appstruct['ticket']['ticket_support']),
+            support=request.session['derivedvalues']['support'],
+            discount=request.session['derivedvalues']['discount'],
+            the_total=request.session['derivedvalues']['the_total'],
+            rep_firstname=appstruct['representation']['firstname'],
+            rep_lastname=appstruct['representation']['lastname'],
+            rep_street=appstruct['representation']['street'],
+            rep_zip=appstruct['representation']['zip'],
+            rep_city=appstruct['representation']['city'],
+            rep_country=appstruct['representation']['country'],
+            rep_type=appstruct['representation']['representation_type'],
+            guestlist=False,
+            user_comment=appstruct['ticket']['comment'],
+            )
+        ticket.rep_email = appstruct['representation']['email']
+        ticket.membership_type = request.session['userdata']['mtype']
+        #dbsession = DBSession
+        try:
+            DBSession.add(ticket)
+            print('save to db: created.')
+            appstruct['email_confirm_code'] = randomstring  # XXX
+            #                                    check duplicates
+        except InvalidRequestError, e:  # pragma: no cover
+            print("InvalidRequestError! %s") % e
+        except IntegrityError, ie:  # pragma: no cover
+            print("IntegrityError! %s") % ie
+
+    ### render emails
 
     # sanity check of local_name; XXX put into subscripber.py
     lang = request.registry.settings['pyramid.default_locale_name']
     langs = request.registry.settings['available_languages'].split()
     if request.locale_name in langs:
         lang = request.locale_name
-
-    ### render emails
 
     #######################################################################
     usermail_gv_transaction_subject = _(

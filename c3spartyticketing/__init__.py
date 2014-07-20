@@ -56,7 +56,7 @@ def main(global_config, **settings):
     config.add_route('party', '/')  # the landing page
     config.add_route('confirm', '/confirm')  # shows entered data f. correction
     config.add_route('success', '/success')  # shows success info
-    config.add_route('sendmail', '/check_email')
+    #config.add_route('sendmail', '/check_email')
     config.add_route('finished', '/finished') # if registration is over
     config.add_route('verify_email_password', '/verify/{email}/{code}')
     config.add_route('success_pdf', '/C3S_Ticket_{namepart}.pdf')
