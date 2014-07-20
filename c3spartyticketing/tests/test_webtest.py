@@ -464,7 +464,7 @@ class FunctionalTests(unittest.TestCase):
         res1 = res.follow()
         self.failUnless(
             'The resource was found at https://yes.c3s.cc' in res1.body)
-        res = self.testapp.get('/check_email', status=302)
+        res = self.testapp.get('/success', status=302)
         self.failUnless('The resource was found at' in res.body)
         res1 = res.follow()
         self.failUnless(
@@ -1220,15 +1220,16 @@ class FunctionalTests(unittest.TestCase):
     #     #print(res.body)
     #     self.failUnless("Please enter your password." in res.body)
 
-    def test_success_check_email(self):
-        """
-        test "check email" success page with wrong data:
-        this should redirect to the form.
-        """
-        res = self.testapp.reset()
-        res = self.testapp.get('/check_email', status=302)
+    # -> in test 'test_load_user_is_only_entry_point' abgedeckt
+    # def test_success(self):
+    #     """
+    #     test "success" page with wrong data:
+    #     this should redirect to the form.
+    #     """
+    #     res = self.testapp.reset()
+    #     res = self.testapp.get('/success', status=302)
 
-        res2 = res.follow()
-        #print res2.body
-        self.failUnless(  # be redirected to the membership app
-            "The resource was found at https://yes.c3s.cc" in res2.body)
+    #     res2 = res.follow()
+    #     #print res2.body
+    #     self.failUnless(  # be redirected to the membership app
+    #         "The resource was found at https://yes.c3s.cc" in res2.body)
