@@ -214,6 +214,7 @@ class PartyTicket(Base):
     rep_city = Column(Text, default='')
     rep_country = Column(Text, default='')
     rep_type = Column(Integer)
+    rep_email = Column(Text, default='')
     # guestlist
     guestlist = Column(Boolean, default=False)
     # meta
