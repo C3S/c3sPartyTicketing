@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-07-20 11:10+00:00\n"
+"POT-Creation-Date: 2014-07-20 12:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,26 +15,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 
-#: ./c3spartyticketing/views.py:1189 ./c3spartyticketing/views.py:1203
+#: ./c3spartyticketing/views.py:1153
+#, c-format
+msgid "Submit & Buy"
+msgstr ""
+
+#: ./c3spartyticketing/views.py:1191 ./c3spartyticketing/views.py:1205
 #, c-format
 msgid "C3S Barcamp 2014: your order"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1215
+#: ./c3spartyticketing/views.py:1217
 #, c-format
 msgid ""
 "C3S BarCamp & General Assembly: your BarCamp ticket / your cancellation of "
 "general assembly"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1230
+#: ./c3spartyticketing/views.py:1232
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation / your order"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1244
+#: ./c3spartyticketing/views.py:1246
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation"
+msgstr ""
+
+#: ./c3spartyticketing/views.py:1155 ./c3spartyticketing/views.py:895
+#: ./c3spartyticketing/accountants_views.py:904
+#, c-format
+msgid "Submit"
 msgstr ""
 
 #: ./c3spartyticketing/views.py:130
@@ -334,12 +345,6 @@ msgid ""
 "to you shortly by e-mail."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:895
-#: ./c3spartyticketing/accountants_views.py:904
-#, c-format
-msgid "Submit"
-msgstr ""
-
 #: ./c3spartyticketing/views.py:925
 #: ./c3spartyticketing/accountants_views.py:127
 #: ./c3spartyticketing/accountants_views.py:925
@@ -348,12 +353,7 @@ msgstr ""
 msgid "Please note: There were errors, please check the form below."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1157
-#, c-format
-msgid "Submit & Buy"
-msgstr ""
-
-#: ./c3spartyticketing/views.py:1159
+#: ./c3spartyticketing/views.py:1161
 #, c-format
 msgid "Wait, I might have to change..."
 msgstr ""
@@ -673,8 +673,9 @@ msgstr ""
 
 #: ./c3spartyticketing/templates/confirm.pt:38
 msgid ""
-"We will send you an e-mail with more information. You have to pay your order "
-"(and your ticket) before leaving for Cologne/Düsseldorf!"
+"We will send you an e-mail with more information. Please check also your spam"
+" folder for our mail! You have to pay your order (and your ticket) before "
+"leaving for Cologne/Düsseldorf!"
 msgstr ""
 
 #: ./c3spartyticketing/templates/party.pt:47

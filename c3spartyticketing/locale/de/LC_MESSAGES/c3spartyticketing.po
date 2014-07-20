@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-20 11:10+00:00\n"
-"PO-Revision-Date: 2014-07-20 13:09+0100\n"
+"POT-Creation-Date: 2014-07-20 12:13+00:00\n"
+"PO-Revision-Date: 2014-07-20 14:13+0100\n"
 "Last-Translator: Alexander Blum <alexander.blum@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -19,12 +19,17 @@ msgstr ""
 "Generated-By: Babel 1.3\n"
 "X-Generator: Poedit 1.6.5\n"
 
-#: c3spartyticketing/views.py:1189 c3spartyticketing/views.py:1203
+#: c3spartyticketing/views.py:1153
+#, c-format
+msgid "Submit & Buy"
+msgstr "Absenden & Kaufen"
+
+#: c3spartyticketing/views.py:1191 c3spartyticketing/views.py:1205
 #, c-format
 msgid "C3S Barcamp 2014: your order"
 msgstr "C3S Barcamp 2014: Deine Bestellung"
 
-#: c3spartyticketing/views.py:1215
+#: c3spartyticketing/views.py:1217
 #, c-format
 msgid ""
 "C3S BarCamp & General Assembly: your BarCamp ticket / your cancellation of "
@@ -33,15 +38,21 @@ msgstr ""
 "C3S Barcamp & Generalversammlung: Dein Barcamp-Ticket / Deine Absage der "
 "Generalversammlung"
 
-#: c3spartyticketing/views.py:1230
+#: c3spartyticketing/views.py:1232
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation / your order"
 msgstr "C3S Barcamp & Generalversammlung: Deine Absage / Deine Bestellung"
 
-#: c3spartyticketing/views.py:1244
+#: c3spartyticketing/views.py:1246
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation"
 msgstr "C3S Barcamp & Generalversammlung: Deine Absage"
+
+#: c3spartyticketing/views.py:1155 c3spartyticketing/views.py:895
+#: c3spartyticketing/accountants_views.py:904
+#, c-format
+msgid "Submit"
+msgstr "Absenden"
 
 #: c3spartyticketing/views.py:130
 #, c-format
@@ -359,11 +370,6 @@ msgstr ""
 "Bestellung stornieren. Die Zahlung erfolgt ausschließlich per "
 "Banküberweisung. Die Zahlungsinformationen werden dir per Email zugeschickt."
 
-#: c3spartyticketing/views.py:895 c3spartyticketing/accountants_views.py:904
-#, c-format
-msgid "Submit"
-msgstr "Absenden"
-
 #: c3spartyticketing/views.py:925 c3spartyticketing/accountants_views.py:127
 #: c3spartyticketing/accountants_views.py:925
 #: c3spartyticketing/cashiers_views.py:348
@@ -373,12 +379,7 @@ msgstr ""
 "Bitte beachten: Die Angaben im folgenden Formular sind fehlerhaft, bitte "
 "überpfüfen."
 
-#: c3spartyticketing/views.py:1157
-#, c-format
-msgid "Submit & Buy"
-msgstr "Absenden & Kaufen"
-
-#: c3spartyticketing/views.py:1159
+#: c3spartyticketing/views.py:1161
 #, c-format
 msgid "Wait, I might have to change..."
 msgstr "Warte, ich will nochmal ändern..."
@@ -712,11 +713,13 @@ msgstr "Wie geht's weiter?"
 
 #: c3spartyticketing/templates/confirm.pt:38
 msgid ""
-"We will send you an e-mail with more information. You have to pay your order "
-"(and your ticket) before leaving for Cologne/Düsseldorf!"
+"We will send you an e-mail with more information. Please check also your "
+"spam folder for our mail! You have to pay your order (and your ticket) "
+"before leaving for Cologne/Düsseldorf!"
 msgstr ""
-"Wir schicken Dir eine Email mit mehr Informationen. Du musst die Bestellung "
-"(und Dein Ticket) vor Antritt Deiner Reise bezahlen!"
+"Wir schicken Dir eine Email mit mehr Informationen. Bitte schau auch im Spam-"
+"Ordner nach unserer Mail! Du musst die Bestellung (und Dein Ticket) vor "
+"Antritt Deiner Reise bezahlen!"
 
 #: c3spartyticketing/templates/party.pt:47
 msgid "get your ticket for the"
