@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2014-07-19 06:40+00:00\n"
-"PO-Revision-Date: 2014-07-19 15:24+0100\n"
+"PO-Revision-Date: 2014-07-20 11:53+0100\n"
 "Last-Translator: Alexander Blum <alexander.blum@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -299,7 +299,7 @@ msgstr "Straße"
 #: c3spartyticketing/views.py:406
 #, c-format
 msgid "Postal Code"
-msgstr "Straße"
+msgstr "PLZ"
 
 #: c3spartyticketing/views.py:415
 #, c-format
