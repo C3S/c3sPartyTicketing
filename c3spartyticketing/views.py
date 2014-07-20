@@ -1017,9 +1017,6 @@ def party_view(request):
         _the_total = 0
         _discount = 0
         _support = 0
-        for support in appstruct['ticket']['ticket_support']:
-            _the_total += the_support.get(int(support))
-            _support += the_support.get(int(support))
         if appstruct['ticket']['ticket_all']:
             print("all active")
             _discount = the_discounts.get('ticket_all')
@@ -1031,6 +1028,9 @@ def party_view(request):
                 _the_total += the_values.get('ticket_bc_buffet')
             if appstruct['ticket']['ticket_tshirt']:
                 _the_total += the_values.get('ticket_tshirt')
+        for support in appstruct['ticket']['ticket_support']:
+            _the_total += the_support.get(int(support))
+            _support += the_support.get(int(support))
 
         appstruct['ticket']['the_total'] = _the_total
         print("_the_total: %s" % _the_total)
