@@ -810,9 +810,8 @@ def check_route(request, view=''):
         if 'confirmed' in request.POST:
             return HTTPFound(location=request.route_url('success'))
 
-        if not 'appstuct' in request.session:
+        if not 'appstruct' in request.session:
             return HTTPFound(location=request.route_url('party'))
-
 
     # success view:
     if view is 'success':
