@@ -700,7 +700,7 @@ def ticket_appstruct(request, view=''):
             'lastname': _ticket.lastname,
             'token': _ticket.token,
             'email': _ticket.email,
-            '_LOCALE_': ticket.locale
+            '_LOCALE_': _ticket.locale
         },
         'representation': {
             'firstname': _ticket.rep_firstname,
