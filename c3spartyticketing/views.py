@@ -640,7 +640,7 @@ def ticket_appstruct(request, view=''):
     '''
         Ensures the consistent creation of a valid ticket appstruct.
         Tries creation in the following order:
-        1. Use from possibly edited session (reedit, refresh).
+        1. Use from possibly edited session (reedit, refresh)
         2. If id not given, create new from userdata
         3. If id given, create from dbenty
         4. Redirect to access denied url
@@ -650,7 +650,7 @@ def ticket_appstruct(request, view=''):
     userdata = request.session['userdata']
     assert(userdata)
     print "userdata: {}".format(userdata)
-
+    
     if 'appstruct' in request.session:
         # Use from possibly edited session (reedit, refresh).
         print('using session:')
@@ -739,11 +739,11 @@ def check_route(request, view=''):
                 entrance door. if userdata is not set,
                 redirect to access denied url
 
-            2.  dbentry check:
+            3.  dbentry check:
                 if finish_on_submit is active and user has already submitted,
                 redirect to finished view
 
-            3.  date check:
+            4.  date check:
                 if registration period is over,
                 redirect to finished view
 
@@ -823,6 +823,10 @@ def load_user(request):
 
     _token = request.matchdict['token']
     _email = request.matchdict['email']
+
+    ### delete any previous appstruct
+    if 'userdata' in request.session:
+        request.session['userdata'] = None
 
     ### load userdata from dbentry
     _ticket = PartyTicket.get_by_token(_token)
