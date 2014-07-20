@@ -1150,11 +1150,13 @@ def confirm_view(request):
 
     ### generate form
     schema = ticket_schema(request, request.session['appstruct'], readonly=True)
+    button_submit_text = _(u'Submit & Buy')
+    if appstruct['ticket']['the_total'] == 0:
+        button_submit_text = _(u'Submit')
     form = deform.Form(
         schema,
         buttons=[
-            deform.Button('sendmail',
-                          _(u'Submit & Buy')),
+            deform.Button('sendmail', button_submit_text),
             deform.Button('reedit',
                           _(u'Wait, I might have to change...'))
         ],
