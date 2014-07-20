@@ -28,16 +28,16 @@
   <tal:block metal:fill-slot="middle" tal:condition="not formerror">
     <div class="jumbotron">
 
-      <h2>
+      <h1>
         <small i18n:translate="">Hello</small> 
         <span tal:content="firstname" /> <span tal:content="lastname" /> 
         <small>&lt;${email}&gt;,</small>
-      </h2>
+      </h1>
 
-      <h2>
+      <h1>
         <small i18n:translate="">get your ticket for the</small> 
         <span i18n:translate="">C3S BarCamp and General Assembly!</span>
-      </h2>
+      </h1>
       <div style="font-size:12px; margin-top:40px; color:#999;">
         <strong i18n:translate="">Notice</strong>: <span i18n:translate="">In case you are not</span> ${firstname} ${lastname} 
         <span i18n:translate="">please email us at</span>
