@@ -11,6 +11,7 @@ MEMBER:
 
 REPRESENTATION: ${gv_representation}
   name: ${rep_firstname} ${rep_lastname}
+  email: ${rep_email}
   street: ${rep_street}
   zip: ${rep_zip}
   city: ${rep_city}

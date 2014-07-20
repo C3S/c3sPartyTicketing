@@ -75,54 +75,54 @@ def ticket_schema(request, appstruct, readonly=False):
         # XXX: herausfinden, wie man per klassenvalidator colander.Invalid
         #      ansprechen muss, damit deform den error am richtigen ort
         #      platziert und die richtigen klassen vergibt
-        exc = colander.Invalid(form)
+        # node.raise_invalid()?
+        # add exc as child?
+        #form.raise_invalid('test', form.get('tshirt').get('tshirt_size'))
         if value['ticket']['ticket_tshirt']:
             if not value['tshirt']['tshirt_type']:
-                exc['tshirt'] = _(
-                    u'Gender selection for T-shirt is mandatory.'
+                raise colander.Invalid(form,
+                    _(u'Gender selection for T-shirt is mandatory.')
                 )
-                raise exc
             if not value['tshirt']['tshirt_size']:
-                exc['tshirt'] = _(
-                    u'Size of T-shirt ist mandatory.'
+                raise colander.Invalid(form,
+                    _(u'Size of T-shirt ist mandatory.')
                 )
-                raise exc
         if value['ticket']['ticket_gv'] == 2:
             if not value['representation']['firstname']:
-                exc['representation'] = _(
-                    u'First name of representative is mandatory.'
+                raise colander.Invalid(form,
+                    _(u'First name of representative is mandatory.')
                 )
-                raise exc
             if not value['representation']['lastname']:
-                exc['representation'] = _(
-                    u'Last name of representative is mandatory.'
+                raise colander.Invalid(form,
+                    _(u'Last name of representative is mandatory.')
                 )
-                raise exc
+            validate_email = colander.Email(
+                _(u'Email of representative is invalid.')
+            )
+            validate_email(
+                form.get('representation').get('email'),
+                value['representation']['email']
+            )
             if not value['representation']['street']:
-                exc['representation'] = _(
-                    u'Address of representative is mandatory.'
+                raise colander.Invalid(form,
+                    _(u'Address of representative is mandatory.')
                 )
-                raise exc
             if not value['representation']['zip']:
-                exc['representation'] = _(
-                    u'Postal code of representative is mandatory.'
+                raise colander.Invalid(form,
+                    _(u'Postal code of representative is mandatory.')
                 )
-                raise exc
             if not value['representation']['city']:
-                exc['representation'] = _(
-                    u'City of representative is mandatory.'
+                raise colander.Invalid(form,
+                    _(u'City of representative is mandatory.')
                 )
-                raise exc
             if not value['representation']['country']:
-                exc['representation'] = _(
-                    u'Country of representative is mandatory.'
+                raise colander.Invalid(form,
+                    _(u'Country of representative is mandatory.')
                 )
-                raise exc
             if not value['representation']['representation_type']:
-                exc['representation'] = _(
-                    u'Relation of representative is mandatory.'
+                raise colander.Invalid(form,
+                    _(u'Relation of representative is mandatory.')
                 )
-                raise exc
 
     ### options
 
@@ -390,6 +390,15 @@ def ticket_schema(request, appstruct, readonly=False):
             ),
             missing='',
             oid="rep-lastname",
+        )
+        email = colander.SchemaNode(
+            colander.String(),
+            title=_(u"E-mail"),
+            widget=deform.widget.TextInputWidget(
+                readonly=readonly
+            ),
+            missing='',
+            oid="rep-email",
         )
         street = colander.SchemaNode(
             colander.String(),
@@ -695,6 +704,7 @@ def ticket_appstruct(request, view=''):
         'representation': {
             'firstname': _ticket.rep_firstname,
             'lastname': _ticket.rep_lastname,
+            'email': _ticket.rep_email,
             'street': _ticket.rep_street,
             'zip': _ticket.rep_zip,
             'city': _ticket.rep_city,
@@ -1038,6 +1048,7 @@ def party_view(request):
             ticket.the_total = _the_total
             ticket.rep_firstname = appstruct['representation']['firstname']
             ticket.rep_lastname = appstruct['representation']['lastname']
+            ticket.rep_email = appstruct['representation']['email']
             ticket.rep_street = appstruct['representation']['street']
             ticket.rep_zip = appstruct['representation']['zip']
             ticket.rep_city = appstruct['representation']['city']
@@ -1090,6 +1101,7 @@ def party_view(request):
                 guestlist=False,
                 user_comment=appstruct['ticket']['comment'],
                 )
+            ticket.rep_email = appstruct['representation']['email']
             ticket.membership_type = request.session['userdata']['mtype']
             #dbsession = DBSession
             try:
@@ -1274,6 +1286,7 @@ def sendmail_view(request):
             'gv_representation': (appstruct['ticket']['ticket_gv'] == 2),
             'rep_firstname': appstruct['representation']['firstname'],
             'rep_lastname': appstruct['representation']['lastname'],
+            'rep_email': appstruct['representation']['email'],
             'rep_street': appstruct['representation']['street'],
             'rep_zip': appstruct['representation']['zip'],
             'rep_city': appstruct['representation']['city'],

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-07-20 12:52+00:00\n"
-"PO-Revision-Date: 2014-07-20 14:56+0100\n"
+"POT-Creation-Date: 2014-07-20 15:07+00:00\n"
+"PO-Revision-Date: 2014-07-20 17:09+0100\n"
 "Last-Translator: Alexander Blum <alexander.blum@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -19,17 +19,17 @@ msgstr ""
 "Generated-By: Babel 1.3\n"
 "X-Generator: Poedit 1.6.5\n"
 
-#: c3spartyticketing/views.py:1154
+#: c3spartyticketing/views.py:1165
 #, c-format
 msgid "Submit & Buy"
 msgstr "Absenden & Kaufen"
 
-#: c3spartyticketing/views.py:1192 c3spartyticketing/views.py:1206
+#: c3spartyticketing/views.py:1203 c3spartyticketing/views.py:1217
 #, c-format
 msgid "C3S Barcamp 2014: your order"
 msgstr "C3S Barcamp 2014: Deine Bestellung"
 
-#: c3spartyticketing/views.py:1218
+#: c3spartyticketing/views.py:1229
 #, c-format
 msgid ""
 "C3S BarCamp & General Assembly: your BarCamp ticket / your cancellation of "
@@ -38,17 +38,17 @@ msgstr ""
 "C3S Barcamp & Generalversammlung: Dein Barcamp-Ticket / Deine Absage der "
 "Generalversammlung"
 
-#: c3spartyticketing/views.py:1233
+#: c3spartyticketing/views.py:1244
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation / your order"
 msgstr "C3S Barcamp & Generalversammlung: Deine Absage / Deine Bestellung"
 
-#: c3spartyticketing/views.py:1247
+#: c3spartyticketing/views.py:1258
 #, c-format
 msgid "C3S BarCamp & General Assembly: your cancellation"
 msgstr "C3S Barcamp & Generalversammlung: Deine Absage"
 
-#: c3spartyticketing/views.py:1156 c3spartyticketing/views.py:895
+#: c3spartyticketing/views.py:1167 c3spartyticketing/views.py:905
 #: c3spartyticketing/accountants_views.py:904
 #, c-format
 msgid "Submit"
@@ -168,50 +168,10 @@ msgstr "XXXL"
 msgid "All-Inclusive Discount (-€2,50)"
 msgstr "All-Inclusive-Paket Rabatt (-€2,50)"
 
-#: c3spartyticketing/views.py:81
+#: c3spartyticketing/views.py:100
 #, c-format
-msgid "Gender selection for T-shirt is mandatory."
-msgstr "Der Schnitt des T-Shirts muss angegeben werden."
-
-#: c3spartyticketing/views.py:86
-#, c-format
-msgid "Size of T-shirt ist mandatory."
-msgstr "Die Größe des T-Shirts muss angegeben werden."
-
-#: c3spartyticketing/views.py:92
-#, c-format
-msgid "First name of representative is mandatory."
-msgstr "Der Vorname des/r Bevollmächtigten muss angegeben werden."
-
-#: c3spartyticketing/views.py:97
-#, c-format
-msgid "Last name of representative is mandatory."
-msgstr "Der Nachname des/r Bevollmächtigten muss angegeben werden."
-
-#: c3spartyticketing/views.py:102
-#, c-format
-msgid "Address of representative is mandatory."
-msgstr "Die Straße des/r Bevollmächtigten muss angegeben werden."
-
-#: c3spartyticketing/views.py:107
-#, c-format
-msgid "Postal code of representative is mandatory."
-msgstr "Die PLZ des/r Bevollmächtigten muss angegeben werden."
-
-#: c3spartyticketing/views.py:112
-#, c-format
-msgid "City of representative is mandatory."
-msgstr "Die Stadt des/r Bevollmächtigten muss angegeben werden."
-
-#: c3spartyticketing/views.py:117
-#, c-format
-msgid "Country of representative is mandatory."
-msgstr "Das Land des/r Bevollmächtigten muss angegeben werden."
-
-#: c3spartyticketing/views.py:122
-#, c-format
-msgid "Relation of representative is mandatory."
-msgstr "Die Beziehung zu dem/r Bevollmächtigten muss angegeben werden."
+msgid "Email of representative is invalid."
+msgstr "Die Email des/r Bevollmächtigten ist ungültig."
 
 #: c3spartyticketing/views.py:178
 #, c-format
@@ -304,53 +264,103 @@ msgstr "Nachname"
 
 #: c3spartyticketing/views.py:396
 #, c-format
+msgid "E-mail"
+msgstr "Email"
+
+#: c3spartyticketing/views.py:405
+#, c-format
 msgid "Address"
 msgstr "Straße"
 
-#: c3spartyticketing/views.py:405
+#: c3spartyticketing/views.py:414
 #, c-format
 msgid "Postal Code"
 msgstr "PLZ"
 
-#: c3spartyticketing/views.py:414
+#: c3spartyticketing/views.py:423
 #, c-format
 msgid "City"
 msgstr "Stadt"
 
-#: c3spartyticketing/views.py:423
+#: c3spartyticketing/views.py:432
 #, c-format
 msgid "Country"
 msgstr "Land"
 
-#: c3spartyticketing/views.py:432
+#: c3spartyticketing/views.py:441
 #, c-format
 msgid "My representative is..."
 msgstr "Mein(e) Bevollmächtigte(r) ist:"
 
-#: c3spartyticketing/views.py:519
+#: c3spartyticketing/views.py:528
 #, c-format
 msgid "Gender:"
 msgstr "Schnitt:"
 
-#: c3spartyticketing/views.py:530
+#: c3spartyticketing/views.py:539
 #, c-format
 msgid "Size:"
 msgstr "Größe:"
 
-#: c3spartyticketing/views.py:551
+#: c3spartyticketing/views.py:560
 #, c-format
 msgid "Ticket Information"
 msgstr "Ticketinformationen"
 
-#: c3spartyticketing/views.py:555
+#: c3spartyticketing/views.py:564
 #, c-format
 msgid "Representative"
 msgstr "Bevollmächtigte(r)"
 
-#: c3spartyticketing/views.py:561
+#: c3spartyticketing/views.py:570
 #, c-format
 msgid "T-Shirt"
 msgstr "T-Shirt"
+
+#: c3spartyticketing/views.py:84
+#, c-format
+msgid "Gender selection for T-shirt is mandatory."
+msgstr "Der Schnitt des T-Shirts muss angegeben werden."
+
+#: c3spartyticketing/views.py:88
+#, c-format
+msgid "Size of T-shirt ist mandatory."
+msgstr "Die Größe des T-Shirts muss angegeben werden."
+
+#: c3spartyticketing/views.py:93
+#, c-format
+msgid "First name of representative is mandatory."
+msgstr "Der Vorname des/r Bevollmächtigten muss angegeben werden."
+
+#: c3spartyticketing/views.py:97
+#, c-format
+msgid "Last name of representative is mandatory."
+msgstr "Der Nachname des/r Bevollmächtigten muss angegeben werden."
+
+#: c3spartyticketing/views.py:108
+#, c-format
+msgid "Address of representative is mandatory."
+msgstr "Die Straße des/r Bevollmächtigten muss angegeben werden."
+
+#: c3spartyticketing/views.py:112
+#, c-format
+msgid "Postal code of representative is mandatory."
+msgstr "Die PLZ des/r Bevollmächtigten muss angegeben werden."
+
+#: c3spartyticketing/views.py:116
+#, c-format
+msgid "City of representative is mandatory."
+msgstr "Die Stadt des/r Bevollmächtigten muss angegeben werden."
+
+#: c3spartyticketing/views.py:120
+#, c-format
+msgid "Country of representative is mandatory."
+msgstr "Das Land des/r Bevollmächtigten muss angegeben werden."
+
+#: c3spartyticketing/views.py:124
+#, c-format
+msgid "Relation of representative is mandatory."
+msgstr "Die Beziehung zu dem/r Bevollmächtigten muss angegeben werden."
 
 #: c3spartyticketing/views.py:277
 #, c-format
@@ -370,7 +380,7 @@ msgstr ""
 "Bestellung stornieren. Die Zahlung erfolgt ausschließlich per "
 "Banküberweisung. Die Zahlungsinformationen werden dir per Email zugeschickt."
 
-#: c3spartyticketing/views.py:925 c3spartyticketing/accountants_views.py:127
+#: c3spartyticketing/views.py:935 c3spartyticketing/accountants_views.py:127
 #: c3spartyticketing/accountants_views.py:925
 #: c3spartyticketing/cashiers_views.py:348
 #, c-format
@@ -379,7 +389,7 @@ msgstr ""
 "Bitte beachten: Die Angaben im folgenden Formular sind fehlerhaft, bitte "
 "überpfüfen."
 
-#: c3spartyticketing/views.py:1162
+#: c3spartyticketing/views.py:1173
 #, c-format
 msgid "Wait, I might have to change..."
 msgstr "Warte, ich will nochmal ändern..."
