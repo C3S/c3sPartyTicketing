@@ -699,7 +699,8 @@ def ticket_appstruct(request, view=''):
             'firstname': _ticket.firstname,
             'lastname': _ticket.lastname,
             'token': _ticket.token,
-            'email': _ticket.email
+            'email': _ticket.email,
+            '_LOCALE_': ticket.locale
         },
         'representation': {
             'firstname': _ticket.rep_firstname,
@@ -809,6 +810,21 @@ def check_route(request, view=''):
         if 'confirmed' in request.POST:
             return HTTPFound(location=request.route_url('success'))
 
+        if not 'appstuct' in request.session:
+            return HTTPFound(location=request.route_url('party'))
+
+
+    # success view:
+    if view is 'success':
+
+        # confirmed: test flag
+        if 'flags' not in request.session \
+            or 'confirmed' not in request.session['flags']:
+            return HTTPFound(location=request.route_url('party'))
+
+        if not 'appstuct' in request.session:
+            return HTTPFound(location=request.route_url('party'))
+
     return
 
 
@@ -827,8 +843,12 @@ def load_user(request):
     ### delete any previous appstruct
     if 'userdata' in request.session:
         request.session['userdata'] = None
+    # XXX think about a nicer abstract way to save derived values (->form 
+    # object) and flags, which control the flow
     if 'derivedvalues' in request.session:
         request.session['derivedvalues'] = None
+    if 'flags' in request.session:
+        request.session['flags'] = None
 
     ### load userdata from dbentry
     _ticket = PartyTicket.get_by_token(_token)
@@ -1027,7 +1047,12 @@ def party_view(request):
 
         # empty the messages queue (as validation worked anyways)
         deleted_msg = request.session.pop_flash()
-        del deleted_msg        
+        del deleted_msg
+
+        # set flag to ensure, user is coming from confirmed view (validation)
+        request.session['flags'] = {
+            'confirmed': True
+        }
 
         return HTTPFound(  # redirect to confirm page
             location=request.route_url('confirm'),
@@ -1384,38 +1409,8 @@ def sendmail_view(request):
              renderer='templates/finished.pt')
 def finished_view(request):
     """
-    show the ticket readonly.
-    """
-
-    ### pick route
-    route = check_route(request, 'finished')
-    if isinstance(route, HTTPRedirection):
-        return route
-
-    ### generate appstruct
-    appstruct = ticket_appstruct(request, 'finished')
-
-    ### generate form
-    schema = ticket_schema(request, appstruct, readonly=True)
-    form = deform.Form(
-        schema,
-        buttons=[],
-        #use_ajax=True,
-        renderer=zpt_renderer
-    )
-
-    return {
-        'readonlyform': form.render(
-            appstruct=appstruct
-        )
-    }
-
-
-@view_config(route_name='finished',
-             renderer='templates/finished.pt')
-def finished_view(request):
-    """
-    registration deadline is over.
+    show the ticket readonly, e.g. if user has already submitted and 
+    finish_on_submit is on
     """
 
     ### pick route
@@ -1441,8 +1436,6 @@ def finished_view(request):
         ),
         'token': request.session['userdata']['email_confirm_code']
     }
-
-    
 
 
 @view_config(route_name='get_ticket')
