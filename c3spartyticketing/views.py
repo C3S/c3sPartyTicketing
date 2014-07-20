@@ -930,7 +930,8 @@ def party_view(request):
                 'form': e.render(),
                 'firstname': appstruct['ticket']['firstname'],
                 'lastname': appstruct['ticket']['lastname'],
-                'email': appstruct['ticket']['email']
+                'email': appstruct['ticket']['email'],
+                'formerror': True
             }
 
         # make confirmation code
