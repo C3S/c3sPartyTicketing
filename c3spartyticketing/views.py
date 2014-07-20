@@ -1325,14 +1325,14 @@ def sendmail_view(request):
             'lastname': appstruct['ticket']['lastname'],
             'email': appstruct['ticket']['email'],
             'email_confirm_code': appstruct['email_confirm_code'],
-            'gv_attendance': (appstruct['ticket']['ticket_gv'] == 1),
+            'gv_attendance': (appstruct['ticket']['ticket_gv'] == 1 or 'False'),
             'bc_attendance': (
-                'attendance' in appstruct['ticket']['ticket_bc']),
-            'bc_buffet': ('buffet' in appstruct['ticket']['ticket_bc']),
+                'attendance' in appstruct['ticket']['ticket_bc'] or 'False'),
+            'bc_buffet': ('buffet' in appstruct['ticket']['ticket_bc']  or 'False'),
             'discount': appstruct['ticket']['discount'],
             'the_total': appstruct['ticket']['the_total'],
             'comment': appstruct['ticket']['comment'],
-            'gv_representation': (appstruct['ticket']['ticket_gv'] == 2),
+            'gv_representation': (appstruct['ticket']['ticket_gv'] == 2  or 'False'),
             'rep_firstname': appstruct['representation']['firstname'],
             'rep_lastname': appstruct['representation']['lastname'],
             'rep_email': appstruct['representation']['email'],
@@ -1344,9 +1344,9 @@ def sendmail_view(request):
             'tshirt': appstruct['ticket']['ticket_tshirt'],
             'tshirt_type': appstruct['tshirt']['tshirt_type'],
             'tshirt_size': appstruct['tshirt']['tshirt_size'],
-            'supporter': ('1' in appstruct['ticket']['ticket_support']),
-            'supporter_x': ('2' in appstruct['ticket']['ticket_support']),
-            'supporter_xl': ('3' in appstruct['ticket']['ticket_support'])
+            'supporter': ('1' in appstruct['ticket']['ticket_support'] or 'False'),
+            'supporter_x': ('2' in appstruct['ticket']['ticket_support'] or 'False'),
+            'supporter_xl': ('3' in appstruct['ticket']['ticket_support'] or 'False')
         }
     )
 
