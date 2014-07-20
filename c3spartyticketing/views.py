@@ -802,17 +802,25 @@ def check_route(request, view=''):
     # confirm view:
     if view is 'confirm':
 
+        if not 'appstruct' in request.session:
+            return HTTPFound(location=request.route_url('party'))
+
         # reedit: user wants to re-edit her data
         if 'reedit' in request.POST:
             return HTTPFound(location=request.route_url('party')+'?reedit')
 
+        # order: user wants to confirm the data
+        if 'confirm' in request.POST:
+            return
+
         # order: user confirmed the data
         if 'confirmed' in request.POST:
+            request.session['flags'] = {
+                'confirmed': True
+            }
             return HTTPFound(location=request.route_url('success'))
 
-        if not 'appstruct' in request.session:
-            return HTTPFound(location=request.route_url('party'))
-
+        
     # success view:
     if view is 'success':
 
@@ -821,7 +829,7 @@ def check_route(request, view=''):
             or 'confirmed' not in request.session['flags']:
             return HTTPFound(location=request.route_url('party'))
 
-        if not 'appstuct' in request.session:
+        if not 'appstruct' in request.session:
             return HTTPFound(location=request.route_url('party'))
 
     return
@@ -1050,7 +1058,7 @@ def party_view(request):
 
         # set flag to ensure, user is coming from confirmed view (validation)
         request.session['flags'] = {
-            'confirmed': True
+            'confirm': True
         }
 
         return HTTPFound(  # redirect to confirm page
