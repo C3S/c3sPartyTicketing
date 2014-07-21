@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2014-07-20 21:28+00:00\n"
+"POT-Creation-Date: 2014-07-21 10:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,39 +15,39 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 
-#: ./c3spartyticketing/views.py:1073
+#: ./c3spartyticketing/views.py:1105
 #, c-format
 msgid "Submit & Buy"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1221
+#: ./c3spartyticketing/views.py:1253
 #, c-format
 msgid "C3S General Assembly & Barcamp 2014: your participation & order"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1235
+#: ./c3spartyticketing/views.py:1267
 #, c-format
 msgid "C3S General Assembly & Barcamp 2014: your participation"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1247
+#: ./c3spartyticketing/views.py:1279
 #, c-format
 msgid ""
 "C3S General Assembly & Barcamp 2014: your BarCamp ticket / your cancellation "
 "of the general assembly"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1262
+#: ./c3spartyticketing/views.py:1294
 #, c-format
 msgid "C3S General Assembly & Barcamp 2014: your cancellation / your order"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1276
+#: ./c3spartyticketing/views.py:1308
 #, c-format
 msgid "C3S General Assembly & Barcamp 2014: your cancellation"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1075 ./c3spartyticketing/views.py:911
+#: ./c3spartyticketing/views.py:1107 ./c3spartyticketing/views.py:938
 #: ./c3spartyticketing/accountants_views.py:904
 #, c-format
 msgid "Submit"
@@ -87,12 +87,12 @@ msgstr ""
 
 #: ./c3spartyticketing/views.py:145
 #, c-format
-msgid "Supporter Ticket X (€10)"
+msgid "Supporter Ticket XL (€10)"
 msgstr ""
 
 #: ./c3spartyticketing/views.py:146
 #, c-format
-msgid "Supporter Ticket XL (€100)"
+msgid "Supporter Ticket XXL (€100)"
 msgstr ""
 
 #: ./c3spartyticketing/views.py:150
@@ -360,7 +360,7 @@ msgid ""
 "to you shortly by e-mail."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:942
+#: ./c3spartyticketing/views.py:969
 #: ./c3spartyticketing/accountants_views.py:127
 #: ./c3spartyticketing/accountants_views.py:925
 #: ./c3spartyticketing/cashiers_views.py:348
@@ -368,7 +368,7 @@ msgstr ""
 msgid "Please note: There were errors, please check the form below."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1080
+#: ./c3spartyticketing/views.py:1112
 #, c-format
 msgid "Wait, I might have to change..."
 msgstr ""

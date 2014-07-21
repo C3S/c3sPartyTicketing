@@ -24,5 +24,5 @@ TSHIRT: ${tshirt}
 
 SUPPORTER TICKETS:
   supporter ticket: ${supporter}
-  supporter ticket X: ${supporter_x}
-  supporter ticket XL: ${supporter_xl}
+  supporter ticket XL: ${supporter_x}
+  supporter ticket XXL: ${supporter_xl}
