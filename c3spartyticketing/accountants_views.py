@@ -18,6 +18,7 @@ from deform import ValidationFailure
 from pyramid.i18n import (
     get_localizer,
 )
+from pyramid.renderers import render
 from pyramid.request import Request
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -844,6 +845,8 @@ def switch_pay(request):
     """
     This view lets accountants switch member signature info
     has their signature arrived?
+
+    it also sends out mails to confirm reception of payment
     """
     speed_id = request.matchdict['ticket_id']
     dashboard_page = request.cookies['on_page']
@@ -855,6 +858,22 @@ def switch_pay(request):
     elif _entry.payment_received is False:  # set to NOW
         _entry.payment_received = True
         _entry.payment_received_date = datetime.now()
+        # send email
+        if 'de' in _entry.locale:
+            _subject = u'C3S Generalversammlung & Barcamp 2014: Zahlung erhalten'
+        else:
+            _subject = u'C3S Generalversammlung & Barcamp 2014: payment received'
+        the_mail = Message(
+            subject=_subject,
+            sender="noreply@c3s.cc",
+            recipients=[_entry.email],
+            body=render(
+                'templates/mails/usermail_payment_received-' + _entry.locale + '.pt',
+                {'ticket': _entry}
+            )
+        )
+        mailer = get_mailer(request)
+        mailer.send(the_mail)
 
 #    log.info(
 #        "payment info of speedfunding.id %s changed by %s to %s" % (

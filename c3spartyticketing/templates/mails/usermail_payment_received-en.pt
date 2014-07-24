@@ -1,0 +1,7 @@
+Hello ${ticket.firstname} ${ticket.lastname},
+
+thank you! We have received the full payment for your order.
+
+See you soon!
+
+Your C3S team
