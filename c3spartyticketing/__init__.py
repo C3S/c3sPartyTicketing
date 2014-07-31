@@ -68,6 +68,7 @@ def main(global_config, **settings):
     config.add_route('stats', '/stats')
     config.add_route('print', '/print')
     config.add_route('detail', '/detail/{ticket_id}')
+    config.add_route('edit_ticket', '/edit_ticket/{ticket_id}')
     config.add_route('send_ticket_mail', '/ticketmail/{ticket_id}')
     config.add_route('get_ticket', '/ticket/{email}/c3sPartyTicket_{code}')
     config.add_route('get_ticket_mobile',

@@ -135,7 +135,7 @@
                      title="${ticket.ticketmail_sent_date}">ist raus.</a>
                 </div>
               </td>
-	      <td><a href="/detail/${ticket.id}">bearbeiten</a></td>
+	      <td><a href="/edit_ticket/${ticket.id}">bearbeiten</a></td>
 	      <td><a href="/delete/${ticket.id}">löschen</a></td>
 	    </tr>
           </table>

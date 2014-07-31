@@ -645,12 +645,12 @@ def ticket_appstruct(request, view=''):
         3. If id given, create from dbenty
         4. Redirect to access denied url
     '''
-    print('--- creating appstract ------------------------------------------')
+    print('--- creating appstruct ------------------------------------------')
 
     userdata = request.session['userdata']
     assert(userdata)
     print "userdata: {}".format(userdata)
-    
+
     if 'appstruct' in request.session:
         # Use from possibly edited session (reedit, refresh).
         print('using session:')
