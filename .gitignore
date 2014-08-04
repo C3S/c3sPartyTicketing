@@ -12,3 +12,10 @@ python-eggs/
 cover/
 nosetests.xml
 .idea
+
+bin/
+build/
+include/
+lib/
+local/
+pyramid.pid
