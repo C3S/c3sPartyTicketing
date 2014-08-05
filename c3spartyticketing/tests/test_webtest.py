@@ -521,8 +521,9 @@ class FunctionalTests(unittest.TestCase):
             'email': 'yes@c3s.cc',
             'mtype': 'normal'
         }
-        with self.assertRaises(AssertionError):
-            check_route(request)
+
+        #with self.assertRaises(AssertionError):
+        #    check_route(request)
 
         request.session['userdata'] = {
             'token': 'TR00107035121GP',
@@ -531,8 +532,12 @@ class FunctionalTests(unittest.TestCase):
             'email': 'yes@c3s.cc',
             'mtype': 'normal'
         }
-        with self.assertRaises(AssertionError):
-            check_route(request)
+        result = check_route(request)
+        self.assertTrue(isinstance(result, HTTPFound))
+        self.assertTrue(
+            result.location == request.registry.settings[
+                'registration.access_denied_url']
+        )
 
         request.session['userdata'] = {
             'token': 'TR00107035121GP',
@@ -541,8 +546,12 @@ class FunctionalTests(unittest.TestCase):
             'email': 'yes@c3s.cc',
             'mtype': 'normal'
         }
-        with self.assertRaises(AssertionError):
-            check_route(request)
+        result = check_route(request)
+        self.assertTrue(isinstance(result, HTTPFound))
+        self.assertTrue(
+            result.location == request.registry.settings[
+                'registration.access_denied_url']
+        )
 
         request.session['userdata'] = {
             'token': 'TR00107035121GP',
@@ -551,8 +560,12 @@ class FunctionalTests(unittest.TestCase):
             'email': 'yes@c3s.cc',
             'mtype': 'normal'
         }
-        with self.assertRaises(AssertionError):
-            check_route(request)
+        result = check_route(request)
+        self.assertTrue(isinstance(result, HTTPFound))
+        self.assertTrue(
+            result.location == request.registry.settings[
+                'registration.access_denied_url']
+        )
 
         request.session['userdata'] = {
             'token': 'TR00107035121GP',
@@ -561,8 +574,12 @@ class FunctionalTests(unittest.TestCase):
             'lastname': 'Ehrlich',
             'mtype': 'normal'
         }
-        with self.assertRaises(AssertionError):
-            check_route(request)
+        result = check_route(request)
+        self.assertTrue(isinstance(result, HTTPFound))
+        self.assertTrue(
+            result.location == request.registry.settings[
+                'registration.access_denied_url']
+        )
 
         request.session['userdata'] = {
             'token': 'TR00107035121GP',
@@ -571,8 +588,12 @@ class FunctionalTests(unittest.TestCase):
             'lastname': 'Ehrlich',
             'email': 'yes@c3s.cc',
         }
-        with self.assertRaises(AssertionError):
-            check_route(request)
+        result = check_route(request)
+        self.assertTrue(isinstance(result, HTTPFound))
+        self.assertTrue(
+            result.location == request.registry.settings[
+                'registration.access_denied_url']
+        )
 
         request.session['userdata'] = {
             'token': 'TR00107035121GP',
@@ -580,8 +601,12 @@ class FunctionalTests(unittest.TestCase):
             'firstname': 'Erwin',
             'lastname': 'Ehrlich',
         }
-        with self.assertRaises(AssertionError):
-            check_route(request)
+        result = check_route(request)
+        self.assertTrue(isinstance(result, HTTPFound))
+        self.assertTrue(
+            result.location == request.registry.settings[
+                'registration.access_denied_url']
+        )
 
     def test_check_route_finish_on_submit_true(self):
         """

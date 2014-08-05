@@ -42,7 +42,7 @@ class SeleniumTestBase(unittest.TestCase):
 		cls.cfg = {
 			'app': {
 				'host': '0.0.0.0',
-				'port': '6545',
+				'port': '6544',
 				'db': 'test_views_webdriver.db',
 				'ini': "development.ini",
 				'appconfig': {}, # XXX: override ini
