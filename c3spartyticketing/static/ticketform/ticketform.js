@@ -74,6 +74,7 @@ $(document).ready(function(){
   function allinc_on(){
     $('#ticket_gv-0').prop('checked', true);
     $('#ticket_bc-0').prop('checked', true);
+    $('#ticket_bc-1').prop('disabled', false)
     $('#ticket_bc-1').prop('checked', true);
     $('#ticket_tshirt').prop('checked', true);
     $('#item-ticket_bc, #item-ticket_gv, #item-ticket_tshirt').animate(

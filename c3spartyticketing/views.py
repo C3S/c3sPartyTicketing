@@ -1951,7 +1951,7 @@ def nonmember_confirm_view(request):
 
 @view_config(route_name='nonmember_success',
              renderer='templates/nonmember_success.pt')
-def success_view(request):
+def nonmember_success_view(request):
     """
     the user has confirmed the order
         XXX: 1. save to db (update, if token exists in db; create otherwise)

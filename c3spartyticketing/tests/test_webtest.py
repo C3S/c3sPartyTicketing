@@ -388,7 +388,7 @@ class FunctionalTests(unittest.TestCase):
         self.failUnless('The resource was found at' in res.body)
         # we are being redirected...
         res1 = res.follow()
-        print res1.body
+        #print res1.body
         self.failUnless(
             '<input type="hidden" name="token" value="DK74PX4JVQ"'
             in res1.body)
