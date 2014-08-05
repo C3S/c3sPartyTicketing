@@ -53,13 +53,15 @@ def main(global_config, **settings):
     config.add_static_view('static', 'static', cache_max_age=3600)
     # user views
     config.add_route('load_user', '/lu/{token}/{email}')
-    config.add_route('party', '/')  # the landing page
+    config.add_route('party', '/')  # member landing page
     config.add_route('confirm', '/confirm')  # shows entered data f. correction
     config.add_route('success', '/success')  # shows success info
-    #config.add_route('sendmail', '/check_email')
     config.add_route('finished', '/finished') # if registration is over
     config.add_route('verify_email_password', '/verify/{email}/{code}')
     config.add_route('success_pdf', '/C3S_Ticket_{namepart}.pdf')
+    config.add_route('nonmember', '/barcamp') # nonmember landing page
+    config.add_route('nonmember_confirm', '/barcamp/confirm') # nonmember confirm page
+    config.add_route('nonmember_success', '/barcamp/success') # nonmember success page
     # backend/staff
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')

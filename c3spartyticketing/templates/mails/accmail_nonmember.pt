@@ -1,0 +1,16 @@
+NONMEMBER:
+  name: ${firstname} ${lastname}
+  email: ${email}
+  bc attendance: ${bc_attendance}
+  bc buffet: ${bc_buffet}
+  total: ${the_total}
+  comment: ${comment}
+
+TSHIRT: ${tshirt}
+  tshirt type: ${tshirt_type}
+  tshirt size: ${tshirt_size}
+
+SUPPORTER TICKETS:
+  supporter ticket: ${supporter}
+  supporter ticket XL: ${supporter_x}
+  supporter ticket XXL: ${supporter_xl}
