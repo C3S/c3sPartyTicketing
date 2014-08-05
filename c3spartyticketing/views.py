@@ -306,7 +306,7 @@ def ticket_schema(request, appstruct, readonly=False):
             widget=deform.widget.HiddenWidget(),
             default=request.session['userdata']['token'],
             missing='',
-            oid="firstname",
+            oid="token",
         )
         firstname = colander.SchemaNode(
             colander.String(),
@@ -882,6 +882,7 @@ def load_user(request):
 
     ### load userdata from membership app
     data = json.dumps({"token": _token})
+    # print(data)
     print('querying MGV API ...')
     _auth_header = {
         'X-Messaging-Token': request.registry.settings['yes_auth_token']
@@ -891,10 +892,10 @@ def load_user(request):
         data,
         headers=_auth_header,
     )
-    #print u"the result: {}".format(res)
-    #print u"the result.json(): {}".format(res.json())
-    #print u"the result.reason: {}".format(res.reason)
-    #print u"dir(res): {}".format(dir(res))
+    # print u"the result: {}".format(res)
+    # print u"the result.json(): {}".format(res.json())
+    # print u"the result.reason: {}".format(res.reason)
+    # print u"dir(res): {}".format(dir(res))
     try:
         userdata = {
             'token': _token,

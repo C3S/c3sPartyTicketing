@@ -302,7 +302,7 @@ class FunctionalTests(unittest.TestCase):
             'c3spartyticketing.mailaddr': 'c@c3s.cc',
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
             'yes_api_url': 'https://prototyp01.c3s.cc/lm',
-            'registration.end': '2014-08-04',
+            'registration.end': '2014-09-04',
             'registration.finish_on_submit': 'true',
             'registration.access_denied_url': 'https://yes.c3s.cc',
         }
@@ -382,21 +382,21 @@ class FunctionalTests(unittest.TestCase):
         """
         res = self.testapp.reset()  # delete cookie
         res = self.testapp.get(
-            '/lu/TR00107035121GP/yes@c3s.cc', status=302,
+            '/lu/DK74PX4JVQ/alexander.blum@c3s.cc', status=302,
             headers=[('X-Messaging-Token', '1234567890ABCDEFGHIJKL')]
         )
         self.failUnless('The resource was found at' in res.body)
         # we are being redirected...
         res1 = res.follow()
-        #print res1.body
+        print res1.body
         self.failUnless(
-            '<input type="hidden" name="token" value="TR00107035121GP"'
+            '<input type="hidden" name="token" value="DK74PX4JVQ"'
             in res1.body)
         self.failUnless(
-            '<input type="hidden" name="firstname" value="Erwin"'
+            '<input type="hidden" name="firstname" value="TestVorname"'
             in res1.body)
         self.failUnless(
-            '<input type="hidden" name="lastname" value="Ehrlich"'
+            '<input type="hidden" name="lastname" value="TestNachname"'
             in res1.body)
 
 

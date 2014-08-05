@@ -67,8 +67,8 @@ class TestViews(unittest.TestCase):
             'yes_api_url': 'https://prototyp01.c3s.cc/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
         }
-        request.matchdict['token'] = 'TR00107035121GP'
-        request.matchdict['email'] = 'yes@c3s.cc'
+        request.matchdict['token'] = 'DK74PX4JVQ'
+        request.matchdict['email'] = 'alexander.blum@c3s.cc'
         # request.session['appstruct'] = {
         #     'person': {
         #         'firstname': 'foo',
@@ -92,16 +92,26 @@ class TestViews(unittest.TestCase):
         self.assertTrue('email' in request.session['userdata'])
         self.assertTrue('id' in request.session['userdata'])
 
-        self.assertTrue(
-            'Erwin' in request.session['userdata']['firstname'])
-        self.assertTrue(
-            'Ehrlich' in request.session['userdata']['lastname'])
-        self.assertTrue(
-            'yes@c3s.cc' in request.session['userdata']['email'])
-        self.assertTrue(
-            'None' in request.session['userdata']['id'])
-        self.assertTrue(
-            'normal' in request.session['userdata']['mtype'])
+        self.assertEqual(
+            'TestVorname',
+            request.session['userdata']['firstname']
+        )
+        self.assertEqual(
+            'TestNachname',
+            request.session['userdata']['lastname']
+        )
+        self.assertEqual(
+            'alexander.blum@c3s.cc',
+            request.session['userdata']['email']
+        )
+        self.assertEqual(
+            'None',
+            request.session['userdata']['id']
+        )
+        self.assertEqual(
+            'normal',
+            request.session['userdata']['mtype']
+        )
 
         # off to another view: party_view!
         #from c3spartyticketing.views import party_view

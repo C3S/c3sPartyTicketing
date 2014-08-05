@@ -1,0 +1,33 @@
+from webutils import (
+	Server,
+	Client
+)
+
+server = Server()
+client = Client()
+
+locators = {}
+locators["ticket.member.token"] = "token"
+locators["ticket.member.firstname"] = "firstname"
+locators["ticket.member.lastname"] = "lastname"
+locators["ticket.member.email"] = "email"
+locators["ticket.member.generalassembly"] = "ticket_gv"
+locators["ticket.member.barcamp"] = "ticket_bc-0"
+locators["ticket.member.buffet"] = "ticket_bc-1"
+locators["ticket.member.tshirt"] = "ticket_tshirt"
+locators["ticket.member.allinc"] = "ticket_all"
+locators["ticket.member.support"] = "ticket_support-0"
+locators["ticket.member.supportxl"] = "ticket_support-1"
+locators["ticket.member.supportxxl"] = "ticket_support-2"
+locators["ticket.member.comment"] = "comment"
+locators["ticket.member.rep.firstname"] = "rep-firstname"
+locators["ticket.member.rep.lastname"] = "rep-lastname"
+locators["ticket.member.rep.email"] = "rep-email"
+locators["ticket.member.rep.street"] = "rep-street"
+locators["ticket.member.rep.zip"] = "rep-zip"
+locators["ticket.member.rep.city"] = "rep-city"
+locators["ticket.member.rep.country"] = "rep-country"
+locators["ticket.member.rep.firstname"] = "rep-firstname"
+locators["ticket.member.rep.type"] = "rep-type"
+locators["ticket.member.tshirt.type"] = "tshirt-type"
+locators["ticket.member.tshirt.size"] = "tshirt-size"
