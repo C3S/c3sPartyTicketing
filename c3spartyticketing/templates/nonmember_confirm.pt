@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="base"
+      i18n:domain="c3spartyticketing">
+  <tal:block metal:fill-slot="deform-js-css">
+    <link rel="stylesheet"
+          href="${request.static_url('c3spartyticketing:static/bootstrap-3.0.3-dist/css/bootstrap.min.css"
+          type="text/css" media="screen" charset="utf-8"/>
+    <link rel="stylesheet"
+          href="${request.static_url('c3spartyticketing:static/c3sM.css')}"
+          type="text/css" media="screen" charset="utf-8" />
+    <script type="text/javascript"
+            src="${request.static_url('deform:static/scripts/deform.js')}"></script>
+    <script src="${request.static_url('c3spartyticketing:static/ss/jquery-ui.js')}"></script>
+    <script src="${request.static_url('c3spartyticketing:static/jquery/jquery.maskMoney.min.js')}" 
+          type="text/javascript"></script>
+  </tal:block>
+  <tal:block metal:fill-slot="middle">
+  </tal:block>
+  <tal:block metal:fill-slot="bottom">
+    <h3><span i18n:translate="">Please confirm your information</span>:</h3>
+
+    <div tal:content="structure readonlyform">the form, readonly</div>
+    <div class="row-fluid">
+      <div class="span4">
+        <h2 i18n:translate="">What's next?</h2>
+        <p i18n:translate="">
+          We will send you an e-mail with more information. Please check also your spam folder for our mail! 
+          You have to pay your order (and your ticket) before leaving for Cologne/Düsseldorf!
+        </p>
+      </div>
+    </div>
+  </tal:block>
+</html>
