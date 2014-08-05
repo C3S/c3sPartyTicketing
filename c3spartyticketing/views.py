@@ -1062,12 +1062,19 @@ def check_route(request, view=''):
     # userdata check:
     if 'userdata' in request.session:
         userdata = request.session['userdata']
-        assert('token' in userdata)
-        assert('id' in userdata)
-        assert('firstname' in userdata)
-        assert('lastname' in userdata)
-        assert('email' in userdata)
-        assert('mtype' in userdata)
+        try:
+            assert('token' in userdata)
+            assert('id' in userdata)
+            assert('firstname' in userdata)
+            assert('lastname' in userdata)
+            assert('email' in userdata)
+            assert('mtype' in userdata)
+        except:
+            print('userdata test: user not found. redirecting...')
+            return HTTPFound(
+                location=request.registry.settings[
+                    'registration.access_denied_url']
+            )
     else:
         print('userdata test: user not found. redirecting...')
         return HTTPFound(

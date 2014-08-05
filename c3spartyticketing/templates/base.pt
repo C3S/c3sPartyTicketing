@@ -29,10 +29,10 @@
       </a>
       <div style="text-align:right;">
         <a href="${request.current_route_url(_query='en')}">
-          <img alt="switch to English language" title="English" src="static/images/en.png" />
+          <img alt="switch to English language" title="English" src="/static/images/en.png" />
         </a>
         <a href="${request.current_route_url(_query='de')}">
-          <img alt="auf deutsche Sprache umschalten" title="Deutsch" src="static/images/de.png" />
+          <img alt="auf deutsche Sprache umschalten" title="Deutsch" src="/static/images/de.png" />
         </a>
       </div>
     </tal:block>
