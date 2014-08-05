@@ -891,9 +891,7 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
                     We will send tickets and vouchers in time by e-mail
                 </strong><br />
                 You can't edit the order form after hitting the button
-                "Submit & Buy" below. However, you can click the personal
-                link you received as part of the invitation link. There you
-                can view but not edit your order. A full refund of your
+                "Submit & Buy" below. A full refund of your
                 money once transferred is not possible. Only in case the
                 BarCamp is cancelled by C3S SCE a refund for the BarCamp
                 ticket and food is possible. If you have any questions
@@ -921,9 +919,7 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
                 </strong><br />
                 Sobald Du das Bestellformular mit dem Button "Absenden &
                 Kaufen" unten absendest, kannst Du an der Bestellung im
-                Formular keine Änderung mehr vornehmen. Du kannst Deine
-                Bestellung jedoch unter Deinem persönlichen Link aus der
-                Einladungs-Mail weiterhin aufrufen und anschauen. Eine
+                Formular keine Änderung mehr vornehmen. Eine
                 Erstattung der überwiesenen Summe ist nicht möglich. Nur
                 im Fall der Absage des Barcamps durch die C3S SCE werden
                 die Kosten für Ticket und Essen erstattet. Falls Du Fragen
@@ -1897,7 +1893,7 @@ def nonmember_view(request):
 
 
 @view_config(route_name='nonmember_confirm',
-             renderer='templates/confirm.pt')
+             renderer='templates/nonmember_confirm.pt')
 def nonmember_confirm_view(request):
     """
     the form was submitted correctly. show the result for the user to confirm
