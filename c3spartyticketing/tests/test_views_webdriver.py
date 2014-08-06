@@ -17,6 +17,8 @@ from pageobject import (
 	client
 )
 from pageobject.ticket_member import TicketMemberObject
+from pageobject.ticket_nonmember import TicketNonmemberObject
+
 # from webtest.http import StopableWSGIServer
 # from paste.deploy.loadwsgi import appconfig
 # from c3spartyticketing.models import (
@@ -93,6 +95,7 @@ class SeleniumTestBase(unittest.TestCase):
 				+"\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 			)
 
+### Member #####################################################################
 
 class TicketMemberAccessTests(SeleniumTestBase):
 	"""
@@ -108,30 +111,34 @@ class TicketMemberAccessTests(SeleniumTestBase):
 		# route: root
 		self.cli.get(self.srv.url);
 		self.screen('root')
-		self.assertEqual(
-			self.cli.current_url, 
-			server.appSettings['registration.access_denied_url']
+		self.assertTrue(
+			self.cli.current_url.endswith(
+				server.appSettings['registration.access_denied_url']
+			)
 		)
 		# route: confirm
 		self.cli.get(self.srv.url+'confirm')
 		self.screen('confirm')
-		self.assertEqual(
-			self.cli.current_url, 
-			server.appSettings['registration.access_denied_url']
+		self.assertTrue(
+			self.cli.current_url.endswith(
+				server.appSettings['registration.access_denied_url']
+			)
 		)
 		# route: success
 		self.cli.get(self.srv.url+'success')
 		self.screen('success')
-		self.assertEqual(
-			self.cli.current_url, 
-			server.appSettings['registration.access_denied_url']
+		self.assertTrue(
+			self.cli.current_url.endswith(
+				server.appSettings['registration.access_denied_url']
+			)
 		)
 		# route: finished
 		self.cli.get(self.srv.url+'finished')
 		self.screen('finished')
-		self.assertEqual(
-			self.cli.current_url, 
-			server.appSettings['registration.access_denied_url']
+		self.assertTrue(
+			self.cli.current_url.endswith(
+				server.appSettings['registration.access_denied_url']
+			)
 		)
 
 	def test_access_with_token(self):
@@ -391,6 +398,171 @@ class TicketMemberFormFieldLogicTests(SeleniumTestBase):
 			True
 		)
 
+### Nonmember ##################################################################
+
+class TicketNonmemberAccessTests(SeleniumTestBase):
+	"""
+	tests access to the ticket form for members
+	"""
+
+	def setUp(self):
+		# renew session for each single test
+		self.cli.delete_all_cookies()
+
+	def test_access(self):
+		self.logSection()
+		# route: nonmember
+		self.cli.get(self.srv.url+"barcamp");
+		self.screen('root')
+		self.assertTrue(self.cli.current_url.endswith("/barcamp"))
+		# route: nonmember_confirm
+		self.cli.get(self.srv.url+'barcamp/confirm')
+		self.screen('confirm')
+		self.assertTrue(self.cli.current_url.endswith("/barcamp"))
+		# route: nonmember_success
+		self.cli.get(self.srv.url+'barcamp/success')
+		self.screen('success')
+		self.assertTrue(self.cli.current_url.endswith("/barcamp"))
+
+
+class TicketNonemberFormFieldValuesTests(SeleniumTestBase):
+	"""
+	tests the ticket form for members using selenium
+	covers also package pageobject
+	"""
+
+	def setUp(self):
+		# renew session for each single test
+		self.cli.delete_all_cookies()
+		# init form
+		self.form = TicketNonmemberObject(self.cfg)
+		# data provider
+		self.data_checkbox = [False, False, True, True, False, True, False]
+		self.data_tshirt_type = ["m", "f"]
+		self.data_tshirt_size = ["S", "M", "L", "XL", "XXL", "XXXL"]
+
+	def test_firstname_values(self):
+		self.logSection()
+		f = self.form
+		f.firstname.set("firstname")
+		self.assertEqual(f.firstname.get(), "firstname")
+
+	def test_lastname_values(self):
+		self.logSection()
+		f = self.form
+		f.lastname.set("lastname")
+		self.assertEqual(f.lastname.get(), "lastname")
+
+	def test_email_values(self):
+		self.logSection()
+		f = self.form
+		f.email.set("test@example.com")
+		self.assertEqual(f.email.get(), "test@example.com")
+
+	def test_barcamp_values(self):
+		self.logSection()
+		f = self.form
+		for i in self.data_checkbox:
+			f.barcamp.set(i)
+			self.assertEqual(f.barcamp.get(), i)
+
+	def test_buffet_values(self):
+		self.logSection()
+		f = self.form
+		f.barcamp.set(True)
+		for i in self.data_checkbox:
+			f.buffet.set(i)
+			self.assertEqual(f.buffet.get(), i)
+
+	def test_tshirt_values(self):
+		self.logSection()
+		f = self.form
+		for i in self.data_checkbox:
+			f.tshirt.set(i)
+			self.assertEqual(f.tshirt.get(), i)
+
+	def test_support_values(self):
+		self.logSection()
+		f = self.form
+		for i in self.data_checkbox:
+			f.support.set(i)
+			self.assertEqual(f.support.get(), i)
+
+	def test_supportxl_values(self):
+		self.logSection()
+		f = self.form
+		for i in self.data_checkbox:
+			f.supportxl.set(i)
+			self.assertEqual(f.supportxl.get(), i)
+
+	def test_supportxxl_values(self):
+		self.logSection()
+		f = self.form
+		for i in self.data_checkbox:
+			f.supportxxl.set(i)
+			self.assertEqual(f.supportxxl.get(), i)
+
+	def test_comment_values(self):
+		self.logSection()
+		f = self.form
+		f.comment.set("test")
+		self.assertEqual(f.comment.get(), "test")
+
+	def test_tshirt_type_values(self):
+		self.logSection()
+		f = self.form
+		f.tshirt.set(True)
+		for i in self.data_tshirt_type:
+			f.tshirt_type.set(i)
+			self.assertEqual(f.tshirt_type.get(), i)
+
+	def test_tshirt_size_values(self):
+		self.logSection()
+		f = self.form
+		f.tshirt.set(True)
+		for i in self.data_tshirt_size:
+			f.tshirt_size.set(i)
+			self.assertEqual(f.tshirt_size.get(), i)
+
+
+class TicketNonmemberFormFieldLogicTests(SeleniumTestBase):
+
+	def setUp(self):
+		# renew session for each single test
+		self.cli.delete_all_cookies()
+		# init form
+		self.form = TicketNonmemberObject(self.cfg)
+
+	def test_buffet_logic(self):
+		self.logSection()
+		f = self.form
+		f.barcamp.set(False)
+		self.assertEqual(f.buffet().is_enabled(), False)
+		f.barcamp.set(True)
+		self.assertEqual(f.buffet().is_enabled(), True)
+
+	def test_tshirt_logic(self):
+		self.logSection()
+		f = self.form
+		f.tshirt.set(False)
+		self.assertEqual(
+			self.cli.find_element_by_id("item-tshirt-type").is_displayed(),
+			False
+		)
+		self.assertEqual(
+			self.cli.find_element_by_id("item-tshirt-size").is_displayed(),
+			False
+		)
+		f.tshirt.set(True)
+		self.assertEqual(
+			self.cli.find_element_by_id("item-tshirt-type").is_displayed(),
+			True
+		)
+		self.assertEqual(
+			self.cli.find_element_by_id("item-tshirt-size").is_displayed(),
+			True
+		)
+
 
 # XXX: test validation errors
 # XXX: test form logic: check manipulation correction after submit
@@ -559,45 +731,45 @@ class TicketFormTests(unittest.TestCase):
 	# 	#self.assertTrue(u'tigen und Formular abrufen.' in page)
 
 
-class EmailVerificationTests(unittest.TestCase):
+# class EmailVerificationTests(unittest.TestCase):
 
-	def setUp(self):
-		call(['./env/bin/pserve', 'development.ini', 'start'])
-		time.sleep(5)
-		self.driver = webdriver.PhantomJS() # Firefox()
+# 	def setUp(self):
+# 		call(['./env/bin/pserve', 'development.ini', 'start'])
+# 		time.sleep(5)
+# 		self.driver = webdriver.PhantomJS() # Firefox()
 
-	def tearDown(self):
-		self.driver.quit()
-		call(['./env/bin/pserve', 'development.ini', 'stop'])
+# 	def tearDown(self):
+# 		self.driver.quit()
+# 		call(['./env/bin/pserve', 'development.ini', 'stop'])
 
-	def test_verify_email(self):  # views.py 296-298
-		url = "http://0.0.0.0:6543/verify/foo@shri.de/ABCDEFGHIJ"
-		self.driver.get(url)
+# 	def test_verify_email(self):  # views.py 296-298
+# 		url = "http://0.0.0.0:6543/verify/foo@shri.de/ABCDEFGHIJ"
+# 		self.driver.get(url)
 
-		self.assertTrue(
-			'Bitte das Passwort eingeben.' in self.driver.page_source)
-		self.assertTrue(
-			'Hier geht es zum PDF...' in self.driver.page_source)
-		self.driver.find_element_by_name(
-			'password').send_keys('')  # empty password
-		self.driver.find_element_by_name('submit').click()
+# 		self.assertTrue(
+# 			'Bitte das Passwort eingeben.' in self.driver.page_source)
+# 		self.assertTrue(
+# 			'Hier geht es zum PDF...' in self.driver.page_source)
+# 		self.driver.find_element_by_name(
+# 			'password').send_keys('')  # empty password
+# 		self.driver.find_element_by_name('submit').click()
 
-		self.assertTrue(
-			'Bitte das Passwort eingeben.' in self.driver.page_source)
-		self.assertTrue('Hier geht es zum PDF...' in self.driver.page_source)
-		self.driver.find_element_by_name(
-			'password').send_keys('schmoo')  # wrong password
-		self.driver.find_element_by_name('submit').click()
+# 		self.assertTrue(
+# 			'Bitte das Passwort eingeben.' in self.driver.page_source)
+# 		self.assertTrue('Hier geht es zum PDF...' in self.driver.page_source)
+# 		self.driver.find_element_by_name(
+# 			'password').send_keys('schmoo')  # wrong password
+# 		self.driver.find_element_by_name('submit').click()
 
-		self.assertTrue(
-			'Bitte das Passwort eingeben.' in self.driver.page_source)
-		self.assertTrue('Hier geht es zum PDF...' in self.driver.page_source)
-		self.driver.find_element_by_name('password').send_keys('berries')
-		self.driver.find_element_by_name('submit').click()
+# 		self.assertTrue(
+# 			'Bitte das Passwort eingeben.' in self.driver.page_source)
+# 		self.assertTrue('Hier geht es zum PDF...' in self.driver.page_source)
+# 		self.driver.find_element_by_name('password').send_keys('berries')
+# 		self.driver.find_element_by_name('submit').click()
 
-		self.assertTrue('Lade dein PDF...' in self.driver.page_source)
-		self.assertTrue(
-			'C3S_SCE_AFM_Firstn_meLastname.pdf' in self.driver.page_source)
+# 		self.assertTrue('Lade dein PDF...' in self.driver.page_source)
+# 		self.assertTrue(
+# 			'C3S_SCE_AFM_Firstn_meLastname.pdf' in self.driver.page_source)
 
 #        import pdb
 #        pdb.set_trace()
