@@ -1,0 +1,33 @@
+Hallo ${firstname} ${lastname} !
+
+Wir haben Deine Bestellung erhalten. Bitte überweise
+
+            ${the_total} Euro
+
+auf unser Konto:
+
+Bank:			EthikBank eG
+Kontoinhaber:		C3S SCE
+Betrag:			€ ${the_total}
+Verwendungszweck:	Barcamp2014 ${email_confirm_code}
+BIC:			GENO DE F1 ETK
+IBAN:			DE79 8309 4495 0003 2643 78
+
+oder
+
+Kontonummer:		3264378
+BLZ:			83094495
+
+Sobald Deine Zahlung auf unserem Konto eingeht, schicken wir Dir eine
+Email mit dem bestellten Ticket und/oder dem Gutschein für das 
+T-Shirt. Deine Bestellung muss spätestens zum 18. August vollständig 
+bezahlt sein. Es gilt der Zahlungseingang auf unserem Konto.
+
+Das Ticket versenden wir rechtzeitig per Email. Solltest Du ein 
+T-Shirt bestellt haben und es nicht bei der Veranstaltung abholen, 
+senden wir es Dir im September zu.
+
+
+    Bis bald!
+
+    Dein C3S-Team

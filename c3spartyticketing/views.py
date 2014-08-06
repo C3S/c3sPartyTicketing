@@ -656,6 +656,14 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
                 raise colander.Invalid(form,
                     _(u'Size of T-shirt ist mandatory.')
                 )
+        # no option set raises an exception
+        print(value['ticket']['ticket_support'])
+        if not 'attendance' in value['ticket']['ticket_bc'] \
+            and not value['ticket']['ticket_tshirt'] \
+            and not value['ticket']['ticket_support']:
+            raise colander.Invalid(form,
+                    _(u'You need to select at least one option.')
+                )
 
     ### options
 
@@ -1652,7 +1660,7 @@ def success_view(request):
             'rep_city': appstruct['representation']['city'],
             'rep_country': appstruct['representation']['country'],
             'rep_type': appstruct['representation']['representation_type'],
-            'tshirt': appstruct['ticket']['ticket_tshirt'],
+            'tshirt': appstruct['ticket']['ticket_tshirt'] or 'False',
             'tshirt_type': appstruct['tshirt']['tshirt_type'],
             'tshirt_size': appstruct['tshirt']['tshirt_size'],
             'supporter': ('1' in appstruct['ticket']['ticket_support'] or 'False'),
@@ -1975,106 +1983,59 @@ def nonmember_success_view(request):
     
     # ### save to db
 
-    # # make confirmation code
-    # randomstring = make_random_string()
+    # make confirmation code
+    randomstring = make_random_string()
 
-    # # update, if token exists in db; create otherwise
-    # if PartyTicket.has_token(request.session['userdata']['token']):
-    #     ticket = PartyTicket.get_by_token(
-    #         request.session['userdata']['token']
-    #     )
-    #     # just save those details that changed
-    #     ticket.date_of_submission = datetime.now()
-    #     ticket.ticket_gv_attendance = appstruct['ticket']['ticket_gv']
-    #     ticket.ticket_bc_attendance = (
-    #         'attendance' in appstruct['ticket']['ticket_bc']
-    #     )
-    #     ticket.ticket_bc_buffet = (
-    #         'buffet' in appstruct['ticket']['ticket_bc']
-    #     )
-    #     ticket.ticket_tshirt = appstruct['ticket']['ticket_tshirt']
-    #     ticket.ticket_tshirt_type = appstruct['tshirt']['tshirt_type']
-    #     ticket.ticket_tshirt_size = appstruct['tshirt']['tshirt_size']
-    #     ticket.ticket_all = appstruct['ticket']['ticket_all']
-    #     ticket.ticket_support = (
-    #         '1' in appstruct['ticket']['ticket_support']
-    #     )
-    #     ticket.ticket_support_x = (
-    #         '2' in appstruct['ticket']['ticket_support']
-    #     )
-    #     ticket.ticket_support_xl = (
-    #         '3' in appstruct['ticket']['ticket_support']
-    #     )
-    #     ticket.support = request.session['derivedvalues']['support']
-    #     ticket.discount = request.session['derivedvalues']['discount']
-    #     ticket.the_total = request.session['derivedvalues']['the_total']
-    #     ticket.rep_firstname = appstruct['representation']['firstname']
-    #     ticket.rep_lastname = appstruct['representation']['lastname']
-    #     ticket.rep_email = appstruct['representation']['email']
-    #     ticket.rep_street = appstruct['representation']['street']
-    #     ticket.rep_zip = appstruct['representation']['zip']
-    #     ticket.rep_city = appstruct['representation']['city']
-    #     ticket.rep_country = appstruct['representation']['country']
-    #     ticket.rep_type = appstruct['representation']['representation_type']
-    #     ticket.guestlist = False
-    #     ticket.user_comment = appstruct['ticket']['comment']
-    #     DBSession.flush()  # save to DB
-    #     print('save to db: updated.')
-    #     #  set the appstruct for further processing
-    #     appstruct['email_confirm_code'] = ticket.email_confirm_code
-    #     request.session['mtype'] = ticket.membership_type
-    # else:
-    #     # to store the data in the DB, an object is created
-    #     ticket = PartyTicket(
-    #         token=request.session['userdata']['token'],
-    #         firstname=request.session['userdata']['firstname'],
-    #         lastname=request.session['userdata']['lastname'],
-    #         email=request.session['userdata']['email'],
-    #         password='',  # appstruct['person']['password'],
-    #         locale=appstruct['ticket']['_LOCALE_'],
-    #         email_is_confirmed=False,
-    #         email_confirm_code=randomstring,
-    #         date_of_submission=datetime.now(),
-    #         num_tickets=1,
-    #         ticket_gv_attendance=appstruct['ticket']['ticket_gv'],
-    #         ticket_bc_attendance=(
-    #             'attendance' in appstruct['ticket']['ticket_bc']),
-    #         ticket_bc_buffet=(
-    #             'buffet' in appstruct['ticket']['ticket_bc']),
-    #         ticket_tshirt=appstruct['ticket']['ticket_tshirt'],
-    #         ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
-    #         ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
-    #         ticket_all=appstruct['ticket']['ticket_all'],
-    #         ticket_support=('1' in appstruct['ticket']['ticket_support']),
-    #         ticket_support_x=(
-    #             '2' in appstruct['ticket']['ticket_support']),
-    #         ticket_support_xl=(
-    #             '3' in appstruct['ticket']['ticket_support']),
-    #         support=request.session['derivedvalues']['support'],
-    #         discount=request.session['derivedvalues']['discount'],
-    #         the_total=request.session['derivedvalues']['the_total'],
-    #         rep_firstname=appstruct['representation']['firstname'],
-    #         rep_lastname=appstruct['representation']['lastname'],
-    #         rep_street=appstruct['representation']['street'],
-    #         rep_zip=appstruct['representation']['zip'],
-    #         rep_city=appstruct['representation']['city'],
-    #         rep_country=appstruct['representation']['country'],
-    #         rep_type=appstruct['representation']['representation_type'],
-    #         guestlist=False,
-    #         user_comment=appstruct['ticket']['comment'],
-    #         )
-    #     ticket.rep_email = appstruct['representation']['email']
-    #     ticket.membership_type = request.session['userdata']['mtype']
-    #     #dbsession = DBSession
-    #     try:
-    #         DBSession.add(ticket)
-    #         print('save to db: created.')
-    #         appstruct['email_confirm_code'] = randomstring  # XXX
-    #         #                                    check duplicates
-    #     except InvalidRequestError, e:  # pragma: no cover
-    #         print("InvalidRequestError! %s") % e
-    #     except IntegrityError, ie:  # pragma: no cover
-    #         print("IntegrityError! %s") % ie
+    # create in db
+    ticket = PartyTicket(
+        token='',
+        firstname=appstruct['personal']['firstname'],
+        lastname=appstruct['personal']['lastname'],
+        email=appstruct['personal']['email'],
+        password='',  # appstruct['person']['password'],
+        locale=appstruct['ticket']['_LOCALE_'],
+        email_is_confirmed=False,
+        email_confirm_code=randomstring,
+        date_of_submission=datetime.now(),
+        num_tickets=1,
+        ticket_gv_attendance=3,
+        ticket_bc_attendance=(
+            'attendance' in appstruct['ticket']['ticket_bc']),
+        ticket_bc_buffet=(
+            'buffet' in appstruct['ticket']['ticket_bc']),
+        ticket_tshirt=appstruct['ticket']['ticket_tshirt'],
+        ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
+        ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
+        ticket_all=False,
+        ticket_support=(
+            '1' in appstruct['ticket']['ticket_support']),
+        ticket_support_x=(
+            '2' in appstruct['ticket']['ticket_support']),
+        ticket_support_xl=(
+            '3' in appstruct['ticket']['ticket_support']),
+        support=request.session['derivedvalues']['support'],
+        discount=0,
+        the_total=request.session['derivedvalues']['the_total'],
+        rep_firstname='',
+        rep_lastname='',
+        rep_street='',
+        rep_zip='',
+        rep_city='',
+        rep_country='',
+        rep_type=None,
+        guestlist=False,
+        user_comment=appstruct['ticket']['comment'],
+        )
+    ticket.membership_type = 'nonmember'
+    try:
+        DBSession.add(ticket)
+        print('save to db: created.')
+        appstruct['email_confirm_code'] = randomstring  # XXX
+        #                                    check duplicates
+    except InvalidRequestError, e:  # pragma: no cover
+        print("InvalidRequestError! %s") % e
+    except IntegrityError, ie:  # pragma: no cover
+        print("IntegrityError! %s") % ie
 
     ### render emails
 
@@ -2084,72 +2045,19 @@ def nonmember_success_view(request):
     if request.locale_name in langs:
         lang = request.locale_name
 
-    # #######################################################################
-    # usermail_gv_transaction_subject = _(
-    #     u'C3S General Assembly & Barcamp 2014: your participation & order'
-    # )
-    # usermail_gv_transaction = render(
-    #     'templates/mails/usermail_gv_transaction-'+lang+'.pt',
-    #     {
-    #         'firstname': appstruct['ticket']['firstname'],
-    #         'lastname': appstruct['ticket']['lastname'],
-    #         'the_total': appstruct['ticket']['the_total'],
-    #         'email_confirm_code': appstruct['email_confirm_code']
-    #     }
-    # )
-
-    # #######################################################################
-    # usermail_gv_notransaction_subject = _(
-    #     u'C3S General Assembly & Barcamp 2014: your participation'
-    # )
-    # usermail_gv_notransaction = render(
-    #     'templates/mails/usermail_gv_notransaction-'+lang+'.pt',
-    #     {
-    #         'firstname': appstruct['ticket']['firstname'],
-    #         'lastname': appstruct['ticket']['lastname']
-    #     }
-    # )
-
-    # #######################################################################
-    # usermail_notgv_bc_subject = _(
-    #     u'C3S General Assembly & Barcamp 2014: your BarCamp ticket / '
-    #     u'your cancellation of the general assembly'
-    # )
-    # usermail_notgv_bc = render(
-    #     'templates/mails/usermail_notgv_bc-'+lang+'.pt',
-    #     {
-    #         'firstname': appstruct['ticket']['firstname'],
-    #         'lastname': appstruct['ticket']['lastname'],
-    #         'the_total': appstruct['ticket']['the_total'],
-    #         'email_confirm_code': appstruct['email_confirm_code']
-    #     }
-    # )
-
-    # #######################################################################
-    # usermail_notgv_notbc_transaction_subject = _(
-    #     u'C3S General Assembly & Barcamp 2014: your cancellation / your order'
-    # )
-    # usermail_notgv_notbc_transaction = render(
-    #     'templates/mails/usermail_notgv_notbc_transaction-'+lang+'.pt',
-    #     {
-    #         'firstname': appstruct['ticket']['firstname'],
-    #         'lastname': appstruct['ticket']['lastname'],
-    #         'the_total': appstruct['ticket']['the_total'],
-    #         'email_confirm_code': appstruct['email_confirm_code']
-    #     }
-    # )
-
-    # #######################################################################
-    # usermail_notgv_notbc_notransaction_subject = _(
-    #     u'C3S General Assembly & Barcamp 2014: your cancellation'
-    # )
-    # usermail_notgv_notbc_notransaction = render(
-    #     'templates/mails/usermail_notgv_notbc_notransaction-'+lang+'.pt',
-    #     {
-    #         'firstname': appstruct['ticket']['firstname'],
-    #         'lastname': appstruct['ticket']['lastname']
-    #     }
-    # )
+    #######################################################################
+    usermail_nonmember_subject = _(
+        u'C3S Barcamp 2014: your order'
+    )
+    usermail_nonmember = render(
+        'templates/mails/usermail_nonmember-'+lang+'.pt',
+        {
+            'firstname': appstruct['personal']['firstname'],
+            'lastname': appstruct['personal']['lastname'],
+            'the_total': request.session['derivedvalues']['the_total'],
+            'email_confirm_code': appstruct['email_confirm_code']
+        }
+    )
 
     #######################################################################
     accmail_subject = u'[C3S_PT] neues nonmember ticket'
@@ -2176,7 +2084,7 @@ def nonmember_success_view(request):
             #'rep_city': appstruct['representation']['city'],
             #'rep_country': appstruct['representation']['country'],
             #'rep_type': appstruct['representation']['representation_type'],
-            'tshirt': appstruct['ticket']['ticket_tshirt'],
+            'tshirt': appstruct['ticket']['ticket_tshirt'] or 'False',
             'tshirt_type': appstruct['tshirt']['tshirt_type'],
             'tshirt_size': appstruct['tshirt']['tshirt_size'],
             'supporter': ('1' in appstruct['ticket']['ticket_support'] or 'False'),
@@ -2188,49 +2096,26 @@ def nonmember_success_view(request):
     ### send mails
     mailer = get_mailer(request)
 
-    # ### pick usermail
-    # usermail_body = usermail_gv_transaction
-    # usermail_subject = usermail_gv_transaction_subject
-    # if (appstruct['ticket']['ticket_gv'] != 3):
-    #     if (appstruct['ticket']['the_total'] == 0):
-    #         usermail_body = usermail_gv_notransaction
-    #         usermail_subject = usermail_gv_notransaction_subject
-    # else:
-    #     if (appstruct['ticket']['ticket_bc']):
-    #         usermail_body = usermail_notgv_bc
-    #         usermail_subject = usermail_notgv_bc_subject
-    #     else:
-    #         if (appstruct['ticket']['the_total'] > 0):
-    #             usermail_body = usermail_notgv_notbc_transaction
-    #             usermail_subject = usermail_notgv_notbc_transaction_subject
-    #         else:
-    #             usermail_body = usermail_notgv_notbc_notransaction
-    #             usermail_subject = usermail_notgv_notbc_notransaction_subject
+    ### send usermail
+    usermail_obj = Message(
+        subject=usermail_nonmember_subject,
+        sender=request.registry.settings['c3spartyticketing.mail_sender'],
+        recipients=[appstruct['personal']['email']],
+        body=usermail_nonmember
+    )
 
-    # ### pick usermail
-    # usermail_obj = Message(
-    #     subject=usermail_subject,
-    #     sender=request.registry.settings['c3spartyticketing.mail_sender'],
-    #     recipients=[appstruct['ticket']['email']],
-    #     body=usermail_body
-    # )
-
-    # if 'true' in request.registry.settings['testing.mail_to_console']:
-    #     # ^^ yes, a little ugly, but works; it's a string
-    #     #print "printing mail"
-    #     print(usermail_body.encode('utf-8'))
-    # else:
-    #     #print "sending mail"
-    #     mailer.send(usermail_obj)
+    if 'true' in request.registry.settings['testing.mail_to_console']:
+        print(usermail_nonmember.encode('utf-8'))
+    else:
+        mailer.send(usermail_obj)
 
     ### send accmail
-    #from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
+    from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
     accmail_obj = Message(
         subject=accmail_subject,
         sender=request.registry.settings['c3spartyticketing.mail_sender'],
-        recipients=['office@c3s.cc'],
-        #body=encrypt_with_gnupg(accmail_body)
-        body=accmail_body
+        recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
+        body=encrypt_with_gnupg(accmail_body)
     )
     if 'true' in request.registry.settings['testing.mail_to_console']:
         print(accmail_body.encode('utf-8'))
@@ -2242,9 +2127,6 @@ def nonmember_success_view(request):
     return {
         'firstname': appstruct['personal']['firstname'],
         'lastname': appstruct['personal']['lastname']
-        #'transaction': (appstruct['ticket']['the_total'] > 0),
-        #'canceled': (appstruct['ticket']['ticket_gv'] == 3),
-        #'bc_attendance': appstruct['ticket']['ticket_bc']
     }
 
 

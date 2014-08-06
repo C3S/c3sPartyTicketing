@@ -34,7 +34,10 @@
         <small i18n:translate="">get your ticket for the</small> 
         <span i18n:translate="">C3S BarCamp!</span>
       </h1>
+
       <div style="font-size:12px; margin-top:40px; color:#999;">
+        <span i18n:translate="">If you already are a member of the C3S, please use your personal link which you received by e-mail on 21st July. Don't forget: There is a discount for members! :)</span>
+        <br />
         <span i18n:translate="">Please scroll down for filling in the form.</span>
       </div>
     </div>

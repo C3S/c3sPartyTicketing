@@ -17,15 +17,15 @@ lingua 1.6
 lingua 2.3
 ----------
 * installation 
-** gettext: sudo apt-get install gettext
+    * gettext: sudo apt-get install gettext
 * only once, if you need a new language, e.g. 'de'
-** mkdir -p c3spartyticketing/locale/de/LC_MESSAGES
-** msginit -l de -o c3spartyticketing/locale/de/LC_MESSAGES/c3spartyticketing.po
+    * mkdir -p c3spartyticketing/locale/de/LC_MESSAGES
+    * msginit -l de -o c3spartyticketing/locale/de/LC_MESSAGES/c3spartyticketing.po
 * each time, the code or templates changed, creates a POT:
-** env/bin/pot-create -o c3spartyticketing/locale/c3spartyticketing.pot c3spartyticketing
+    * env/bin/pot-create -o c3spartyticketing/locale/c3spartyticketing.pot c3spartyticketing
 * every time the POT changed, creates a PO
-** msgmerge --update c3spartyticketing/locale/de/LC_MESSAGES/c3spartyticketing.po c3spartyticketing/locale/c3spartyticketing.pot
+    * msgmerge --update c3spartyticketing/locale/de/LC_MESSAGES/c3spartyticketing.po c3spartyticketing/locale/c3spartyticketing.pot
 * to edit translations
-** poedit c3spartyticketing/locale/de/LC_MESSAGES/c3spartyticketing.po
+    * poedit c3spartyticketing/locale/de/LC_MESSAGES/c3spartyticketing.po
 * every time the PO changed, creates a MO
-** msgfmt -o c3spartyticketing/locale/de/LC_MESSAGES/c3spartyticketing.mo c3spartyticketing/locale/de/LC_MESSAGES/c3spartyticketing.po
+    * msgfmt -o c3spartyticketing/locale/de/LC_MESSAGES/c3spartyticketing.mo c3spartyticketing/locale/de/LC_MESSAGES/c3spartyticketing.po

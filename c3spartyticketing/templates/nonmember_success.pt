@@ -15,6 +15,7 @@
   <tal:block metal:fill-slot="middle">
 
     <h1 i18n:translate="">Your order at C3S SCE:</h1>
+    <h3 i18n:translate="">Please check your e-mails to get information on your payment.</h3>
     <br />
 
   </tal:block>
@@ -22,7 +23,7 @@
 
     <div class="alert alert-success">
 
-      <h3><small i18n:translate="">Hello</small> ${firstname} ${lastname},</h3>
+      <h3><small i18n:translate="">Hello</small> ${firstname} ${lastname} !</h3>
 
       <p i18n:translate="">
         You will receive more information on your order and how to pay in an e-mail.
