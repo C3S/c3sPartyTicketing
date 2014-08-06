@@ -657,7 +657,6 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
                     _(u'Size of T-shirt ist mandatory.')
                 )
         # no option set raises an exception
-        print(value['ticket']['ticket_support'])
         if not 'attendance' in value['ticket']['ticket_bc'] \
             and not value['ticket']['ticket_tshirt'] \
             and not value['ticket']['ticket_support']:
