@@ -392,6 +392,11 @@ class PartyTicket(Base):
         return DBSession.query(cls).filter(cls.id == _id).delete()
 
     @classmethod
+    def delete_by_token(cls, _token):
+        """return one member by id"""
+        return DBSession.query(cls).filter(cls.token == _token).delete()
+
+    @classmethod
     def get_number(cls):
         """return number of database entries (by counting rows in table)"""
         return DBSession.query(cls).count()

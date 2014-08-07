@@ -1,4 +1,5 @@
 from pageobject import client
+import re
 
 # base
 class BasePageElement(object):
@@ -19,10 +20,13 @@ class BasePageElement(object):
 	# implement: return WebElement
 	def __call__(self):
 		pass
-	# implement: get text of WebElement
+	# implement: get content of WebElement (deform field)
 	def get(self):
 		pass
-	# implement: set text of WebElement
+	# implement: get content of WebElement (deform field readonly)
+	def getRo(self):
+		pass
+	# implement: set content of WebElement (deform field)
 	def set(self, val):
 		pass
 
@@ -32,8 +36,12 @@ class TextfieldElement(BasePageElement):
 		return client.cli.find_element_by_id(self.locator)
 	def get(self):
 		return self().get_attribute("value")
+	def getRo(self):
+		return self().text
 	def set(self, val):
-		self().send_keys(val)
+		tf = self()
+		tf.clear()
+		tf.send_keys(val)
 
 # textarea
 class TextareaElement(TextfieldElement):
@@ -41,7 +49,8 @@ class TextareaElement(TextfieldElement):
 
 # hidden
 class HiddenElement(TextfieldElement):
-	pass
+	def getRo(self):
+		return self.get()
 
 # radiobutton
 class RadiobuttonElement(BasePageElement):
@@ -52,6 +61,18 @@ class RadiobuttonElement(BasePageElement):
 		for rb in self():
 			if rb.is_selected():
 				return rb.get_attribute("value")
+	# returns iterator of option
+	def getRo(self):
+		option = client.cli.find_elements_by_xpath(
+			"//div[@id='item-"+self.locator+"']/div/p"
+		)
+		if len(option) == 1:
+			return re.sub(
+				self.locator+'-', '', 
+				option[0].get_attribute("id")
+			)
+		return False
+	# val: iterator of option
 	def set(self, val):
 		for rb in self():
 			if rb.get_attribute("value") == val:
@@ -63,6 +84,17 @@ class CheckboxElement(BasePageElement):
 		return client.cli.find_element_by_id(self.locator)
 	def get(self):
 		return self().is_selected()
+	def getRo(self):
+		try:
+			self()
+			return True
+		except:
+			return False
 	def set(self, val):
 		if val is not self.get():
 			self().click()
+
+# button
+class ButtonElement(BasePageElement):
+	def __call__(self):
+		client.cli.find_element_by_id(self.locator).click()

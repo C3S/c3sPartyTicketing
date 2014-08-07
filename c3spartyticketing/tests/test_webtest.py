@@ -16,6 +16,8 @@ from sqlalchemy import engine_from_config
 import transaction
 from datetime import date
 
+from cfg import cfg
+
 
 class FunctionalTestBase(unittest.TestCase):
     pass
@@ -382,7 +384,7 @@ class FunctionalTests(unittest.TestCase):
         """
         res = self.testapp.reset()  # delete cookie
         res = self.testapp.get(
-            '/lu/DK74PX4JVQ/alexander.blum@c3s.cc', status=302,
+            '/lu/'+cfg['member']['token']+'/'+cfg['member']['email'], status=302,
             headers=[('X-Messaging-Token', '1234567890ABCDEFGHIJKL')]
         )
         self.failUnless('The resource was found at' in res.body)
@@ -390,13 +392,13 @@ class FunctionalTests(unittest.TestCase):
         res1 = res.follow()
         #print res1.body
         self.failUnless(
-            '<input type="hidden" name="token" value="DK74PX4JVQ"'
+            '<input type="hidden" name="token" value="'+cfg['member']['token']+'"'
             in res1.body)
         self.failUnless(
-            '<input type="hidden" name="firstname" value="TestVorname"'
+            '<input type="hidden" name="firstname" value="'+cfg['member']['firstname']+'"'
             in res1.body)
         self.failUnless(
-            '<input type="hidden" name="lastname" value="TestNachname"'
+            '<input type="hidden" name="lastname" value="'+cfg['member']['lastname']+'"'
             in res1.body)
 
 

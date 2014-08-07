@@ -22,6 +22,7 @@ class Server(object):
 		return cls._instance
 
 	def connect(self, cfg):
+		self.cfg = cfg
 		# app
 		self.appSettings = appconfig(
 			'config:' + os.path.join(
@@ -36,20 +37,26 @@ class Server(object):
 		Base.metadata.create_all(engine)
 		from c3spartyticketing import main
 		app = main({}, **self.appSettings)
-		# srv
+		# create srv
 		self.srv = StopableWSGIServer.create(
 			app, 
 			host=cfg['app']['host'],
 			port=cfg['app']['port']
 		)
+		# store some derived variables
+		self.srv.url = 'http://' + cfg['app']['host'] + ':' \
+			+ cfg['app']['port'] + '/'
+		self.srv.lu = 'lu/' + cfg['member']['token'] + '/' \
+			+ cfg['member']['email']
+		# check srv
 		if not self.srv.wait():
 			raise Exception('Server could not be fired up. Exiting ...')
 		return self.srv
 
-	def disconnect(self, cfg):
+	def disconnect(self):
 		self.db.close()
 		self.db.remove()
-		os.remove(cfg['app']['db'])
+		os.remove(self.cfg['app']['db'])
 		self.srv.shutdown()
 
 
@@ -63,8 +70,9 @@ class Client(object):
 		return cls._instance
 
 	def connect(self, cfg):
+		self.cfg = cfg
 		self.cli = webdriver.PhantomJS() # Firefox()
 		return self.cli
 
-	def disconnect(self, cfg):
+	def disconnect(self):
 		self.cli.quit()

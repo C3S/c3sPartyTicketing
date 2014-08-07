@@ -8,6 +8,8 @@ from c3spartyticketing.models import (
     DBSession
 )
 
+from cfg import cfg
+
 
 class TestViews(unittest.TestCase):
     """
@@ -67,8 +69,8 @@ class TestViews(unittest.TestCase):
             'yes_api_url': 'https://prototyp01.c3s.cc/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
         }
-        request.matchdict['token'] = 'DK74PX4JVQ'
-        request.matchdict['email'] = 'alexander.blum@c3s.cc'
+        request.matchdict['token'] = cfg['member']['token']
+        request.matchdict['email'] = cfg['member']['email']
         # request.session['appstruct'] = {
         #     'person': {
         #         'firstname': 'foo',
@@ -93,15 +95,15 @@ class TestViews(unittest.TestCase):
         self.assertTrue('id' in request.session['userdata'])
 
         self.assertEqual(
-            'TestVorname',
+            cfg['member']['firstname'],
             request.session['userdata']['firstname']
         )
         self.assertEqual(
-            'TestNachname',
+            cfg['member']['lastname'],
             request.session['userdata']['lastname']
         )
         self.assertEqual(
-            'alexander.blum@c3s.cc',
+            cfg['member']['email'],
             request.session['userdata']['email']
         )
         self.assertEqual(
@@ -109,7 +111,7 @@ class TestViews(unittest.TestCase):
             request.session['userdata']['id']
         )
         self.assertEqual(
-            'normal',
+            cfg['member']['membership_type'],
             request.session['userdata']['mtype']
         )
 

@@ -6,6 +6,7 @@ from pageobject.basepageelement import (
 	TextareaElement,
 	CheckboxElement,
 	RadiobuttonElement,
+	ButtonElement,
 )
 
 
@@ -26,13 +27,11 @@ class TicketNonmemberObject(BasePageObject):
 	tshirt_type = RadiobuttonElement(locators["ticket.nonmember.tshirt.type"])
 	tshirt_size = RadiobuttonElement(locators["ticket.nonmember.tshirt.size"])
 
+	submit = ButtonElement(locators["ticket.nonmember.ticket.submit"])
+	reedit = ButtonElement(locators["ticket.nonmember.confirm.reedit"])
+	confirm = ButtonElement(locators["ticket.nonmember.confirm.confirm"])
+
 	def __init__(self, cfg):
 		self.cfg = cfg
 		client.cli.get(server.srv.url+"barcamp")
-		self.assertEqual(client.cli.current_url, server.srv.url+"barcamp")
-
-	# def submit(self):
-	# 	wait_for =
-	# 	"selenium.browserbot.getCurrentWindow().document.getElementById ('LogoutButton')"
-	# 	self.se.click(locators["login.submit"])
-	# 	self.se.wait_for_condition(wait_for, "30000")
+		#self.assertEqual(client.cli.current_url, server.srv.url+"barcamp")

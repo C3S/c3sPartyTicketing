@@ -3,10 +3,14 @@ from webutils import (
 	Client
 )
 
+locators = {}
 server = Server()
 client = Client()
 
-locators = {}
+
+### member
+
+# fields
 locators["ticket.member.token"] = "token"
 locators["ticket.member.firstname"] = "firstname"
 locators["ticket.member.lastname"] = "lastname"
@@ -32,6 +36,15 @@ locators["ticket.member.rep.type"] = "rep-type"
 locators["ticket.member.tshirt.type"] = "tshirt-type"
 locators["ticket.member.tshirt.size"] = "tshirt-size"
 
+# buttons
+locators["ticket.member.ticket.submit"] = "deformsubmit"
+locators["ticket.member.confirm.reedit"] = "deformreedit"
+locators["ticket.member.confirm.confirm"] = "deformconfirmed"
+
+
+### nonmember
+
+# fields
 locators["ticket.nonmember.firstname"] = "firstname"
 locators["ticket.nonmember.lastname"] = "lastname"
 locators["ticket.nonmember.email"] = "email"
@@ -44,3 +57,8 @@ locators["ticket.nonmember.supportxxl"] = "ticket_support-2"
 locators["ticket.nonmember.comment"] = "comment"
 locators["ticket.nonmember.tshirt.type"] = "tshirt-type"
 locators["ticket.nonmember.tshirt.size"] = "tshirt-size"
+
+# buttons
+locators["ticket.nonmember.ticket.submit"] = "deformsubmit"
+locators["ticket.nonmember.confirm.reedit"] = "deformreedit"
+locators["ticket.nonmember.confirm.confirm"] = "deformconfirmed"
