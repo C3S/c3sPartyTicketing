@@ -12,7 +12,7 @@ cfg = {
 		'desired_capabilities': {} # XXX: override default
 	},
 	'member': {
-		'token': 'M6QVLXS7T2',
+		'token': 'OQ157KBFWH',
 		'firstname': 'TestFirstname',
 		'lastname': 'TestLastname',
 		'email': 'alexander.blum@c3s.cc',

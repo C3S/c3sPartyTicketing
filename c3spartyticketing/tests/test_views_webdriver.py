@@ -16,23 +16,24 @@ from c3spartyticketing.models import PartyTicket
 
 import coverage
 
+# clear screen once for all selenium tests
+folder = cfg['dbg']['screenshotPath']
+png = re.compile('^.*\.png$')
+for f in os.listdir(folder):
+	file_path = os.path.join(folder, f)
+	try:
+		if os.path.isfile(file_path) and png.match(f):
+			os.unlink(file_path)
+	except Exception, e:
+		print e
+
+
 class SeleniumTestBase(unittest.TestCase):
 
 	@classmethod
 	def setUpClass(cls):
-		coverage.process_startup()
 		cls.srv = server.connect(cfg)
 		cls.cli = client.connect(cfg)
-		# clear screen
-		folder = cfg['dbg']['screenshotPath']
-		screenshot = re.compile('^.*\.png$')
-		for f in os.listdir(folder):
-			file_path = os.path.join(folder, f)
-			try:
-				if os.path.isfile(file_path) and screenshot.match(f):
-					os.unlink(file_path)
-			except Exception, e:
-				print e
 
 	@classmethod
 	def tearDownClass(cls):
