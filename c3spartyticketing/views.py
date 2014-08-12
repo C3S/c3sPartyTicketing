@@ -1950,7 +1950,6 @@ def nonmember_confirm_view(request):
             deform.Button('confirmed', button_submit_text),
             deform.Button('reedit', _(u'Wait, I might have to change...'))
         ],
-        #use_ajax=True,
         renderer=zpt_renderer
     )
 
@@ -1964,8 +1963,8 @@ def nonmember_confirm_view(request):
 def nonmember_success_view(request):
     """
     the user has confirmed the order
-        XXX: 1. save to db (update, if token exists in db; create otherwise)
-        XXX: 2. send emails (usermail, accmail)
+        1. save to db
+        2. send emails (usermail, accmail)
         3. show userfeedback
     """
 
@@ -2066,23 +2065,11 @@ def nonmember_success_view(request):
             'firstname': appstruct['personal']['firstname'],
             'lastname': appstruct['personal']['lastname'],
             'email': appstruct['personal']['email'],
-            #'email_confirm_code': appstruct['email_confirm_code'],
-            #'gv_attendance': (appstruct['ticket']['ticket_gv'] == 1 or 'False'),
             'bc_attendance': (
                 'attendance' in appstruct['ticket']['ticket_bc'] or 'False'),
             'bc_buffet': ('buffet' in appstruct['ticket']['ticket_bc']  or 'False'),
-            #'discount': appstruct['ticket']['discount'],
             'the_total': appstruct['ticket']['the_total'],
             'comment': appstruct['ticket']['comment'],
-            #'gv_representation': (appstruct['ticket']['ticket_gv'] == 2  or 'False'),
-            #'rep_firstname': appstruct['representation']['firstname'],
-            #'rep_lastname': appstruct['representation']['lastname'],
-            #'rep_email': appstruct['representation']['email'],
-            #'rep_street': appstruct['representation']['street'],
-            #'rep_zip': appstruct['representation']['zip'],
-            #'rep_city': appstruct['representation']['city'],
-            #'rep_country': appstruct['representation']['country'],
-            #'rep_type': appstruct['representation']['representation_type'],
             'tshirt': appstruct['ticket']['ticket_tshirt'] or 'False',
             'tshirt_type': appstruct['tshirt']['tshirt_type'],
             'tshirt_size': appstruct['tshirt']['tshirt_size'],

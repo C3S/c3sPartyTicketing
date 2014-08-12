@@ -18,6 +18,7 @@ from datetime import date
 
 from cfg import cfg
 
+# XXX: test ticket_appstruct
 
 class FunctionalTestBase(unittest.TestCase):
     pass
