@@ -21,16 +21,21 @@ class Server(object):
 			cls._instance = super(Server, cls).__new__(cls, *args, **kwargs)
 		return cls._instance
 
-	def connect(self, cfg):
+	def connect(self, cfg, customAppSettings={}):
 		self.cfg = cfg
-		# app
+		# create appConfig from ini
 		self.appSettings = appconfig(
 			'config:' + os.path.join(
-				os.path.dirname(__file__), '../../', cfg['app']['ini']
+				os.path.dirname(__file__), '../../', self.cfg['app']['ini']
 			)
 		)
-		self.appSettings['sqlalchemy.url'] = 'sqlite:///'+cfg['app']['db']
-		# XXX: merge self.appSettings and cfg['app']['appSettings']
+		# store some derived variables
+		self.appSettings['sqlalchemy.url'] = 'sqlite:///'+self.cfg['app']['db']
+		# merge/override appConfig with custom settings in cfg
+		self.appSettings.update(self.cfg['app']['appSettings'])
+		# merge/override appConfig with individual custom settings
+		self.appSettings.update(customAppSettings)
+		# app
 		engine = engine_from_config(self.appSettings)
 		DBSession.configure(bind=engine)
 		self.db = DBSession
@@ -40,14 +45,14 @@ class Server(object):
 		# create srv
 		self.srv = StopableWSGIServer.create(
 			app, 
-			host=cfg['app']['host'],
-			port=cfg['app']['port']
+			host=self.cfg['app']['host'],
+			port=self.cfg['app']['port']
 		)
 		# store some derived variables
-		self.srv.url = 'http://' + cfg['app']['host'] + ':' \
-			+ cfg['app']['port'] + '/'
-		self.srv.lu = 'lu/' + cfg['member']['token'] + '/' \
-			+ cfg['member']['email']
+		self.srv.url = 'http://' + self.cfg['app']['host'] + ':' \
+			+ self.cfg['app']['port'] + '/'
+		self.srv.lu = 'lu/' + self.cfg['member']['token'] + '/' \
+			+ self.cfg['member']['email']
 		# check srv
 		if not self.srv.wait():
 			raise Exception('Server could not be fired up. Exiting ...')

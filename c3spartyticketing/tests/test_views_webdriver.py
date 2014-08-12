@@ -30,10 +30,16 @@ for f in os.listdir(folder):
 
 class SeleniumTestBase(unittest.TestCase):
 
+	# overload: configuration of individual appSettings
+	@classmethod
+	def appSettings(cls):
+		return {}
+
 	@classmethod
 	def setUpClass(cls):
-		cls.srv = server.connect(cfg)
-		cls.cli = client.connect(cfg)
+		cls.cfg = cfg
+		cls.srv = server.connect(cls.cfg, cls.appSettings())
+		cls.cli = client.connect(cls.cfg)
 
 	@classmethod
 	def tearDownClass(cls):
@@ -41,14 +47,14 @@ class SeleniumTestBase(unittest.TestCase):
 		server.disconnect()
 
 	def screen(self, name=''):
-		if cfg['dbg']['screenshot']:
+		if self.cfg['dbg']['screenshot']:
 			self.cli.get_screenshot_as_file(
-				cfg['dbg']['screenshotPath'] + self.__class__.__name__ 
+				self.cfg['dbg']['screenshotPath'] + self.__class__.__name__ 
 				+ "-" + self._testMethodName + '-' + name + '.png'
 			)
 
 	def logSection(self, name=''):
-		if cfg['dbg']['logSection']:
+		if self.cfg['dbg']['logSection']:
 			line = '~'*80
 			testclass = self.__class__.__name__
 			testname = self._testMethodName
@@ -62,6 +68,9 @@ class SeleniumTestBase(unittest.TestCase):
 # XXX: test form logic: check manipulation correction after submit
 # XXX: test python form logic: calculated values (total, ...)
 # XXX: test cases of user feedback
+# XXX: test changes of route inbetween member/nonmember
+# XXX: test registration.end
+# XXX: test registration.finishonsubmit
 
 ### Member #####################################################################
 
@@ -127,7 +136,7 @@ class TicketMemberFormFieldValuesTests(SeleniumTestBase):
 		# renew session for each single test
 		self.cli.delete_all_cookies()
 		# init form
-		self.form = TicketMemberObject(cfg)
+		self.form = TicketMemberObject(self.cfg)
 		# data provider
 		self.data_checkbox = [False, False, True, True, False, True, False]
 		self.data_generalassembly = ["1", "2", "3"]
@@ -137,9 +146,9 @@ class TicketMemberFormFieldValuesTests(SeleniumTestBase):
 
 	def test_hidden_values(self):
 		f = self.form
-		self.assertEqual(f.firstname.get(), cfg['member']['firstname'])
-		self.assertEqual(f.lastname.get(), cfg['member']['lastname'])
-		self.assertEqual(f.token.get(), cfg['member']['token'])
+		self.assertEqual(f.firstname.get(), self.cfg['member']['firstname'])
+		self.assertEqual(f.lastname.get(), self.cfg['member']['lastname'])
+		self.assertEqual(f.token.get(), self.cfg['member']['token'])
 
 	def test_generalassembly_values(self):
 		f = self.form
@@ -260,7 +269,7 @@ class TicketMemberFormFieldLogicTests(SeleniumTestBase):
 		# renew session for each single test
 		self.cli.delete_all_cookies()
 		# init form
-		self.form = TicketMemberObject(cfg)
+		self.form = TicketMemberObject(self.cfg)
 
 	def test_buffet_logic(self):
 		f = self.form
@@ -350,11 +359,11 @@ class TicketMemberFormActionRedirectsTests(SeleniumTestBase):
 	def setUp(self):
 		self.logSection()
 		# delete member ticket in db if present
-		PartyTicket.delete_by_token(cfg['member']['token'])
+		PartyTicket.delete_by_token(self.cfg['member']['token'])
 		# renew session for each single test
 		self.cli.delete_all_cookies()
 		# init form
-		self.form = TicketMemberObject(cfg)
+		self.form = TicketMemberObject(self.cfg)
 
 	def test_ticket_submit_redirect(self):
 		f = self.form
@@ -405,7 +414,7 @@ class TicketMemberFormActionDataTests(SeleniumTestBase):
 		# renew session for each single test
 		self.cli.delete_all_cookies()
 		# init form
-		self.form = TicketMemberObject(cfg)
+		self.form = TicketMemberObject(self.cfg)
 
 	def test_ticket_submit_data(self):
 		f = self.form
@@ -432,9 +441,9 @@ class TicketMemberFormActionDataTests(SeleniumTestBase):
 		f.submit()
 		self.screen("after")
 		# check data
-		self.assertEqual(f.firstname.getRo(), cfg['member']['firstname'])
-		self.assertEqual(f.lastname.getRo(), cfg['member']['lastname'])
-		self.assertEqual(f.email.getRo(), cfg['member']['email'])
+		self.assertEqual(f.firstname.getRo(), self.cfg['member']['firstname'])
+		self.assertEqual(f.lastname.getRo(), self.cfg['member']['lastname'])
+		self.assertEqual(f.email.getRo(), self.cfg['member']['email'])
 		self.assertEqual(f.generalassembly.getRo(), "1")
 		self.assertEqual(f.barcamp.getRo(), True)
 		self.assertEqual(f.buffet.getRo(), True)
@@ -562,6 +571,31 @@ class TicketMemberFormActionDataTests(SeleniumTestBase):
 # 		f = self.form
 # 		pass
 
+
+class TicketMemberRegistrationEndTests(SeleniumTestBase):
+	"""
+	tests route, if registation ended
+	"""
+
+	@classmethod
+	def appSettings(cls):
+		return {
+			'registration.finish_on_submit': True,
+			'registration.end': "1970-01-01"
+		}
+
+	def setUp(self):
+		self.logSection()
+		# renew session for each single test
+		self.cli.delete_all_cookies()
+		# init form
+		self.form = TicketMemberObject(self.cfg)
+
+	def test_custom(self):
+		pass
+
+
+
 ### Nonmember ##################################################################
 
 class TicketNonmemberAccessTests(SeleniumTestBase):
@@ -599,7 +633,7 @@ class TicketNonemberFormFieldValuesTests(SeleniumTestBase):
 		# renew session for each single test
 		self.cli.delete_all_cookies()
 		# init form
-		self.form = TicketNonmemberObject(cfg)
+		self.form = TicketNonmemberObject(self.cfg)
 		# data provider
 		self.data_checkbox = [False, False, True, True, False, True, False]
 		self.data_tshirt_type = ["m", "f"]
@@ -695,7 +729,7 @@ class TicketNonmemberFormFieldLogicTests(SeleniumTestBase):
 		# renew session for each single test
 		self.cli.delete_all_cookies()
 		# init form
-		self.form = TicketNonmemberObject(cfg)
+		self.form = TicketNonmemberObject(self.cfg)
 
 	def test_buffet_logic(self):
 		self.logSection()
@@ -734,7 +768,7 @@ class TicketNonmemberFormActionRedirectsTests(SeleniumTestBase):
 		# renew session for each single test
 		self.cli.delete_all_cookies()
 		# init form
-		self.form = TicketNonmemberObject(cfg)
+		self.form = TicketNonmemberObject(self.cfg)
 
 	def test_ticket_submit_redirect(self):
 		f = self.form
@@ -794,7 +828,7 @@ class TicketMemberFormActionDataTests(SeleniumTestBase):
 		# renew session for each single test
 		self.cli.delete_all_cookies()
 		# init form
-		self.form = TicketNonmemberObject(cfg)
+		self.form = TicketNonmemberObject(self.cfg)
 
 	def test_ticket_submit_data(self):
 		f = self.form

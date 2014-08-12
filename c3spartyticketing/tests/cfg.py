@@ -5,7 +5,7 @@ cfg = {
 		'port': '6544',
 		'db': 'test_views_webdriver.db',
 		'ini': "development.ini",
-		#'appconfig': {}, # XXX: override ini
+		'appSettings': {},
 	},
 	'webdriver': {
 		#'driver': webdriver.PhantomJS(), # XXX init not here
@@ -20,7 +20,7 @@ cfg = {
 	},
 	'dbg': {
 		'logSection': True,
-		'screenshot': True,
+		'screenshot': False,
 		'screenshotPath': './c3spartyticketing/tests/screenshots/'
 	}
 }
