@@ -14,6 +14,8 @@ from c3spartyticketing.models import (
     Group,
     C3sStaff,
 )
+import string
+import random
 DEBUG = False
 
 
@@ -360,6 +362,285 @@ class PartyTicketTests(unittest.TestCase):
     #     self.session.flush()
     #     result2 = myClass.num_passengers()
     #     self.assertEqual(result2, 4)
+
+
+class PartyTicketStatsTests(unittest.TestCase):
+
+    def setUp(self):
+        self.config = testing.setUp()
+        self.config.include('pyramid_mailer.testing')
+        try:
+            DBSession.remove()
+            #print("removing old DBSession")
+        except:
+            #print("no DBSession to remove")
+            pass
+        #engine = create_engine('sqlite:///test_models.db')
+        engine = create_engine('sqlite://')
+        self.session = DBSession
+        DBSession.configure(bind=engine)  # XXX does influence self.session!?!
+        Base.metadata.create_all(engine)
+
+    def tearDown(self):
+        self.session.close()
+        self.session.remove()
+
+    # get target class
+    def _getTargetClass(self):
+        from c3spartyticketing.models import PartyTicket
+        return PartyTicket
+
+    # make a random string
+    def _rnd(self, size=6, chars=string.ascii_uppercase + string.digits):
+        return u''.join(random.choice(chars) for _ in range(size))
+
+    # make a random instance of target class
+    def _makeRandom(self,
+                    token=None,
+                    firstname=None,
+                    lastname=None,
+                    email=None,
+                    password=None,
+                    locale=u"de",
+                    email_is_confirmed=False,
+                    email_confirm_code=False,
+                    date_of_submission=date.today(),
+                    num_tickets=1,
+                    ticket_gv_attendance=0,
+                    ticket_bc_attendance=False,
+                    ticket_bc_buffet=False,
+                    ticket_tshirt=False,
+                    ticket_tshirt_type=None,
+                    ticket_tshirt_size=None,
+                    ticket_all=False,
+                    ticket_support=False,
+                    ticket_support_x=False,
+                    ticket_support_xl=False,
+                    support=0,
+                    discount=0,
+                    the_total=0,
+                    rep_firstname=None,
+                    rep_lastname=None,
+                    rep_street=None,
+                    rep_zip=None,
+                    rep_city=None,
+                    rep_country=None,
+                    rep_type='member',
+                    guestlist=False,
+                    user_comment=None,
+                    membership_type=u'normal'
+                    ):
+        _ticket = self._getTargetClass()(  # order of params DOES matter
+            token or self._rnd(),
+            firstname or self._rnd(),
+            lastname or self._rnd(),
+            email or self._rnd()+'@test.c3s.cc',
+            password or self._rnd(),
+            locale,
+            email_is_confirmed,
+            email_confirm_code or self._rnd(),
+            date_of_submission,
+            num_tickets,
+            ticket_gv_attendance,
+            ticket_bc_attendance,
+            ticket_bc_buffet,
+            ticket_tshirt,
+            ticket_tshirt_type,
+            ticket_tshirt_size,
+            ticket_all,
+            ticket_support,
+            ticket_support_x,
+            ticket_support_xl,
+            support,
+            discount,
+            the_total,
+            rep_firstname or self._rnd(),
+            rep_lastname or self._rnd(),
+            rep_street or self._rnd(),
+            rep_zip or self._rnd(),
+            rep_city or self._rnd(),
+            rep_country or self._rnd(),
+            rep_type,
+            guestlist,
+            user_comment or self._rnd()
+        )
+        _ticket.membership_type = membership_type
+        return _ticket
+
+    def test_stats_general(self):
+        # configuration
+        tickets = 4*10 # max permutation * 4
+        # get class
+        myClass = self._getTargetClass()
+        # build target template
+        _tpl = myClass.get_stats_cfg()
+        target = {}
+        target['datasets'] = _tpl['tpl']['mt'].copy()
+        for x in range(tickets):
+            # choose random values
+            mt = random.choice(_tpl['dataprovider']['membership_type'])
+            # mappings from db values to dict key in stats
+            map_mt = _tpl['map']['mt'][mt]
+            # remember target values
+            target['datasets']['total'] += 1
+            target['datasets'][map_mt] += 1
+            if mt in _tpl['mt_member']:
+                target['datasets']['member'] += 1
+            # write to db
+            dbentry = self._makeRandom(membership_type=mt)
+            self.session.add(dbentry)
+        # read from db
+        stats = myClass.get_stats_general()
+        # check stats
+        self.assertEqual(
+            stats,
+            target
+        )
+        # check sums
+        for item in stats:
+            _total = 0
+            _member = 0
+            for mt in stats[item]:
+                if mt in _tpl['mt_member']:
+                    _member += stats['datasets'][mt]
+                if mt in _tpl['mt_total']:
+                    _total += stats['datasets'][mt]
+            self.assertEqual(
+                stats['datasets']['member'],
+                _member
+            )
+            self.assertEqual(
+                stats['datasets']['total'],
+                _total
+            )
+
+    def test_stats_events(self):
+        # configuration
+        tickets = 4**4*10 # max permutation * 10
+        # get class
+        myClass = self._getTargetClass()
+        # build target template
+        _tpl = myClass.get_stats_cfg()
+        target = {
+            'gv': {
+                'participating': _tpl['tpl']['mt'].copy(),
+                'represented': _tpl['tpl']['mt'].copy(),
+                'cancelled': _tpl['tpl']['mt'].copy(),
+                'unknown': _tpl['tpl']['mt'].copy(),
+            },
+            'bc': {
+                'participating': _tpl['tpl']['mt'].copy(),
+                'cancelled': _tpl['tpl']['mt'].copy(),
+                'buffet': _tpl['tpl']['mt'].copy(),
+            },
+        }
+        for x in range(tickets):
+            # choose random values
+            mt = random.choice(_tpl['dataprovider']['membership_type'])
+            gv = random.choice(_tpl['dataprovider']['ticket_gv_attendance'])
+            bc = random.choice(_tpl['dataprovider']['ticket_bc_attendance'])
+            buffet = random.choice(_tpl['dataprovider']['ticket_bc_buffet'])
+            # mappings from db values to dict key in stats
+            map_mt = _tpl['map']['mt'][mt]
+            map_gv = _tpl['map']['gv'][gv]
+            map_bc = _tpl['map']['bc'][bc]
+            # remember target values
+            if mt in _tpl['mt_member']:
+                target['gv'][map_gv]['total'] += 1
+                target['gv'][map_gv]['member'] += 1
+                target['gv'][map_gv][map_mt] += 1
+            target['bc'][map_bc]['total'] += 1
+            target['bc'][map_bc][map_mt] += 1
+            if mt in _tpl['mt_member']:
+                target['bc'][map_bc]['member'] += 1
+            if buffet:
+                target['bc']['buffet']['total'] += 1
+                target['bc']['buffet'][map_mt] += 1
+                if mt in _tpl['mt_member']:
+                    target['bc']['buffet']['member'] += 1
+            # write to db
+            dbentry = self._makeRandom(
+                membership_type=mt,
+                ticket_gv_attendance=gv,
+                ticket_bc_attendance=bc,
+                ticket_bc_buffet=buffet
+            )
+            self.session.add(dbentry)
+        # read from db
+        stats = myClass.get_stats_events()
+        self.maxDiff = None
+        # check stats
+        self.assertEqual(
+            target,
+            stats
+        )
+        # check sums
+        for event in _tpl['events']:
+            for item in stats[event]:
+                _total = 0
+                _member = 0
+                for mt in stats[event][item]:
+                    if mt in _tpl['mt_member']:
+                        _member += stats[event][item][mt]
+                    if mt in _tpl['mt_total']:
+                        _total += stats[event][item][mt]
+                self.assertEqual(
+                    stats[event][item]['member'],
+                    _member
+                )
+                self.assertEqual(
+                    stats[event][item]['total'],
+                    _total
+                )
+
+    def test_stats_extras(self):
+        # configuration
+        tickets = 2**6*10 # max permutation * 10
+        # get class
+        myClass = self._getTargetClass()
+        # build target template
+        _tpl = myClass.get_stats_cfg()
+        target = {
+            'tshirts': _tpl['tpl']['tshirts'].copy()
+        }
+        for x in range(tickets):
+            # choose random values
+            t = random.choice(_tpl['dataprovider']['ticket_tshirt'])
+            tt = random.choice(_tpl['dataprovider']['ticket_tshirt_type'])
+            ts = random.choice(_tpl['dataprovider']['ticket_tshirt_size'])
+            # mappings from db values to dict key in stats
+            map_tt = _tpl['map']['tt'][tt]
+            # remember target values
+            if(t):
+                target['tshirts']['total'] += 1
+                target['tshirts'][map_tt][ts] += 1
+            # write to db
+            dbentry = self._makeRandom(
+                ticket_tshirt=t,
+                ticket_tshirt_type=tt,
+                ticket_tshirt_size=ts,
+            )
+            self.session.add(dbentry)
+        # read from db
+        myClass = self._getTargetClass()
+        stats = myClass.get_stats_extras()
+        self.maxDiff = None
+        # check stats
+        self.assertEqual(
+            target,
+            stats
+        )
+        # check sums
+        _total = 0
+        for ttype in stats['tshirts']:
+            if ttype in ('female', 'male'):
+                for size in stats['tshirts'][ttype]:
+                    _total += stats['tshirts'][ttype][size]
+        self.assertEqual(
+            stats['tshirts']['total'],
+            _total
+        )
+
 
 
 class GroupTests(unittest.TestCase):

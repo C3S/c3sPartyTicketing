@@ -441,17 +441,29 @@ class PartyTicket(Base):
 
     # ticket categories
     # totals
+    # @classmethod
+    # def get_num_member(cls):
+    #     """return number of all members with database entry"""
+    #     return DBSession.query(cls).filter(
+    #         cls.membership_type != u'nonmember').count()
+
+    # @classmethod
+    # def get_num_nonmember(cls):
+    #     """return number of non members with database entry"""
+    #     return DBSession.query(cls).filter(
+    #         cls.membership_type == u'nonmember').count()
+
     @classmethod
     def get_num_normal(cls):
         """return number of normal members w/ ticket"""
         return DBSession.query(cls).filter(
-            cls.membership_type == 'normal').count()
+            cls.membership_type == u'normal').count()
 
     @classmethod
     def get_num_investing(cls):
         """return number of investing members w/ ticket"""
         return DBSession.query(cls).filter(
-            cls.membership_type == 'investing').count()
+            cls.membership_type == u'investing').count()
 
     @classmethod
     def get_num_normal_checked(cls):
@@ -459,7 +471,7 @@ class PartyTicket(Base):
         _all = DBSession.query(cls).all()
         _num = 0
         for item in _all:
-            if (item.membership_type == 'investing'):
+            if (item.membership_type == u'investing'):
                 _num = _num + item.checked_persons
         return _num
 
@@ -469,7 +481,7 @@ class PartyTicket(Base):
         _all = DBSession.query(cls).all()
         _num = 0
         for item in _all:
-            if (item.membership_type == 'investing'):
+            if (item.membership_type == u'investing'):
                 _num = _num + item.checked_persons
         return _num
 
@@ -735,5 +747,172 @@ class PartyTicket(Base):
         """
         login = cls.get_by_id(_id)  # is None if user not exists
         return login
+
+    # stats
+    @classmethod
+    def get_stats_cfg(cls):
+        return {
+            # templates
+            'tpl': {
+                # template for membership_type categories
+                'mt': {
+                    'total': 0,
+                    'member': 0,
+                    'normal': 0,
+                    'investing': 0,
+                    'nonmember': 0,
+                    'unknown': 0,
+                },
+                # template for tshirts
+                'tshirts': {
+                    'total': 0,
+                    'female': {
+                        'S': 0,
+                        'M': 0,
+                        'L': 0,
+                        'XL': 0,
+                        'XXL': 0,
+                        'XXXL': 0,
+                    },
+                    'male': {
+                        'S': 0,
+                        'M': 0,
+                        'L': 0,
+                        'XL': 0,
+                        'XXL': 0,
+                        'XXXL': 0,
+                    },
+                }
+            },
+            # mappings from db values to dict key in stats
+            # XXX: centralize mappings
+            'map': {
+                # membership_type
+                'mt': {
+                    'normal': 'normal',
+                    'investing': 'investing',
+                    'nonmember': 'nonmember',
+                    None: 'unknown',
+                },
+                # ticket_ga_attendance
+                'gv': {
+                    0: 'unknown',
+                    1: 'participating',
+                    2: 'represented',
+                    3: 'cancelled',
+                    None: 'unknown',
+                },
+                # ticket_bc_attendance
+                'bc': {
+                    True: 'participating',
+                    False: 'cancelled',
+                },
+                # ticket_tshirt_type
+                'tt': {
+                    'f': 'female',
+                    'm': 'male',
+                },
+            },
+            # events
+            'events': ('gv', 'bc'),
+            # dict keys of membership types in stats for the total sum
+            'mt_total': (u'normal', u'investing', u'nonmember', u'unknown'),
+            # valid membership types in db
+            'mt_valid': (u'normal', u'investing', u'nonmember'),
+            # membership types in db, which constitute the member sum
+            'mt_member': (u'normal', u'investing'),
+            # testing values in db
+            'dataprovider': {
+                'membership_type': (u'normal', u'investing', None),
+                'ticket_gv_attendance': (1, 2, 3, None),
+                'ticket_bc_attendance': (True, False),
+                'ticket_bc_buffet': (True, False),
+                'ticket_tshirt': (True, False),
+                'ticket_tshirt_type': (u'm', u'f'),
+                'ticket_tshirt_size': (
+                    u'S', u'M', u'L', u'XL', u'XXL', u'XXXL'
+                ),
+            }
+        }
+
+    @classmethod
+    def get_stats_general(cls):
+        """return general statistics"""
+        _tpl = cls.get_stats_cfg()
+        _stats = {
+            'datasets': _tpl['tpl']['mt'].copy()
+        }
+        _all = DBSession.query(cls).all()
+        for item in _all:
+            _stats['datasets']['total'] += 1
+            mt = item.membership_type
+            if(mt in _tpl['mt_valid']):
+                _stats['datasets'][mt] += 1
+                if(mt in _tpl['mt_member']):
+                    _stats['datasets']['member'] += 1
+            else:
+                _stats['datasets']['unknown'] += 1
+        return _stats
+
+    @classmethod
+    def get_stats_events(cls):
+        """return statistics of events"""
+        _tpl = cls.get_stats_cfg()
+        _stats = {
+            'gv': {
+                'participating': _tpl['tpl']['mt'].copy(),
+                'represented': _tpl['tpl']['mt'].copy(),
+                'cancelled': _tpl['tpl']['mt'].copy(),
+                'unknown': _tpl['tpl']['mt'].copy(),
+            },
+            'bc': {
+                'participating': _tpl['tpl']['mt'].copy(),
+                'cancelled': _tpl['tpl']['mt'].copy(),
+                'buffet': _tpl['tpl']['mt'].copy(),
+            }
+        }
+        _all = DBSession.query(cls).all()
+        for item in _all:
+            mt = item.membership_type
+            map_gv = _tpl['map']['gv'][item.ticket_gv_attendance]
+            map_bc = _tpl['map']['bc'][item.ticket_bc_attendance]
+            # general assembly attendance
+            if(mt in _tpl['mt_member']):
+                _stats['gv'][map_gv]['total'] += 1
+                _stats['gv'][map_gv][mt] += 1
+                _stats['gv'][map_gv]['member'] += 1
+            # barcamp attendace
+            _stats['bc'][map_bc]['total'] += 1
+            if(mt in _tpl['mt_valid']):
+                _stats['bc'][map_bc][mt] += 1
+                if(mt in _tpl['mt_member']):
+                    _stats['bc'][map_bc]['member'] += 1
+            else:
+                _stats['bc'][map_bc]['unknown'] += 1
+            # barcamp buffet
+            if(item.ticket_bc_buffet):
+                _stats['bc']['buffet']['total'] += 1
+                if(mt in _tpl['mt_valid']):
+                    _stats['bc']['buffet'][mt] += 1
+                    if(mt in _tpl['mt_member']):
+                        _stats['bc']['buffet']['member'] += 1
+                else:
+                    _stats['bc']['buffet']['unknown'] += 1
+        return _stats
+
+    @classmethod
+    def get_stats_extras(cls):
+        """return statistics of extras"""
+        _tpl = cls.get_stats_cfg()
+        _stats = {
+            'tshirts': _tpl['tpl']['tshirts']
+        }
+        _all = DBSession.query(cls).all()
+        for item in _all:
+            if(item.ticket_tshirt):
+                map_tt = _tpl['map']['tt'][item.ticket_tshirt_type]
+                _stats['tshirts']['total'] += 1
+                _stats['tshirts'][map_tt][item.ticket_tshirt_size] += 1
+        return _stats
 
 Index('ticket_index', PartyTicket.tcodes, unique=True, mysql_length=255)
