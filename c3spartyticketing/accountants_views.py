@@ -333,12 +333,13 @@ def stats_view(request):
         'sum_tickets_paid': PartyTicket.get_sum_tickets_paid(),
         'sum_tickets_paid_desk': PartyTicket.get_sum_tickets_paid_desk(),
     }
+    
     # Tickets
-    stats['accounting']['tickets'] = {
-        'sum_tickets_preorder_cash': PartyTicket.get_sum_tickets_preorder_cash(),
-        'sum_tickets_new_cash': PartyTicket.get_sum_tickets_new_cash(),
-        'num_passengers_paid_checkedin': PartyTicket.get_num_passengers_paid_checkedin(),
-    }
+    #stats['accounting']['tickets'] = {
+    #    'sum_tickets_preorder_cash': PartyTicket.get_sum_tickets_preorder_cash(),
+    #    'sum_tickets_new_cash': PartyTicket.get_sum_tickets_new_cash(),
+    #    'num_passengers_paid_checkedin': PartyTicket.get_num_passengers_paid_checkedin(),
+    #}
     
     #_number_of_tickets = PartyTicket.get_num_tickets()
     #_num_passengers = PartyTicket.num_passengers()
