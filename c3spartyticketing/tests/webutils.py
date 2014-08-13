@@ -38,7 +38,6 @@ class Server(object):
 		# app
 		engine = engine_from_config(self.appSettings)
 		DBSession.configure(bind=engine)
-		self.db = DBSession
 		Base.metadata.create_all(engine)
 		from c3spartyticketing import main
 		app = main({}, **self.appSettings)
@@ -48,6 +47,7 @@ class Server(object):
 			host=self.cfg['app']['host'],
 			port=self.cfg['app']['port']
 		)
+		self.srv.db = DBSession
 		# store some derived variables
 		self.srv.url = 'http://' + self.cfg['app']['host'] + ':' \
 			+ self.cfg['app']['port'] + '/'
@@ -59,8 +59,8 @@ class Server(object):
 		return self.srv
 
 	def disconnect(self):
-		self.db.close()
-		self.db.remove()
+		self.srv.db.close()
+		self.srv.db.remove()
 		os.remove(self.cfg['app']['db'])
 		self.srv.shutdown()
 

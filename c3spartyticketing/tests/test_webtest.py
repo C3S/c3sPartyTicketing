@@ -305,6 +305,7 @@ class FunctionalTests(unittest.TestCase):
             'c3spartyticketing.mailaddr': 'c@c3s.cc',
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
             'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'registration.endgvonly': '2014-09-04',
             'registration.end': '2014-09-04',
             'registration.finish_on_submit': 'true',
             'registration.access_denied_url': 'https://yes.c3s.cc',
@@ -666,7 +667,7 @@ class FunctionalTests(unittest.TestCase):
             'yes_api_url': 'https://prototyp01.c3s.cc/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
             'registration.finish_on_submit': 'false',
-            'registration.end': '2100-01-01'
+            'registration.endgvonly': '2100-01-01'
         }
 
         # db entry
@@ -719,7 +720,7 @@ class FunctionalTests(unittest.TestCase):
             'yes_api_url': 'https://prototyp01.c3s.cc/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
             'registration.finish_on_submit': 'false',
-            'registration.end': str(today)
+            'registration.endgvonly': str(today)
         }
 
         # db entry
@@ -765,6 +766,7 @@ class FunctionalTests(unittest.TestCase):
         from datetime import datetime, timedelta
         self.config.add_route('party_view', '/')
         self.config.add_route('finished', '/finished')
+        self.config.add_route('end', '/end')
         request = testing.DummyRequest()
         yesterday = (datetime.today() - timedelta(1)).date()
         print yesterday
@@ -773,7 +775,7 @@ class FunctionalTests(unittest.TestCase):
             'yes_api_url': 'https://prototyp01.c3s.cc/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
             'registration.finish_on_submit': 'false',
-            'registration.end': str(yesterday)
+            'registration.endgvonly': str(yesterday)
         }
 
         # db entry
@@ -789,7 +791,10 @@ class FunctionalTests(unittest.TestCase):
         }
         result = check_route(request)
         self.assertTrue(isinstance(result, HTTPFound))
-        self.assertTrue(result.location == 'http://example.com/finished')
+        self.assertEqual(
+            result.location,
+            'http://example.com/finished'
+        )
 
         # no db entry
         request.matchdict['token'] = 'NOTINDB'
@@ -804,7 +809,10 @@ class FunctionalTests(unittest.TestCase):
         }
         result = check_route(request)
         self.assertTrue(isinstance(result, HTTPFound))
-        self.assertTrue(result.location == 'http://example.com/finished')
+        self.assertEqual(
+            result.location,
+            'http://example.com/end'
+        )
 
     # def test_check_route_with_userdata(self):
     #     from pyramid.httpexceptions import (

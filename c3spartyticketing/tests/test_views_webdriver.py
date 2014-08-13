@@ -2,6 +2,7 @@
 import os
 import unittest
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 
 from cfg import cfg
 from pageobject import (
@@ -9,10 +10,19 @@ from pageobject import (
 	client
 )
 import re
+from datetime import (
+	date,
+	datetime,
+	timedelta
+)
 from pageobject.ticket_member import TicketMemberObject
 from pageobject.ticket_nonmember import TicketNonmemberObject
 
 from c3spartyticketing.models import PartyTicket
+import transaction
+
+import string
+import random
 
 import coverage
 
@@ -27,7 +37,7 @@ for f in os.listdir(folder):
 	except Exception, e:
 		print e
 
-
+# XXX: put class in webutils
 class SeleniumTestBase(unittest.TestCase):
 
 	# overload: configuration of individual appSettings
@@ -64,6 +74,107 @@ class SeleniumTestBase(unittest.TestCase):
 				+"\n\n" + line
 			)
 
+	def checkErrorPage(self):
+		# error traceback of pserve
+		self.assertFalse(
+			'<strong class="arthur">DONT PANIC</strong>' in self.cli.page_source
+		)
+
+
+class SeleniumTestBaseTicketing(SeleniumTestBase):
+
+	@classmethod
+	def appSettings(cls):
+		today = datetime.today().date()
+		yesterday = (datetime.today() - timedelta(1)).date()
+		return {
+			'registration.finish_on_submit': 'true',
+			'registration.end': str(today),
+			'registration.endgvonly': str(today),
+		}
+
+	# get target class
+	def _getTargetClass(self):
+		from c3spartyticketing.models import PartyTicket
+		return PartyTicket
+
+	# make a random string
+	def _rnd(self, size=6, chars=string.ascii_uppercase + string.digits):
+		return u''.join(random.choice(chars) for _ in range(size))
+
+	# make a random instance of target class
+	def _makeRandom(self,
+					token=None,
+					firstname=None,
+					lastname=None,
+					email=None,
+					password=None,
+					locale=u"de",
+					email_is_confirmed=False,
+					email_confirm_code=False,
+					date_of_submission=date.today(),
+					num_tickets=1,
+					ticket_gv_attendance=0,
+					ticket_bc_attendance=False,
+					ticket_bc_buffet=False,
+					ticket_tshirt=False,
+					ticket_tshirt_type=None,
+					ticket_tshirt_size=None,
+					ticket_all=False,
+					ticket_support=False,
+					ticket_support_x=False,
+					ticket_support_xl=False,
+					support=0,
+					discount=0,
+					the_total=0,
+					rep_firstname=None,
+					rep_lastname=None,
+					rep_street=None,
+					rep_zip=None,
+					rep_city=None,
+					rep_country=None,
+					rep_type='member',
+					guestlist=False,
+					user_comment=None,
+					membership_type=u'normal'
+					):
+		_ticket = self._getTargetClass()(  # order of params DOES matter
+			token or self._rnd(),
+			firstname or self._rnd(),
+			lastname or self._rnd(),
+			email or self._rnd()+'@test.c3s.cc',
+			password or self._rnd(),
+			locale,
+			email_is_confirmed,
+			email_confirm_code or self._rnd(),
+			date_of_submission,
+			num_tickets,
+			ticket_gv_attendance,
+			ticket_bc_attendance,
+			ticket_bc_buffet,
+			ticket_tshirt,
+			ticket_tshirt_type,
+			ticket_tshirt_size,
+			ticket_all,
+			ticket_support,
+			ticket_support_x,
+			ticket_support_xl,
+			support,
+			discount,
+			the_total,
+			rep_firstname or self._rnd(),
+			rep_lastname or self._rnd(),
+			rep_street or self._rnd(),
+			rep_zip or self._rnd(),
+			rep_city or self._rnd(),
+			rep_country or self._rnd(),
+			rep_type,
+			guestlist,
+			user_comment or self._rnd()
+		)
+		_ticket.membership_type = membership_type
+		return _ticket
+
 # XXX: test validation errors
 # XXX: test form logic: check manipulation correction after submit
 # XXX: test python form logic: calculated values (total, ...)
@@ -74,13 +185,16 @@ class SeleniumTestBase(unittest.TestCase):
 
 ### Member #####################################################################
 
-class TicketMemberAccessTests(SeleniumTestBase):
+class TicketMemberFormAccessTests(SeleniumTestBaseTicketing):
 	"""
 	tests access to the ticket form for members
 	"""
 
 	def setUp(self):
 		self.logSection()
+		# delete member ticket in db if present
+		with transaction.manager:
+			PartyTicket.delete_by_token(self.cfg['member']['token'])
 		# renew session for each single test
 		self.cli.delete_all_cookies()
 
@@ -93,6 +207,7 @@ class TicketMemberAccessTests(SeleniumTestBase):
 				server.appSettings['registration.access_denied_url']
 			)
 		)
+		self.checkErrorPage()
 		# route: confirm
 		self.cli.get(self.srv.url+'confirm')
 		self.screen('confirm')
@@ -101,6 +216,7 @@ class TicketMemberAccessTests(SeleniumTestBase):
 				server.appSettings['registration.access_denied_url']
 			)
 		)
+		self.checkErrorPage()
 		# route: success
 		self.cli.get(self.srv.url+'success')
 		self.screen('success')
@@ -109,6 +225,7 @@ class TicketMemberAccessTests(SeleniumTestBase):
 				server.appSettings['registration.access_denied_url']
 			)
 		)
+		self.checkErrorPage()
 		# route: finished
 		self.cli.get(self.srv.url+'finished')
 		self.screen('finished')
@@ -117,15 +234,52 @@ class TicketMemberAccessTests(SeleniumTestBase):
 				server.appSettings['registration.access_denied_url']
 			)
 		)
+		self.checkErrorPage()
 
-	def test_access_with_token(self):
+	def test_access_with_token_not_in_db(self):
 		# load user
 		self.cli.get(self.srv.url+self.srv.lu)
 		self.screen('ticket')
 		self.assertEqual(self.cli.current_url, self.srv.url)
+		self.checkErrorPage()
+
+	def test_access_with_token_in_db(self):
+		with transaction.manager:
+			ticket = self._makeRandom(
+				firstname=self.cfg['member']['firstname'],
+				lastname=self.cfg['member']['lastname'],
+				email=self.cfg['member']['email'],
+				token=self.cfg['member']['token']
+			)
+			self.srv.db.add(ticket)
+		# load user
+		self.cli.get(self.srv.url+self.srv.lu)
+		self.screen('lu')
+		self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+		self.checkErrorPage()
+		# route: ticket
+		self.cli.get(self.srv.url);
+		self.screen('ticket')
+		self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+		self.checkErrorPage()
+		# route: confirm
+		self.cli.get(self.srv.url+'confirm')
+		self.screen('confirm')
+		self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+		self.checkErrorPage()
+		# route: success
+		self.cli.get(self.srv.url+'success')
+		self.screen('success')
+		self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+		self.checkErrorPage()
+		# route: finished
+		self.cli.get(self.srv.url+'finished')
+		self.screen('finished')
+		self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+		self.checkErrorPage()
 
 
-class TicketMemberFormFieldValuesTests(SeleniumTestBase):
+class TicketMemberFormFieldValuesTests(SeleniumTestBaseTicketing):
 	"""
 	tests the ticket form for members using selenium
 	covers also package pageobject
@@ -262,7 +416,7 @@ class TicketMemberFormFieldValuesTests(SeleniumTestBase):
 			self.assertEqual(f.tshirt_size.get(), i)
 
 
-class TicketMemberFormFieldLogicTests(SeleniumTestBase):
+class TicketMemberFormFieldLogicTests(SeleniumTestBaseTicketing):
 
 	def setUp(self):
 		self.logSection()
@@ -354,12 +508,13 @@ class TicketMemberFormFieldLogicTests(SeleniumTestBase):
 		)
 
 
-class TicketMemberFormActionRedirectsTests(SeleniumTestBase):
+class TicketMemberFormActionRedirectsTests(SeleniumTestBaseTicketing):
 
 	def setUp(self):
 		self.logSection()
 		# delete member ticket in db if present
-		PartyTicket.delete_by_token(self.cfg['member']['token'])
+		with transaction.manager:
+			PartyTicket.delete_by_token(self.cfg['member']['token'])
 		# renew session for each single test
 		self.cli.delete_all_cookies()
 		# init form
@@ -407,7 +562,7 @@ class TicketMemberFormActionRedirectsTests(SeleniumTestBase):
 		)
 
 
-class TicketMemberFormActionDataTests(SeleniumTestBase):
+class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
 
 	def setUp(self):
 		self.logSection()
@@ -538,50 +693,226 @@ class TicketMemberFormActionDataTests(SeleniumTestBase):
 		self.assertEqual(f.comment.getRo(), "comment-reedit")
 		
 
-# class TicketMemberCasesUserfeedbackTests(SeleniumTestBase):
+class TicketMemberCasesUserfeedbackTests(SeleniumTestBaseTicketing):
 
-# 	def setUp(self):
-# 		# renew session for each single test
-# 		self.cli.delete_all_cookies()
-# 		# init form
-# 		self.form = TicketMemberObject(cfg)
+	def setUp(self):
+		# renew session for each single test
+		self.cli.delete_all_cookies()
+		# init form
+		self.form = TicketMemberObject(cfg)
 
-# 	def test_gv_transaction(self):
-# 		self.logSection()
-# 		f = self.form
-# 		pass
+	def test_gv_transaction(self):
+		self.skipTest('2DO')
+		self.logSection()
+		f = self.form
 
-# 	def test_gv_notransaction(self):
-# 		self.logSection()
-# 		f = self.form
-# 		pass
+	def test_gv_notransaction(self):
+		self.skipTest('2DO')
+		self.logSection()
+		f = self.form
+		pass
 
-# 	def test_notgv_bc(self):
-# 		self.logSection()
-# 		f = self.form
-# 		pass
+	def test_notgv_bc(self):
+		self.skipTest('2DO')
+		self.logSection()
+		f = self.form
+		pass
 
-# 	def test_notgv_notbc_transaction(self):
-# 		self.logSection()
-# 		f = self.form
-# 		pass
+	def test_notgv_notbc_transaction(self):
+		self.skipTest('2DO')
+		self.logSection()
+		f = self.form
+		pass
 	
-# 	def test_notgv_notbc_notransaction(self):
-# 		self.logSection()
-# 		f = self.form
-# 		pass
+	def test_notgv_notbc_notransaction(self):
+		self.skipTest('2DO')
+		self.logSection()
+		f = self.form
+		pass
 
 
-class TicketMemberRegistrationEndTests(SeleniumTestBase):
+class TicketMemberFormGvonlyAccessTests(SeleniumTestBaseTicketing):
 	"""
-	tests route, if registation ended
+	tests access to the ticket form for members
 	"""
 
 	@classmethod
 	def appSettings(cls):
+		today = datetime.today().date()
+		yesterday = (datetime.today() - timedelta(1)).date()
 		return {
-			'registration.finish_on_submit': True,
-			'registration.end': "1970-01-01"
+			'registration.finish_on_submit': 'true',
+			'registration.end': str(yesterday),
+			'registration.endgvonly': str(today),
+		}
+
+	def setUp(self):
+		self.logSection()
+		# init form
+		self.form = TicketMemberObject(self.cfg)
+		# renew session for each single test
+		self.cli.delete_all_cookies()
+
+	def test_access_without_token(self):
+		# route: root
+		self.cli.get(self.srv.url);
+		self.screen('ticket')
+		self.assertTrue(
+			self.cli.current_url.endswith('/barcamp/end')
+		)
+		# route: confirm
+		self.cli.get(self.srv.url+'confirm')
+		self.screen('confirm')
+		self.assertTrue(
+			self.cli.current_url.endswith('/barcamp/end')
+		)
+		# route: success
+		self.cli.get(self.srv.url+'success')
+		self.screen('success')
+		self.assertTrue(
+			self.cli.current_url.endswith('/barcamp/end')
+		)
+		# route: finished
+		self.cli.get(self.srv.url+'finished')
+		self.screen('finished')
+		self.assertTrue(
+			self.cli.current_url.endswith('/barcamp/end')
+		)
+
+	def test_access_with_token(self):
+		f = self.form
+		# load user
+		self.cli.get(self.srv.url+self.srv.lu)
+		self.screen('ticket')
+		self.assertEqual(self.cli.current_url, self.srv.url)
+		# check, if form is gvonly
+		with self.assertRaises(NoSuchElementException):
+			f.barcamp()
+		with self.assertRaises(NoSuchElementException):
+			f.buffet()
+		with self.assertRaises(NoSuchElementException):
+			f.tshirt()
+		with self.assertRaises(NoSuchElementException):
+			f.allinc()
+		with self.assertRaises(NoSuchElementException):
+			f.support()
+		with self.assertRaises(NoSuchElementException):
+			f.supportxl()
+		with self.assertRaises(NoSuchElementException):
+			f.supportxxl()
+		with self.assertRaises(NoSuchElementException):
+			f.tshirt_type()
+		with self.assertRaises(NoSuchElementException):
+			f.tshirt_size()
+
+
+class TicketMemberFormGvonlyFieldValuesTests(SeleniumTestBaseTicketing):
+	"""
+	tests the ticket form gvonly for members using selenium
+	covers also package pageobject
+	"""
+
+	@classmethod
+	def appSettings(cls):
+		today = datetime.today().date()
+		yesterday = (datetime.today() - timedelta(1)).date()
+		return {
+			'registration.finish_on_submit': 'true',
+			'registration.end': str(yesterday),
+			'registration.endgvonly': str(today),
+		}
+
+	def setUp(self):
+		self.logSection()
+		# renew session for each single test
+		self.cli.delete_all_cookies()
+		# init form
+		self.form = TicketMemberObject(self.cfg)
+		# data provider
+		self.data_checkbox = [False, False, True, True, False, True, False]
+		self.data_generalassembly = ["1", "2", "3"]
+		self.data_rep_type = ["member", "partner", "parent", "child", "sibling"]
+
+	def test_hidden_values(self):
+		f = self.form
+		self.assertEqual(f.firstname.get(), self.cfg['member']['firstname'])
+		self.assertEqual(f.lastname.get(), self.cfg['member']['lastname'])
+		self.assertEqual(f.token.get(), self.cfg['member']['token'])
+
+	def test_generalassembly_values(self):
+		f = self.form
+		for i in self.data_generalassembly:
+			f.generalassembly.set(i)
+			self.assertEqual(f.generalassembly.get(), i)
+
+	def test_comment_values(self):
+		f = self.form
+		f.comment.set("test")
+		self.assertEqual(f.comment.get(), "test")
+
+	def test_rep_firstname_values(self):
+		f = self.form
+		f.generalassembly.set("2")
+		f.rep_firstname.set("firstname")
+		self.assertEqual(f.rep_firstname.get(), "firstname")
+
+	def test_rep_lastname_values(self):
+		f = self.form
+		f.generalassembly.set("2")
+		f.rep_lastname.set("lastname")
+		self.assertEqual(f.rep_lastname.get(), "lastname")
+
+	def test_rep_email_values(self):
+		f = self.form
+		f.generalassembly.set("2")
+		f.rep_email.set("email")
+		self.assertEqual(f.rep_email.get(), "email")
+
+	def test_rep_street_values(self):
+		f = self.form
+		f.generalassembly.set("2")
+		f.rep_street.set("street")
+		self.assertEqual(f.rep_street.get(), "street")
+
+	def test_rep_zip_values(self):
+		f = self.form
+		f.generalassembly.set("2")
+		f.rep_zip.set("zip")
+		self.assertEqual(f.rep_zip.get(), "zip")
+
+	def test_rep_city_values(self):
+		f = self.form
+		f.generalassembly.set("2")
+		f.rep_city.set("city")
+		self.assertEqual(f.rep_city.get(), "city")
+
+	def test_rep_country_values(self):
+		f = self.form
+		f.generalassembly.set("2")
+		f.rep_country.set("country")
+		self.assertEqual(f.rep_country.get(), "country")
+
+	def test_rep_type_values(self):
+		f = self.form
+		f.generalassembly.set("2")
+		for i in self.data_rep_type:
+			f.rep_type.set(i)
+			self.assertEqual(f.rep_type.get(), i)
+
+
+class TicketMemberFormGvonlyActionDataTests(SeleniumTestBaseTicketing):
+	"""
+	tests route, if registation is gvonly
+	"""
+
+	@classmethod
+	def appSettings(cls):
+		today = datetime.today().date()
+		yesterday = (datetime.today() - timedelta(1)).date()
+		return {
+			'registration.finish_on_submit': 'true',
+			'registration.end': str(yesterday),
+			'registration.endgvonly': str(today),
 		}
 
 	def setUp(self):
@@ -591,16 +922,175 @@ class TicketMemberRegistrationEndTests(SeleniumTestBase):
 		# init form
 		self.form = TicketMemberObject(self.cfg)
 
-	def test_custom(self):
-		pass
+	def test_ticket_submit_data(self):
+		f = self.form
+		# fill all fields with valid data
+		f.generalassembly.set("2")
+		f.comment.set("comment")
+		f.rep_firstname.set("rep_firstname")
+		f.rep_lastname.set("rep_lastname")
+		f.rep_email.set("rep@c3s.cc")
+		f.rep_street.set("rep_street")
+		f.rep_zip.set("rep_zip")
+		f.rep_city.set("rep_city")
+		f.rep_country.set("rep_country")
+		f.rep_type.set("sibling")
+		self.screen("before")
+		f.submit()
+		self.screen("after")
+		# check data
+		self.assertEqual(f.firstname.getRo(), self.cfg['member']['firstname'])
+		self.assertEqual(f.lastname.getRo(), self.cfg['member']['lastname'])
+		self.assertEqual(f.email.getRo(), self.cfg['member']['email'])
+		self.assertEqual(f.generalassembly.getRo(), "1")
+		self.assertEqual(f.comment.getRo(), "comment")
+		self.assertEqual(f.rep_firstname.getRo(), "rep_firstname")
+		self.assertEqual(f.rep_lastname.getRo(), "rep_lastname")
+		self.assertEqual(f.rep_email.getRo(), "rep@c3s.cc")
+		self.assertEqual(f.rep_street.getRo(), "rep_street")
+		self.assertEqual(f.rep_zip.getRo(), "rep_zip")
+		self.assertEqual(f.rep_city.getRo(), "rep_city")
+		self.assertEqual(f.rep_country.getRo(), "rep_country")
+		self.assertEqual(f.rep_type.getRo(), "4")
+
+	def test_confirm_reedit_data(self):
+		f = self.form
+		# fill all fields with valid data
+		f.generalassembly.set("2")
+		f.comment.set("comment")
+		f.rep_firstname.set("rep_firstname")
+		f.rep_lastname.set("rep_lastname")
+		f.rep_email.set("rep@c3s.cc")
+		f.rep_street.set("rep_street")
+		f.rep_zip.set("rep_zip")
+		f.rep_city.set("rep_city")
+		f.rep_country.set("rep_country")
+		f.rep_type.set("sibling")
+		f.submit()
+		f.reedit()
+		# reedit and check rep fields
+		f.rep_firstname.set("rep_firstname-reedit")
+		f.rep_lastname.set("rep_lastname-reedit")
+		f.rep_email.set("rep-reedit@c3s.cc")
+		f.rep_street.set("rep_street-reedit")
+		f.rep_zip.set("rep_zip-reedit")
+		f.rep_city.set("rep_city-reedit")
+		f.rep_country.set("rep_country-reedit")
+		f.rep_type.set("member")
+		self.screen("rep-before")
+		f.submit()
+		self.screen("rep-after")
+		self.assertEqual(f.rep_firstname.getRo(), "rep_firstname-reedit")
+		self.assertEqual(f.rep_lastname.getRo(), "rep_lastname-reedit")
+		self.assertEqual(f.rep_email.getRo(), "rep-reedit@c3s.cc")
+		self.assertEqual(f.rep_street.getRo(), "rep_street-reedit")
+		self.assertEqual(f.rep_zip.getRo(), "rep_zip-reedit")
+		self.assertEqual(f.rep_city.getRo(), "rep_city-reedit")
+		self.assertEqual(f.rep_country.getRo(), "rep_country-reedit")
+		self.assertEqual(f.rep_type.getRo(), "0")
+		# reedit and check ticket fields
+		f.reedit()
+		f.generalassembly.set("3")
+		f.comment.set("comment-reedit")
+		self.screen("ticket-before")
+		f.submit()
+		self.screen("ticket-after")
+		self.assertEqual(f.generalassembly.getRo(), "2")
+		self.assertEqual(f.comment.getRo(), "comment-reedit")
+
+
+class TicketMemberRegistrationEndTests(SeleniumTestBaseTicketing):
+	"""
+	tests route, if registation ended
+	"""
+
+	@classmethod
+	def appSettings(cls):
+		today = datetime.today().date()
+		yesterday = (datetime.today() - timedelta(1)).date()
+		return {
+			'registration.finish_on_submit': 'true',
+			'registration.end': str(yesterday),
+			'registration.endgvonly': str(yesterday),
+		}
+
+	def setUp(self):
+		self.logSection()
+		# delete member ticket in db if present
+		with transaction.manager:
+			PartyTicket.delete_by_token(self.cfg['member']['token'])
+		# renew session for each single test
+		self.cli.delete_all_cookies()
+
+	def test_access_with_token_not_in_db(self):
+		# load user
+		self.cli.get(self.srv.url+self.srv.lu)
+		self.screen('ticket')
+		self.assertEqual(self.cli.current_url, self.srv.url+"end")
+		self.checkErrorPage()
+		# route: ticket
+		self.cli.get(self.srv.url);
+		self.screen('ticket')
+		self.assertEqual(self.cli.current_url, self.srv.url+"end")
+		self.checkErrorPage()
+		# route: confirm
+		self.cli.get(self.srv.url+'confirm')
+		self.screen('confirm')
+		self.assertEqual(self.cli.current_url, self.srv.url+"end")
+		self.checkErrorPage()
+		# route: success
+		self.cli.get(self.srv.url+'success')
+		self.screen('success')
+		self.assertEqual(self.cli.current_url, self.srv.url+"end")
+		self.checkErrorPage()
+		# route: finished
+		self.cli.get(self.srv.url+'finished')
+		self.screen('finished')
+		self.assertEqual(self.cli.current_url, self.srv.url+"end")
+		self.checkErrorPage()
+
+	def test_access_with_token_in_db(self):
+		with transaction.manager:
+			ticket = self._makeRandom(
+				firstname=self.cfg['member']['firstname'],
+				lastname=self.cfg['member']['lastname'],
+				email=self.cfg['member']['email'],
+				token=self.cfg['member']['token']
+			)
+			self.srv.db.add(ticket)
+		# load user
+		self.cli.get(self.srv.url+self.srv.lu)
+		self.screen('load')
+		self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+		self.checkErrorPage()
+		# route: ticket
+		self.cli.get(self.srv.url);
+		self.screen('ticket')
+		self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+		self.checkErrorPage()
+		# route: confirm
+		self.cli.get(self.srv.url+'confirm')
+		self.screen('confirm')
+		self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+		self.checkErrorPage()
+		# route: success
+		self.cli.get(self.srv.url+'success')
+		self.screen('success')
+		self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+		self.checkErrorPage()
+		# route: finished
+		self.cli.get(self.srv.url+'finished')
+		self.screen('finished')
+		self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+		self.checkErrorPage()
 
 
 
 ### Nonmember ##################################################################
 
-class TicketNonmemberAccessTests(SeleniumTestBase):
+class TicketNonmemberFormAccessTests(SeleniumTestBaseTicketing):
 	"""
-	tests access to the ticket form for members
+	tests access to the ticket form for nonmembers
 	"""
 
 	def setUp(self):
@@ -613,19 +1103,22 @@ class TicketNonmemberAccessTests(SeleniumTestBase):
 		self.cli.get(self.srv.url+"barcamp");
 		self.screen('ticket')
 		self.assertTrue(self.cli.current_url.endswith("/barcamp"))
+		self.checkErrorPage()
 		# route: nonmember_confirm
 		self.cli.get(self.srv.url+'barcamp/confirm')
 		self.screen('confirm')
 		self.assertTrue(self.cli.current_url.endswith("/barcamp"))
+		self.checkErrorPage()
 		# route: nonmember_success
 		self.cli.get(self.srv.url+'barcamp/success')
 		self.screen('success')
 		self.assertTrue(self.cli.current_url.endswith("/barcamp"))
+		self.checkErrorPage()
 
 
-class TicketNonemberFormFieldValuesTests(SeleniumTestBase):
+class TicketNonemberFormFieldValuesTests(SeleniumTestBaseTicketing):
 	"""
-	tests the ticket form for members using selenium
+	tests the ticket form for nonmembers using selenium
 	covers also package pageobject
 	"""
 
@@ -723,7 +1216,7 @@ class TicketNonemberFormFieldValuesTests(SeleniumTestBase):
 			self.assertEqual(f.tshirt_size.get(), i)
 
 
-class TicketNonmemberFormFieldLogicTests(SeleniumTestBase):
+class TicketNonmemberFormFieldLogicTests(SeleniumTestBaseTicketing):
 
 	def setUp(self):
 		# renew session for each single test
@@ -761,7 +1254,7 @@ class TicketNonmemberFormFieldLogicTests(SeleniumTestBase):
 			True
 		)
 
-class TicketNonmemberFormActionRedirectsTests(SeleniumTestBase):
+class TicketNonmemberFormActionRedirectsTests(SeleniumTestBaseTicketing):
 
 	def setUp(self):
 		self.logSection()
@@ -821,7 +1314,7 @@ class TicketNonmemberFormActionRedirectsTests(SeleniumTestBase):
 		)
 
 
-class TicketMemberFormActionDataTests(SeleniumTestBase):
+class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
 
 	def setUp(self):
 		self.logSection()
@@ -906,6 +1399,53 @@ class TicketMemberFormActionDataTests(SeleniumTestBase):
 		self.assertEqual(f.supportxl.getRo(), False)
 		self.assertEqual(f.supportxxl.getRo(), False)
 		self.assertEqual(f.comment.getRo(), "comment-reedit")
+
+
+class TicketNonmemberRegistrationEndTests(SeleniumTestBaseTicketing):
+	"""
+	tests route, if registation ended
+	"""
+
+	@classmethod
+	def appSettings(cls):
+		today = datetime.today().date()
+		yesterday = (datetime.today() - timedelta(1)).date()
+		return {
+			'registration.finish_on_submit': 'true',
+			'registration.end': str(yesterday),
+			'registration.endgvonly': str(yesterday),
+		}
+
+	def setUp(self):
+		self.logSection()
+		# init form
+		self.form = TicketNonmemberObject(self.cfg)
+		# renew session for each single test
+		self.cli.delete_all_cookies()
+
+	def test_access_with_token_not_in_db(self):
+		f = self.form
+		# route: ticket
+		self.cli.get(self.srv.url);
+		self.screen('ticket')
+		self.assertEqual(self.cli.current_url, self.srv.url+"barcamp/end")
+		self.checkErrorPage()
+		# route: confirm
+		self.cli.get(self.srv.url+'confirm')
+		self.screen('confirm')
+		self.assertEqual(self.cli.current_url, self.srv.url+"barcamp/end")
+		self.checkErrorPage()
+		# route: success
+		self.cli.get(self.srv.url+'success')
+		self.screen('success')
+		self.assertEqual(self.cli.current_url, self.srv.url+"barcamp/end")
+		self.checkErrorPage()
+		# route: finished
+		self.cli.get(self.srv.url+'finished')
+		self.screen('finished')
+		self.assertEqual(self.cli.current_url, self.srv.url+"barcamp/end")
+		self.checkErrorPage()
+
 
 # maybe check https://pypi.python.org/pypi/z3c.webdriver
 #

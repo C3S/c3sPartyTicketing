@@ -1,4 +1,5 @@
 from pageobject import client
+from selenium.common.exceptions import NoSuchElementException
 import re
 
 # base
@@ -56,7 +57,10 @@ class HiddenElement(TextfieldElement):
 class RadiobuttonElement(BasePageElement):
 	# returns radiobuttons
 	def __call__(self):
-		return client.cli.find_elements_by_name(self.locator)
+		rb = client.cli.find_elements_by_name(self.locator)
+		if not rb:
+			raise NoSuchElementException()
+		return rb
 	def get(self):
 		for rb in self():
 			if rb.is_selected():

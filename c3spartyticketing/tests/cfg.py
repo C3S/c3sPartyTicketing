@@ -20,7 +20,7 @@ cfg = {
 	},
 	'dbg': {
 		'logSection': True,
-		'screenshot': False,
+		'screenshot': True,
 		'screenshotPath': './c3spartyticketing/tests/screenshots/'
 	}
 }

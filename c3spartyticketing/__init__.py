@@ -56,12 +56,14 @@ def main(global_config, **settings):
     config.add_route('party', '/')  # member landing page
     config.add_route('confirm', '/confirm')  # shows entered data f. correction
     config.add_route('success', '/success')  # shows success info
-    config.add_route('finished', '/finished') # if registration is over
+    config.add_route('finished', '/finished') # shows submitted ticket
+    config.add_route('end', '/end') # reg. over page
     config.add_route('verify_email_password', '/verify/{email}/{code}')
     config.add_route('success_pdf', '/C3S_Ticket_{namepart}.pdf')
     config.add_route('nonmember', '/barcamp') # nonmember landing page
-    config.add_route('nonmember_confirm', '/barcamp/confirm') # nonmember confirm page
-    config.add_route('nonmember_success', '/barcamp/success') # nonmember success page
+    config.add_route('nonmember_confirm', '/barcamp/confirm') # confirm page
+    config.add_route('nonmember_success', '/barcamp/success') # success page
+    config.add_route('nonmember_end', '/barcamp/end') # reg. over page
     # backend/staff
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
