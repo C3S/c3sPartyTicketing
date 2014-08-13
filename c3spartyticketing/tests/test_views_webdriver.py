@@ -180,8 +180,6 @@ class SeleniumTestBaseTicketing(SeleniumTestBase):
 # XXX: test python form logic: calculated values (total, ...)
 # XXX: test cases of user feedback
 # XXX: test changes of route inbetween member/nonmember
-# XXX: test registration.end
-# XXX: test registration.finishonsubmit
 
 ### Member #####################################################################
 
