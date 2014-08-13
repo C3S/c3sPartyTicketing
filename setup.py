@@ -34,6 +34,7 @@ requires = [
     'unicodecsv',
     'waitress',
     'zope.sqlalchemy',
+    'PasteDeploy'
 ]
 test_requires = [
     'nose',

@@ -216,14 +216,46 @@
           
           <h2>Abrechnung</h2>
 
-          <h3>Bestellung</h3>
+          <h3>Bestellungen</h3>
           <p>
-            2DO
+            Summe Tickets insgesammt im System (teilw. unbezahlt): 
+            <span style="color:orange">
+              ${stats.accounting.order.sum_tickets_total} €
+            </span><br />
+            Summe unbezahlter Tickets:
+            <span style="color:red">
+              ${stats.accounting.order.sum_tickets_unpaid} €
+            </span> &lt;- nachfassen oder löschen?<br />
+          </p>
+          <p>Summe bezahlter Tickets:
+            <span style="color:green">
+              ${stats.accounting.order.sum_tickets_paid} €
+            </span><br />
+          </p>
+          <p>
+            Summe <strong>im Vorverkauf</strong> bestellter Tickets:
+            <span style="color:green">
+              ${stats.accounting.order.sum_tickets_paid 
+                - stats.accounting.order.sum_tickets_paid_desk} € 
+            </span> (incl. Nachzahlungen!)<br />
+            Summe <strong>an der Abendkasse</strong> bezahlter Tickets:
+            <span style="color:green">
+              ${stats.accounting.order.sum_tickets_paid_desk} €
+            </span><br />
           </p>
 
           <h3>Tickets</h3>
           <p>
-            2DO
+            <strong>Personen</strong>,
+            die bezahlt UND eingechecked haben (ohne Schwarzfahrer!):
+            ${stats.accounting.tickets.num_passengers_paid_checkedin}<br />
+            <strong>Summe</strong>,
+            die an der Kasse nachbezahlt oder Zahlung belegt wurde
+            (für vorbestellte Tickets):
+            ${stats.accounting.tickets.sum_tickets_preorder_cash} <br />
+            <strong>Summe</strong>,
+            die an der Kasse bezahlt wurde (für neue Tickets):
+            ${stats.accounting.tickets.sum_tickets_new_cash} 
           </p>
 
           <!--!
@@ -279,38 +311,6 @@
               </p>
             </div>
           </div> 
-
-          <h3>Soll und Haben</h3>
-          <p>
-            Summe Tickets insgesammt im System (teilw. unbezahlt): 
-            <span style="color:orange">${sum_tickets_total} €</span><br />
-            Summe unbezahlter Tickets:
-            <span style="color:red">${sum_tickets_unpaid} €</span>
-            &lt;- nachfassen oder löschen?<br />
-          </p>
-          <p>Summe bezahlter Tickets:
-            <span style="color:green">${sum_tickets_paid} € </span><br />
-          </p>
-          <p>
-            Summe <strong>im Vorverkauf</strong> bestellter Tickets:
-            <span style="color:green">${sum_tickets_paid - sum_tickets_paid_desk} € </span>
-            (incl. Nachzahlungen!)<br />
-            Summe <strong>an der Abendkasse</strong> bezahlter Tickets:
-            <span style="color:green">${sum_tickets_paid_desk} € </span><br />
-          </p>
-          <h3>Abrechnung</h3>
-          <p>
-            <strong>Personen</strong>,
-            die bezahlt UND eingechecked haben (ohne Schwarzfahrer!):
-            ${num_passengers_paid_checkedin}<br />
-            <strong>Summe</strong>,
-            die an der Kasse nachbezahlt oder Zahlung belegt wurde
-            (für vorbestellte Tickets):
-            ${sum_tickets_preorder_cash} <br />
-            <strong>Summe</strong>,
-            die an der Kasse bezahlt wurde (für neue Tickets):
-            ${sum_tickets_new_cash} 
-          </p>
           -->
 
         </div>
