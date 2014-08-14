@@ -17,7 +17,7 @@ requires = [
     'python-gnupg',
     #'lingua==1.6',
     'lingua',
-    'Pillow',  # fork of PIL; needed for qrcode
+    'Pillow==2.4.0',  # fork of PIL; needed for qrcode
     'pyramid',
     'pyramid_beaker',
     'pyramid_chameleon',
