@@ -3,7 +3,7 @@ cfg = {
 	'app': {
 		'host': '0.0.0.0',
 		'port': '6544',
-		'db': 'test_views_webdriver.db',
+		'db': 'tests.db',
 		'ini': "development.ini",
 		'appSettings': {},
 	},
@@ -16,7 +16,12 @@ cfg = {
 		'firstname': 'TestFirstname',
 		'lastname': 'TestLastname',
 		'email': 'alexander.blum@c3s.cc',
-		'membership_type': 'normal'
+		'membership_type': 'normal',
+	},
+	'staff': {
+		'login': u'rut', 
+		'password': u'berries', 
+		'email': u'rut@test.c3s.cc',
 	},
 	'dbg': {
 		'logSection': True,

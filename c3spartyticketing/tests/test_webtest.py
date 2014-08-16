@@ -13,12 +13,189 @@ from c3spartyticketing.models import (
     Group,
 )
 from sqlalchemy import engine_from_config
+from sqlalchemy import inspect
+from sqlalchemy.orm.attributes import get_history
 import transaction
-from datetime import date
+from datetime import (
+    date,
+    datetime,
+    timedelta
+)
+
+from webtest import TestApp
 
 from cfg import cfg
+from webutils import (
+    Server
+)
+import string
+import random
 
 # XXX: test ticket_appstruct
+
+server = Server()
+
+# XXX: put class in webutils
+# XXX: shared parent class for WebTestBase and SeleniumTestBase?
+class WebTestBase(unittest.TestCase):
+
+    # overload: configuration of individual appSettings
+    @classmethod
+    def appSettings(cls):
+        return {}
+
+    @classmethod
+    def setUpClass(cls):
+        cls.config = testing.setUp()
+        #self.config.include('pyramid_mailer.testing')
+        cls.cfg = cfg
+        cls.srv = server.connect(
+            cfg=cls.cfg, 
+            customAppSettings=cls.appSettings(), 
+            wrapper='TestApp'
+        )
+
+    @classmethod
+    def tearDownClass(cls):
+        server.disconnect()
+        testing.tearDown()
+
+    def logSection(self, name=''):
+        if self.cfg['dbg']['logSection']:
+            line = '~'*80
+            testclass = self.__class__.__name__
+            testname = self._testMethodName
+            print(
+                "\n\n" + line
+                +"\n   " + testclass + "." + testname + ": " + name
+                +"\n\n" + line
+            )
+
+    def dumpDbEntry(self, entry):
+        if not issubclass(entry.__class__, Base):
+            raise Exception('Entry could not be dumped. Exiting ...')
+        dump = {}
+        mapper = inspect(entry.__class__)
+        for column in mapper.attrs:
+            dump[column.key] = entry.__getattribute__(column.key)
+        return dump
+
+
+class WebTestBaseTicketing(WebTestBase):
+
+    # make a random string
+    def _rnd(self, size=6, chars=string.ascii_uppercase + string.digits):
+        return u''.join(random.choice(chars) for _ in range(size))
+
+    # add an instance of Staff
+    def _addStaff(self, 
+                  login=False,
+                  password=False,
+                  email=False,
+                  group=u"staff"
+                  ):
+        login = login or self.cfg['staff']['login']
+        password = password or self.cfg['staff']['password']
+        email = email or self.cfg['staff']['email']
+        if C3sStaff.get_by_login(login):
+            return
+        accountants_group = Group(name=group)
+        staffer1 = C3sStaff(
+            login=login,
+            password=password,
+            email=email,
+        )
+        staffer1.groups = [accountants_group]
+        with transaction.manager:
+            try:
+                self.srv.db.add(accountants_group)
+            except:
+                print("could not add group staff.")
+            try:
+                self.srv.db.add(staffer1)
+            except:
+                print("could not add staffer "+login+")")
+
+    # add an instance of PartyTicket
+    def _addPartyTicket(self,
+                        token=None,
+                        firstname=None,
+                        lastname=None,
+                        email=None,
+                        password=None,
+                        locale=u"de",
+                        email_is_confirmed=False,
+                        email_confirm_code=False,
+                        date_of_submission=date.today(),
+                        num_tickets=1,
+                        ticket_gv_attendance=3,
+                        ticket_bc_attendance=False,
+                        ticket_bc_buffet=False,
+                        ticket_tshirt=False,
+                        ticket_tshirt_type=0,
+                        ticket_tshirt_size=0,
+                        ticket_all=False,
+                        ticket_support=False,
+                        ticket_support_x=False,
+                        ticket_support_xl=False,
+                        support=0,
+                        discount=0,
+                        the_total=0,
+                        rep_firstname=None,
+                        rep_lastname=None,
+                        rep_street=None,
+                        rep_zip=None,
+                        rep_city=None,
+                        rep_country=None,
+                        rep_type=u'member',
+                        guestlist=False,
+                        user_comment=None,
+                        membership_type=u'normal'
+                        ):
+        # create entry
+        _ticket = PartyTicket(
+            token or self._rnd(),
+            firstname or self._rnd(),
+            lastname or self._rnd(),
+            email or self._rnd()+'@test.c3s.cc',
+            password or self._rnd(),
+            locale,
+            email_is_confirmed,
+            email_confirm_code or self._rnd(),
+            date_of_submission,
+            num_tickets,
+            ticket_gv_attendance,
+            ticket_bc_attendance,
+            ticket_bc_buffet,
+            ticket_tshirt,
+            ticket_tshirt_type,
+            ticket_tshirt_size,
+            ticket_all,
+            ticket_support,
+            ticket_support_x,
+            ticket_support_xl,
+            support,
+            discount,
+            the_total,
+            rep_firstname or self._rnd(),
+            rep_lastname or self._rnd(),
+            rep_street or self._rnd(),
+            rep_zip or self._rnd(),
+            rep_city or self._rnd(),
+            rep_country or self._rnd(),
+            rep_type,
+            guestlist,
+            user_comment or self._rnd()
+        )
+        _ticket.membership_type = membership_type
+        # save to db
+        with transaction.manager:
+            self.srv.db.add(_ticket)
+            self.srv.db.flush()
+            # dump data for comparison
+            dump = self.dumpDbEntry(_ticket)
+        return dump
+
 
 class FunctionalTestBase(unittest.TestCase):
     pass
@@ -275,6 +452,690 @@ class AccountantsFunctionalTests(FunctionalTestBase):
 #         res10 = res9.follow()
 #         self.failUnless('login' in res10.body)
 #         # def test_detail_wrong_id(self):
+
+
+class StaffEditTicketTests(WebTestBaseTicketing):
+    """
+    test editing of tickets by staff
+    """
+
+    def setUp(self):
+        self.logSection()
+        # create clean db entries
+        self._addStaff()
+        with transaction.manager:
+            PartyTicket.delete_by_token(u"member")
+            PartyTicket.delete_by_token(u"nonmember")
+        # renew session for each single test
+        self.srv.reset()
+        # login
+        form = self.srv.get('/login', status=200).form
+        form['login'] = self.cfg['staff']['login']
+        form['password'] = self.cfg['staff']['password']
+        form.submit('submit', status=302).follow()
+
+    def _compareAttributes(self, original, edited, dirty=[]):
+        # check dirtyness of all columns
+        mapper = inspect(PartyTicket)
+        for column in mapper.attrs:
+            orig = original[column.key]
+            edit = edited.__getattribute__(column.key)
+            if column.key in dirty:
+                self.assertNotEqual(
+                    orig, edit,
+                    column.key + ' is not dirty: ' + str(orig)
+                )
+            else:
+                self.assertEqual(
+                    orig, edit,
+                    column.key + ' is dirty: ' + str(orig) + ' -> ' + str(edit)
+                )
+
+    def test_access_edit_form(self):
+        self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal"
+        )
+        res = self.srv.get('/edit_ticket/1', status=200)
+        res.mustcontain('<div tal : content="structure editform">')
+
+    def test_edit_member_generalassembly(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal",
+            ticket_gv_attendance=3
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/1', status=200).form
+        form['ticket_gv'] = 1
+        form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.ticket_gv_attendance, 1 )
+        self._compareAttributes( member, memberX, ['ticket_gv_attendance'] )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+
+    def test_edit_member_barcamp(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal",
+            ticket_bc_attendance=False
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/1', status=200).form
+        form['checkbox'] = ['attendance']
+        form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.ticket_bc_attendance, True )
+        self._compareAttributes( member, memberX, ['ticket_bc_attendance'] )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+
+    def test_edit_member_buffet(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal",
+            ticket_bc_attendance=False,
+            ticket_bc_buffet=False
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/1', status=200).form
+        form['checkbox'] = ['attendance', 'buffet']
+        form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.ticket_bc_attendance, True )
+        self.assertEqual( memberX.ticket_bc_buffet, True )
+        self._compareAttributes( 
+            member, memberX,
+            ['ticket_bc_attendance', 'ticket_bc_buffet']
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+
+    def test_edit_member_tshirt(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal",
+            ticket_tshirt=False,
+            ticket_tshirt_type='',
+            ticket_tshirt_size=''
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/1', status=200).form
+        form['ticket_tshirt'] = True
+        form['tshirt-type'] = 'm'
+        form['tshirt-size'] = 'M'
+        res = form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.ticket_tshirt, True )
+        self.assertEqual( memberX.ticket_tshirt_type, 'm' )
+        self.assertEqual( memberX.ticket_tshirt_size, 'M' )
+        self._compareAttributes(
+            member, memberX,
+            ['ticket_tshirt', 'ticket_tshirt_type', 'ticket_tshirt_size']
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+
+    def test_edit_member_allinc(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal",
+            ticket_gv_attendance=3,
+            ticket_bc_attendance=False,
+            ticket_bc_buffet=False,
+            ticket_tshirt=False,
+            ticket_tshirt_type='',
+            ticket_tshirt_size='',
+            ticket_all=False,
+            discount=-1
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/1', status=200).form
+        form['ticket_all'] = True
+        form['tshirt-type'] = 'm'
+        form['tshirt-size'] = 'M'
+        res = form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.ticket_gv_attendance, 1 )
+        self.assertEqual( memberX.ticket_bc_attendance, True )
+        self.assertEqual( memberX.ticket_bc_buffet, True )
+        self.assertEqual( memberX.ticket_tshirt, True )
+        self.assertEqual( memberX.ticket_tshirt_type, 'm' )
+        self.assertEqual( memberX.ticket_tshirt_size, 'M' )
+        self.assertEqual( memberX.discount, 0 )
+        self._compareAttributes(
+            member, memberX,
+            [
+                'ticket_gv_attendance',
+                'ticket_bc_attendance',
+                'ticket_bc_buffet',
+                'ticket_tshirt', 
+                'ticket_tshirt_type', 
+                'ticket_tshirt_size',
+                'ticket_all',
+                'discount'
+            ]
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+
+    def test_edit_member_support(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal",
+            ticket_support=False,
+            ticket_support_x=False,
+            ticket_support_xl=False,
+            support=-1
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/1', status=200).form
+        form['checkbox'] = [1]
+        form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.ticket_support, True )
+        self.assertEqual( memberX.support, 5 )
+        self._compareAttributes(
+            member, memberX,
+            ['ticket_support', 'support']
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+        form['checkbox'] = [2]
+        form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.ticket_support_x, True )
+        self.assertEqual( memberX.support, 10 )
+        self._compareAttributes(
+            member, memberX,
+            ['ticket_support_x', 'support']
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+        form['checkbox'] = [3]
+        form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.ticket_support_xl, True )
+        self.assertEqual( memberX.support, 100 )
+        self._compareAttributes(
+            member, memberX,
+            ['ticket_support_xl', 'support']
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+        form['checkbox'] = [1, 2, 3]
+        form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.ticket_support, True )
+        self.assertEqual( memberX.ticket_support_x, True )
+        self.assertEqual( memberX.ticket_support_xl, True )
+        self.assertEqual( memberX.support, 115 )
+        self._compareAttributes(
+            member, memberX,
+            [
+                'ticket_support',
+                'ticket_support_x',
+                'ticket_support_xl',
+                'support'
+            ]
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+
+    def test_edit_member_rep(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal",
+            ticket_gv_attendance=3,
+            rep_type=0,
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/1', status=200).form
+        form['ticket_gv'] = 2
+        form['firstname'] = 'rep-firstname'
+        form['lastname'] = 'rep-lastname'
+        form['email'] = 'rep-email@test.c3s.cc'
+        form['zip'] = 'rep-zip'
+        form['city'] = 'rep-city'
+        form['country'] = 'rep-country'
+        form['rep-type'] = 'partner'
+        form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.ticket_gv_attendance, 2 )
+        self.assertEqual( memberX.rep_firstname, 'rep-firstname' )
+        self.assertEqual( memberX.rep_lastname, 'rep-lastname' )
+        self.assertEqual( memberX.rep_email, 'rep-email@test.c3s.cc' )
+        self.assertEqual( memberX.rep_zip, 'rep-zip' )
+        self.assertEqual( memberX.rep_city, 'rep-city' )
+        self.assertEqual( memberX.rep_country, 'rep-country' )
+        self.assertEqual( memberX.rep_type, 'partner' )
+        self._compareAttributes(
+            member, memberX,
+            [
+                'ticket_gv_attendance',
+                'rep_firstname',
+                'rep_lastname',
+                'rep_email',
+                'rep_zip',
+                'rep_city',
+                'rep_country',
+                'rep_type'
+            ]
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+
+    def test_edit_member_payed(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal"
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/1', status=200).form
+        form['payment_received'] = True
+        time1 = datetime.now()
+        form.submit('submit', status=200)
+        time2 = datetime.now()
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.payment_received, True )
+        self.assertGreater( memberX.payment_received_date, time1 )
+        self.assertLess( memberX.payment_received_date, time2 )
+        self._compareAttributes(
+            member, memberX,
+            ['payment_received', 'payment_received_date']
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+        Xmember = self.dumpDbEntry(memberX)
+        form['payment_received'] = False
+        form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.payment_received, False )
+        self.assertEqual( memberX.payment_received_date, datetime(1970, 1, 1) )
+        self._compareAttributes(
+            Xmember, memberX,
+            ['payment_received', 'payment_received_date']
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+
+    def test_edit_member_price_manual(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal",
+            the_total=0,
+            discount=-1
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/1', status=200).form
+        form['the_total'] = 123.45
+        form['price_calc'] = False
+        res = form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.the_total, 123.45 )
+        self.assertEqual( memberX.discount, 0 )
+        self._compareAttributes(
+            member, memberX,
+            [
+                'the_total',
+                'discount'
+            ]
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+
+    def test_edit_member_price_auto(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal",
+            ticket_gv_attendance=3,
+            ticket_bc_attendance=False,
+            ticket_bc_buffet=False,
+            ticket_tshirt=False,
+            ticket_tshirt_type='',
+            ticket_tshirt_size='',
+            ticket_all=False,
+            discount=-1
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/1', status=200).form
+        form['ticket_all'] = True
+        form['tshirt-type'] = 'm'
+        form['tshirt-size'] = 'M'
+        form['price_calc'] = True
+        res = form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.the_total, 42 )
+        self.assertEqual( memberX.discount, -2.5 )
+        self._compareAttributes(
+            member, memberX,
+            [
+                'ticket_gv_attendance',
+                'ticket_bc_attendance',
+                'ticket_bc_buffet',
+                'ticket_tshirt', 
+                'ticket_tshirt_type', 
+                'ticket_tshirt_size',
+                'ticket_all',
+                'discount',
+                'the_total'
+            ]
+        )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+
+    def test_edit_member_staff_comment(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal",
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/1', status=200).form
+        form['staff_comment'] = 'testcomment1'
+        res = form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertIn( 'testcomment1', res.body )
+        self._compareAttributes( member, memberX, ['staff_comment'] )
+        Xmember = self.dumpDbEntry(memberX)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+        form['staff_comment'] = 'testcomment2'
+        res = form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertIn( 'testcomment1', res.body )
+        self.assertIn( 'testcomment2', res.body )
+        self._compareAttributes( Xmember, memberX, ['staff_comment'] )
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+
+    def test_edit_nonmember_barcamp(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal"
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember",
+            ticket_bc_attendance=False
+        )
+        form = self.srv.get('/edit_ticket/2', status=200).form
+        form['checkbox'] = ['attendance']
+        form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertEqual( nonmemberX.ticket_bc_attendance, True )
+        self._compareAttributes( 
+            nonmember, nonmemberX,
+            ['ticket_bc_attendance']
+        )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+
+    def test_edit_nonmember_buffet(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal"
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember",
+            ticket_bc_attendance=False,
+            ticket_bc_buffet=False
+        )
+        form = self.srv.get('/edit_ticket/2', status=200).form
+        form['checkbox'] = ['attendance', 'buffet']
+        form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertEqual( nonmemberX.ticket_bc_attendance, True )
+        self.assertEqual( nonmemberX.ticket_bc_buffet, True )
+        self._compareAttributes( 
+            nonmember, nonmemberX,
+            ['ticket_bc_attendance', 'ticket_bc_buffet']
+        )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+
+    def test_edit_nonmember_tshirt(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal"
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember",
+            ticket_tshirt=False,
+            ticket_tshirt_type='',
+            ticket_tshirt_size=''
+        )
+        form = self.srv.get('/edit_ticket/2', status=200).form
+        form['ticket_tshirt'] = True
+        form['tshirt-type'] = 'm'
+        form['tshirt-size'] = 'M'
+        res = form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertEqual( nonmemberX.ticket_tshirt, True )
+        self.assertEqual( nonmemberX.ticket_tshirt_type, 'm' )
+        self.assertEqual( nonmemberX.ticket_tshirt_size, 'M' )
+        self._compareAttributes(
+            nonmember, nonmemberX,
+            ['ticket_tshirt', 'ticket_tshirt_type', 'ticket_tshirt_size']
+        )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+
+    def test_edit_nonmember_support(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal"
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember",
+            ticket_support=False,
+            ticket_support_x=False,
+            ticket_support_xl=False,
+            support=-1
+        )
+        form = self.srv.get('/edit_ticket/2', status=200).form
+        form['checkbox'] = [1]
+        form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertEqual( nonmemberX.ticket_support, True )
+        self.assertEqual( nonmemberX.support, 5 )
+        self._compareAttributes(
+            nonmember, nonmemberX,
+            ['ticket_support', 'support']
+        )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+        form['checkbox'] = [2]
+        form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertEqual( nonmemberX.ticket_support_x, True )
+        self.assertEqual( nonmemberX.support, 10 )
+        self._compareAttributes(
+            nonmember, nonmemberX,
+            ['ticket_support_x', 'support']
+        )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+        form['checkbox'] = [3]
+        form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertEqual( nonmemberX.ticket_support_xl, True )
+        self.assertEqual( nonmemberX.support, 100 )
+        self._compareAttributes(
+            nonmember, nonmemberX,
+            ['ticket_support_xl', 'support']
+        )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+        form['checkbox'] = [1, 2, 3]
+        form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertEqual( nonmemberX.ticket_support, True )
+        self.assertEqual( nonmemberX.ticket_support_x, True )
+        self.assertEqual( nonmemberX.ticket_support_xl, True )
+        self.assertEqual( nonmemberX.support, 115 )
+        self._compareAttributes(
+            nonmember, nonmemberX,
+            [
+                'ticket_support',
+                'ticket_support_x',
+                'ticket_support_xl',
+                'support'
+            ]
+        )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+
+    def test_edit_nonmember_payed(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal"
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/2', status=200).form
+        form['payment_received'] = True
+        time1 = datetime.now()
+        form.submit('submit', status=200)
+        time2 = datetime.now()
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertEqual( nonmemberX.payment_received, True )
+        self.assertGreater( nonmemberX.payment_received_date, time1 )
+        self.assertLess( nonmemberX.payment_received_date, time2 )
+        self._compareAttributes(
+            nonmember, nonmemberX,
+            ['payment_received', 'payment_received_date']
+        )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+        Xnonmember = self.dumpDbEntry(nonmemberX)
+        form['payment_received'] = False
+        form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertEqual( nonmemberX.payment_received, False )
+        self.assertEqual( nonmemberX.payment_received_date, datetime(1970, 1, 1) )
+        self._compareAttributes(
+            Xnonmember, nonmemberX,
+            ['payment_received', 'payment_received_date']
+        )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+
+    def test_edit_nonmember_price_manual(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal"
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember",
+            the_total=0
+        )
+        form = self.srv.get('/edit_ticket/2', status=200).form
+        form['the_total'] = 123.45
+        form['price_calc'] = False
+        res = form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertEqual( nonmemberX.the_total, 123.45 )
+        self.assertEqual( nonmemberX.discount, 0 )
+        self._compareAttributes( nonmember, nonmemberX, ['the_total'] )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+
+    def test_edit_nonmember_price_auto(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal"
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember",
+            membership_type=u"nonmember",
+            ticket_bc_attendance=False,
+            ticket_bc_buffet=False,
+        )
+        form = self.srv.get('/edit_ticket/2', status=200).form
+        form['checkbox'] = ['attendance', 'buffet']
+        form['price_calc'] = True
+        res = form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertEqual( nonmemberX.the_total, 23 )
+        self.assertEqual( nonmemberX.discount, 0 )
+        self._compareAttributes(
+            nonmember, nonmemberX,
+            [
+                'ticket_bc_attendance',
+                'ticket_bc_buffet',
+                'the_total'
+            ]
+        )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+
+    def test_edit_nonmember_staff_comment(self):
+        member = self._addPartyTicket(
+            token=u"member",
+            membership_type=u"normal"
+        )
+        nonmember = self._addPartyTicket(
+            token=u"nonmember", 
+            membership_type=u"nonmember"
+        )
+        form = self.srv.get('/edit_ticket/2', status=200).form
+        form['staff_comment'] = 'testcomment1'
+        res = form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertIn( 'testcomment1', res.body )
+        self._compareAttributes( nonmember, nonmemberX, ['staff_comment'] )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+        Xnonmember = self.dumpDbEntry(nonmemberX)
+        form['staff_comment'] = 'testcomment2'
+        res = form.submit('submit', status=200)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self.assertIn( 'testcomment1', res.body )
+        self.assertIn( 'testcomment2', res.body )
+        self._compareAttributes( Xnonmember, nonmemberX, ['staff_comment'] )
+        memberX = PartyTicket.get_by_token('member')
+        self._compareAttributes( member, memberX )
+
 
 class FunctionalTests(unittest.TestCase):
     """

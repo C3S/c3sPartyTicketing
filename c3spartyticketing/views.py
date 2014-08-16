@@ -2095,10 +2095,11 @@ def success_view(request):
         lang = request.locale_name
 
     #######################################################################
-    usermail_gv_transaction_subject = _(
-        u'C3S General Assembly & Barcamp 2014: your participation & order'
-    )
-    #C3S Generalversammlung & Barcamp 2014: Deine Teilnahme & Bestellung
+    usermail_gv_transaction_subject = \
+    u'C3S General Assembly & Barcamp 2014: your participation & order'
+    if lang == "de":
+        usermail_gv_transaction_subject = \
+        u'C3S Generalversammlung & Barcamp 2014: Deine Teilnahme & Bestellung'
     usermail_gv_transaction = render(
         'templates/mails/usermail_gv_transaction-'+lang+'.pt',
         {
@@ -2110,10 +2111,11 @@ def success_view(request):
     )
 
     #######################################################################
-    usermail_gv_notransaction_subject = _(
-        u'C3S General Assembly & Barcamp 2014: your participation'
-    )
-    #C3S Generalversammlung & Barcamp 2014: Deine Teilnahme
+    usermail_gv_notransaction_subject = \
+    u'C3S General Assembly & Barcamp 2014: your participation'
+    if lang == "de":
+        usermail_gv_notransaction_subject = \
+        u'C3S Generalversammlung & Barcamp 2014: Deine Teilnahme'
     usermail_gv_notransaction = render(
         'templates/mails/usermail_gv_notransaction-'+lang+'.pt',
         {
@@ -2123,11 +2125,13 @@ def success_view(request):
     )
 
     #######################################################################
-    usermail_notgv_bc_subject = _(
-        u'C3S General Assembly & Barcamp 2014: your BarCamp ticket / '
-        u'your cancellation of the general assembly'
-    )
-    #C3S Generalversammlung & Barcamp 2014: Dein Barcamp-Ticket / Deine Absage der Generalversammlung
+    usermail_notgv_bc_subject = \
+    u'C3S General Assembly & Barcamp 2014: your BarCamp ticket / ' \
+    +u'your cancellation of the general assembly'
+    if lang == "de":
+        usermail_notgv_bc_subject = \
+        u'C3S Generalversammlung & Barcamp 2014: Dein Barcamp-Ticket / ' \
+        +u'Deine Absage der Generalversammlung'
     usermail_notgv_bc = render(
         'templates/mails/usermail_notgv_bc-'+lang+'.pt',
         {
@@ -2139,10 +2143,11 @@ def success_view(request):
     )
 
     #######################################################################
-    usermail_notgv_notbc_transaction_subject = _(
+    usermail_notgv_notbc_transaction_subject = \
         u'C3S General Assembly & Barcamp 2014: your cancellation / your order'
-    )
-    #C3S Generalversammlung & Barcamp 2014: Deine Absage / Deine Bestellung
+    if lang == "de":
+        usermail_notgv_notbc_transaction_subject = \
+        u'C3S Generalversammlung & Barcamp 2014: Deine Absage / Deine Bestellung'
     usermail_notgv_notbc_transaction = render(
         'templates/mails/usermail_notgv_notbc_transaction-'+lang+'.pt',
         {
@@ -2154,10 +2159,11 @@ def success_view(request):
     )
 
     #######################################################################
-    usermail_notgv_notbc_notransaction_subject = _(
-        u'C3S General Assembly & Barcamp 2014: your cancellation'
-    )
-    #C3S Generalversammlung & Barcamp 2014: Deine Absage
+    usermail_notgv_notbc_notransaction_subject = \
+    u'C3S General Assembly & Barcamp 2014: your cancellation'
+    if lang == "de":
+        usermail_notgv_notbc_notransaction_subject = \
+        'C3S Generalversammlung & Barcamp 2014: Deine Absage'
     usermail_notgv_notbc_notransaction = render(
         'templates/mails/usermail_notgv_notbc_notransaction-'+lang+'.pt',
         {
@@ -2620,10 +2626,11 @@ def nonmember_success_view(request):
         lang = request.locale_name
 
     #######################################################################
-    usermail_nonmember_subject = _(
-        u'C3S Barcamp 2014: your order'
-    )
-    # C3S Barcamp 2014: Deine Bestellung
+    usermail_nonmember_subject = \
+    u'C3S Barcamp 2014: your order'
+    if lang == "de":
+        usermail_nonmember_subject = \
+        'C3S Barcamp 2014: Deine Bestellung'
     usermail_nonmember = render(
         'templates/mails/usermail_nonmember-'+lang+'.pt',
         {

@@ -1,14 +1,15 @@
 import os
 from sqlalchemy import engine_from_config
 from c3spartyticketing.models import (
-    DBSession,
-    Base,
-    PartyTicket,
-    C3sStaff,
-    Group,
+	DBSession,
+	Base,
+	PartyTicket,
+	C3sStaff,
+	Group,
 )
 from paste.deploy.loadwsgi import appconfig
 from webtest.http import StopableWSGIServer
+from webtest import TestApp
 from selenium import webdriver
 
 
@@ -21,8 +22,15 @@ class Server(object):
 			cls._instance = super(Server, cls).__new__(cls, *args, **kwargs)
 		return cls._instance
 
-	def connect(self, cfg, customAppSettings={}):
+	def connect(self, cfg, customAppSettings={}, wrapper='StopableWSGIServer'):
 		self.cfg = cfg
+		# clear old connections
+		# try:
+		# 	DBSession.close()
+		# 	DBSession.remove()
+		# 	os.remove(self.cfg['app']['db'])
+		# except:
+		# 	pass
 		# create appConfig from ini
 		self.appSettings = appconfig(
 			'config:' + os.path.join(
@@ -42,27 +50,33 @@ class Server(object):
 		from c3spartyticketing import main
 		app = main({}, **self.appSettings)
 		# create srv
-		self.srv = StopableWSGIServer.create(
-			app, 
-			host=self.cfg['app']['host'],
-			port=self.cfg['app']['port']
-		)
+		if wrapper == 'StopableWSGIServer':
+			self.srv = StopableWSGIServer.create(
+				app, 
+				host=self.cfg['app']['host'],
+				port=self.cfg['app']['port']
+			)
+			# check srv
+			if not self.srv.wait():
+				raise Exception('Server could not be fired up. Exiting ...')
+		elif wrapper == 'TestApp':
+			self.srv = TestApp(app)
+		else:
+			raise Exception('Wrapper could not be found. Exiting ...')
+		# store some variables
 		self.srv.db = DBSession
-		# store some derived variables
 		self.srv.url = 'http://' + self.cfg['app']['host'] + ':' \
 			+ self.cfg['app']['port'] + '/'
 		self.srv.lu = 'lu/' + self.cfg['member']['token'] + '/' \
 			+ self.cfg['member']['email']
-		# check srv
-		if not self.srv.wait():
-			raise Exception('Server could not be fired up. Exiting ...')
 		return self.srv
 
 	def disconnect(self):
 		self.srv.db.close()
 		self.srv.db.remove()
 		os.remove(self.cfg['app']['db'])
-		self.srv.shutdown()
+		if isinstance(self.srv, StopableWSGIServer):
+			self.srv.shutdown()
 
 
 class Client(object):

@@ -48,8 +48,14 @@ class SeleniumTestBase(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		cls.cfg = cfg
-		cls.srv = server.connect(cls.cfg, cls.appSettings())
-		cls.cli = client.connect(cls.cfg)
+		cls.srv = server.connect(
+			cfg=cls.cfg, 
+			customAppSettings=cls.appSettings(), 
+            wrapper='StopableWSGIServer'
+        )
+		cls.cli = client.connect(
+			cfg=cls.cfg
+		)
 
 	@classmethod
 	def tearDownClass(cls):

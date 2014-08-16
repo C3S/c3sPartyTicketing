@@ -76,6 +76,7 @@ def accountants_login(request):
     """
     This view lets accountants log in
     """
+    #print(request)
     logged_in = authenticated_userid(request)
     #print("authenticated_userid: " + str(logged_in))
 

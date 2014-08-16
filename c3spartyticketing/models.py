@@ -193,6 +193,11 @@ class PartyTicket(Base):
     tcodes = Column(Unicode(255), unique=True)
     num_tickets = Column(Integer, default=1)
     checked_persons = Column(Integer, default=0)
+    checked_gv = Column(Boolean, default=False)
+    checked_bc = Column(Boolean, default=False)
+    received_extra1 = Column(Boolean, default=False)
+    received_extra2 = Column(Boolean, default=False)
+    received_extra3 = Column(Boolean, default=False)
     ticket_gv_attendance = Column(Integer)
     ticket_bc_attendance = Column(Boolean, default=False)
     ticket_bc_buffet = Column(Boolean, default=False)
@@ -217,6 +222,8 @@ class PartyTicket(Base):
     rep_email = Column(Text, default='')
     # guestlist
     guestlist = Column(Boolean, default=False)
+    guestlist_gv = Column(Unicode(255), unique=False)
+    guestlist_bc = Column(Unicode(255), unique=False)
     # meta
     date_of_submission = Column(DateTime(), nullable=False)
     payment_received = Column(Boolean, default=False)
@@ -227,6 +234,7 @@ class PartyTicket(Base):
         DateTime(), default=datetime(1970, 1, 1))
     user_comment = Column(Unicode(255))
     accountant_comment = Column(Unicode(255))
+    staff_comment = Column(Text, default='')
 
     def __init__(self, token, firstname, lastname, email, password,
                  locale,
