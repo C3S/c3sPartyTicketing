@@ -632,8 +632,10 @@ def edit_ticket(request):
             appstruct['price']['the_total'] = derivedvalues['the_total']
             appstruct['price']['price_calc'] = False
         else:
-            derivedvalues['the_total'] = appstruct['price']['the_total']
             derivedvalues['discount'] = 0
+            if appstruct['price']['the_total'] == _ticket.the_total:
+                derivedvalues['discount'] = _ticket.discount
+            derivedvalues['the_total'] = appstruct['price']['the_total']
             
 
         ### save to db

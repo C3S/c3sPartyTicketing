@@ -618,7 +618,7 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         self.assertEqual( memberX.ticket_tshirt, True )
         self.assertEqual( memberX.ticket_tshirt_type, 'm' )
         self.assertEqual( memberX.ticket_tshirt_size, 'M' )
-        self.assertEqual( memberX.discount, 0 )
+        self.assertEqual( memberX.discount, -1 )
         self._compareAttributes(
             member, memberX,
             [
@@ -628,8 +628,7 @@ class StaffEditTicketTests(WebTestBaseTicketing):
                 'ticket_tshirt', 
                 'ticket_tshirt_type', 
                 'ticket_tshirt_size',
-                'ticket_all',
-                'discount'
+                'ticket_all'
             ]
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
@@ -788,14 +787,23 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         member = self._addPartyTicket(
             token=u"member",
             membership_type=u"normal",
-            the_total=0,
-            discount=-1
+            the_total=10,
+            discount=-10
         )
         nonmember = self._addPartyTicket(
             token=u"nonmember",
             membership_type=u"nonmember"
         )
+        memberX = PartyTicket.get_by_token('member')
         form = self.srv.get('/edit_ticket/1', status=200).form
+        res = form.submit('submit', status=200)
+        memberX = PartyTicket.get_by_token('member')
+        self.assertEqual( memberX.the_total, 10 )
+        self.assertEqual( memberX.discount, -10 )
+        self._compareAttributes(member, memberX)
+        nonmemberX = PartyTicket.get_by_token('nonmember')
+        self._compareAttributes( nonmember, nonmemberX )
+        Xmember = self.dumpDbEntry(memberX)
         form['the_total'] = 123.45
         form['price_calc'] = False
         res = form.submit('submit', status=200)
@@ -803,7 +811,7 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         self.assertEqual( memberX.the_total, 123.45 )
         self.assertEqual( memberX.discount, 0 )
         self._compareAttributes(
-            member, memberX,
+            Xmember, memberX,
             [
                 'the_total',
                 'discount'
