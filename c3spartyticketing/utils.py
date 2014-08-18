@@ -51,10 +51,16 @@ def ticket_code_prefix(_ticket):
     else:
         code += '0'
     # membership status
-    if 'normal' in _ticket.membership_type:
+    if not _ticket.membership_type:
+        code += '0'
+    elif _ticket.membership_type == 'normal':
         code += 'N'
-    else:
+    elif _ticket.membership_type == 'investing':
         code += 'I'
+    elif _ticket.membership_type == 'nonmember':
+        code += '0'
+    else:
+        code += '0'
     return code
 
 
@@ -76,12 +82,27 @@ def get_ticket_code(_ticket):
     )
     return code
 
-
-def make_qr_code_pdf(_ticket, _url):
+def make_qr_code_pdf(_ticket, _url, util='pdflatex'):
     """
     this function creates a QR-Code PDF for whatever purpose
 
     append .name to the result to get the filename
+    """
+
+    # generate pdf with pdftk
+    if util == 'pdftk':
+        return make_qr_code_pdf_pdftk(_ticket, _url)
+
+    # generate pdf with latex
+    if util == 'pdflatex':
+        return make_qr_code_pdf_pdflatex(_ticket, _url)
+
+    raise Exception('utility for pdf generation not found. exiting ...')
+
+
+def make_qr_code_pdf_pdftk(_ticket, _url):
+    """
+    this function uses pdftk to create a QR-Code PDF
     """
 
     _img = qrcode.make(_url)  # the qr-code image, unsaved
@@ -161,6 +182,103 @@ def make_qr_code_pdf(_ticket, _url):
          ]
     )
     return tmp_ticket2
+
+
+def make_qr_code_pdf_pdflatex(_ticket, _url):
+    """
+    this function uses latex to create a QR-Code PDF
+    """
+
+    # directory pf pdf and tex files
+    pdflatex_dir = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        'pdflatex/'
+    )
+
+    # pdf backgrounds
+    pdf_backgrounds = {
+        'blank': 'ticket_background_blank.pdf',
+    }
+
+    # latex templates
+    latex_templates = {
+        'generic': 'ticket_template_generic.tex',
+    }
+
+    # choose background and template
+    _bg = 'blank'
+    _tpl = 'generic'
+
+    # pick background and template
+    bg_pdf = pdf_backgrounds[_bg]
+    tpl_tex = latex_templates[_tpl]
+
+    # create qr code file
+    qrcode_img = tempfile.NamedTemporaryFile(prefix='qr_', suffix='.png', delete=False)
+    _qr = qrcode.QRCode(
+        version=None, # None and later make(fit=True) for best fit
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=50, # higher for better quality on pdf
+        border=0 # border unneeded on pdf
+    )
+    _qr.add_data(_url)
+    _qr.make(fit=True)
+    _qrcode = _qr.make_image()
+    _qrcode.save(qrcode_img)
+
+    # pick temporary file for pdf
+    ticket_pdf = tempfile.NamedTemporaryFile(prefix='ticket_', suffix='.pdf')
+    (_path, _filename) = os.path.split(ticket_pdf.name)
+    _filename = os.path.splitext(_filename)[0]
+
+    # set variables for tex command
+    _tex_vars = {
+        'personalFirstname': _ticket.firstname,
+        'personalLastname': _ticket.lastname,
+        'qrcodeImage': qrcode_img.name,
+        'qrcodeText': get_ticket_code(_ticket),
+        'ticketBcAttendance': _ticket.ticket_bc_attendance,
+        'ticketGvAttendance': _ticket.ticket_gv_attendance,
+        'ticketBcBuffet': _ticket.ticket_bc_buffet,
+        'ticketTshirt': _ticket.ticket_tshirt,
+        'lang': 'de',
+        'pdfBackground': bg_pdf,
+    }
+    print(_tex_vars)
+
+    # generate tex command for pdflatex
+    tex_cmd = ''
+    for key, val in _tex_vars.iteritems():
+        tex_cmd += u'\\newcommand{\\'+str(key)+'}{'+unicode(val)+'}'
+    tex_cmd += '\\input{'+str(tpl_tex)+'}'
+    tex_cmd = '"'+tex_cmd+'"'
+    print(tex_cmd)
+
+    # generate pdf
+    pdflatex = subprocess.Popen(
+        [
+            'pdflatex',
+            '-jobname', _filename,
+            '-output-directory', _path,
+            '-interaction', 'nonstopmode',
+            '-halt-on-error',
+            tex_cmd
+        ], 
+        cwd=pdflatex_dir
+    )
+
+    # wait until pdf is generated
+    pdflatex.communicate()
+
+    # cleanup
+    _aux = os.path.join(_path, _filename+'.aux')
+    if os.path.isfile(_aux):
+        os.unlink(_aux)
+    _log = os.path.join(_path, _filename+'.log')
+    if os.path.isfile(_log):
+        os.unlink(_log)
+
+    return ticket_pdf
 
 
 def make_qr_code_pdf_mobile(_ticket, _url):

@@ -1,0 +1,205 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% layout
+
+% page
+\documentclass[a4paper,12pt]{scrartcl}
+\usepackage{wallpaper}
+\usepackage{geometry}
+\geometry{verbose,lmargin=0cm,rmargin=0cm,bmargin=0cm,tmargin=0cm, marginparwidth=0cm,marginparsep=0cm}
+
+% typo
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{paratype}
+\renewcommand*\familydefault{\sfdefault}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\linespread{0.92}
+
+% symbols
+\usepackage{amssymb}
+\newcommand*{\symBullet}{\checkmark\hspace{0.3cm}}%
+
+% colors
+\usepackage{xcolor}
+\definecolor{Black}{HTML}{000000}
+\definecolor{Gray}{HTML}{666666}
+\definecolor{White}{HTML}{FFFFFF}
+\definecolor{Orange}{HTML}{E46D26}
+\definecolor{Green}{HTML}{50B848}
+
+% images
+\usepackage{graphicx}
+\newcommand*{\imgBullets}{\hspace*{0.5mm}\raisebox{+\height/2}{\includegraphics[]{bullets.png}}\hspace{0.3cm}}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% text blocks
+
+%% german [de] (default)
+
+% title
+\newcommand{\txtTitle}{EINLADUNG \& TICKET}%
+
+% events
+\newcommand{\txtEventsBarcamp}{%
+  \LARGE\textcolor{Orange}{
+  \textbf{Barcamp} \vspace{0.25cm} \\
+  \imgBullets am 22. August 2014, 12 Uhr \vspace{0.35cm}} \\
+  \large\color{Gray}
+  C3S SCE \\
+  Heyestraße 194 \\
+  40625 Düsseldorf \vspace{1.00cm} \\
+  }%
+\newcommand{\txtEventsGeneralassembly}{
+  \LARGE\textcolor{Orange}{
+  \textbf{Generalversammlung} \vspace{0.25cm} \\
+  \imgBullets am 23. August 2014, 12 Uhr \vspace{0.35cm}} \\
+  \large\textcolor{Gray}{
+  Millowitsch Theater GmbH \\
+  Aachner Straße 5 \\
+  50674 Köln
+  }}%
+  
+% features
+\newcommand{\txtFeaturesTitle}{Leistungen}%
+\newcommand{\txtFeaturesGvAttendance}{Teilnahme Generalversammlung}%
+\newcommand{\txtFeaturesBcAttendance}{Teilnahme Barcamp}%
+\newcommand{\txtFeaturesBcBuffet}{Buffet Barcamp}%
+\newcommand{\txtFeaturesTshirt}{T-Shirt}%
+
+% circle
+\newcommand{\txtCircle}{Nur für \\ C3S- \\ Mitglieder}%
+
+% footer
+\newcommand{\txtFooterColumnOne}{
+  \textbf{Cultural Commons Collecting \newline Society SCE mbH} \newline
+  \newline
+  Geschäftsführende Direktoren \newline
+  Wolfgang Senges \& Meik Michalke \newline
+  \newline
+  \textbf{Vorsitzender des Verwaltungsrats \newline
+  Meinhard Starostik}
+  }%
+\newcommand{\txtFooterColumnTwo}{
+  Heyestraße 194 \newline
+  40625 Düsseldorf \newline
+  \newline
+  E-Mail: info@c3s.cc \newline
+  Web: www.c3s.cc
+  }%
+\newcommand{\txtFooterColumnThree}{
+  Dieses Ticket gilt nur am 22.08.2014 \newline 
+  und 23.08.2014 \newline
+  \newline
+  Rückerstattung des Preises bei \newline
+  Nichtantritt ausgeschlossen
+  }%
+\newcommand{\txtFooterColumnFour}{\vspace{0cm}\Large\textbf{\textcolor{Green}{
+  C3S - \newline
+  FAIRwertung \newline
+  von Musik \newline
+  }%
+}}%
+
+%% english [en]
+\newcommand{\langEnglish}{en}
+\ifx\lang\langEnglish%
+  % title
+  % events
+  % features
+  \renewcommand{\txtFeaturesTitle}{Features}%
+  % circle
+  % footer
+\fi%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% computed blocks
+
+\usepackage{xstring}
+
+% events
+\newcommand{\compEvents}{%
+  \parbox[t]{\textwidth}{
+    \IfEqCase{\ticketBcAttendance}{%
+        {True}{\txtEventsBarcamp{}}%
+    }%
+    \IfEqCase{\ticketGvAttendance}{%
+        {1}{\txtEventsGeneralassembly{}}% Attendance
+        {2}{\txtEventsGeneralassembly{}}% Representation
+        {3}{}% Cancellation
+    }%
+  }
+}%
+
+\newcommand{\compFeatures}{%
+  \parbox[t]{\textwidth}{
+    \IfEqCase{\ticketGvAttendance}{%
+        {1}{\symBullet \txtFeaturesGvAttendance{}\\\\}% Attendance
+        {2}{\symBullet \txtFeaturesGvAttendance{}\\\\}% Representation
+        {3}{}% Cancellation
+    }%
+    \IfEqCase{\ticketBcAttendance}{%
+        {True}{\symBullet \txtFeaturesBcAttendance{}\\\\}%
+    }%
+    \IfEqCase{\ticketBcBuffet}{%
+        {True}{\symBullet \txtFeaturesBcBuffet{}\\\\}%
+    }%
+    \IfEqCase{\ticketTshirt}{%
+        {True}{\symBullet \txtFeaturesTshirt{}\\\\}%
+    }%
+    }
+}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% document
+
+\begin{document}
+\pagenumbering{gobble} % turn off page numbering
+\CenterWallPaper{1}{\pdfBackground}
+
+\begin{picture}(0,0)%
+
+  % title
+  \LARGE\color{Orange}
+  \put(56,-168){\textbf{\txtTitle{}}}%
+  
+  % qrcode
+  \put(380,-240){\includegraphics[width=5.5cm, height=5.5cm]{\qrcodeImage}}%
+  \LARGE\color{Black}\texttt{
+  \put(360,-257){\parbox[c][1cm]{7cm}{
+    \begin{center}\qrcodeText{}\end{center}
+    }}}%
+  
+  % events
+  \LARGE\color{Orange}
+  \put(56,-218){\compEvents{}}%
+  
+  % features
+  \LARGE\color{Orange}
+  \put(56,-482){\imgBullets\txtFeaturesTitle{}}%
+  \normalsize\color{White}
+  \put(80,-530){\compFeatures{}}%
+  
+  % circle
+  \large\color{White}
+  \put(437,-683){\rotatebox[origin=c]{13}{\parbox[c][2.5cm]{2.5cm}{
+    \begin{center}\textbf{\txtCircle{}}\end{center}
+    }}}%
+  
+  % footer
+  \scriptsize\color{Gray}
+  \put(51,-750){\begin{tabular}[t]{p{4.5cm} p{3.2cm} p{5.3cm} p{3.7cm}}
+    \txtFooterColumnOne
+    & \txtFooterColumnTwo
+    & \txtFooterColumnThree
+    & \txtFooterColumnFour
+    \end{tabular}}%
+  
+\end{picture}%
+
+\end{document}
