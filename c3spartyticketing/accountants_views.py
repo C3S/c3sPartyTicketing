@@ -546,16 +546,20 @@ def send_ticket_mail_view(request):
             )
         )
 
-    mailer = get_mailer(request)
-    body_lines = (  # a list of lines
+    subject_de = u"C3S Generalversammlung & Barcamp2014: " \
+            +"Deine Tickets/Gutscheine zum Herunterladen!"
+    subject_en = u"C3S General Assembly & BarCamp2014: " \
+            +"your tickets/vouchers for download!"
+
+    body_lines_de = (  # a list of lines
         u'''Hallo ''', _ticket.firstname, ' ', _ticket.lastname, u''' !
 
-Wir haben Deine Überweisung erhalten. Dankeschön!
+Mit dieser Mail erhältst Du Dein(e) Ticket(s) bzw. den/die
+Gutscheine für die bestellten Goodies. Es gibt mehrere
+Möglichkeiten, das Ticket mitzubringen:
 
-Es gibt mehrere Möglichkeiten, das Ticket mitzubringen:
-
-1) Lade jetzt dein Ticket herunter und drucke es aus.
-   Wir scannen dann am Eingang den QR-Code und du bist drin.
+1) Lade Dein Ticket herunter und drucke es aus. Wir scannen
+dann den QR-Code.
 
    ''', request.route_url('get_ticket',
                           email=_ticket.email,
@@ -569,17 +573,45 @@ Es gibt mehrere Möglichkeiten, das Ticket mitzubringen:
 
 3) Bringe einfach diesen Code mit: ''' + _ticket.email_confirm_code + u'''
 
-Damit können wir dich am Eingang wiedererkennen. Falls Du ein Ticket für
-*mehrere Personen* bestellt hast, kannst Du diesen Code an diese Personen
-weiterreichen. Aber Vorsicht! Wir zählen mit! ;-)
-
 Bis bald!
 
 Dein C3S-Team''',
     )
+    body_lines_en = (  # a list of lines
+        u'''Hallo ''', _ticket.firstname, ' ', _ticket.lastname, u''' !
+
+This e-mail contains your ticket(s) and/or voucher(s) for
+your goodies. There are several options to bring the ticket:
+
+1) Download the ticket and print it. We will scan the QR-code.
+
+   ''', request.route_url('get_ticket',
+                          email=_ticket.email,
+                          code=_ticket.email_confirm_code), u'''
+
+2) Download the mobile version to the device of your choice --
+mobile phone or tablet:
+
+   ''', request.route_url('get_ticket_mobile',
+                          email=_ticket.email,
+                          code=_ticket.email_confirm_code), u'''
+
+3) Simply bring the code: ''' + _ticket.email_confirm_code + u'''
+
+See you soon!
+
+Your C3S team''',
+    )
+    subject = subject_de
+    body_lines = body_lines_de
+    if _ticket.locale == 'en':
+        subject = subject_en
+        body_lines = body_lines_en
+
+    mailer = get_mailer(request)
     the_mail_body = ''.join([line for line in body_lines])
     the_mail = Message(
-        subject=u"C3S Party-Ticket: bitte herunterladen!",
+        subject=subject,
         sender="noreply@c3s.cc",
         recipients=[_ticket.email],
         body=the_mail_body

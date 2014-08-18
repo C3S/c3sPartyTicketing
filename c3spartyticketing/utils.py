@@ -61,6 +61,7 @@ def ticket_code_prefix(_ticket):
         code += '0'
     else:
         code += '0'
+    code += ' '
     return code
 
 

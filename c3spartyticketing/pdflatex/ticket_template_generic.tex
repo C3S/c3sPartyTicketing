@@ -14,6 +14,7 @@
 \usepackage[ngerman]{babel}
 \usepackage{paratype}
 \renewcommand*\familydefault{\sfdefault}
+\usepackage{inconsolata}
 \setlength{\parskip}{\smallskipamount}
 \setlength{\parindent}{0pt}
 \linespread{0.92}
@@ -58,8 +59,8 @@
   \textbf{Generalversammlung} \vspace{0.25cm} \\
   \imgBullets am 23. August 2014, 12 Uhr \vspace{0.35cm}} \\
   \large\textcolor{Gray}{
-  Millowitsch Theater GmbH \\
-  Aachner Straße 5 \\
+  Millowitsch-Theater GmbH \\
+  Aachener Straße 5 \\
   50674 Köln
   }}%
   
@@ -71,7 +72,7 @@
 \newcommand{\txtFeaturesTshirt}{T-Shirt}%
 
 % circle
-\newcommand{\txtCircle}{Nur für \\ C3S- \\ Mitglieder}%
+\newcommand{\txtCircle}{}%
 
 % footer
 \newcommand{\txtFooterColumnOne}{
@@ -138,9 +139,7 @@
 \newcommand{\compFeatures}{%
   \parbox[t]{\textwidth}{
     \IfEqCase{\ticketGvAttendance}{%
-        {1}{\symBullet \txtFeaturesGvAttendance{}\\\\}% Attendance
-        {2}{\symBullet \txtFeaturesGvAttendance{}\\\\}% Representation
-        {3}{}% Cancellation
+        {1}{\symBullet \txtFeaturesGvAttendance{}\\\\}%
     }%
     \IfEqCase{\ticketBcAttendance}{%
         {True}{\symBullet \txtFeaturesBcAttendance{}\\\\}%
@@ -186,10 +185,10 @@
   \put(80,-530){\compFeatures{}}%
   
   % circle
-  \large\color{White}
-  \put(437,-683){\rotatebox[origin=c]{13}{\parbox[c][2.5cm]{2.5cm}{
-    \begin{center}\textbf{\txtCircle{}}\end{center}
-    }}}%
+  %\large\color{White}
+  %\put(437,-683){\rotatebox[origin=c]{13}{\parbox[c][2.5cm]{2.5cm}{
+  %  \begin{center}\textbf{\txtCircle{}}\end{center}
+  %  }}}%
   
   % footer
   \scriptsize\color{Gray}
