@@ -252,7 +252,6 @@ def edit_ticket(request):
         ('guest', 'Gast'),
         ('specialguest', 'Ehrengast'),
         ('press', 'Presse'),
-        ('representative', 'Repräsentant'),
     )
 
     guest_options_gv = (
@@ -261,6 +260,7 @@ def edit_ticket(request):
         ('guest', 'Gast'),
         ('specialguest', 'Ehrengast'),
         ('press', 'Presse'),
+        ('representative', 'Repräsentant'),
     )
 
     ### generate form
