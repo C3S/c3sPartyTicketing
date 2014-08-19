@@ -245,21 +245,16 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
         'lang': 'de',
         'pdfBackground': bg_pdf,
     }
-    print(_tex_vars)
 
     # generate tex command for pdflatex
-    #tex_script = tempfile.NamedTemporaryFile(prefix='script_', suffix='.tex')
-    _tex_cmd = ''
+    tex_cmd = ''
     for key, val in _tex_vars.iteritems():
-        _tex_cmd += '\\newcommand{\\%s}{%s}' % (key, val)
-    _tex_cmd += '\\input{%s}' % tpl_tex
-    _tex_cmd = '"'+_tex_cmd+'"'
-    # import codecs
-    # with codecs.open(tex_script.name, "w", "latin_1") as f:
-    #     f.write(_tex_cmd)
-    #     f.close()
+        tex_cmd += '\\newcommand{\\%s}{%s}' % (key, val)
+    tex_cmd += '\\input{%s}' % tpl_tex
+    tex_cmd = '"'+_tex_cmd+'"'
 
     # generate pdf
+    # XXX: try to find out, why utf-8 doesn't work on debian
     pdflatex = subprocess.Popen(
         [
             'pdflatex',
@@ -267,7 +262,7 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
             '-output-directory', _path,
             '-interaction', 'nonstopmode',
             '-halt-on-error',
-            _tex_cmd.encode('latin_1')
+            tex_cmd.encode('latin_1')
         ], 
         cwd=pdflatex_dir
     )
