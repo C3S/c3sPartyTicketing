@@ -248,16 +248,16 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
     print(_tex_vars)
 
     # generate tex command for pdflatex
-    # tex_cmd = ''
-    # for key, val in _tex_vars.iteritems():
-    #     tex_cmd += u'\\newcommand{\\'+str(key)+'}{'+unicode(val)+'}'
-    # tex_cmd += '\\input{'+str(tpl_tex)+'}'
-    # tex_cmd = '"'+tex_cmd+'"'
-    tex_cmd = ''
+    #tex_script = tempfile.NamedTemporaryFile(prefix='script_', suffix='.tex')
+    _tex_cmd = ''
     for key, val in _tex_vars.iteritems():
-        tex_cmd += '\\newcommand{\\%s}{%s}' % (key, val)
-    tex_cmd += '\\input{%s}' % tpl_tex
-    tex_cmd = '"'+tex_cmd+'"'
+        _tex_cmd += '\\newcommand{\\%s}{%s}' % (key, val)
+    _tex_cmd += '\\input{%s}' % tpl_tex
+    _tex_cmd = '"'+_tex_cmd+'"'
+    # import codecs
+    # with codecs.open(tex_script.name, "w", "latin_1") as f:
+    #     f.write(_tex_cmd)
+    #     f.close()
 
     # generate pdf
     pdflatex = subprocess.Popen(
@@ -267,7 +267,7 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
             '-output-directory', _path,
             '-interaction', 'nonstopmode',
             '-halt-on-error',
-            tex_cmd
+            _tex_cmd.encode('latin_1')
         ], 
         cwd=pdflatex_dir
     )
