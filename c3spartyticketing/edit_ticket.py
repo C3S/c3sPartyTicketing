@@ -852,13 +852,13 @@ def edit_ticket(request):
         # staff comment
         if appstruct['staff_comment']:
             _ticket.staff_comment
-            _ticket.staff_comment = (_ticket.staff_comment or '') \
+            _ticket.staff_comment = (_ticket.staff_comment or u'') \
                 + '\r\n\r\n' \
                 + '-'*80 \
                 + '\r\n' \
                 + str(datetime.now()) + ' | ' + str(request.user.login) + ':' \
                 + '\r\n\r\n' \
-                + str(appstruct['staff_comment'])
+                + unicode(appstruct['staff_comment'])
             appstruct['staff_comment'] = ''
 
         DBSession.flush()  # save to DB
