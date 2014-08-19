@@ -253,7 +253,6 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
         tex_cmd += u'\\newcommand{\\'+str(key)+'}{'+unicode(val)+'}'
     tex_cmd += '\\input{'+str(tpl_tex)+'}'
     tex_cmd = '"'+tex_cmd+'"'
-    print(tex_cmd)
 
     # generate pdf
     pdflatex = subprocess.Popen(
