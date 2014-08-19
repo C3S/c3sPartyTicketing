@@ -248,10 +248,15 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
     print(_tex_vars)
 
     # generate tex command for pdflatex
+    # tex_cmd = ''
+    # for key, val in _tex_vars.iteritems():
+    #     tex_cmd += u'\\newcommand{\\'+str(key)+'}{'+unicode(val)+'}'
+    # tex_cmd += '\\input{'+str(tpl_tex)+'}'
+    # tex_cmd = '"'+tex_cmd+'"'
     tex_cmd = ''
     for key, val in _tex_vars.iteritems():
-        tex_cmd += u'\\newcommand{\\'+str(key)+'}{'+unicode(val)+'}'
-    tex_cmd += '\\input{'+str(tpl_tex)+'}'
+        tex_cmd += '\\newcommand{\\%s}{%s}' % (key, val)
+    tex_cmd += '\\input{%s}' % tpl_tex
     tex_cmd = '"'+tex_cmd+'"'
 
     # generate pdf
