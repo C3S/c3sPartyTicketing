@@ -70,8 +70,29 @@ def ticket_code_suffix(_ticket):
     produce a code to be appended to ticket code
     showing helper, guest, eichhoernchen
     '''
-    code = u''
-    #if _ticket.guestlist ...  # not implemented yet, see #628
+    code = u' '
+    if _ticket.guestlist_gv == 'helper':
+        code += 'H'
+    elif _ticket.guestlist_gv == 'guest':
+        code += 'G'
+    elif _ticket.guestlist_gv == 'specialguest':
+        code += 'E'
+    elif _ticket.guestlist_gv == 'press':
+        code += 'P'
+    elif _ticket.guestlist_gv == 'representative':
+        code += 'R'
+    else:
+        code += '0'
+    if _ticket.guestlist_bc == 'helper':
+        code += 'H'
+    elif _ticket.guestlist_bc == 'guest':
+        code += 'G'
+    elif _ticket.guestlist_bc == 'specialguest':
+        code += 'E'
+    elif _ticket.guestlist_bc == 'press':
+        code += 'P'
+    else:
+        code += '0'
     return code
 
 
@@ -245,6 +266,23 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
         'lang': 'de',
         'pdfBackground': bg_pdf,
     }
+
+    _tex_vars['representsOne'] = False
+    _tex_vars['representsOneName'] = ' '
+    if _ticket.represents_id1:
+        _ticket_rep1 = PartyTicket.get_by_id(int(_ticket.represents_id1))
+        if _ticket_rep1 != None:
+            _tex_vars['representsOne'] = True
+            _tex_vars['representsOneName'] = _ticket_rep1.firstname + ' ' \
+                + _ticket_rep1.lastname
+    _tex_vars['representsTwo'] = False
+    _tex_vars['representsTwoName'] = ' '
+    if _ticket.represents_id2:
+        _ticket_rep2 = PartyTicket.get_by_id(int(_ticket.represents_id2))
+        if _ticket_rep2 != None:
+            _tex_vars['representsTwo'] = True
+            _tex_vars['representsTwoName'] = _ticket_rep2.firstname + ' ' \
+                + _ticket_rep2.lastname
 
     # generate tex command for pdflatex
     tex_cmd = ''

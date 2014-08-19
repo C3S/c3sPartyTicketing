@@ -14,7 +14,7 @@
 \usepackage[ngerman]{babel}
 \usepackage{paratype}
 \renewcommand*\familydefault{\sfdefault}
-\usepackage{inconsolata}
+\usepackage[scaled]{beramono}
 \setlength{\parskip}{\smallskipamount}
 \setlength{\parindent}{0pt}
 \linespread{0.92}
@@ -70,6 +70,7 @@
 \newcommand{\txtFeaturesBcAttendance}{Teilnahme Barcamp}%
 \newcommand{\txtFeaturesBcBuffet}{Buffet Barcamp}%
 \newcommand{\txtFeaturesTshirt}{T-Shirt}%
+\newcommand{\txtFeaturesRepresents}{Repräsentant für}%
 
 % circle
 \newcommand{\txtCircle}{}%
@@ -150,7 +151,13 @@
     \IfEqCase{\ticketTshirt}{%
         {True}{\symBullet \txtFeaturesTshirt{}\\\\}%
     }%
-    }
+    \IfEqCase{\representsOne}{%
+        {True}{\symBullet \txtFeaturesRepresents{} \representsOneName{}\\\\}%
+    }%
+    \IfEqCase{\representsTwo}{%
+        {True}{\symBullet \txtFeaturesRepresents{} \representsTwoName{}\\\\}%
+    }%
+  }%
 }%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -169,7 +176,7 @@
   
   % qrcode
   \put(380,-240){\includegraphics[width=5.5cm, height=5.5cm]{\qrcodeImage}}%
-  \LARGE\color{Black}\texttt{
+  \Large\color{Black}\texttt{
   \put(360,-257){\parbox[c][1cm]{7cm}{
     \begin{center}\qrcodeText{}\end{center}
     }}}%

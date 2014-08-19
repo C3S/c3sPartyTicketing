@@ -220,6 +220,8 @@ class PartyTicket(Base):
     rep_country = Column(Text, default='')
     rep_type = Column(Integer)
     rep_email = Column(Text, default='')
+    represents_id1 = Column(Integer)
+    represents_id2 = Column(Integer)
     # guestlist
     guestlist = Column(Boolean, default=False)
     guestlist_gv = Column(Unicode(255), unique=False)

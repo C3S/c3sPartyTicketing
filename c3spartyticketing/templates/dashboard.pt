@@ -58,6 +58,7 @@
               <td>email</td>
               <td>member</td>
               <td>GA?</td>
+              <td><span class="glyphicon glyphicon-flag" style="color:#FFA500;"></span></td>
               <td>BC?</td>
               <td>BC+</td>
               <td>tshirt?</td>
@@ -70,9 +71,9 @@
               <td>löschen</td>
             </tr>
       <tr tal:repeat="ticket tickets" class="table-striped">
-        <td><a href="/detail/${ticket.id}">${ticket.id}</a></td>
-        <td><a href="/detail/${ticket.id}">${ticket.email_confirm_code}</a></td>
-        <td><a href="/ticket/${ticket.email}/c3sPartyTicket_${ticket.email_confirm_code}">.pdf</a></td>
+        <td><a href="/edit_ticket/${ticket.id}">${ticket.id}</a></td>
+        <td><a href="/edit_ticket/${ticket.id}">${ticket.email_confirm_code}</a></td>
+        <td><a href="/ticket/${ticket.email}/C3S_Ticket_${ticket.email_confirm_code}">.pdf</a></td>
         <td>${ticket.firstname}</td>
         <td>${ticket.lastname}</td>
         <td><a href="mailto:${ticket.email}">${ticket.email}</a></td>
@@ -96,6 +97,15 @@
           </span>
         </td>
         <td>
+          <span tal:condition="ticket.represents_id1">
+            <a href="/edit_ticket/${ticket.represents_id1}">1</a>
+          </span>
+          <span tal:condition="ticket.represents_id2">
+            <span tal:condition="ticket.represents_id1"> | </span>
+            <a href="/edit_ticket/${ticket.represents_id2}">2</a>
+          </span>
+        </td>
+        <td>
           <span tal:condition="ticket.ticket_bc_attendance" class="glyphicon glyphicon-ok" style="color:#090;"></span>
           <span tal:condition="not ticket.ticket_bc_attendance" class="glyphicon glyphicon-remove" style="color:#700;"></span>
         </td>
@@ -112,6 +122,7 @@
         </td>
         <td>${ticket.the_total}</td>
         <td>
+            <div tal:condition="ticket.the_total">
                 <div tal:condition="not ticket.payment_received">
                   <a href="${request.route_url('switch_pay', ticket_id=ticket.id)}">
                     <img src="${request.static_url('c3spartyticketing:static/images/flash_red.gif')}" width="20px" height="20px" />
@@ -124,7 +135,8 @@
              width="20px" height="20px" />
                   </a>
                 </div>
-              </td>
+          </div>
+        </td>
         <td>
           <span tal:condition="ticket.checked_persons is not ticket.num_tickets"
                 style="color:red;">
@@ -137,14 +149,16 @@
           </span>
         </td>
         <td>
-          <div tal:condition="python: ticket.payment_received is True and ticket.ticketmail_sent is not True">
-            <a href="${request.route_url('send_ticket_mail', ticket_id=ticket.id)}"
-               title="send mail!" style="color:orange;">schicke ticketmail</a>
-          </div>
-          <div tal:condition="python: ticket.ticketmail_sent is True">
-            <a style="color:green;"
-               href="${request.route_url('send_ticket_mail', ticket_id=ticket.id)}"
-               title="${ticket.ticketmail_sent_date}">ist raus.</a>
+          <div tal:condition="python: ticket.ticket_gv_attendance is 1 or ticket.ticket_bc_attendance is True">
+            <div tal:condition="python: (ticket.payment_received is True or not ticket.the_total) and ticket.ticketmail_sent is not True">
+              <a href="${request.route_url('send_ticket_mail', ticket_id=ticket.id)}"
+                 title="send mail!" style="color:orange;">schicke ticketmail</a>
+            </div>
+            <div tal:condition="python: ticket.ticketmail_sent is True">
+              <a style="color:green;"
+                 href="${request.route_url('send_ticket_mail', ticket_id=ticket.id)}"
+                 title="${ticket.ticketmail_sent_date}">ist raus.</a>
+            </div>
           </div>
         </td>
         <td><a href="/edit_ticket/${ticket.id}">bearbeiten</a></td>

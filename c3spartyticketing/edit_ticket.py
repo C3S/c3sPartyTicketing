@@ -52,6 +52,15 @@ def edit_ticket(request):
 
     ### generate appstruct
     appstruct = {
+        'personal': {
+            'firstname': _ticket.firstname,
+            'lastname': _ticket.lastname,
+            'email': _ticket.email,
+        },
+        'guest': {
+            'bc': _ticket.guestlist_bc,
+            'gv': _ticket.guestlist_gv,
+        },
         'ticket': {
             'ticket_gv': _ticket.ticket_gv_attendance,
             'ticket_bc': [
@@ -83,6 +92,10 @@ def edit_ticket(request):
             'city': _ticket.rep_city,
             'country': _ticket.rep_country,
             'representation_type': _ticket.rep_type
+        },
+        'represents': {
+            'represents1': _ticket.represents_id1 or 0,
+            'represents2': _ticket.represents_id2 or 0,
         },
         'tshirt': {
             'tshirt_type': _ticket.ticket_tshirt_type,
@@ -163,6 +176,18 @@ def edit_ticket(request):
                 raise colander.Invalid(form,
                     _(u'Relation of representative is mandatory.')
                 )
+        if value['represents']['represents1'] != 0:
+            if PartyTicket.get_by_id(value['represents']['represents1']) is None:
+                raise colander.Invalid(form,
+                    'Repräsentiert (1): Ticket ID '
+                    +str(value['represents']['represents1'])+' ungültig'
+                )
+        if value['represents']['represents2'] != 0:
+            if PartyTicket.get_by_id(value['represents']['represents2']) is None:
+                raise colander.Invalid(form,
+                    'Repräsentiert (2): Ticket ID '
+                    +str(value['represents']['represents2'])+' ungültig'
+                )
 
     # XXX: convert ticket_*_schema into class an import here
     # from c3spartyticketing.options import (
@@ -221,7 +246,63 @@ def edit_ticket(request):
         ('XXXL', _(u'XXXL'))
     )
 
+    guest_options_bc = (
+        ('', ''),
+        ('helper', 'Helfer'),
+        ('guest', 'Gast'),
+        ('specialguest', 'Ehrengast'),
+        ('press', 'Presse'),
+        ('representative', 'Repräsentant'),
+    )
+
+    guest_options_gv = (
+        ('', ''),
+        ('helper', 'Helfer'),
+        ('guest', 'Gast'),
+        ('specialguest', 'Ehrengast'),
+        ('press', 'Presse'),
+    )
+
     ### generate form
+    class PersonalData(colander.MappingSchema):
+
+        firstname = colander.SchemaNode(
+            colander.String(),
+            title=_(u"First Name"),
+            widget=deform.widget.TextInputWidget(),
+            oid="firstname",
+        )
+        lastname = colander.SchemaNode(
+            colander.String(),
+            title=_(u"Last Name"),
+            widget=deform.widget.TextInputWidget(),
+            oid="lastname",
+        )
+        email = colander.SchemaNode(
+            colander.String(),
+            title=_(u"E-mail"),
+            widget=deform.widget.TextInputWidget(),
+            validator=colander.Email(),
+            oid="email",
+        )
+
+    class GuestData(colander.MappingSchema):
+
+        bc = colander.SchemaNode(
+            colander.String(),
+            title=_(u"BarCamp"),
+            widget=deform.widget.SelectWidget(values=guest_options_bc),
+            missing='',
+            oid="guest-bc",
+        )
+        gv = colander.SchemaNode(
+            colander.String(),
+            title=_(u"General Assembly"),
+            widget=deform.widget.SelectWidget(values=guest_options_gv),
+            missing='',
+            oid="guest-gv",
+        )
+
     class TicketData(colander.MappingSchema):
 
         locale_name = _ticket.locale
@@ -352,6 +433,23 @@ def edit_ticket(request):
             oid="rep-type",
         )
 
+    class RepresentsData(colander.MappingSchema):
+        """
+        colander schema of represents
+        """
+        represents1 = colander.SchemaNode(
+            colander.Int(),
+            title=_(u"Ticket ID of represented person (1) ..."),
+            missing=0,
+            oid="represents1",
+        )
+        represents2 = colander.SchemaNode(
+            colander.Int(),
+            title=_(u"Ticket ID of represented person (2) ..."),
+            missing=0,
+            oid="represents2",
+        )
+
     class TshirtData(colander.MappingSchema):
         """
         colander schema of tshirt form
@@ -441,13 +539,25 @@ def edit_ticket(request):
         - Representation Data
         - Tshirt Data
         """
+        personal = PersonalData(
+            title=_(u"Personal Data"),
+            oid="personal-data",
+        )
+        guest = GuestData(
+            title="Gästeliste",
+            oid="guest-data",
+        )
         ticket = TicketData(
             title=_(u"Ticket Information"),
             oid="ticket-data",
         )
         representation = RepresentationData(
-            title=_(u"Representative"),
+            title="Wird repräsentiert von ...",
             oid="rep-data",
+        )
+        represents = RepresentsData(
+            title="Repräsentiert ...",
+            oid="represents",
         )
         if _ticket.membership_type == "nonmember":
             representation = None
@@ -544,6 +654,28 @@ def edit_ticket(request):
                 3: 100
             }
 
+            # guest auto calc
+            if appstruct['guest']['gv'] == 'helper':
+                the_values['ticket_tshirt'] = 0
+            if appstruct['guest']['gv'] == 'guest':
+                pass
+            if appstruct['guest']['gv'] == 'specialguest':
+                pass
+            if appstruct['guest']['gv'] == 'press':
+                pass
+            if appstruct['guest']['bc'] == 'helper':
+                the_values['ticket_bc_attendance'] = 0
+                the_values['ticket_bc_buffet'] = 0
+                the_values['ticket_tshirt'] = 0
+            if appstruct['guest']['bc'] == 'guest':
+                pass
+            if appstruct['guest']['bc'] == 'specialguest':
+                the_values['ticket_bc_attendance'] = 0
+                the_values['ticket_bc_buffet'] = 0
+            if appstruct['guest']['bc'] == 'press':
+                the_values['ticket_bc_attendance'] = 0
+                the_values['ticket_bc_buffet'] = 0
+
             # option 'all' equivalent to all options checked
             if appstruct['ticket']['ticket_gv'] == 1 \
                 and set(['attendance', 'buffet']).issubset(
@@ -605,6 +737,20 @@ def edit_ticket(request):
                 3: 100
             }
 
+            # guest auto calc
+            if appstruct['guest']['bc'] == 'helper':
+                the_values['ticket_bc_attendance'] = 0
+                the_values['ticket_bc_buffet'] = 0
+                the_values['ticket_tshirt'] = 0
+            if appstruct['guest']['bc'] == 'guest':
+                pass
+            if appstruct['guest']['bc'] == 'specialguest':
+                the_values['ticket_bc_attendance'] = 0
+                the_values['ticket_bc_buffet'] = 0
+            if appstruct['guest']['bc'] == 'press':
+                the_values['ticket_bc_attendance'] = 0
+                the_values['ticket_bc_buffet'] = 0
+
             # bc: buffet only when attended
             if 'attendance' not in appstruct['ticket']['ticket_bc']:
                 appstruct['ticket']['ticket_bc'].discard('buffet')
@@ -653,6 +799,13 @@ def edit_ticket(request):
             _ticket.rep_country = appstruct['representation']['country']
             _ticket.rep_type = appstruct['representation']['representation_type']
 
+        _ticket.guestlist_bc = appstruct['guest']['bc']
+        _ticket.guestlist_gv = appstruct['guest']['gv']
+        _ticket.represents_id1 = appstruct['represents']['represents1']
+        _ticket.represents_id2 = appstruct['represents']['represents2']
+        _ticket.firstname = appstruct['personal']['firstname']
+        _ticket.lastname = appstruct['personal']['lastname']
+        _ticket.email = appstruct['personal']['email']
         _ticket.ticket_bc_attendance = (
             'attendance' in appstruct['ticket']['ticket_bc']
         )
@@ -712,9 +865,18 @@ def edit_ticket(request):
         print('backend - save to db: updated.')
         form.set_appstruct(appstruct)
 
+    _ticket_rep1 = None
+    if _ticket.represents_id1:
+        _ticket_rep1 = PartyTicket.get_by_id(int(_ticket.represents_id1))
+    _ticket_rep2 = None
+    if _ticket.represents_id2:
+        _ticket_rep2 = PartyTicket.get_by_id(int(_ticket.represents_id2))
+
     _html = form.render()
     return {
         'ticket': _ticket,
+        'ticket_rep1': _ticket_rep1,
+        'ticket_rep2': _ticket_rep2,
         'form': _html,
         'staff_comment': _ticket.staff_comment
     }
