@@ -251,7 +251,7 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
     for key, val in _tex_vars.iteritems():
         tex_cmd += '\\newcommand{\\%s}{%s}' % (key, val)
     tex_cmd += '\\input{%s}' % tpl_tex
-    tex_cmd = '"'+_tex_cmd+'"'
+    tex_cmd = '"'+tex_cmd+'"'
 
     # generate pdf
     # XXX: try to find out, why utf-8 doesn't work on debian
