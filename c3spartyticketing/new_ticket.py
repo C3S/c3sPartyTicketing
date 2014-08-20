@@ -107,6 +107,15 @@ def add_ticket(request):
                     'Repräsentiert (2): Ticket ID '
                     +str(value['represents']['represents2'])+' ungültig'
                 )
+        if value['guest']['bc'] != '' and not value['ticket']['ticket_bc']:
+            raise colander.Invalid(form,
+                'Gästelistenkategorie bei Barcamp angewählt, aber keine Teilnahme'
+            )
+        if value['guest']['gv'] != '' and not value['ticket']['ticket_gv'] == 1:
+            raise colander.Invalid(form,
+                'Gästelistenkategorie bei Generalversammlung angewählt, '
+                +'aber keine Teilnahme'
+            )
 
     # XXX: convert ticket_*_schema into class an import here
     # from c3spartyticketing.options import (
