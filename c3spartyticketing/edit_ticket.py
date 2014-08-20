@@ -788,7 +788,6 @@ def edit_ticket(request):
 
         #_ticket.date_of_submission = datetime.now()
         if _ticket.membership_type in ('normal', 'investing'):
-            _ticket.ticket_gv_attendance = appstruct['ticket']['ticket_gv']
             _ticket.ticket_all = appstruct['ticket']['ticket_all']
             _ticket.rep_firstname = appstruct['representation']['firstname']
             _ticket.rep_lastname = appstruct['representation']['lastname']
@@ -798,6 +797,11 @@ def edit_ticket(request):
             _ticket.rep_city = appstruct['representation']['city']
             _ticket.rep_country = appstruct['representation']['country']
             _ticket.rep_type = appstruct['representation']['representation_type']
+            _ticket.ticket_gv_attendance = appstruct['ticket']['ticket_gv']
+        elif appstruct['ticket']['ticket_gv'] in [1, 3]:
+            _ticket.ticket_gv_attendance = appstruct['ticket']['ticket_gv']
+        else:
+            appstruct['ticket']['ticket_gv'] = _ticket.ticket_gv_attendance
 
         _ticket.guestlist_bc = appstruct['guest']['bc']
         _ticket.guestlist_gv = appstruct['guest']['gv']
