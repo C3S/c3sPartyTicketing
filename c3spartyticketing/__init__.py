@@ -72,7 +72,8 @@ def main(global_config, **settings):
     config.add_route('stats', '/stats')
     config.add_route('print', '/print')
     config.add_route('detail', '/detail/{ticket_id}')
-    config.add_route('edit_ticket', '/edit_ticket/{ticket_id}')
+    config.add_route('add_ticket', '/add_ticket') # accountants
+    config.add_route('edit_ticket', '/edit_ticket/{ticket_id}') # accountants
     config.add_route('send_ticket_mail', '/ticketmail/{ticket_id}')
     config.add_route('get_ticket', '/ticket/{email}/C3S_Ticket_{code}')
     config.add_route('get_ticket_mobile',

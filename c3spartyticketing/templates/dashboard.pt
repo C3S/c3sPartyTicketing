@@ -47,6 +47,10 @@
                class="btn btn-info">&lt;vorige</a>
             <a href="${request.route_url('dashboard', number=next)}"
                class="btn btn-info">nächste&gt;</a>
+            <span style="float:right">
+              <a href="${request.route_url('add_ticket')}"
+                 class="btn btn-primary">Neues Ticket</a>
+            </span>
           </p>
           <table border="0" cellpadding="10" width="90%" class="table table-striped">
             <tr class="table-striped">
