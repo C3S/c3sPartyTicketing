@@ -18,7 +18,8 @@ from sqlalchemy import (
     Boolean,
     DateTime,
     Date,
-    Unicode
+    Unicode,
+    or_,
 )
 from sqlalchemy.exc import (
     IntegrityError,
@@ -750,6 +751,34 @@ class PartyTicket(Base):
         _how_many = int(offset) + int(how_many)
         _offset = int(offset)
         q = DBSession.query(cls).all()[_offset:_how_many]
+        #return q.order_by(order_by)[:how_many]
+        return q
+
+    @classmethod
+    def ticket_listing_ga(cls, order_by, how_many=10, offset=0):
+        #print("offset: %s" % offset)
+        _how_many = int(offset) + int(how_many)
+        _offset = int(offset)
+        q = DBSession.query(cls).filter(
+            or_(
+                cls.ticket_gv_attendance == 1,
+                cls.ticket_gv_attendance == 2,
+            )
+        ).all()[_offset:_how_many]
+        #return q.order_by(order_by)[:how_many]
+        return q
+
+    @classmethod
+    def ticket_listing_bc(cls, order_by, how_many=10, offset=0):
+        #print("offset: %s" % offset)
+        _how_many = int(offset) + int(how_many)
+        _offset = int(offset)
+        q = DBSession.query(cls).filter(
+            or_(
+                cls.ticket_bc_attendance == 1,
+                cls.ticket_bc_attendance == 2,
+            )
+        ).all()[_offset:_how_many]
         #return q.order_by(order_by)[:how_many]
         return q
 

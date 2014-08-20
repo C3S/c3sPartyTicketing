@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="base">
+  <tal:block metal:fill-slot="top">
+    <h1>Ticketliste Generalversammlung
+      <small>${count} Tickets</small>
+      <small>Stand ${_today}</small></h1>
+    <p>sortiert nach nachnamen
+  </tal:block>
+  <tal:block metal:fill-slot="middle">
+    <table class="table table-striped" rules="rows"><!--! the actual table  -->
+      <tr class="table-striped">
+        <td>id</td>
+        <td>code</td>
+        <td>nachname</td>
+        <td>vorname</td>
+        <td>type</td>
+        <td>GA?</td>
+        <td>tshirt?</td>
+        <td>zu zahlen</td>
+        <td>zahlung<br />erhalten?</td>
+      </tr>
+      <!--! loop over the list of tickets -->
+      <tr tal:repeat="ticket tickets"
+          tal:attributes="id python: 'ticket_{0}'.format(ticket.id)">
+        <td>${ticket.id}</td>
+        <td>${ticket.email_confirm_code}</td>
+        <td>${ticket.lastname}</td>
+        <td>${ticket.firstname}</td>
+        <td>
+          <div tal:condition="ticket.membership_type == 'investing'">I</div>
+          <div tal:condition="ticket.membership_type == 'normal'">N</div>
+        </td>
+        <td>
+          <span tal:condition="not ticket.membership_type == 'nonmember'">
+            <span tal:condition="ticket.ticket_gv_attendance == 1" 
+                  class="glyphicon glyphicon-ok" style="color:#090;"></span>
+            <span tal:condition="ticket.ticket_gv_attendance == 2" >
+              ${ticket.rep_firstname} ${ticket.rep_lastname}</span>
+            <span tal:condition="ticket.ticket_gv_attendance == 3" 
+                  class="glyphicon glyphicon-remove" style="color:#700;"></span>
+          </span>
+          <span tal:condition="ticket.membership_type == 'nonmember'">
+            <span class="glyphicon glyphicon-remove" style="color:#999;"></span>
+          </span>
+        </td>
+        <td>
+          <span tal:condition="ticket.ticket_tshirt">
+            ${ticket.ticket_tshirt_type} ${ticket.ticket_tshirt_size}
+          </span>
+        </td>
+        <td>${ticket.the_total}</td>
+        <td>
+          <div tal:condition="ticket.the_total == 0 and not ticket.payment_received">
+            ok
+          </div>
+          <div tal:condition="ticket.the_total is not 0 and not ticket.payment_received">
+            NEIN
+          </div>
+          <div tal:condition="ticket.payment_received">
+            ja
+          </div>
+        </td>
+      </tr>
+    </table>
+    <!--! end of table -->
+  </tal:block>
+</html>

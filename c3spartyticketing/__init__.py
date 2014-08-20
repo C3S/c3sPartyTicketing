@@ -51,6 +51,8 @@ def main(global_config, **settings):
     config.add_subscriber('c3spartyticketing.subscribers.add_locale_to_cookie',
                           'pyramid.events.NewRequest')
     config.add_static_view('static', 'static', cache_max_age=3600)
+    config.add_renderer(name='csv',
+                        factory='c3spartyticketing.renderers.CSVRenderer')
     # user views
     config.add_route('load_user', '/lu/{token}/{email}')
     config.add_route('party', '/')  # member landing page
@@ -83,6 +85,9 @@ def main(global_config, **settings):
     config.add_route('hobo', '/hobo')  # new hobo / schwarzfahrer
     config.add_route('switch_pay', '/switch_pay/{ticket_id}')
     config.add_route('delete_entry', '/delete/{ticket_id}')
+    config.add_route('ticket_listing_ga_printout', '/tlp_ga')
+    config.add_route('ticket_listing_bc_printout', '/tlp_bc')
+    config.add_route('ticket_namelist', '/tl_names')
     # staff eat staff
     config.add_route('staff', '/staff')
     # cashier
