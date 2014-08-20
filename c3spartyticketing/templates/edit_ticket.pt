@@ -144,7 +144,7 @@
                 <td>${ticket_rep1.lastname}</td>
               </tr>
               <tr>
-                <td>Straße</td>
+                <td>Email</td>
                 <td>${ticket_rep1.email}</td>
               </tr>
             </table>
@@ -164,7 +164,7 @@
                 <td>${ticket_rep2.lastname}</td>
               </tr>
               <tr>
-                <td>Straße</td>
+                <td>Email</td>
                 <td>${ticket_rep2.email}</td>
               </tr>
             </table>
@@ -224,6 +224,15 @@
         <h2>Staff Kommentare</h2>
         <span tal:omit-tag="" 
               tal:repeat="line staff_comment.splitlines()|''">
+          ${line}<br />
+        </span>
+      </div>
+
+      <br /><br />
+      <div>
+        <h2>Cashiers Kommentare</h2>
+        <span tal:omit-tag="" 
+              tal:repeat="line cashiers_comment.splitlines()|''">
           ${line}<br />
         </span>
       </div>

@@ -189,7 +189,7 @@ def edit_ticket(request):
                     +str(value['represents']['represents2'])+' ungültig'
                 )
 
-    # XXX: convert ticket_*_schema into class an import here
+    # XXX: convert ticket_*_schema into class and import here
     # from c3spartyticketing.options import (
     #     ticket_gv_options,
     #     ticket_bc_options,
@@ -851,7 +851,6 @@ def edit_ticket(request):
 
         # staff comment
         if appstruct['staff_comment']:
-            _ticket.staff_comment
             _ticket.staff_comment = (_ticket.staff_comment or u'') \
                 + '\r\n\r\n' \
                 + '-'*80 \
@@ -878,5 +877,6 @@ def edit_ticket(request):
         'ticket_rep1': _ticket_rep1,
         'ticket_rep2': _ticket_rep2,
         'form': _html,
-        'staff_comment': _ticket.staff_comment
+        'staff_comment': _ticket.staff_comment,
+        'cashiers_comment': _ticket.cashiers_comment
     }

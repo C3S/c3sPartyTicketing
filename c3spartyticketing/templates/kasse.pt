@@ -13,8 +13,11 @@
           href="${request.static_url('c3spartyticketing:static/favicon.ico')}" />
     <tal:block metal:fill-slot="deform-js-css">
       <!-- Javascripts -->
-      <script src="${request.static_url('c3spartyticketing:static/jquery-2.0.3/jquery-2.0.3.min.js')}"
-              type="text/javascript"></script>
+      <script src="${request.static_url('c3spartyticketing:static/jquery/jquery-2.1.1.min.js')}"
+            type="text/javascript"></script>
+      <script src="${request.static_url('c3spartyticketing:static/ss/jquery-ui.js')}"></script>
+    <script type="text/javascript"
+            src="${request.static_url('c3spartyticketing:static/ticketform/ticketform.js')}"></script>
       <script src="${request.static_url('c3spartyticketing:static/bootstrap-3.0.3-dist/js/bootstrap.js')}"
               type="text/javascript"></script>
       <script src="${request.static_url('deform:static/scripts/typeahead.min.js')}"
@@ -35,11 +38,56 @@
     </tal:block>
   </head>
   <body>
+    
     <tal:block metal:fill-slot="top">
-      <p>
-        Eingecheckt: <span id="already_checked_in">${num_passengers}</span>. Erwarten noch: <span id="still_awaiting">${num_open_tickets}</span>
-      </p>
+
+      <h1>Check-In</h1>
+
+      <table cellpadding="5">
+        <tr>
+          <td><b>Barcamp</b></td>
+          <td>
+            eingecheckt:
+            <b>${stats.bc.checkedin.all}</b>
+            (${stats.bc.checkedin.helper} H, 
+            ${stats.bc.checkedin.guest} G,
+            ${stats.bc.checkedin.specialguest} E,
+            ${stats.bc.checkedin.press} P)
+          </td>
+          <td>
+            erwarten noch:
+            <b>${stats.bc.expected.all}</b>
+            (${stats.bc.expected.helper} H, 
+            ${stats.bc.expected.guest} G,
+            ${stats.bc.expected.specialguest} E,
+            ${stats.bc.expected.press} P)
+          </td>
+        </tr>
+        <tr>
+          <td><b>Generalversammlung</b></td>
+          <td>
+            eingecheckt:
+            <b>${stats.gv.checkedin.all}</b>
+            (${stats.gv.checkedin.helper} H,
+            ${stats.gv.checkedin.guest} G,
+            ${stats.gv.checkedin.specialguest} E,
+            ${stats.gv.checkedin.press} P,
+            ${stats.gv.checkedin.representative} R)
+          </td>
+          <td>
+            erwarten noch:
+            <b>${stats.gv.expected.all}</b>
+            (${stats.gv.expected.helper} H,
+            ${stats.gv.expected.guest} G,
+            ${stats.gv.expected.specialguest} E,
+            ${stats.gv.expected.press} P,
+            ${stats.gv.expected.representative} R)
+          </td>
+        </tr>
+      </table>
+      <br />
     </tal:block>
+
     <tal:block metal:fill-slot="middle">
       <div id="wrap">
         <div id="main">

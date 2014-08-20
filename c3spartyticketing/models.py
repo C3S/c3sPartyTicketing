@@ -194,10 +194,20 @@ class PartyTicket(Base):
     num_tickets = Column(Integer, default=1)
     checked_persons = Column(Integer, default=0)
     checked_gv = Column(Boolean, default=False)
+    checked_gv_time = Column(
+        DateTime(), default=datetime(1970, 1, 1))
     checked_bc = Column(Boolean, default=False)
+    checked_bc_time = Column(
+        DateTime(), default=datetime(1970, 1, 1))
     received_extra1 = Column(Boolean, default=False)
+    received_extra1_time = Column(
+        DateTime(), default=datetime(1970, 1, 1))
     received_extra2 = Column(Boolean, default=False)
+    received_extra2_time = Column(
+        DateTime(), default=datetime(1970, 1, 1))
     received_extra3 = Column(Boolean, default=False)
+    received_extra3_time = Column(
+        DateTime(), default=datetime(1970, 1, 1))
     ticket_gv_attendance = Column(Integer)
     ticket_bc_attendance = Column(Boolean, default=False)
     ticket_bc_buffet = Column(Boolean, default=False)
@@ -237,6 +247,7 @@ class PartyTicket(Base):
     user_comment = Column(Unicode(255))
     accountant_comment = Column(Unicode(255))
     staff_comment = Column(Text, default='')
+    cashiers_comment = Column(Text, default='')
 
     def __init__(self, token, firstname, lastname, email, password,
                  locale,
@@ -924,5 +935,121 @@ class PartyTicket(Base):
                 _stats['tshirts']['total'] += 1
                 _stats['tshirts'][map_tt][item.ticket_tshirt_size] += 1
         return _stats
+
+    @classmethod
+    def stats_cashiers(cls):
+        """return stats of people attending / checked in"""
+        _all = DBSession.query(cls).all()
+        _data = {
+            'bc': {
+                'checkedin': {
+                    'all': 0,
+                    'helper': 0,
+                    'guest': 0,
+                    'specialguest': 0,
+                    'press': 0,
+                },
+                'expected': {
+                    'all': 0,
+                    'helper': 0,
+                    'guest': 0,
+                    'specialguest': 0,
+                    'press': 0,
+                },
+            },
+            'gv': {
+                'checkedin': {
+                    'all': 0,
+                    'helper': 0,
+                    'guest': 0,
+                    'specialguest': 0,
+                    'press': 0,
+                    'representative': 0,
+                },
+                'expected': {
+                    'all': 0,
+                    'helper': 0,
+                    'guest': 0,
+                    'specialguest': 0,
+                    'press': 0,
+                    'representative': 0,
+                },
+            }
+        }
+        for item in _all:
+            if item.ticket_bc_attendance:
+                if item.checked_bc:
+                    _data['bc']['checkedin']['all'] += 1
+                    if item.guestlist_bc == 'helper':
+                        _data['bc']['checkedin']['helper'] += 1
+                    if item.guestlist_bc == 'guest':
+                        _data['bc']['checkedin']['guest'] += 1
+                    if item.guestlist_bc == 'specialguest':
+                        _data['bc']['checkedin']['specialguest'] += 1
+                    if item.guestlist_bc == 'press':
+                        _data['bc']['checkedin']['press'] += 1
+                else:
+                    _data['bc']['expected']['all'] += 1
+                    if item.guestlist_bc == 'helper':
+                        _data['bc']['expected']['helper'] += 1
+                    if item.guestlist_bc == 'guest':
+                        _data['bc']['expected']['guest'] += 1
+                    if item.guestlist_bc == 'specialguest':
+                        _data['bc']['expected']['specialguest'] += 1
+                    if item.guestlist_bc == 'press':
+                        _data['bc']['expected']['press'] += 1
+            if item.ticket_gv_attendance == 1:
+                if item.checked_bc:
+                    _data['gv']['checkedin']['all'] += 1
+                    if item.guestlist_gv == 'helper':
+                        _data['gv']['checkedin']['helper'] += 1
+                    if item.guestlist_gv == 'guest':
+                        _data['gv']['checkedin']['guest'] += 1
+                    if item.guestlist_gv == 'specialguest':
+                        _data['gv']['checkedin']['specialguest'] += 1
+                    if item.guestlist_gv == 'press':
+                        _data['gv']['checkedin']['press'] += 1
+                    if item.guestlist_gv == 'representative':
+                        _data['gv']['checkedin']['representative'] += 1
+                else:
+                    _data['gv']['expected']['all'] += 1
+                    if item.guestlist_gv == 'helper':
+                        _data['gv']['expected']['helper'] += 1
+                    if item.guestlist_gv == 'guest':
+                        _data['gv']['expected']['guest'] += 1
+                    if item.guestlist_gv == 'specialguest':
+                        _data['gv']['expected']['specialguest'] += 1
+                    if item.guestlist_gv == 'press':
+                        _data['gv']['expected']['press'] += 1
+                    if item.guestlist_gv == 'representative':
+                        _data['gv']['expected']['representative'] += 1
+        return _data
+
+    @classmethod
+    def num_barcamp_checkdin(cls):
+        """return number of people already checked in"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            _num = _num + item.checked_persons
+        return _num
+
+    @classmethod
+    def num_generalassembly_attending(cls):
+        """return number of people already checked in"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            _num = _num + item.checked_persons
+        return _num
+
+    @classmethod
+    def num_generalassembly_checkdin(cls):
+        """return number of people already checked in"""
+        _all = DBSession.query(cls).all()
+        _num = 0
+        for item in _all:
+            _num = _num + item.checked_persons
+        return _num
 
 Index('ticket_index', PartyTicket.tcodes, unique=True, mysql_length=255)

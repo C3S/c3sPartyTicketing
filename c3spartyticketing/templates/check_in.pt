@@ -10,47 +10,248 @@
   </tal:block>
   <tal:block metal:fill-slot="top"></tal:block>
   <tal:block metal:fill-slot="middle">
-    <h3><small>Party</small> Check-in</h3>
-    <div style="text-align:left;">
-      <strong style="color:red;" tal:repeat="message request.session.pop_flash('message_above_login')">
-	${message}
-      </strong>
-    </div>
-    <p>
-      Eingecheckt: <span id="already_checked_in">${num_passengers}</span>.
-    </p>
-    <div tal:condition="paid is True">      <!-- BEZAHLT -->
+
+    <h1>Check-In <code>${ticket.email_confirm_code}</code></h1>
+
+    <table cellpadding="5">
+      <tr>
+        <td><b>Barcamp</b></td>
+        <td>
+          eingecheckt:
+          <b>${stats.bc.checkedin.all}</b>
+          (${stats.bc.checkedin.helper} H, 
+          ${stats.bc.checkedin.guest} G,
+          ${stats.bc.checkedin.specialguest} E,
+          ${stats.bc.checkedin.press} P)
+        </td>
+        <td>
+          erwarten noch:
+          <b>${stats.bc.expected.all}</b>
+          (${stats.bc.expected.helper} H, 
+          ${stats.bc.expected.guest} G,
+          ${stats.bc.expected.specialguest} E,
+          ${stats.bc.expected.press} P)
+        </td>
+      </tr>
+      <tr>
+        <td><b>Generalversammlung</b></td>
+        <td>
+          eingecheckt:
+          <b>${stats.gv.checkedin.all}</b>
+          (${stats.gv.checkedin.helper} H,
+          ${stats.gv.checkedin.guest} G,
+          ${stats.gv.checkedin.specialguest} E,
+          ${stats.gv.checkedin.press} P,
+          ${stats.gv.checkedin.representative} R)
+        </td>
+        <td>
+          erwarten noch:
+          <b>${stats.gv.expected.all}</b>
+          (${stats.gv.expected.helper} H,
+          ${stats.gv.expected.guest} G,
+          ${stats.gv.expected.specialguest} E,
+          ${stats.gv.expected.press} P,
+          ${stats.gv.expected.representative} R)
+        </td>
+      </tr>
+    </table>
+    <br />
+
+    <div class="row-fluid">
       <div class="row">
-        <div class="col-md-2">
-          <img src="${request.static_url('c3spartyticketing:static/images/110px-Ampelmann_gruen.jpg')}"/>
+
+        <div class="col-md-3">
+          <div class="alert ${'alert-success' if paid else 'alert-danger'}">
+            <form action="${request.url}" method="post">
+              <input type="hidden" name="code" value="${ticket.email_confirm_code}">
+
+              <h2>Check-In</h2>
+              <table class="table-striped" cellpadding="5" width="100%">
+                <tr>
+                  <td>Zahlungseingang?</td>
+                  <td>${ticket.payment_received or "No"}</td>
+                </tr>
+                <tr tal:condition="ticket.payment_received">
+                    <td>Zeitpunkt</td>
+                    <td>
+                      ${ticket.payment_received_date}
+                    </td>
+                  </tr>
+                <tr>
+                  <td>Betrag</td>
+                  <td>${ticket.the_total} €</td>
+                </tr>
+              </table>
+              <div tal:condition="not paid">
+                  <input type="submit" name="Bezahlt" value="hat bezahlt" class="btn btn-success"/>
+              </div>
+
+              <div tal:condition="ticket.ticket_bc_attendance">
+                <h3>Barcamp</h3>
+                <table class="table-striped" cellpadding="5" width="100%">
+                  <tr>
+                    <td>Eingecheckt?</td>
+                    <td>
+                      ${ticket.checked_bc or "No"}
+                    </td>
+                  </tr>
+                  <tr tal:condition="ticket.checked_bc">
+                    <td>Zeitpunkt</td>
+                    <td>
+                      ${ticket.checked_bc_time}
+                    </td>
+                  </tr>
+                </table>
+                <div tal:condition="python: not ticket.checked_bc">
+                    <input type="submit" name="checked_bc" value="hat eingecheckt" class="btn btn-success"/>
+                </div>
+              </div>
+
+              <div tal:condition="ticket.ticket_gv_attendance == 1">
+                <h3>Generalversamlung</h3>
+                <table class="table-striped" cellpadding="5" width="100%">
+                  <tr>
+                    <td>Eingecheckt?</td>
+                    <td>${ticket.checked_gv or "No"}</td>
+                  </tr>
+                  <tr tal:condition="ticket.checked_gv">
+                    <td>Zeitpunkt</td>
+                    <td>
+                      ${ticket.checked_gv_time}
+                    </td>
+                  </tr>
+                </table>
+                <div tal:condition="python: not ticket.checked_gv">
+                    <input type="submit" name="checked_gv" value="hat eingecheckt" class="btn btn-success"/>
+                </div>
+              </div>
+
+              <div tal:condition="ticket.ticket_gv_attendance == 1">
+                <h3>Brief</h3>
+                <table class="table-striped" cellpadding="5" width="100%">
+                  <tr>
+                    <td>Erhalten?</td>
+                    <td>${ticket.received_extra1 or "No"}</td>
+                  </tr>
+                  <tr tal:condition="ticket.received_extra1">
+                    <td>Zeitpunkt</td>
+                    <td>
+                      ${ticket.received_extra1_time}
+                    </td>
+                  </tr>
+                </table>
+                <div tal:condition="python: not ticket.received_extra1">
+                    <input type="submit" name="received_extra1" value="hat Brief erhalten" class="btn btn-success"/>
+                </div>
+              </div>
+              
+              <div tal:condition="ticket.ticket_tshirt">
+                <h3>T-Shirt</h3>
+                <table class="table-striped" cellpadding="5" width="100%">
+                  <tr>
+                    <td>Erhalten?</td>
+                    <td>${ticket.received_extra2 or "No"}</td>
+                  </tr>
+                  <tr tal:condition="ticket.received_extra2">
+                    <td>Zeitpunkt</td>
+                    <td>
+                      ${ticket.received_extra2_time}
+                    </td>
+                  </tr>
+                </table>
+                <div tal:condition="python: not ticket.received_extra2">
+                    <input type="submit" name="received_extra2" value="hat T-Shirt erhalten" class="btn btn-success"/>
+                </div>
+              </div>
+
+              <h3>Kommentar</h3>
+              <textarea name="cashier_comment" rows="5" style="width:100%;"></textarea>
+              <input type="submit" name="comment" value="absenden" class="btn btn-info"/>
+
+            </form>
+          </div>
         </div>
-        <div class="col-md-2">
-          <p>
-            <h3>${ticket.firstname} ${ticket.lastname}</h3>
-            Code: <span id="email_confim_code">${ticket.email_confirm_code}</span><br />
-            Fahrscheine: <span id="num_tickets">${ticket.num_tickets}</span><br />
-            an Bord: <span id="checked_in_persons">${ticket.checked_persons}</span><br />
-            Klasse: <span id="klass">${klass}</span><br />
-            Bitte zusteigen...(Anzahl Personen)
-          </p>
-        </div>
+
+        <div class="col-md-3">
+
+          <div class="alert alert-info">
+            <h2>Person</h2>
+            <table class="table-striped" cellpadding="5" width="100%">
+              <tr>
+                <td>Vorname</td>
+                <td>${ticket.firstname}</td>
+              </tr>
+              <tr>
+                <td>Nachname</td>
+                <td>${ticket.lastname}</td>
+              </tr>
+              <tr>
+                <td>Mitgliedschaft</td>
+                <td>${ticket.membership_type}</td>
+              </tr>
+            </table>
+            <div tal:condition="ticket_rep1 or ticket_rep2">
+              <h3>Repräsentant_in</h3>
+              <table class="table-striped" cellpadding="5" width="100%">
+                <tr tal:condition="ticket_rep1">
+                  <td>1.</td>
+                  <td>${ticket_rep1.firstname} ${ticket_rep1.lastname}</td>
+                </tr>
+                <tr tal:condition="ticket_rep2">
+                  <td>2.</td>
+                  <td>${ticket_rep2.firstname} ${ticket_rep2.lastname}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="alert alert-info">
+            <h2>Ticket</h2>
+            <h3>Barcamp</h3>
+            <table class="table-striped" cellpadding="5" width="100%">
+              <tr>
+                <td>Teilnahme</td>
+                <td>${'Yes' if ticket.ticket_bc_attendance else "No"}</td>
+              </tr>
+              <tr>
+                <td>Gästeliste</td>
+                <td>${ticket.guestlist_bc or 'no'}</td>
+              </tr>
+              <tr>
+                <td>Buffet</td>
+                <td>${'Yes' if ticket.ticket_bc_buffet else "No"}</td>
+              </tr>
+            </table>
+            <h3>Generalversammlung</h3>
+            <table class="table-striped" cellpadding="5" width="100%">
+              <tr>
+                <td>Teilnahme</td>
+                <td>${'Yes' if ticket.ticket_gv_attendance == 1 else "No"}</td>
+              </tr>
+              <tr>
+                <td>Gästeliste</td>
+                <td>${ticket.guestlist_gv or 'no'}</td>
+              </tr>
+            </table>
+            <h3>Extras</h3>
+            <table class="table-striped" cellpadding="5" width="100%">
+              <tr>
+                <td>Event-T-Shirt</td>
+                <td>${'Yes' if ticket.ticket_tshirt else "No"}</td>
+              </tr>
+              <tr tal:condition="ticket.ticket_tshirt">
+                <td>Shirt-Specs</td>
+                <td>
+                  Type: ${ticket.ticket_tshirt_type} <br />
+                  Size: ${ticket.ticket_tshirt_size}
+                </td>
+              </tr>
+            </table>
+          </div>
+
       </div>
     </div>
-    
-    <div tal:condition="paid is False">      <!-- N I C H T BEZAHLT -->
-      <p>
-        Nicht Bezahlt. <strong>${paid}</strong><br /> 
-      </p>
-      <img src="${request.static_url('c3spartyticketing:static/images/110px-Ampelmann_rot.jpg')}"/>
-      <div>
-        <h2>Zahlen, bitte!</h2>
-        offener Betrag: <span style="color:red">${ticket.the_total} &euro;</span><br />
-        Fahrkarte: ${klass}<br />
-        <form action="${request.url}" method="post">
-          <input type="submit" name="Bezahlt" value="Hat bezahlt" class="btn btn-success"/>
-        </form>
-      </div>
-    </div>
+
   </tal:block>
   <tal:block metal:fill-slot="footer">
     &nbsp;<br />
@@ -66,5 +267,15 @@
     <p>
       <a href="/logout" class="btn btn-danger">${logged_in} Abmelden</a>
     </p>
+
+    <br /><br />
+    <div>
+      <h2>Cashiers Kommentare</h2>
+      <span tal:omit-tag="" 
+            tal:repeat="line cashiers_comment.splitlines()|''">
+        ${line}<br />
+      </span>
+    </div>
+
   </tal:block>
 </html>

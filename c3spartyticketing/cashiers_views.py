@@ -133,26 +133,70 @@ def check_in(request):
     # MultiDict([('persons', u'10'),
     #            ('checkin', u'Check in!'),
     #            ('code', u'ABCDEFGHIJ')])
-    __check = ('checkin' in request.POST)
+    __check_bc = ('checked_bc' in request.POST)
+    __check_gv = ('checked_gv' in request.POST)
+    __received_extra1 = ('received_extra1' in request.POST)
+    __received_extra2 = ('received_extra2' in request.POST)
     __code = ('code' in request.POST)
-    __personen = ('persons' in request.POST)
-    if __check and __code and __personen:
-        #print("############# check_in_cond is True.")
+    #__personen = ('persons' in request.POST)
+
+    if __check_bc and __code:
         _code = request.POST['code']
-        _persons = request.POST['persons']
+        #_persons = request.POST['persons']
         _ticket = PartyTicket.get_by_code(_code)
         if isinstance(_ticket, NoneType):
             "if the ticket code was not found, return to base"
-            request.session.flash('code not found. gleis 16 gibt es nicht.')
+            request.session.flash('code not found.')
             return HTTPFound(
                 location=request.route_url('kasse'))
-        _ticket.checkin_time = datetime.now()
-        #_ticket.checkin_seen = True
-        _ticket.checked_persons += int(_persons)
+        if _ticket.ticket_bc_attendance:
+            _ticket.checked_bc = True
+            _ticket.checked_bc_time = datetime.now()
+            #_ticket.checkin_seen = True
+            #_ticket.checked_persons += int(_persons)
 
-    _num_passengers = PartyTicket.num_passengers()
-    _num_open_tickets = int(
-        PartyTicket.get_num_tickets()) - int(_num_passengers)
+    if __check_gv and __code:
+        _code = request.POST['code']
+        #_persons = request.POST['persons']
+        _ticket = PartyTicket.get_by_code(_code)
+        if isinstance(_ticket, NoneType):
+            "if the ticket code was not found, return to base"
+            request.session.flash('code not found.')
+            return HTTPFound(
+                location=request.route_url('kasse'))
+        if _ticket.ticket_gv_attendance == 1:
+            _ticket.checked_gv = True
+            _ticket.checked_gv_time = datetime.now()
+        #_ticket.checkin_seen = True
+        #_ticket.checked_persons += int(_persons)
+
+    if __received_extra1 and __code:
+        _code = request.POST['code']
+        #_persons = request.POST['persons']
+        _ticket = PartyTicket.get_by_code(_code)
+        if isinstance(_ticket, NoneType):
+            "if the ticket code was not found, return to base"
+            request.session.flash('code not found.')
+            return HTTPFound(
+                location=request.route_url('kasse'))
+        _ticket.received_extra1 = True
+        _ticket.received_extra1_time = datetime.now()
+        #_ticket.checkin_seen = True
+        #_ticket.checked_persons += int(_persons)
+
+    if __received_extra2 and __code:
+        _code = request.POST['code']
+        #_persons = request.POST['persons']
+        _ticket = PartyTicket.get_by_code(_code)
+        if isinstance(_ticket, NoneType):
+            "if the ticket code was not found, return to base"
+            request.session.flash('code not found.')
+            return HTTPFound(
+                location=request.route_url('kasse'))
+        _ticket.received_extra2 = True
+        _ticket.received_extra2_time = datetime.now()
+        #_ticket.checkin_seen = True
+        #_ticket.checked_persons += int(_persons)
 
     '''
     checkin was called from a prepared URL ('/ci/{event}/{code}')
@@ -167,8 +211,7 @@ def check_in(request):
             'status': 'NOT FOUND',
             'code': '',
             'paid': 'Nein',
-            'num_passengers': _num_passengers,
-            'num_open_tickets': _num_open_tickets,
+            'stats': PartyTicket.stats_cashiers()
         }
     else:
         print("the ticket: %s" % _ticket)
@@ -182,6 +225,16 @@ def check_in(request):
         _ticket.payment_received = True
         _ticket.payment_received_date = datetime.now()
 
+    if 'comment' in request.POST:
+        _comment = request.POST['cashier_comment']
+        _ticket.cashiers_comment = (_ticket.cashiers_comment or u'') \
+            + '\r\n\r\n' \
+            + '-'*80 \
+            + '\r\n' \
+            + str(datetime.now()) + ' | ' + str(request.user.login) + ':' \
+            + '\r\n\r\n' \
+            + unicode(_comment)
+
     # types of tickets displayed in the backend
     ticket_type_options = {
         ('ticket_gv', u'Attendance General Assembly'),
@@ -191,19 +244,24 @@ def check_in(request):
         ('ticket_all', u'All-Inclusive')
     }
 
-    #_klass = ticket_type_options.get(_ticket.ticket_type)
-    # _vacancies = _ticket.num_tickets - _ticket.checked_persons
-    _klass = "2DO"
+    _ticket_rep1 = None
+    if _ticket.represents_id1:
+        _ticket_rep1 = PartyTicket.get_by_id(int(_ticket.represents_id1))
+    _ticket_rep2 = None
+    if _ticket.represents_id2:
+        _ticket_rep2 = PartyTicket.get_by_id(int(_ticket.represents_id2))
+    _paid = (1 if _ticket.payment_received or _ticket.the_total == 0 else 0)
 
     return {
         #'vacancies': _vacancies,  # the free tickets of this visitor
         'logged_in': logged_in,
-        'num_passengers': _num_passengers,
-        'num_open_tickets': _num_open_tickets,
         'code': _code,
-        'klass': _klass,
-        'paid': _ticket.payment_received,
+        'paid': _paid,
         'ticket': _ticket,
+        'ticket_rep1': _ticket_rep1,
+        'ticket_rep2': _ticket_rep2,
+        'stats': PartyTicket.stats_cashiers(),
+        'cashiers_comment': _ticket.cashiers_comment
     }
 
 
@@ -242,7 +300,7 @@ def kasse(request):
         except:
             # choose default
             print("barf!")
-            request.session.flash('gleis 16 gibt es garnicht!')
+            request.session.flash('Ticket nicht gefunden.')
             pass
 
     # prepare the autocomplete form with codes
@@ -281,15 +339,10 @@ def kasse(request):
     )
     autoformhtml = form.render()
 
-    _num_passengers = PartyTicket.num_passengers()
-    _num_open_tickets = int(
-        PartyTicket.get_num_tickets()) - int(_num_passengers)
-
     return {
         'autoform': autoformhtml,
         'logged_in': logged_in,
-        'num_passengers': _num_passengers,
-        'num_open_tickets': _num_open_tickets
+        'stats': PartyTicket.stats_cashiers()
     }
 
 
