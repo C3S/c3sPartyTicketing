@@ -315,8 +315,8 @@ def edit_ticket(request):
             ),
             oid="ticket_gv"
         )
-        if _ticket.membership_type == "nonmember":
-            ticket_gv = None
+        #if _ticket.membership_type == "nonmember":
+        #    ticket_gv = None
         ticket_bc = colander.SchemaNode(
             colander.Set(),
             title=_(u"BarCamp:"),

@@ -628,7 +628,6 @@ def add_ticket(request):
         # nonmember
         else:
             # remove member values
-            appstruct['ticket']['ticket_gv'] = 3
             appstruct['representation']['firstname'] = ''
             appstruct['representation']['lastname'] = ''
             appstruct['representation']['street'] = ''
