@@ -199,13 +199,13 @@ class PartyTicket(Base):
     checked_bc = Column(Boolean, default=False)
     checked_bc_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
-    received_extra1 = Column(Boolean, default=False)
+    received_extra1 = Column(Boolean, default=False) # brief
     received_extra1_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
-    received_extra2 = Column(Boolean, default=False)
+    received_extra2 = Column(Boolean, default=False) # tshirt
     received_extra2_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
-    received_extra3 = Column(Boolean, default=False)
+    received_extra3 = Column(Boolean, default=False) # unbenutzt
     received_extra3_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
     ticket_gv_attendance = Column(Integer)
