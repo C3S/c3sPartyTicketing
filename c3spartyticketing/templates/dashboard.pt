@@ -154,7 +154,7 @@
         </td>
         <td>
           <div tal:condition="python: ticket.ticket_gv_attendance is 1 or ticket.ticket_bc_attendance is True">
-            <div tal:condition="python: ticket.ticketmail_sent is not True">
+            <div tal:condition="python: (ticket.payment_received is True or not ticket.the_total) and ticket.ticketmail_sent is not True">
               <a href="${request.route_url('send_ticket_mail', ticket_id=ticket.id)}"
                  title="send mail!" style="color:orange;">schicke ticketmail</a>
             </div>
