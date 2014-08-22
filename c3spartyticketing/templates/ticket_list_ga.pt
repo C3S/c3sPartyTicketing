@@ -48,8 +48,12 @@
           </span>
         </td>
         <td>
-          <span tal:condition="ticket.ticket_tshirt">
+          <span tal:condition="ticket.ticket_tshirt and not ticket.received_extra2">
             ${ticket.ticket_tshirt_type} ${ticket.ticket_tshirt_size}
+          </span>
+          <span tal:condition="ticket.ticket_tshirt and ticket.received_extra2">
+            <strike>${ticket.ticket_tshirt_type} ${ticket.ticket_tshirt_size}</strike><br />
+            ${ticket.received_extra2_time}
           </span>
         </td>
         <td>${ticket.the_total}</td>
