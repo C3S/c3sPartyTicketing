@@ -58,14 +58,14 @@ def main(global_config, **settings):
     config.add_route('party', '/')  # member landing page
     config.add_route('confirm', '/confirm')  # shows entered data f. correction
     config.add_route('success', '/success')  # shows success info
-    config.add_route('finished', '/finished') # shows submitted ticket
-    config.add_route('end', '/end') # reg. over page
+    config.add_route('finished', '/finished')  # shows submitted ticket
+    config.add_route('end', '/end')  # reg. over page
     config.add_route('verify_email_password', '/verify/{email}/{code}')
     config.add_route('success_pdf', '/C3S_Ticket_{namepart}.pdf')
-    config.add_route('nonmember', '/barcamp') # nonmember landing page
-    config.add_route('nonmember_confirm', '/barcamp/confirm') # confirm page
-    config.add_route('nonmember_success', '/barcamp/success') # success page
-    config.add_route('nonmember_end', '/barcamp/end') # reg. over page
+    config.add_route('nonmember', '/barcamp')  # nonmember landing page
+    config.add_route('nonmember_confirm', '/barcamp/confirm')  # confirm page
+    config.add_route('nonmember_success', '/barcamp/success')  # success page
+    config.add_route('nonmember_end', '/barcamp/end')  # reg. over page
     # backend/staff
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
@@ -74,8 +74,8 @@ def main(global_config, **settings):
     config.add_route('stats', '/stats')
     config.add_route('print', '/print')
     config.add_route('detail', '/detail/{ticket_id}')
-    config.add_route('add_ticket', '/add_ticket') # accountants
-    config.add_route('edit_ticket', '/edit_ticket/{ticket_id}') # accountants
+    config.add_route('add_ticket', '/add_ticket')  # accountants
+    config.add_route('edit_ticket', '/edit_ticket/{ticket_id}')  # accountants
     config.add_route('send_ticket_mail', '/ticketmail/{ticket_id}')
     config.add_route('get_ticket', '/ticket/{email}/C3S_Ticket_{code}')
     config.add_route('get_ticket_mobile',
