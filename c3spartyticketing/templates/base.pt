@@ -40,7 +40,7 @@
     <tal:block metal:define-slot="bottom"></tal:block>
     <tal:block metal:define-slot="footer">
       <div class="footer">
-        &copy; <span i18n:translate="">Copyright 2014, C3S SCE.</span> 
+        &copy; <span i18n:translate="">Copyright 2015, C3S SCE.</span> 
         <a i18n:attributes="href"
            i18n:name=""
            href="https://www.c3s.cc/en/contact-us/"

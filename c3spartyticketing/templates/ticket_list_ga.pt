@@ -39,7 +39,10 @@
             <span tal:condition="ticket.ticket_gv_attendance == 1" 
                   class="glyphicon glyphicon-ok" style="color:#090;"></span>
             <span tal:condition="ticket.ticket_gv_attendance == 2" >
-              ${ticket.rep_firstname} ${ticket.rep_lastname}</span>
+              ${ticket.rep_firstname} ${ticket.rep_lastname}, ${ticket.rep_street},
+	      ${ticket.rep_zip} ${ticket.rep_city}, ${ticket.rep_country};
+	      type: ${ticket.rep_type}, mail: ${ticket.rep_email}	      
+	    </span>
             <span tal:condition="ticket.ticket_gv_attendance == 3" 
                   class="glyphicon glyphicon-remove" style="color:#700;"></span>
           </span>

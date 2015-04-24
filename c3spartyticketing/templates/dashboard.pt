@@ -190,7 +190,11 @@
     </tal:block>
     <tal:block metal:fill-slot="footer">
       <p><a href="${request.route_url('stats')}" class="btn btn-success">Statistiken</a></p>
-      <p><a href="${request.route_url('hobo')}" class="btn btn-success">Gästeliste</a></p>
+      <p><a href="${request.route_url('ticket_listing_ga_printout')}"
+	    class="btn btn-success">Gästeliste Generalversammlung</a></p>
+      <p><a href="${request.route_url('ticket_listing_bc_printout')}"
+	    class="btn btn-success">Gästeliste BarCamp</a></p>
+      <p><a href="${request.route_url('hobo')}" class="btn btn-success">Gästeliste verlängern</a></p>
       <p><a href="${request.route_url('staff')}" class="btn btn-primary">Mitarbeitende</a></p>
       <p><a href="${request.route_url('kasse')}" class="btn btn-warning">Kasse</a></p>
       <p><a href="${request.route_url('logout')}" class="btn btn-danger">Abmelden</a></p>

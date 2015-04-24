@@ -9,6 +9,7 @@ from c3spartyticketing.utils import (
     make_qr_code_pdf_mobile,
     make_random_string,
 )
+from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
 
 import colander
 from datetime import datetime
@@ -33,25 +34,26 @@ from pyramid.response import Response
 from pyramid.threadlocal import get_current_request
 from pyramid.view import view_config
 import requests
-#from sqlalchemy.exc import DBAPIError
+# from sqlalchemy.exc import DBAPIError
 from sqlalchemy.exc import (
     InvalidRequestError,
     IntegrityError
 )
 from types import NoneType
-#from translationstring import TranslationStringFactory
-_ = TranslationStringFactory('c3spartyticketing')
 
 from pyramid.renderers import render
 
-from sets import Set
+# from sets import Set
 
-#deform_templates = resource_filename('deform', 'templates')
+# from translationstring import TranslationStringFactory
+_ = TranslationStringFactory('c3spartyticketing')
 
-#c3spartyticketing_templates = resource_filename(
+# deform_templates = resource_filename('deform', 'templates')
+
+# c3spartyticketing_templates = resource_filename(
 #    'c3spartyticketing', 'templates')
 
-#my_search_path = (deform_templates, c3spartyticketing_templates)
+# my_search_path = (deform_templates, c3spartyticketing_templates)
 
 
 def translator(term):
@@ -67,9 +69,10 @@ zpt_renderer = deform.ZPTRendererFactory(
     translator=translator,
 )
 
+
 def ticket_member_schema(request, appstruct, readonly=False):
 
-    ### validator
+    # ### validator
 
     def validator(form, value):
         # XXX: herausfinden, wie man per klassenvalidator colander.Invalid
@@ -77,14 +80,16 @@ def ticket_member_schema(request, appstruct, readonly=False):
         #      platziert und die richtigen klassen vergibt
         # node.raise_invalid()?
         # add exc as child?
-        #form.raise_invalid('test', form.get('tshirt').get('tshirt_size'))
+        # form.raise_invalid('test', form.get('tshirt').get('tshirt_size'))
         if value['ticket']['ticket_tshirt']:
             if not value['tshirt']['tshirt_type']:
-                raise colander.Invalid(form,
+                raise colander.Invalid(
+                    form,
                     _(u'Gender selection for T-shirt is mandatory.')
                 )
             if not value['tshirt']['tshirt_size']:
-                raise colander.Invalid(form,
+                raise colander.Invalid(
+                    form,
                     _(u'Size of T-shirt ist mandatory.')
                 )
         if value['ticket']['ticket_gv'] == 2:
@@ -168,7 +173,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
         ('XXXL', _(u'XXXL'))
     )
 
-    ### formparts
+    # ### formparts
 
     class TicketData(colander.MappingSchema):
 
@@ -247,7 +252,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
             ticket_all.label = _(u"All-Inclusive Discount (-€2,50)")
             if not appstruct['ticket']['ticket_all']:
                 ticket_all = None
-        ticket_support  = colander.SchemaNode(
+        ticket_support = colander.SchemaNode(
             colander.Set(),
             title=_(u"Supporter Tickets:"),
             widget=deform.widget.CheckboxChoiceWidget(
@@ -278,8 +283,8 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 description=_(
                     u'Your order has to be fully paid by 18.08.2014 at the '
                     u'latest (payment receipt on our account applies)'
-                    u'Otherwise we will have to cancel the entire order. Money '
-                    u'transfer is the only payment method. Payment '
+                    u'Otherwise we will have to cancel the entire order. '
+                    u'Money transfer is the only payment method. Payment '
                     u'informations will be sent to you shortly by e-mail.'
                 ),
                 oid="the-total",
@@ -369,8 +374,8 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 missing='',
                 oid='rep-note'
             )
-        #note_top.default = None
-        note_top.missing=note_top.default # otherwise empty on redit
+        # note_top.default = None
+        note_top.missing = note_top.default  # otherwise empty on redit
         if readonly:
             note_top = None
         firstname = colander.SchemaNode(
@@ -515,7 +520,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
             </div>''',
                 oid='rep-note'
             )
-        note_bottom.missing=note_bottom.default # otherwise empty on reedit
+        note_bottom.missing = note_bottom.default  # otherwise empty on reedit
         if readonly:
             note_bottom = None
 
@@ -546,7 +551,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
             oid="tshirt-size",
         )
 
-    ### form
+    # ### form
 
     class TicketForm(colander.Schema):
         """
@@ -564,7 +569,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
             oid="rep-data",
         )
         if readonly and not appstruct['ticket']['ticket_gv'] == 2:
-            representation = None;
+            representation = None
         tshirt = TshirtData(
             title=_(u"T-Shirt"),
             oid="tshirt-data"
@@ -628,7 +633,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 missing='',
                 oid='final-note'
             )
-        finalnote.missing=finalnote.default # otherwise empty on redit
+        finalnote.missing = finalnote.default  # otherwise empty on redit
         if not readonly:
             finalnote = None
 
@@ -637,7 +642,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
 
 def ticket_member_gvonly_schema(request, appstruct, readonly=False):
 
-    ### validator
+    # ### validator
 
     def validator(form, value):
         if value['ticket']['ticket_gv'] == 2:
@@ -1620,8 +1625,6 @@ def check_route(request, view=''):
         if not PartyTicket.has_token(userdata['token']):
             return HTTPFound(location=request.route_url('party'))
         return
-
-
     return
 
 
@@ -2246,15 +2249,16 @@ def success_view(request):
 
     ### send accmail
     from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
-    accmail_obj = Message(
-        subject=accmail_subject,
-        sender=request.registry.settings['c3spartyticketing.mail_sender'],
-        recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
-        body=encrypt_with_gnupg(accmail_body)
-    )
     if 'true' in request.registry.settings['testing.mail_to_console']:
         print(accmail_body.encode('utf-8'))
     else:
+        accmail_obj = Message(
+            subject=accmail_subject,
+            sender=request.registry.settings['c3spartyticketing.mail_sender'],
+            recipients=[
+                request.registry.settings['c3spartyticketing.mail_rec']],
+            body=encrypt_with_gnupg(accmail_body.encode('utf-8'))
+        )
         mailer.send(accmail_obj)
 
     # make the session go away
@@ -2675,21 +2679,24 @@ def nonmember_success_view(request):
     )
 
     if 'true' in request.registry.settings['testing.mail_to_console']:
+        print('----- 8< ------------------------------------ user mail ---')
         print(usermail_nonmember.encode('utf-8'))
+        print('----- >8 --------------------------------------------------')
     else:
         mailer.send(usermail_obj)
 
     ### send accmail
-    from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
-    accmail_obj = Message(
-        subject=accmail_subject,
-        sender=request.registry.settings['c3spartyticketing.mail_sender'],
-        recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
-        body=encrypt_with_gnupg(accmail_body)
-    )
     if 'true' in request.registry.settings['testing.mail_to_console']:
+        print('----- 8< ------------------------------ accountant mail ---')
         print(accmail_body.encode('utf-8'))
+        print('----- 8< ---------------------------------------------------')
     else:
+        accmail_obj = Message(
+            subject=accmail_subject,
+            sender=request.registry.settings['c3spartyticketing.mail_sender'],
+            recipients=[request.registry.settings['c3spartyticketing.mail_rec']],
+            body=encrypt_with_gnupg(accmail_body)
+        )
         mailer.send(accmail_obj)
 
     # make the session go away

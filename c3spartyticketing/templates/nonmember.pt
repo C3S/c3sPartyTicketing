@@ -36,7 +36,7 @@
       </h1>
 
       <div style="font-size:12px; margin-top:40px; color:#999;">
-        <span i18n:translate="">If you already are a member of the C3S, please use your personal link which you received by e-mail on 21st July. Don't forget: There is a discount for members! :)</span>
+        <span i18n:translate="">If you already are a member of the C3S, please use your personal link which you received by e-mail on May 11th. Don't forget: There is a discount for members! :)</span>
         <br />
         <span i18n:translate="">Please scroll down for filling in the form.</span>
       </div>
@@ -57,7 +57,7 @@
 
             <div id="getting-started-bc" style="color:#999"></div>
             <script type="text/javascript">
-              $('#getting-started-bc').countdown('2014/08/22 12:00', function(event) {
+              $('#getting-started-bc').countdown('2015/06/12 12:00', function(event) {
               $(this).html(event.strftime('<span i18n:translate="">Starts in</span> '
               + '<span>%w</span> <span i18n:translate="">weeks</span> '
               + '<span>%d</span> <span i18n:translate="">days(s)</span> '
@@ -68,14 +68,14 @@
             <h2>&nbsp;</h2>
 
             <h2>
-              <span i18n:translate="">22.08.2014</span>
+              <span i18n:translate="">12.06.2014</span>
               <small i18n:translate="">12am - 8pm</small>
             </h2>
 
             <h2 style="margin-bottom:40px;">
               <small><span i18n:translate="">Location</span>:</small>
-              <span i18n:translate="">C3S SCE HQ</span>
-              <small i18n:translate="">Düsseldorf</small>
+              <span i18n:translate="">Freiland</span>
+              <small i18n:translate="">Potsdam</small>
             </h2>
 
             <span i18n:translate="" style="color:#999">Adress</span>: <span i18n:translate="">Alter Bahnhof, Heyestraße 194, Düsseldorf-Gerresheim</span>
@@ -84,7 +84,7 @@
               <iframe width="425" height="350"
                       frameborder="0" scrolling="no"
                       marginheight="0" marginwidth="0"
-                      src="https://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
+		      src="http://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.38931062204438%2C13.076922297477722"
                       style="border: 1px solid black">
               </iframe><br/>
               <small>
@@ -97,7 +97,7 @@
               <iframe width="90%" height="400"
                       frameborder="0" scrolling="no"
                       marginheight="0" marginwidth="0"
-                      src="https://www.openstreetmap.org/export/embed.html?bbox=6.846327781677246%2C51.207340469897375%2C6.883878707885741%2C51.23373557601454&amp;layer=mapnik&amp;marker=51.220539914802195%2C6.865103244781494"
+		      src="http://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.38931062204438%2C13.076922297477722"
                       style="border: 1px solid black">
               </iframe><br/>
               <small>

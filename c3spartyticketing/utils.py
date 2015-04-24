@@ -104,6 +104,7 @@ def get_ticket_code(_ticket):
     )
     return code
 
+
 def make_qr_code_pdf(_ticket, _url, util='pdflatex'):
     """
     this function creates a QR-Code PDF for whatever purpose
@@ -236,12 +237,13 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
     tpl_tex = latex_templates[_tpl]
 
     # create qr code file
-    qrcode_img = tempfile.NamedTemporaryFile(prefix='qr_', suffix='.png', delete=False)
+    qrcode_img = tempfile.NamedTemporaryFile(
+        prefix='qr_', suffix='.png', delete=False)
     _qr = qrcode.QRCode(
-        version=None, # None and later make(fit=True) for best fit
+        version=None,  # None and later make(fit=True) for best fit
         error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=50, # higher for better quality on pdf
-        border=0 # border unneeded on pdf
+        box_size=50,  # higher for better quality on pdf
+        border=0  # border unneeded on pdf
     )
     _qr.add_data(_url)
     _qr.make(fit=True)
