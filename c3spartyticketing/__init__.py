@@ -66,13 +66,15 @@ def main(global_config, **settings):
     config.add_route('nonmember_confirm', '/barcamp/confirm')  # confirm page
     config.add_route('nonmember_success', '/barcamp/success')  # success page
     config.add_route('nonmember_end', '/barcamp/end')  # reg. over page
+    # free 4 all
+    config.add_route('error_page', '/oops')  # display error messages to user
     # backend/staff
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('all_codes', '/all_codes')
     config.add_route('dashboard', '/dashboard/{number}')
     config.add_route('stats', '/stats')
-    config.add_route('print', '/print')
+    # config.add_route('print', '/print')
     config.add_route('detail', '/detail/{ticket_id}')
     config.add_route('add_ticket', '/add_ticket')  # accountants
     config.add_route('edit_ticket', '/edit_ticket/{ticket_id}')  # accountants

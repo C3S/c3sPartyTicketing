@@ -44,7 +44,7 @@
 
           <div id="getting-started-bc" style="color:#999"></div>
           <script type="text/javascript">
-            $('#getting-started-bc').countdown('2014/08/22 12:00', function(event) {
+            $('#getting-started-bc').countdown('2015/06/12 12:00', function(event) {
             $(this).html(event.strftime('<span i18n:translate="">Starts in</span> '
             + '<span>%w</span> <span i18n:translate="">weeks</span> '
             + '<span>%d</span> <span i18n:translate="">days(s)</span> '
@@ -55,17 +55,17 @@
           <h2>&nbsp;</h2>
 
           <h2>
-            <span i18n:translate="">22.08.2014</span>
+            <span i18n:translate="">12.06.2015</span>
             <small i18n:translate="">12am - 8pm</small>
           </h2>
 
           <h2 style="margin-bottom:40px;">
             <small><span i18n:translate="">Location</span>:</small>
-            <span i18n:translate="">C3S SCE HQ</span>
-            <small i18n:translate="">Düsseldorf</small>
+            <span i18n:translate="">freiLand</span>
+            <small i18n:translate="">Potsdam</small>
           </h2>
 
-          <span i18n:translate="" style="color:#999">Adress</span>: <span i18n:translate="">Alter Bahnhof, Heyestraße 194, Düsseldorf-Gerresheim</span>
+          <span i18n:translate="" style="color:#999">Adress</span>: <span i18n:translate="">Friedrich-Engels-Straße 22, 14473 Potsdam</span>
 
           <div class="visible-xs">
             <iframe width="425" height="350"

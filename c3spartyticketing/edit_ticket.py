@@ -19,13 +19,13 @@ from c3spartyticketing.views import (
 )
 
 from datetime import (
-    date,
+    # date,
     datetime,
 )
-from colander import (
-    Invalid,
-    Range,
-)
+# from colander import (
+#    # Invalid,
+#    Range,
+# )
 
 LOGGING = True
 
@@ -50,7 +50,7 @@ def edit_ticket(request):
             request.route_url('dashboard',
                               number=0,))
 
-    ### generate appstruct
+    # ## generate appstruct
     appstruct = {
         'personal': {
             'firstname': _ticket.firstname,

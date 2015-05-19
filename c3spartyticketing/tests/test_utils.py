@@ -28,9 +28,9 @@ class TestUtilities(unittest.TestCase):
         try:
             DBSession.close()
             DBSession.remove()
-            #print("removing old DBSession =================================")
+            # print("removing old DBSession")
         except:
-            #print("no DBSession to remove =================================")
+            # print("no DBSession to remove")
             pass
         test_settings = {
             'sqlalchemy.url': 'sqlite:///:memory:',
@@ -77,7 +77,7 @@ class TestUtilities(unittest.TestCase):
                 guestlist=False,
                 user_comment=u"äh, was?"
             )
-            ticket1.membership_type = 'normal'
+            ticket1.membership_type = u'normal'
             DBSession.add(ticket1)
             DBSession.flush()
 
@@ -88,15 +88,112 @@ class TestUtilities(unittest.TestCase):
         DBSession.close()
         DBSession.remove()
         testing.tearDown()
-        #os.remove('test_utils.db')
+        # os.remove('test_utils.db')
 
     def test_make_random_string(self):
         from c3spartyticketing.utils import make_random_string
         _string = make_random_string()
-        #print "the _string: {}".format(_string)
-        #print "the _string length: {}".format(len(_string))
-        #print dir(_string)
-        #self.assertTrue()
+        # print "the _string: {}".format(_string)
+        # print "the _string length: {}".format(len(_string))
+        # print dir(_string)
+        self.assertTrue(len(_string) is 10)
+
+    def test_ticket_code_prefix(self):
+        from c3spartyticketing.utils import ticket_code_prefix
+
+        pt1 = PartyTicket.get_by_id(1)
+        res = ticket_code_prefix(pt1)
+        self.assertTrue('ABN ' in res)
+
+        # change details, ask again...
+        pt1.ticket_gv_attendance = 2
+        res = ticket_code_prefix(pt1)
+        self.assertTrue('RBN ' in res)
+
+        pt1.ticket_gv_attendance = 3
+        res = ticket_code_prefix(pt1)
+        self.assertTrue('0BN ' in res)
+
+        pt1.ticket_bc_attendance = False
+        res = ticket_code_prefix(pt1)
+        self.assertTrue('00N ' in res)
+
+        pt1.membership_type = False
+        res = ticket_code_prefix(pt1)
+        # print("the result: '{}'".format(res))
+        self.assertTrue('000 ' in res)
+
+        pt1.membership_type = 'investing'
+        res = ticket_code_prefix(pt1)
+        self.assertTrue('00I ' in res)
+
+        pt1.membership_type = 'nonmember'
+        res = ticket_code_prefix(pt1)
+        self.assertTrue('000 ' in res)
+
+        pt1.membership_type = 'foo'
+        res = ticket_code_prefix(pt1)
+        self.assertTrue('000 ' in res)
+
+    def test_ticket_code_suffix(self):
+        from c3spartyticketing.utils import ticket_code_suffix
+
+        pt1 = PartyTicket.get_by_id(1)
+        res = ticket_code_suffix(pt1)
+        self.assertTrue(' 00' in res)
+
+        # change details, ask again...
+        pt1.guestlist_gv = 'helper'
+        pt1.guestlist_bc = 'guest'
+        res = ticket_code_suffix(pt1)
+        self.assertTrue(' HG' in res)
+
+        pt1.guestlist_gv = 'guest'
+        pt1.guestlist_bc = 'helper'
+        res = ticket_code_suffix(pt1)
+        self.assertTrue(' GH' in res)
+
+        pt1.guestlist_gv = 'specialguest'
+        pt1.guestlist_bc = 'press'
+        res = ticket_code_suffix(pt1)
+        self.assertTrue(' EP' in res)
+
+        pt1.guestlist_gv = 'press'
+        pt1.guestlist_bc = 'specialguest'
+        res = ticket_code_suffix(pt1)
+        self.assertTrue(' PE' in res)
+
+        pt1.guestlist_gv = 'representative'
+        res = ticket_code_suffix(pt1)
+        self.assertTrue(' RE' in res)
+
+        # print("the result: '{}'".format(res))
+
+    def test_get_ticket_code(self):
+        """
+        Test ticket code generation
+        """
+        from c3spartyticketing.utils import get_ticket_code
+        
+        result = get_ticket_code(PartyTicket.get_by_id(1))
+        result
+
+    def test_make_qr_code_pdf(self):
+        """
+        Test qr code generation helper function
+        """
+        from c3spartyticketing.utils import make_qr_code_pdf
+        
+        result = make_qr_code_pdf(
+            PartyTicket.get_by_id(1),
+            "http://192.168.2.128:6544/ci/p1402/ABCDEFGBAR")
+        result
+
+        result = make_qr_code_pdf(
+            PartyTicket.get_by_id(1),
+            "http://192.168.2.128:6544/ci/p1402/ABCDEFGBAR",
+            util='pdftk')
+        result
 
     def test_generate_qr_code(self):
         """
@@ -115,12 +212,10 @@ class TestUtilities(unittest.TestCase):
         """
         from c3spartyticketing.utils import make_qr_code_pdf_mobile
         _ticket = PartyTicket.get_by_id(1)
-        #import pdb
-        #pdb.set_trace()
         self.req.registry.settings[
             'ticket_pdf'] = 'pdftk/C3S_Ticket_BCGV.pdf'
         result = make_qr_code_pdf_mobile(
-            #self.req,
+            # self.req,
             _ticket,
             "http://192.168.2.128:6544/ci/p1402/ABCDEFGBAR")
         result

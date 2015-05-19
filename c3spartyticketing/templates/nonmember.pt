@@ -36,13 +36,11 @@
       </h1>
 
       <div style="font-size:12px; margin-top:40px; color:#999;">
-        <span i18n:translate="">If you already are a member of the C3S, please use your personal link which you received by e-mail on May 11th. Don't forget: There is a discount for members! :)</span>
+        <span i18n:translate="">If you already are a member of the C3S, please use your personal link which you received by e-mail on May 11th.</span>
         <br />
         <span i18n:translate="">Please scroll down for filling in the form.</span>
       </div>
     </div>
-
-    <hr />
   </tal:block>
 
   <tal:block metal:fill-slot="bottom">
@@ -50,7 +48,8 @@
 
       <div class="row" tal:condition="not formerror and not reedit">
 
-        <div class="col-md-6 col-md-offset-3">
+        <!-- div class="col-md-8 col-md-offset-2" -->
+        <div>
           <div class="alert alert-success">
 
             <h1 i18n:translate="" style="color:#000;">BarCamp</h1>
@@ -68,40 +67,44 @@
             <h2>&nbsp;</h2>
 
             <h2>
-              <span i18n:translate="">12.06.2014</span>
+              <span i18n:translate="">12.06.2015</span>
               <small i18n:translate="">12am - 8pm</small>
             </h2>
 
             <h2 style="margin-bottom:40px;">
               <small><span i18n:translate="">Location</span>:</small>
-              <span i18n:translate="">Freiland</span>
+              <span i18n:translate="">freiLand</span>
               <small i18n:translate="">Potsdam</small>
             </h2>
 
-            <span i18n:translate="" style="color:#999">Adress</span>: <span i18n:translate="">Alter Bahnhof, Heyestraße 194, Düsseldorf-Gerresheim</span>
+            <span i18n:translate="" style="color:#999">Adress</span>: <span>freiLand, Friedrich-Engels-Straße 22, 14473 Potsdam</span>
 
-            <div class="visible-xs">
-              <iframe width="425" height="350"
+            <div class="visible-xs"><!-- small screens -->
+              <iframe width="100%" height="350"
                       frameborder="0" scrolling="no"
                       marginheight="0" marginwidth="0"
-		      src="http://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.38931062204438%2C13.076922297477722"
+                      src="http://www.openstreetmap.org/export/embed.html?bbox=13.075465857982634%2C52.388146747126434%2C13.078799843788147%2C52.3904744662748&amp;layer=mapnik&amp;marker=52.38931062204438%2C13.077132850885391"
                       style="border: 1px solid black">
               </iframe><br/>
-              <small>
-                <a i18n:translate="" href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+              <small i18n:translate="">
+                <a href="http://www.openstreetmap.org/?mlat=52.38921&amp;mlon=13.07743#map=19/52.38924/13.07743"
+                   target="_blank"
+                   i18n:translate="">
                   Display enlarged map
                 </a>
               </small>
             </div>
-            <div class="hidden-xs">
-              <iframe width="90%" height="400"
+            <div class="hidden-xs"><!-- normal screens -->
+              <iframe width="100%" height="550"
                       frameborder="0" scrolling="no"
                       marginheight="0" marginwidth="0"
-		      src="http://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.38931062204438%2C13.076922297477722"
-                      style="border: 1px solid black">
-              </iframe><br/>
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=13.075661659240723%2C52.388074720103525%2C13.07920217514038%2C52.39040244305003&amp;layer=mapnik&amp;marker=52.389238596920535%2C13.077431917190552"
+                      style="border: 1px solid black"></iframe>
+              <br/>
               <small>
-                <a i18n:translate="" href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+                <a href="https://www.openstreetmap.org/?mlat=52.38924&amp;mlon=13.07743#map=19/52.38924/13.07743"
+                   target="_blank"
+                    i18n:translate="">
                   Display enlarged map
                 </a>
               </small>

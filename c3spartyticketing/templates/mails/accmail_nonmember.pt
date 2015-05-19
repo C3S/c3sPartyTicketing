@@ -6,10 +6,6 @@ NONMEMBER:
   total: ${the_total}
   comment: ${comment}
 
-TSHIRT: ${tshirt}
-  tshirt type: ${tshirt_type}
-  tshirt size: ${tshirt_size}
-
 SUPPORTER TICKETS:
   supporter ticket: ${supporter}
   supporter ticket XL: ${supporter_x}

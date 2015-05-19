@@ -5,7 +5,7 @@ from selenium import webdriver
 import time
 import subprocess
 import pageobjects
-import os
+# import os
 __author__ = 'Kristin Kuche'
 
 

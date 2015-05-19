@@ -29,17 +29,17 @@
     <div class="jumbotron">
 
       <h1>
-        <small i18n:translate="">Hello</small> 
-        <span tal:content="firstname" /> <span tal:content="lastname" /> 
+        <small i18n:translate="">Hello</small>
+        <span tal:content="firstname" /> <span tal:content="lastname" />
         <small>&lt;${email}&gt;,</small>
       </h1>
 
       <h1>
-        <small i18n:translate="">get your ticket for the</small> 
+        <small i18n:translate="">get your ticket for the</small>
         <span i18n:translate="">C3S BarCamp and General Assembly!</span>
       </h1>
       <div style="font-size:12px; margin-top:40px; color:#999;">
-        <strong i18n:translate="">Notice</strong>: <span i18n:translate="">In case you are not</span> ${firstname} ${lastname} 
+        <strong i18n:translate="">Notice</strong>: <span i18n:translate="">In case you are not</span> ${firstname} ${lastname}
         <span i18n:translate="">please email us at</span>
         <a href="mailto:office@c3s.cc" class="alert-link"><span i18n:translate="">office@c3s.cc</span></a> - <span i18n:translate="">thank you</span>
         <br />
@@ -72,8 +72,6 @@
               });
             </script>
 
-            <h2>&nbsp;</h2>
-
             <h2>
               <span i18n:translate="">12.06.2015</span>
               <small i18n:translate="">12am - 8pm</small>
@@ -87,12 +85,12 @@
 
             <h1 style="color:#000;">
               <span i18n:translate="">General Assembly</span> &amp;
-              <span i18n:translate="">Party</span> 
+              <span i18n:translate="">Party</span>
             </h1>
 
             <div id="getting-started-gv" style="color:#999"></div>
             <script type="text/javascript">
-              $('#getting-started-gv').countdown('2015/06/13 14:00', function(event) {
+              $('#getting-started-gv').countdown('2015/06/13 13:00', function(event) {
               $(this).html(event.strftime('<span i18n:translate="">Starts in</span> '
               + '<span>%w</span> <span i18n:translate="">weeks</span> '
               + '<span>%d</span> <span i18n:translate="">days(s)</span> '
@@ -102,16 +100,15 @@
 
             <h2>
               <span i18n:translate="">13.06.2015</span>
-              <small i18n:translate="">2pm - 6pm</small>
-              <small style="font-size:12px;">(<span i18n:translate="" >extension possible</span>)</small>
+              <small i18n:translate="">1pm - 5pm</small>
+              <small i18n:translate="">(registration from 10:30am)</small>
             </h2>
 
             <h2 style="margin-bottom:40px;">
-              <small i18n:translate="">Afterwards, we'll</small> 
+              <small i18n:translate="">Afterwards, we'll</small>
               <span i18n:translate="">Party</span>
-              <small i18n:translate="">w/DJ at the</small> 
-              <span i18n:translate="">Freiland</span>
-              <small i18n:translate="">next door!</small>
+              <small i18n:translate="">w/DJ at the</small>
+              <span i18n:translate="">freiLand</span>
             </h2>
 
 
@@ -122,32 +119,40 @@
           <div class="alert alert-success">
 	    <h2 style="margin-bottom:40px;">
               <small><span i18n:translate="">Location</span>:</small>
-              <span i18n:translate="">Freiland</span>
+              <span i18n:translate="">freiLand</span>
               <small i18n:translate="">Potsdam</small>
             </h2>
-	    
+
             <span i18n:translate="" style="color:#999">Adress</span>: <span i18n:translate="">Friedrich-Engels-Straße 22, 14473 Potsdam</span>
-	    
-            <div class="visible-xs">
+
+            <div class="visible-xs"><!-- small screens -->
 	      <!-- freiland, potsdam -->
-	      <iframe width="425" height="350"
-		      frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-		      src="http://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.38931062204438%2C13.076922297477722"
+	      <iframe width="100%" height="350"
+		      frameborder="0" scrolling="no"
+                      marginheight="0" marginwidth="0"
+		      src="http://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.389238596920535%2C13.077431917190552"
 		      style="border: 1px solid black">
 	      </iframe><br/>
-	      <small><a href="http://www.openstreetmap.org/?mlat=52.38931&amp;mlon=13.07692#map=19/52.38931/13.07692">Größere Karte anzeigen</a></small>
+	      <small>
+                <a href="http://www.openstreetmap.org/?mlat=52.38931&amp;mlon=13.07759#map=19/52.38931/13.07692"
+                   target="_blank"
+                   i18n:translate="">
+                  Display enlarged map
+                </a>
+              </small>
             </div>
-	    
-	    
-            <div class="hidden-xs">
-              <iframe width="90%" height="400"
+
+
+            <div class="hidden-xs"><!-- normal screens -->
+              <iframe width="100%" height="600"
                       frameborder="0" scrolling="no"
                       marginheight="0" marginwidth="0"
-		      src="http://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.38931062204438%2C13.076922297477722"
+		      src="http://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.389238596920535%2C13.077431917190552"
                       style="border: 1px solid black">
               </iframe><br/>
               <small>
-                <a i18n:translate="" href="http://www.openstreetmap.org/?mlat=51.2205&amp;mlon=6.8651#map=15/51.2205/6.8651">
+                <a i18n:translate=""
+                   href="http://www.openstreetmap.org/?mlat=52.38931&amp;mlon=13.07756#map=19/52.38931/13.07692">
                   Display enlarged map
                 </a>
               </small>
@@ -155,7 +160,7 @@
           </div>
 	</div>
       </div>
-    
+
       <div class="row">
         <h3>Tickets</h3>
         <div tal:content="structure form">&nbsp;</div>

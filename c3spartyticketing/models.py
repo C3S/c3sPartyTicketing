@@ -1,8 +1,8 @@
 # -*- coding: utf-8  -*-
-import transaction
-#import cryptacular.bcrypt
+# import transaction
+# import cryptacular.bcrypt
 from datetime import (
-    date,
+    # date,
     datetime,
 )
 import cryptacular.bcrypt
@@ -17,15 +17,15 @@ from sqlalchemy import (
     Float,
     Boolean,
     DateTime,
-    Date,
+    # Date,
     Unicode,
     or_,
 )
-from sqlalchemy.exc import (
-    IntegrityError,
-    OperationalError,
-    InvalidRequestError
-)
+# from sqlalchemy.exc import (
+#    IntegrityError,
+#    OperationalError,
+#    InvalidRequestError
+# )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.orm import (
@@ -64,7 +64,7 @@ class Group(Base):
         dbsession = DBSession()
         kasse_group = dbsession.query(
             cls).filter(cls.name == groupname).first()
-        #print('=== get_kasse_group:' + str(kasse_group))
+        # print('=== get_kasse_group:' + str(kasse_group))
         return kasse_group
 
 #    @classmethod
@@ -112,8 +112,8 @@ class C3sStaff(Base):
         self.last_password_change = datetime.now()
         self.email = email
 
-    #@property
-    #def __acl__(self):
+    # @property
+    # def __acl__(self):
     #    return [
     #        (Allow,                           # user may edit herself
     #         self.username, 'editUser'),
@@ -154,11 +154,10 @@ class C3sStaff(Base):
 
     @classmethod
     def check_password(cls, login, password):
-        #dbSession = DBSession()
         staffer = cls.get_by_login(login)
-        #if staffer is None:  # ?
+        # if staffer is None:  # ?
         #    return False
-        #if not staffer:  # ?
+        # if not staffer:  # ?
         #    return False
         return crypt.check(staffer.password, password)
 
@@ -200,13 +199,13 @@ class PartyTicket(Base):
     checked_bc = Column(Boolean, default=False)
     checked_bc_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
-    received_extra1 = Column(Boolean, default=False) # brief
+    received_extra1 = Column(Boolean, default=False)  # brief
     received_extra1_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
-    received_extra2 = Column(Boolean, default=False) # tshirt
+    received_extra2 = Column(Boolean, default=False)  # tshirt
     received_extra2_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
-    received_extra3 = Column(Boolean, default=False) # unbenutzt
+    received_extra3 = Column(Boolean, default=False)  # unbenutzt
     received_extra3_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
     ticket_gv_attendance = Column(Integer)
@@ -314,15 +313,6 @@ class PartyTicket(Base):
         self.payment_received = payment_received
         self.user_comment = user_comment
 
-    #def _get_password(self):
-    #    return self._password
-    #
-    #def _set_password(self, password):
-    #    self._password = hash_password(password)
-
-    #password = property(_get_password, _set_password)
-    #password = synonym('_password', descriptor=password)
-
     @classmethod
     def get_by_code(cls, email_confirm_code):
         """
@@ -358,8 +348,8 @@ class PartyTicket(Base):
         return DBSession.query(cls).filter(
             cls.token == token).count()
 
-    #@classmethod
-    #def get_by_tcode(cls, tcode):
+    # @classmethod
+    # def get_by_tcode(cls, tcode):
     #    """
     #    find a member by ticket code
     #    """
@@ -376,7 +366,7 @@ class PartyTicket(Base):
         codes = []
         for item in all:
             codes.append(item.email_confirm_code)
-        #print("codes before returning from classmethod: %s" % codes)
+        # print("codes before returning from classmethod: %s" % codes)
         return codes
 
     @classmethod
@@ -525,9 +515,9 @@ class PartyTicket(Base):
         _num = 0
         for item in _all:
             if item.ticket_type == 5:
-            #(
-            #    (item.ticket_type == 5) and
-            #        (item.checked_persons is not item.num_tickets)):
+                # (
+                # (item.ticket_type == 5) and
+                #    (item.checked_persons is not item.num_tickets)):
                 _num = _num + item.checked_persons
         return _num
 
@@ -580,7 +570,7 @@ class PartyTicket(Base):
         for item in _all:
             if (
                 (item.ticket_type == 1) and
-                    (not 'CASHDESK' in item.email_confirm_code) and
+                    ('CASHDESK' not in item.email_confirm_code) and
                     (item.payment_received)):
                 _num = _num + item.num_tickets
         return _num
@@ -593,7 +583,7 @@ class PartyTicket(Base):
         for item in _all:
             if (
                 (item.ticket_type == 2) and
-                    (not 'CASHDESK' in item.email_confirm_code) and
+                    ('CASHDESK' not in item.email_confirm_code) and
                     (item.payment_received)):
                 _num = _num + item.num_tickets
         return _num
@@ -606,7 +596,7 @@ class PartyTicket(Base):
         for item in _all:
             if (
                 (item.ticket_type == 3) and
-                    (not 'CASHDESK' in item.email_confirm_code) and
+                    ('CASHDESK' not in item.email_confirm_code) and
                     (item.payment_received)):
                 _num = _num + item.num_tickets
         return _num
@@ -619,7 +609,7 @@ class PartyTicket(Base):
         for item in _all:
             if (
                 (item.ticket_type == 4) and
-                    (not 'CASHDESK' in item.email_confirm_code) and
+                    ('CASHDESK' not in item.email_confirm_code) and
                     (item.payment_received)):
                 _num = _num + item.num_tickets
         return _num
@@ -712,7 +702,7 @@ class PartyTicket(Base):
         _sum = 0
         for item in _all:
             if (
-                (not 'CASHDESK' in item.email_confirm_code) and
+                ('CASHDESK' not in item.email_confirm_code) and
                     (item.payment_received_date > datetime(
                         2014, 2, 14, 17, 30, 00, 000000)) and
                     (item.payment_received_date < datetime(
@@ -747,16 +737,16 @@ class PartyTicket(Base):
 
     @classmethod
     def ticket_listing(cls, order_by, how_many=10, offset=0):
-        #print("offset: %s" % offset)
+        # print("offset: %s" % offset)
         _how_many = int(offset) + int(how_many)
         _offset = int(offset)
         q = DBSession.query(cls).all()[_offset:_how_many]
-        #return q.order_by(order_by)[:how_many]
+        # return q.order_by(order_by)[:how_many]
         return q
 
     @classmethod
     def ticket_listing_ga(cls, order_by, how_many=10, offset=0):
-        #print("offset: %s" % offset)
+        # print("offset: %s" % offset)
         _how_many = int(offset) + int(how_many)
         _offset = int(offset)
         q = DBSession.query(cls).filter(
@@ -765,12 +755,12 @@ class PartyTicket(Base):
                 cls.ticket_gv_attendance == 2,
             )
         ).all()[_offset:_how_many]
-        #return q.order_by(order_by)[:how_many]
+        # return q.order_by(order_by)[:how_many]
         return q
 
     @classmethod
     def ticket_listing_bc(cls, order_by, how_many=10, offset=0):
-        #print("offset: %s" % offset)
+        # print("offset: %s" % offset)
         _how_many = int(offset) + int(how_many)
         _offset = int(offset)
         q = DBSession.query(cls).filter(
@@ -779,7 +769,7 @@ class PartyTicket(Base):
                 cls.ticket_bc_attendance == 2,
             )
         ).all()[_offset:_how_many]
-        #return q.order_by(order_by)[:how_many]
+        # return q.order_by(order_by)[:how_many]
         return q
 
     @classmethod

@@ -1,12 +1,12 @@
 # -*- coding: utf-8  -*-
-import os
+# import os
 import unittest
 import transaction
-#from pyramid.config import Configurator
+# from pyramid.config import Configurator
 from pyramid import testing
 from datetime import date
 from sqlalchemy import create_engine
-from sqlalchemy.exc import IntegrityError
+# from sqlalchemy.exc import IntegrityError
 from c3spartyticketing.models import (
     DBSession,
     Base,
@@ -25,11 +25,11 @@ class PartyTicketTests(unittest.TestCase):
         self.config.include('pyramid_mailer.testing')
         try:
             DBSession.remove()
-            #print("removing old DBSession")
+            # print("removing old DBSession")
         except:
-            #print("no DBSession to remove")
+            # print("no DBSession to remove")
             pass
-        #engine = create_engine('sqlite:///test_models.db')
+        # engine = create_engine('sqlite:///test_models.db')
         engine = create_engine('sqlite://')
         self.session = DBSession
         DBSession.configure(bind=engine)  # XXX does influence self.session!?!
@@ -75,7 +75,7 @@ class PartyTicketTests(unittest.TestCase):
     def tearDown(self):
         self.session.close()
         self.session.remove()
-        #os.remove('test_models.db')
+        # os.remove('test_models.db')
 
     def _getTargetClass(self):
         from c3spartyticketing.models import PartyTicket
@@ -115,7 +115,7 @@ class PartyTicketTests(unittest.TestCase):
                  guestlist=False,
                  user_comment=u'foo',
                  ):
-        #print "type(self.session): " + str(type(self.session))
+        # print "type(self.session): " + str(type(self.session))
         return self._getTargetClass()(  # order of params DOES matter
             token,
             firstname,
@@ -230,7 +230,7 @@ class PartyTicketTests(unittest.TestCase):
         self.assertEqual(
             instance.email_confirm_code, u'ABCDEFGHIK', "No match!")
         self.assertEqual(instance.email_is_confirmed, False, "expected False")
-        #self.assertEqual(instance.ticket_type, 3, "No match!")
+        # self.assertEqual(instance.ticket_type, 3, "No match!")
 
     def test_get_by_code(self):
         instance = self._makeOne()
@@ -243,7 +243,7 @@ class PartyTicketTests(unittest.TestCase):
     def test_get_by_token(self):
         instance = self._makeOne()
         self.session.add(instance)
-        #self.session.flush()
+        # self.session.flush()
         myTestClass = self._getTargetClass()
         instance_from_DB = myTestClass.get_by_token(u'TESTTOKEN123')
         self.assertEqual(instance.firstname, u'SomeFirstnäme')
@@ -265,32 +265,31 @@ class PartyTicketTests(unittest.TestCase):
         self.assertEqual(instance_from_DB.locale, u'DE')
         self.assertEqual(instance_from_DB.email_is_confirmed, False)
         self.assertEqual(instance_from_DB.email_confirm_code, u'ABCDEFGHIK')
-        self.assertEqual(instance_from_DB.date_of_submission, _date_of_submission)
+        self.assertEqual(
+            instance_from_DB.date_of_submission, _date_of_submission)
         self.assertEqual(instance_from_DB.num_tickets, 1)
 
     def test_delete_by_id(self):
         instance = self._makeOne()
-        #session = DBSession()
         self.session.add(instance)
         myMembershipSigneeClass = self._getTargetClass()
         instance_from_DB = myMembershipSigneeClass.get_by_id('1')
         del_instance_from_DB = myMembershipSigneeClass.delete_by_id('1')
-        #print del_instance_from_DB
+        # print del_instance_from_DB
         instance_from_DB = myMembershipSigneeClass.get_by_id('1')
         self.assertEqual(None, instance_from_DB)
 
     def test_check_user_or_None(self):
         instance = self._makeOne()
-        #session = DBSession()
         self.session.add(instance)
         myMembershipSigneeClass = self._getTargetClass()
         # get first dataset (id = 1)
         result1 = myMembershipSigneeClass.check_user_or_None('1')
-        #print check_user_or_None
+        # print check_user_or_None
         self.assertEqual(1, result1.id)
         # get invalid dataset
         result2 = myMembershipSigneeClass.check_user_or_None('1234567')
-        #print check_user_or_None
+        # print check_user_or_None
         self.assertEqual(None, result2)
 
     def test_check_for_existing_confirm_code(self):
@@ -300,11 +299,11 @@ class PartyTicketTests(unittest.TestCase):
 
         result1 = myClass.check_for_existing_confirm_code(
             u'ABCDEFGHIK')
-        #print result1  # True
+        # print result1  # True
         self.assertEqual(result1, True)
         result2 = myClass.check_for_existing_confirm_code(
             u'ABCDEFGHIK0000000000')
-        #print result2  # False
+        # print result2  # False
         self.assertEqual(result2, False)
 
     def test_listing(self):
@@ -329,7 +328,7 @@ class PartyTicketTests(unittest.TestCase):
         myClass = self._getTargetClass()
 
         result = myClass.get_all_codes()
-        #print result1
+        # print result1
         self.assertTrue(len(result) is 3)
         self.assertTrue(u'ABCDEFGFOO' in result)
         self.assertTrue(u'ABCDEFGHIK' in result)
@@ -338,7 +337,7 @@ class PartyTicketTests(unittest.TestCase):
     def test_get_number(self):
         myClass = self._getTargetClass()
         result = myClass.get_number()
-        #print result1
+        # print result1
         self.assertEqual(result, 1)
 
     def test_get_num_tickets(self):
@@ -371,11 +370,11 @@ class PartyTicketStatsTests(unittest.TestCase):
         self.config.include('pyramid_mailer.testing')
         try:
             DBSession.remove()
-            #print("removing old DBSession")
+            # print("removing old DBSession")
         except:
-            #print("no DBSession to remove")
+            # print("no DBSession to remove")
             pass
-        #engine = create_engine('sqlite:///test_models.db')
+        # engine = create_engine('sqlite:///test_models.db')
         engine = create_engine('sqlite://')
         self.session = DBSession
         DBSession.configure(bind=engine)  # XXX does influence self.session!?!
@@ -469,7 +468,7 @@ class PartyTicketStatsTests(unittest.TestCase):
 
     def test_stats_general(self):
         # configuration
-        tickets = 4*10 # max permutation * 4
+        tickets = 4*10  # max permutation * 4
         # get class
         myClass = self._getTargetClass()
         # build target template
@@ -516,7 +515,7 @@ class PartyTicketStatsTests(unittest.TestCase):
 
     def test_stats_events(self):
         # configuration
-        tickets = 4**4*10 # max permutation * 10
+        tickets = 4**4*10  # max permutation * 10
         # get class
         myClass = self._getTargetClass()
         # build target template
@@ -595,7 +594,7 @@ class PartyTicketStatsTests(unittest.TestCase):
 
     def test_stats_extras(self):
         # configuration
-        tickets = 2**6*10 # max permutation * 10
+        tickets = 2**6*10  # max permutation * 10
         # get class
         myClass = self._getTargetClass()
         # build target template
@@ -654,7 +653,7 @@ class GroupTests(unittest.TestCase):
             DBSession.remove()
         except:
             pass
-        #engine = create_engine('sqlite:///test_model_groups.db')
+        # engine = create_engine('sqlite:///test_model_groups.db')
         engine = create_engine('sqlite://')
         self.session = DBSession
         self.session.configure(bind=engine)
@@ -669,7 +668,7 @@ class GroupTests(unittest.TestCase):
     def tearDown(self):
         self.session.close()
         self.session.remove()
-        #os.remove('test_model_groups.db')
+        # os.remove('test_model_groups.db')
 
     def test_group(self):
         cashiers_group = Group(name=u'kasse')
@@ -690,7 +689,7 @@ class C3sStaffTests(unittest.TestCase):
             DBSession.remove()
         except:
             pass
-        #engine = create_engine('sqlite:///test_model_staff.db')
+        # engine = create_engine('sqlite:///test_model_staff.db')
         engine = create_engine('sqlite://')
         self.session = DBSession
         self.session.configure(bind=engine)
@@ -705,7 +704,7 @@ class C3sStaffTests(unittest.TestCase):
     def tearDown(self):
         self.session.close()
         self.session.remove()
-        #os.remove('test_model_staff.db')
+        # os.remove('test_model_staff.db')
 
     def test_staff(self):
         staffer1 = C3sStaff(
@@ -728,10 +727,10 @@ class C3sStaffTests(unittest.TestCase):
 
         self.assertTrue(cashier1.password is not '')
 
-        #print('by id: %s' % C3sStaff.get_by_id(_staffer1_id))
-        #print('by id: %s' % C3sStaff.get_by_id(_cashier1_id))
-        #print('by login: %s' % C3sStaff.get_by_login(u'staffer1'))
-        #print('by login: %s' % C3sStaff.get_by_login(u'cashier1'))
+        # print('by id: %s' % C3sStaff.get_by_id(_staffer1_id))
+        # print('by id: %s' % C3sStaff.get_by_id(_cashier1_id))
+        # print('by login: %s' % C3sStaff.get_by_login(u'staffer1'))
+        # print('by login: %s' % C3sStaff.get_by_login(u'cashier1'))
         self.assertEqual(
             C3sStaff.get_by_id(_staffer1_id),
             C3sStaff.get_by_login(u'staffer1')
@@ -753,12 +752,12 @@ class C3sStaffTests(unittest.TestCase):
         '''test check_user_or_None'''
         res1 = C3sStaff.check_user_or_None(u'cashier1')
         res2 = C3sStaff.check_user_or_None(u'staffer1')
-        #print res1
-        #print res2
+        # print res1
+        # print res2
         self.assertTrue(res1 is not None)
         self.assertTrue(res2 is None)
 
         '''test check_password'''
-        #print(C3sStaff.check_password(cashier1, 'cashierspassword'))
+        # print(C3sStaff.check_password(cashier1, 'cashierspassword'))
         C3sStaff.check_password(u'cashier1', u'cashierspassword')
-        #self.assert
+        # self.assert

@@ -127,7 +127,7 @@ def main(argv=sys.argv):
             ticket_support_xl=False,
             support=0,
             discount=0,
-            the_total=150,
+            the_total=0,
             rep_firstname='',
             rep_lastname='',
             rep_street='',
@@ -137,7 +137,7 @@ def main(argv=sys.argv):
             rep_type='',
             guestlist=False,
             date_of_submission=datetime.now(),
-            #num_foodstamps=10,
+            # num_foodstamps=10,
             user_comment=u'no comment.'
         )
         try:

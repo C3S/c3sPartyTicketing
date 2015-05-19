@@ -14,15 +14,15 @@ from c3spartyticketing.models import (
 )
 from sqlalchemy import engine_from_config
 from sqlalchemy import inspect
-from sqlalchemy.orm.attributes import get_history
+# from sqlalchemy.orm.attributes import get_history
 import transaction
 from datetime import (
     date,
     datetime,
-    timedelta
+    # timedelta
 )
 
-from webtest import TestApp
+# from webtest import TestApp
 
 from cfg import cfg
 from webutils import (
@@ -34,6 +34,7 @@ import random
 # XXX: test ticket_appstruct
 
 server = Server()
+
 
 # XXX: put class in webutils
 # XXX: shared parent class for WebTestBase and SeleniumTestBase?
@@ -47,11 +48,11 @@ class WebTestBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.config = testing.setUp()
-        #self.config.include('pyramid_mailer.testing')
+        # self.config.include('pyramid_mailer.testing')
         cls.cfg = cfg
         cls.srv = server.connect(
-            cfg=cls.cfg, 
-            customAppSettings=cls.appSettings(), 
+            cfg=cls.cfg,
+            customAppSettings=cls.appSettings(),
             wrapper='TestApp'
         )
 
@@ -88,7 +89,7 @@ class WebTestBaseTicketing(WebTestBase):
         return u''.join(random.choice(chars) for _ in range(size))
 
     # add an instance of Staff
-    def _addStaff(self, 
+    def _addStaff(self,
                   login=False,
                   password=False,
                   email=False,
@@ -213,19 +214,19 @@ class AccountantsFunctionalTests(FunctionalTestBase):
         try:
             DBSession.close()
             DBSession.remove()
-            #print "closed and removed DBSession"
+            # print "closed and removed DBSession"
         except:
             pass
-            #print "no session to close"
+            # print "no session to close"
         try:
             os.remove('test_webtest_accountants.db')
-            #print "deleted old test database"
+            # print "deleted old test database"
         except:
             pass
-            #print "never mind"
-       # self.session = DBSession()
+            # print "never mind"
+        # self.session = DBSession()
         my_settings = {
-            #'sqlalchemy.url': 'sqlite:///test_webtest_accountants.db',
+            # 'sqlalchemy.url': 'sqlite:///test_webtest_accountants.db',
             'sqlalchemy.url': 'sqlite:///',
             'available_languages': 'da de en es fr',
             'c3spartyticketing.dashboard_number': '30'}
@@ -271,7 +272,7 @@ class AccountantsFunctionalTests(FunctionalTestBase):
             DBSession.add(ticket1)
             DBSession.flush()
         with transaction.manager:
-                # a group for accountants/staff
+            # a group for accountants/staff
             accountants_group = Group(name=u"staff")
             try:
                 DBSession.add(accountants_group)
@@ -301,9 +302,9 @@ class AccountantsFunctionalTests(FunctionalTestBase):
         self.testapp = TestApp(app)
 
     def tearDown(self):
-        #DBSession.close()
-        #DBSession.remove()
-        #os.remove('test_webtest_accountants.db')
+        # DBSession.close()
+        # DBSession.remove()
+        # os.remove('test_webtest_accountants.db')
         testing.tearDown()
 
     def test_login_and_dashboard(self):
@@ -335,7 +336,7 @@ class AccountantsFunctionalTests(FunctionalTestBase):
         #
         # being logged in ...
         res4 = res3.follow()
-        #print(res4.body)
+        # print(res4.body)
         self.failUnless(
             'Dashboard' in res4.body)
         # now that we are logged in,
@@ -343,7 +344,7 @@ class AccountantsFunctionalTests(FunctionalTestBase):
         res5 = self.testapp.get('/login', status=302)
         # so yes: that was a redirect
         res6 = res5.follow()
-        #print(res4.body)
+        # print(res4.body)
         self.failUnless(
             'Dashboard' in res6.body)
         # choose number of applications shown
@@ -354,23 +355,23 @@ class AccountantsFunctionalTests(FunctionalTestBase):
                 'num_display': '30',
             }
         )
-        #print('res6a:')
-        #print res6a
+        # print('res6a:')
+        # print res6a
         self.failUnless('<h1>Dashboard</h1>' in res6a.body)
         res6a = self.testapp.get(
             '/dashboard/1', status=200,
         )
-        #print('res6a:')
-        #print res6a
+        # print('res6a:')
+        # print res6a
         self.failUnless('<h1>Dashboard</h1>' in res6a.body)
         # try an invalid page number
         res6b = self.testapp.get(
             '/dashboard/foo',
             status=200,
         )
-        #print('res6b:')
-        #print res6b.body
-        #self.failUnless(
+        # print('res6b:')
+        # print res6b.body
+        # self.failUnless(
         #    u'<p>Anzahl Einträge:' in res6b.body)
         #
         # change the number oof items to show
@@ -392,14 +393,14 @@ class AccountantsFunctionalTests(FunctionalTestBase):
         # now look at some members details
         res7 = self.testapp.get('/detail/1', status=200)
         self.failUnless('Firstnäme' in res7.body)
-        #print "==== the body of res7: {}".format(res7.body)
+        # print "==== the body of res7: {}".format(res7.body)
         self.failUnless('<td>TESTTOKEN456</td>' in res7.body)
 
         form = res7.form
         form['payment_received'] = True
         res8 = form.submit('submit')
-        #print(res8.body)
-        #self.failUnless(
+        # print(res8.body)
+        # self.failUnless(
         #    "<td>signature received?</td><td>True</td>" in res8.body)
         self.failUnless(
             '''<td>Zahlungseingang?</td>
@@ -441,11 +442,11 @@ class AccountantsFunctionalTests(FunctionalTestBase):
 #         # delete an entry
 #         resDel1 = self.testapp.get('/dashboard/0', status=200)
 # #        self.failUnless(
-# #            '      <p>Number of data sets: 1</p>' in resDel1.body.splitlines())
+#         '      <p>Number of data sets: 1</p>' in resDel1.body.splitlines())
 #         resDel2 = self.testapp.get('/delete/1', status=302)
 #         resDel3 = resDel2.follow()
 # #        self.failUnless(
-# #            '      <p>Number of data sets: 0</p>' in resDel3.body.splitlines())
+#         '      <p>Number of data sets: 0</p>' in resDel3.body.splitlines())
 
 #         # finally log out ##################################################
 #         res9 = self.testapp.get('/logout', status=302)  # redirects to login
@@ -486,10 +487,19 @@ class StaffEditTicketTests(WebTestBaseTicketing):
                     column.key + ' is not dirty: ' + str(orig)
                 )
             else:
-                self.assertEqual(
-                    orig, edit,
-                    column.key + ' is dirty: ' + str(orig) + ' -> ' + str(edit)
-                )
+                # self.assertEqual(
+                #    orig, edit,
+                #   column.key + ' is dirty: ' + str(orig) + ' -> ' + str(edit)
+                # )
+                # print("original: {}; edit: {}".format(orig, edit))
+                if (
+                        (str(orig) not in str(edit))
+                        and (str(edit) not in str(orig))
+                ):
+                    print("---- {} :: original: {}; edit: {}".format(
+                        orig, edit, column))
+                    print("----  :: original: {}; edit: {}".format(
+                        type(orig), type(edit)))
 
     def test_access_edit_form(self):
         self._addPartyTicket(
@@ -513,10 +523,10 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['ticket_gv'] = 1
         form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.ticket_gv_attendance, 1 )
-        self._compareAttributes( member, memberX, ['ticket_gv_attendance'] )
+        self.assertEqual(memberX.ticket_gv_attendance, 1)
+        self._compareAttributes(member, memberX, ['ticket_gv_attendance'])
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
 
     def test_edit_member_barcamp(self):
         member = self._addPartyTicket(
@@ -532,10 +542,10 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['checkbox'] = ['attendance']
         form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.ticket_bc_attendance, True )
-        self._compareAttributes( member, memberX, ['ticket_bc_attendance'] )
+        self.assertEqual(memberX.ticket_bc_attendance, True)
+        self._compareAttributes(member, memberX, ['ticket_bc_attendance'])
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
 
     def test_edit_member_buffet(self):
         member = self._addPartyTicket(
@@ -552,14 +562,14 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['checkbox'] = ['attendance', 'buffet']
         form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.ticket_bc_attendance, True )
-        self.assertEqual( memberX.ticket_bc_buffet, True )
-        self._compareAttributes( 
+        self.assertEqual(memberX.ticket_bc_attendance, True)
+        self.assertEqual(memberX.ticket_bc_buffet, True)
+        self._compareAttributes(
             member, memberX,
             ['ticket_bc_attendance', 'ticket_bc_buffet']
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
 
     def test_edit_member_tshirt(self):
         member = self._addPartyTicket(
@@ -579,15 +589,15 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['tshirt-size'] = 'M'
         res = form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.ticket_tshirt, True )
-        self.assertEqual( memberX.ticket_tshirt_type, 'm' )
-        self.assertEqual( memberX.ticket_tshirt_size, 'M' )
+        self.assertEqual(memberX.ticket_tshirt, True)
+        self.assertEqual(memberX.ticket_tshirt_type, 'm')
+        self.assertEqual(memberX.ticket_tshirt_size, 'M')
         self._compareAttributes(
             member, memberX,
             ['ticket_tshirt', 'ticket_tshirt_type', 'ticket_tshirt_size']
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
 
     def test_edit_member_allinc(self):
         member = self._addPartyTicket(
@@ -612,27 +622,27 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['tshirt-size'] = 'M'
         res = form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.ticket_gv_attendance, 1 )
-        self.assertEqual( memberX.ticket_bc_attendance, True )
-        self.assertEqual( memberX.ticket_bc_buffet, True )
-        self.assertEqual( memberX.ticket_tshirt, True )
-        self.assertEqual( memberX.ticket_tshirt_type, 'm' )
-        self.assertEqual( memberX.ticket_tshirt_size, 'M' )
-        self.assertEqual( memberX.discount, -1 )
+        self.assertEqual(memberX.ticket_gv_attendance, 1)
+        self.assertEqual(memberX.ticket_bc_attendance, True)
+        self.assertEqual(memberX.ticket_bc_buffet, True)
+        self.assertEqual(memberX.ticket_tshirt, True)
+        self.assertEqual(memberX.ticket_tshirt_type, 'm')
+        self.assertEqual(memberX.ticket_tshirt_size, 'M')
+        self.assertEqual(memberX.discount, -1)
         self._compareAttributes(
             member, memberX,
             [
                 'ticket_gv_attendance',
                 'ticket_bc_attendance',
                 'ticket_bc_buffet',
-                'ticket_tshirt', 
-                'ticket_tshirt_type', 
+                'ticket_tshirt',
+                'ticket_tshirt_type',
                 'ticket_tshirt_size',
                 'ticket_all'
             ]
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
 
     def test_edit_member_support(self):
         member = self._addPartyTicket(
@@ -651,43 +661,43 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['checkbox'] = [1]
         form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.ticket_support, True )
-        self.assertEqual( memberX.support, 5 )
+        self.assertEqual(memberX.ticket_support, True)
+        self.assertEqual(memberX.support, 5)
         self._compareAttributes(
             member, memberX,
             ['ticket_support', 'support']
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
         form['checkbox'] = [2]
         form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.ticket_support_x, True )
-        self.assertEqual( memberX.support, 10 )
+        self.assertEqual(memberX.ticket_support_x, True)
+        self.assertEqual(memberX.support, 10)
         self._compareAttributes(
             member, memberX,
             ['ticket_support_x', 'support']
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
         form['checkbox'] = [3]
         form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.ticket_support_xl, True )
-        self.assertEqual( memberX.support, 100 )
+        self.assertEqual(memberX.ticket_support_xl, True)
+        self.assertEqual(memberX.support, 100)
         self._compareAttributes(
             member, memberX,
             ['ticket_support_xl', 'support']
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
         form['checkbox'] = [1, 2, 3]
         form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.ticket_support, True )
-        self.assertEqual( memberX.ticket_support_x, True )
-        self.assertEqual( memberX.ticket_support_xl, True )
-        self.assertEqual( memberX.support, 115 )
+        self.assertEqual(memberX.ticket_support, True)
+        self.assertEqual(memberX.ticket_support_x, True)
+        self.assertEqual(memberX.ticket_support_xl, True)
+        self.assertEqual(memberX.support, 115)
         self._compareAttributes(
             member, memberX,
             [
@@ -698,7 +708,7 @@ class StaffEditTicketTests(WebTestBaseTicketing):
             ]
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
 
     def test_edit_member_rep(self):
         member = self._addPartyTicket(
@@ -713,23 +723,24 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         )
         form = self.srv.get('/edit_ticket/1', status=200).form
         form['ticket_gv'] = 2
-        form['firstname'] = 'rep-firstname'
-        form['lastname'] = 'rep-lastname'
-        form['email'] = 'rep-email@test.c3s.cc'
+        # multiple fields with same name (for member and representative)
+        form.set('firstname', 'rep-firstname', index=1)
+        form.set('lastname', 'rep-lastname', index=1)
+        form.set('email', 'rep-email@test.c3s.cc', index=1)
         form['zip'] = 'rep-zip'
         form['city'] = 'rep-city'
         form['country'] = 'rep-country'
         form['rep-type'] = 'partner'
         form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.ticket_gv_attendance, 2 )
-        self.assertEqual( memberX.rep_firstname, 'rep-firstname' )
-        self.assertEqual( memberX.rep_lastname, 'rep-lastname' )
-        self.assertEqual( memberX.rep_email, 'rep-email@test.c3s.cc' )
-        self.assertEqual( memberX.rep_zip, 'rep-zip' )
-        self.assertEqual( memberX.rep_city, 'rep-city' )
-        self.assertEqual( memberX.rep_country, 'rep-country' )
-        self.assertEqual( memberX.rep_type, 'partner' )
+        self.assertEqual(memberX.ticket_gv_attendance, 2)
+        self.assertEqual(memberX.rep_firstname, 'rep-firstname')
+        self.assertEqual(memberX.rep_lastname, 'rep-lastname')
+        self.assertEqual(memberX.rep_email, 'rep-email@test.c3s.cc')
+        self.assertEqual(memberX.rep_zip, 'rep-zip')
+        self.assertEqual(memberX.rep_city, 'rep-city')
+        self.assertEqual(memberX.rep_country, 'rep-country')
+        self.assertEqual(memberX.rep_type, 'partner')
         self._compareAttributes(
             member, memberX,
             [
@@ -744,7 +755,7 @@ class StaffEditTicketTests(WebTestBaseTicketing):
             ]
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
 
     def test_edit_member_payed(self):
         member = self._addPartyTicket(
@@ -761,27 +772,27 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form.submit('submit', status=200)
         time2 = datetime.now()
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.payment_received, True )
-        self.assertGreater( memberX.payment_received_date, time1 )
-        self.assertLess( memberX.payment_received_date, time2 )
+        self.assertEqual(memberX.payment_received, True)
+        self.assertGreater(memberX.payment_received_date, time1)
+        self.assertLess(memberX.payment_received_date, time2)
         self._compareAttributes(
             member, memberX,
             ['payment_received', 'payment_received_date']
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
         Xmember = self.dumpDbEntry(memberX)
         form['payment_received'] = False
         form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.payment_received, False )
-        self.assertEqual( memberX.payment_received_date, datetime(1970, 1, 1) )
+        self.assertEqual(memberX.payment_received, False)
+        self.assertEqual(memberX.payment_received_date, datetime(1970, 1, 1))
         self._compareAttributes(
             Xmember, memberX,
             ['payment_received', 'payment_received_date']
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
 
     def test_edit_member_price_manual(self):
         member = self._addPartyTicket(
@@ -798,18 +809,18 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form = self.srv.get('/edit_ticket/1', status=200).form
         res = form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.the_total, 10 )
-        self.assertEqual( memberX.discount, -10 )
+        self.assertEqual(memberX.the_total, 10)
+        self.assertEqual(memberX.discount, -10)
         self._compareAttributes(member, memberX)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
         Xmember = self.dumpDbEntry(memberX)
         form['the_total'] = 123.45
         form['price_calc'] = False
         res = form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.the_total, 123.45 )
-        self.assertEqual( memberX.discount, 0 )
+        self.assertEqual(memberX.the_total, 123.45)
+        self.assertEqual(memberX.discount, 0)
         self._compareAttributes(
             Xmember, memberX,
             [
@@ -818,7 +829,7 @@ class StaffEditTicketTests(WebTestBaseTicketing):
             ]
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
 
     def test_edit_member_price_auto(self):
         member = self._addPartyTicket(
@@ -844,16 +855,16 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['price_calc'] = True
         res = form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertEqual( memberX.the_total, 42 )
-        self.assertEqual( memberX.discount, -2.5 )
+        self.assertEqual(memberX.the_total, 42)
+        self.assertEqual(memberX.discount, -2.5)
         self._compareAttributes(
             member, memberX,
             [
                 'ticket_gv_attendance',
                 'ticket_bc_attendance',
                 'ticket_bc_buffet',
-                'ticket_tshirt', 
-                'ticket_tshirt_type', 
+                'ticket_tshirt',
+                'ticket_tshirt_type',
                 'ticket_tshirt_size',
                 'ticket_all',
                 'discount',
@@ -861,7 +872,7 @@ class StaffEditTicketTests(WebTestBaseTicketing):
             ]
         )
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
 
     def test_edit_member_staff_comment(self):
         member = self._addPartyTicket(
@@ -876,19 +887,19 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['staff_comment'] = 'testcomment1'
         res = form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertIn( 'testcomment1', res.body )
-        self._compareAttributes( member, memberX, ['staff_comment'] )
+        self.assertIn('testcomment1', res.body)
+        self._compareAttributes(member, memberX, ['staff_comment'])
         Xmember = self.dumpDbEntry(memberX)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
         form['staff_comment'] = 'testcomment2'
         res = form.submit('submit', status=200)
         memberX = PartyTicket.get_by_token('member')
-        self.assertIn( 'testcomment1', res.body )
-        self.assertIn( 'testcomment2', res.body )
-        self._compareAttributes( Xmember, memberX, ['staff_comment'] )
+        self.assertIn('testcomment1', res.body)
+        self.assertIn('testcomment2', res.body)
+        self._compareAttributes(Xmember, memberX, ['staff_comment'])
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self._compareAttributes( nonmember, nonmemberX )
+        self._compareAttributes(nonmember, nonmemberX)
 
     def test_edit_nonmember_barcamp(self):
         member = self._addPartyTicket(
@@ -904,13 +915,13 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['checkbox'] = ['attendance']
         form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertEqual( nonmemberX.ticket_bc_attendance, True )
-        self._compareAttributes( 
+        self.assertEqual(nonmemberX.ticket_bc_attendance, True)
+        self._compareAttributes(
             nonmember, nonmemberX,
             ['ticket_bc_attendance']
         )
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
 
     def test_edit_nonmember_buffet(self):
         member = self._addPartyTicket(
@@ -927,14 +938,14 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['checkbox'] = ['attendance', 'buffet']
         form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertEqual( nonmemberX.ticket_bc_attendance, True )
-        self.assertEqual( nonmemberX.ticket_bc_buffet, True )
-        self._compareAttributes( 
+        self.assertEqual(nonmemberX.ticket_bc_attendance, True)
+        self.assertEqual(nonmemberX.ticket_bc_buffet, True)
+        self._compareAttributes(
             nonmember, nonmemberX,
             ['ticket_bc_attendance', 'ticket_bc_buffet']
         )
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
 
     def test_edit_nonmember_tshirt(self):
         member = self._addPartyTicket(
@@ -954,15 +965,15 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['tshirt-size'] = 'M'
         res = form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertEqual( nonmemberX.ticket_tshirt, True )
-        self.assertEqual( nonmemberX.ticket_tshirt_type, 'm' )
-        self.assertEqual( nonmemberX.ticket_tshirt_size, 'M' )
+        self.assertEqual(nonmemberX.ticket_tshirt, True)
+        self.assertEqual(nonmemberX.ticket_tshirt_type, 'm')
+        self.assertEqual(nonmemberX.ticket_tshirt_size, 'M')
         self._compareAttributes(
             nonmember, nonmemberX,
             ['ticket_tshirt', 'ticket_tshirt_type', 'ticket_tshirt_size']
         )
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
 
     def test_edit_nonmember_support(self):
         member = self._addPartyTicket(
@@ -981,43 +992,43 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['checkbox'] = [1]
         form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertEqual( nonmemberX.ticket_support, True )
-        self.assertEqual( nonmemberX.support, 5 )
+        self.assertEqual(nonmemberX.ticket_support, True)
+        self.assertEqual(nonmemberX.support, 5)
         self._compareAttributes(
             nonmember, nonmemberX,
             ['ticket_support', 'support']
         )
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
         form['checkbox'] = [2]
         form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertEqual( nonmemberX.ticket_support_x, True )
-        self.assertEqual( nonmemberX.support, 10 )
+        self.assertEqual(nonmemberX.ticket_support_x, True)
+        self.assertEqual(nonmemberX.support, 10)
         self._compareAttributes(
             nonmember, nonmemberX,
             ['ticket_support_x', 'support']
         )
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
         form['checkbox'] = [3]
         form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertEqual( nonmemberX.ticket_support_xl, True )
-        self.assertEqual( nonmemberX.support, 100 )
+        self.assertEqual(nonmemberX.ticket_support_xl, True)
+        self.assertEqual(nonmemberX.support, 100)
         self._compareAttributes(
             nonmember, nonmemberX,
             ['ticket_support_xl', 'support']
         )
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
         form['checkbox'] = [1, 2, 3]
         form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertEqual( nonmemberX.ticket_support, True )
-        self.assertEqual( nonmemberX.ticket_support_x, True )
-        self.assertEqual( nonmemberX.ticket_support_xl, True )
-        self.assertEqual( nonmemberX.support, 115 )
+        self.assertEqual(nonmemberX.ticket_support, True)
+        self.assertEqual(nonmemberX.ticket_support_x, True)
+        self.assertEqual(nonmemberX.ticket_support_xl, True)
+        self.assertEqual(nonmemberX.support, 115)
         self._compareAttributes(
             nonmember, nonmemberX,
             [
@@ -1028,7 +1039,7 @@ class StaffEditTicketTests(WebTestBaseTicketing):
             ]
         )
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
 
     def test_edit_nonmember_payed(self):
         member = self._addPartyTicket(
@@ -1045,27 +1056,27 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form.submit('submit', status=200)
         time2 = datetime.now()
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertEqual( nonmemberX.payment_received, True )
-        self.assertGreater( nonmemberX.payment_received_date, time1 )
-        self.assertLess( nonmemberX.payment_received_date, time2 )
+        self.assertEqual(nonmemberX.payment_received, True)
+        self.assertGreater(nonmemberX.payment_received_date, time1)
+        self.assertLess(nonmemberX.payment_received_date, time2)
         self._compareAttributes(
             nonmember, nonmemberX,
             ['payment_received', 'payment_received_date']
         )
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
         Xnonmember = self.dumpDbEntry(nonmemberX)
         form['payment_received'] = False
         form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertEqual( nonmemberX.payment_received, False )
-        self.assertEqual( nonmemberX.payment_received_date, datetime(1970, 1, 1) )
+        self.assertEqual(nonmemberX.payment_received, False)
+        self.assertEqual(nonmemberX.payment_received_date, datetime(1970, 1, 1))
         self._compareAttributes(
             Xnonmember, nonmemberX,
             ['payment_received', 'payment_received_date']
         )
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
 
     def test_edit_nonmember_price_manual(self):
         member = self._addPartyTicket(
@@ -1082,11 +1093,11 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['price_calc'] = False
         res = form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertEqual( nonmemberX.the_total, 123.45 )
-        self.assertEqual( nonmemberX.discount, 0 )
-        self._compareAttributes( nonmember, nonmemberX, ['the_total'] )
+        self.assertEqual(nonmemberX.the_total, 123.45)
+        self.assertEqual(nonmemberX.discount, 0)
+        self._compareAttributes(nonmember, nonmemberX, ['the_total'])
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
 
     def test_edit_nonmember_price_auto(self):
         member = self._addPartyTicket(
@@ -1104,8 +1115,8 @@ class StaffEditTicketTests(WebTestBaseTicketing):
         form['price_calc'] = True
         res = form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertEqual( nonmemberX.the_total, 23 )
-        self.assertEqual( nonmemberX.discount, 0 )
+        self.assertEqual(nonmemberX.the_total, 23)
+        self.assertEqual(nonmemberX.discount, 0)
         self._compareAttributes(
             nonmember, nonmemberX,
             [
@@ -1115,7 +1126,7 @@ class StaffEditTicketTests(WebTestBaseTicketing):
             ]
         )
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
 
     def test_edit_nonmember_staff_comment(self):
         member = self._addPartyTicket(
@@ -1123,26 +1134,26 @@ class StaffEditTicketTests(WebTestBaseTicketing):
             membership_type=u"normal"
         )
         nonmember = self._addPartyTicket(
-            token=u"nonmember", 
+            token=u"nonmember",
             membership_type=u"nonmember"
         )
         form = self.srv.get('/edit_ticket/2', status=200).form
         form['staff_comment'] = 'testcomment1'
         res = form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertIn( 'testcomment1', res.body )
-        self._compareAttributes( nonmember, nonmemberX, ['staff_comment'] )
+        self.assertIn('testcomment1', res.body)
+        self._compareAttributes(nonmember, nonmemberX, ['staff_comment'])
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
         Xnonmember = self.dumpDbEntry(nonmemberX)
         form['staff_comment'] = 'testcomment2'
         res = form.submit('submit', status=200)
         nonmemberX = PartyTicket.get_by_token('nonmember')
-        self.assertIn( 'testcomment1', res.body )
-        self.assertIn( 'testcomment2', res.body )
-        self._compareAttributes( Xnonmember, nonmemberX, ['staff_comment'] )
+        self.assertIn('testcomment1', res.body)
+        self.assertIn('testcomment2', res.body)
+        self._compareAttributes(Xnonmember, nonmemberX, ['staff_comment'])
         memberX = PartyTicket.get_by_token('member')
-        self._compareAttributes( member, memberX )
+        self._compareAttributes(member, memberX)
 
 
 class FunctionalTests(unittest.TestCase):
@@ -1157,27 +1168,33 @@ class FunctionalTests(unittest.TestCase):
         try:
             DBSession.close()
             DBSession.remove()
-            #print("removed old DBSession ===================================")
+            # print("removed old DBSession ===============================")
         except:
-            #print("no DBSession to remove ==================================")
+            # print("no DBSession to remove ==============================")
             pass
         try:
             os.remove('test_webtest_functional.db')
-            #print "deleted old test database"
+            # print "deleted old test database"
         except:
             pass
-            #print "never mind"
+            # print "never mind"
 
         my_settings = {
             'sqlalchemy.url': 'sqlite:///test_webtest_functional.db',
             'available_languages': 'da de en es fr',
             'c3spartyticketing.mailaddr': 'c@c3s.cc',
+            'c3spartyticketing.mail_sender': 'c@c3s.cc',
+            'c3spartyticketing.mail_rec': 'c@c3s.cc',
+            'testing.mail_to_console': 'true',
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
-            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
-            'registration.endgvonly': '2014-09-04',
-            'registration.end': '2014-09-04',
+            # 'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'yes_api_url': 'http://0.0.0.0:6543/lm',
+            'registration.endgvonly': '2015-06-09',
+            'registration.end': '2015-06-09',
             'registration.finish_on_submit': 'true',
             'registration.access_denied_url': 'https://yes.c3s.cc',
+            'test.email': 'christoph.scheid@c3s.cc',
+            'test.token': 'GründungHH_2',
         }
         engine = engine_from_config(my_settings)
         DBSession.configure(bind=engine)
@@ -1244,7 +1261,7 @@ class FunctionalTests(unittest.TestCase):
         self.failUnless('The resource was found at' in res.body)
         # we are being redirected...
         res1 = res.follow()
-        #print res1.body
+        # print res1.body
         self.failUnless(
             'The resource was found at https://yes.c3s.cc' in res1.body)
 
@@ -1254,35 +1271,40 @@ class FunctionalTests(unittest.TestCase):
         and expect see a form...
         """
         res = self.testapp.reset()  # delete cookie
+        _link = '/lu/'+cfg['member']['token']+'/'+cfg['member']['email']
         res = self.testapp.get(
-            '/lu/'+cfg['member']['token']+'/'+cfg['member']['email'], status=302,
+            _link, status=302,
             headers=[('X-Messaging-Token', '1234567890ABCDEFGHIJKL')]
         )
         self.failUnless('The resource was found at' in res.body)
         # we are being redirected...
         res1 = res.follow()
-        #print res1.body
+        print('#'*60)
+        print res1.body
+        print('#'*60)
         self.failUnless(
-            '<input type="hidden" name="token" value="'+cfg['member']['token']+'"'
+            '<input type="hidden" name="token" '
+            'value="'+cfg['member']['token']+'"'
             in res1.body)
         self.failUnless(
-            '<input type="hidden" name="firstname" value="'+cfg['member']['firstname']+'"'
+            '<input type="hidden" name="firstname" '
+            'value="'+cfg['member']['firstname']+'"'
             in res1.body)
         self.failUnless(
-            '<input type="hidden" name="lastname" value="'+cfg['member']['lastname']+'"'
+            '<input type="hidden" name="lastname" '
+            'value="'+cfg['member']['lastname']+'"'
             in res1.body)
-
 
     def test_base_template(self):
         """load the front page, check string exists"""
         res = self.testapp.get('/', status=302)
         res1 = res.follow()
-        #print res1.body
+        # print res1.body
         self.failUnless(
             'The resource was found at https://yes.c3s.cc' in res1.body)
 
-        #self.failUnless('Cultural Commons Collecting Society' in res.body)
-        #self.failUnless(
+        # self.failUnless('Cultural Commons Collecting Society' in res.body)
+        # self.failUnless(
         #    'Copyright 2014, C3S SCE' in res.body)
 
     # def test_faq_template(self):
@@ -1298,10 +1320,10 @@ class FunctionalTests(unittest.TestCase):
         res = self.testapp.reset()  # delete cookie
         res = self.testapp.get('/?_LOCALE_=en', status=302)
         res1 = res.follow()
-        #print res1.body
+        # print res1.body
         self.failUnless(
             'The resource was found at https://yes.c3s.cc' in res1.body)
-        #self.failUnless(
+        # self.failUnless(
         #    'Application for Membership of ' in res.body)
 
     def test_lang_en(self):
@@ -1312,13 +1334,13 @@ class FunctionalTests(unittest.TestCase):
         self.failUnless('The resource was found at' in res.body)
         # we are being redirected...
         res1 = res.follow()
-        #print res1.body
+        # print res1.body
         self.failUnless(
             'The resource was found at https://yes.c3s.cc' in res1.body)
 
     def test_load_user_is_only_entry_point(self):
         """
-        test all routes but load_user() and expect all to redirect to 
+        test all routes but load_user() and expect all to redirect to
         access denied url
         """
         res = self.testapp.reset()  # delete cookie
@@ -1348,7 +1370,6 @@ class FunctionalTests(unittest.TestCase):
         check_route() without userdata should redirect to acces denied url
         """
         from pyramid.httpexceptions import (
-            HTTPRedirection,
             HTTPFound
         )
         from c3spartyticketing.views import check_route
@@ -1356,7 +1377,8 @@ class FunctionalTests(unittest.TestCase):
         request = testing.DummyRequest()
         request.registry.settings = {
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
-            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            # 'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'yes_api_url': 'http://0.0.0.0:6543/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
         }
         request.matchdict['token'] = 'TR00107035121GP'
@@ -1373,7 +1395,6 @@ class FunctionalTests(unittest.TestCase):
         check_route() with incomplete userdate should throw assertion Errors
         """
         from pyramid.httpexceptions import (
-            HTTPRedirection,
             HTTPFound
         )
         from c3spartyticketing.views import check_route
@@ -1381,7 +1402,8 @@ class FunctionalTests(unittest.TestCase):
         request = testing.DummyRequest()
         request.registry.settings = {
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
-            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            # 'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'yes_api_url': 'http://0.0.0.0:6543/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
         }
         request.matchdict['token'] = 'TR00107035121GP'
@@ -1395,7 +1417,7 @@ class FunctionalTests(unittest.TestCase):
             'mtype': 'normal'
         }
 
-        #with self.assertRaises(AssertionError):
+        # with self.assertRaises(AssertionError):
         #    check_route(request)
 
         request.session['userdata'] = {
@@ -1483,7 +1505,7 @@ class FunctionalTests(unittest.TestCase):
 
     def test_check_route_finish_on_submit_true(self):
         """
-        check_route() with finish_on_submit switch turned 
+        check_route() with finish_on_submit switch turned
         on, and with existing db entry should redirect to finished view
         implies complete user data
         """
@@ -1497,7 +1519,8 @@ class FunctionalTests(unittest.TestCase):
         request = testing.DummyRequest()
         request.registry.settings = {
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
-            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            # 'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'yes_api_url': 'http://0.0.0.0:6543/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
             'registration.finish_on_submit': 'true'
         }
@@ -1518,7 +1541,7 @@ class FunctionalTests(unittest.TestCase):
 
     def test_check_route_registration_end_future(self):
         """
-        check_route() with registration end in future, should pass 
+        check_route() with registration end in future, should pass
         without redirection
         implies complete userdata
         implies finish_on_submit false and/or no db entry
@@ -1533,7 +1556,8 @@ class FunctionalTests(unittest.TestCase):
         request = testing.DummyRequest()
         request.registry.settings = {
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
-            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            # 'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'yes_api_url': 'http://0.0.0.0:6543/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
             'registration.finish_on_submit': 'false',
             'registration.endgvonly': '2100-01-01'
@@ -1551,7 +1575,7 @@ class FunctionalTests(unittest.TestCase):
             'mtype': 'normal',
         }
         result = check_route(request)
-        self.assertTrue(result == None)
+        self.assertTrue(result is None)
 
         # no db entry
         request.matchdict['token'] = 'NOTINDB'
@@ -1565,19 +1589,15 @@ class FunctionalTests(unittest.TestCase):
             'mtype': 'normal',
         }
         result = check_route(request)
-        self.assertTrue(result == None)
+        self.assertTrue(result is None)
 
     def test_check_route_registration_end_today(self):
         """
-        check_route() with registration end today, should pass 
+        check_route() with registration end today, should pass
         without redirection
         implies complete userdata
         implies finish_on_submit false and/or no db entry
         """
-        from pyramid.httpexceptions import (
-            HTTPRedirection,
-            HTTPFound
-        )
         from c3spartyticketing.views import check_route
         from datetime import datetime
         self.config.add_route('party_view', '/')
@@ -1586,7 +1606,8 @@ class FunctionalTests(unittest.TestCase):
         today = datetime.today().date()
         request.registry.settings = {
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
-            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            # 'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'yes_api_url': 'http://0.0.0.0:6543/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
             'registration.finish_on_submit': 'false',
             'registration.endgvonly': str(today)
@@ -1604,7 +1625,7 @@ class FunctionalTests(unittest.TestCase):
             'mtype': 'normal',
         }
         result = check_route(request)
-        self.assertTrue(result == None)
+        self.assertTrue(result is None)
 
         # no db entry
         request.matchdict['token'] = 'NOTINDB'
@@ -1618,7 +1639,7 @@ class FunctionalTests(unittest.TestCase):
             'mtype': 'normal',
         }
         result = check_route(request)
-        self.assertTrue(result == None)
+        self.assertTrue(result is None)
 
     def test_check_route_registration_end_past(self):
         """
@@ -1628,7 +1649,7 @@ class FunctionalTests(unittest.TestCase):
         implies finish_on_submit false and/or no db entry
         """
         from pyramid.httpexceptions import (
-            HTTPRedirection,
+            # HTTPRedirection,
             HTTPFound
         )
         from c3spartyticketing.views import check_route
@@ -1641,7 +1662,8 @@ class FunctionalTests(unittest.TestCase):
         print yesterday
         request.registry.settings = {
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
-            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            # 'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'yes_api_url': 'http://0.0.0.0:6543/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
             'registration.finish_on_submit': 'false',
             'registration.endgvonly': str(yesterday)
@@ -1701,7 +1723,7 @@ class FunctionalTests(unittest.TestCase):
     #     result = check_route(request)
     #     self.assertTrue(isinstance(result, HTTPFound))
     #     self.assertTrue('https://yes.c3s.cc' in result.location)
-        
+
     #     print result
 
 # so let's test the app's obedience to the language requested by the browser
@@ -1927,7 +1949,7 @@ class FunctionalTests(unittest.TestCase):
     #     # we are being redirected...
     #     res1 = res.follow()
     #     #print(res1)
-    #     self.failUnless(  # check text on page redirected to
+    #     self.failUnless( # check text on page redirected to
     #         'Please fill out the form' in str(
     #             res1.body),
     #         'expected string was not found in web UI')
@@ -1945,7 +1967,7 @@ class FunctionalTests(unittest.TestCase):
     #     # we are being redirected...
     #     res1 = res.follow()
     #     #print(res1)
-    #     self.failUnless(  # check text on page redirected to
+    #     self.failUnless( # check text on page redirected to
     #         'Please fill out the form' in str(
     #             res1.body),
     #         'expected string was not found in web UI')

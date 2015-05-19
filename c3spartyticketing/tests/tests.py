@@ -39,8 +39,12 @@ class TestViews(unittest.TestCase):
         request = testing.DummyRequest()
         request.registry.settings = {
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
-            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            #'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'yes_api_url': 'http://0.0.0.0:6543/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
+            'c3spartyticketing.mail_sender': 'tickets@test.c3s.cc',
+            'c3spartyticketing.mail_rec': 'tickets@test.c3s.cc',
+            'testing.mail_to_console': 'true',
         }
         request.matchdict['token'] = 'ABCDEF'
         request.matchdict['email'] = 'foo@bar.de'
@@ -49,10 +53,10 @@ class TestViews(unittest.TestCase):
         #         'firstname': 'foo',
         #         'lastname': 'bar',
         #     }
-        #}
+        # }
         result = load_user(request)
-        #print result
-        #print dir(result)
+        # print result
+        # print dir(result)
         self.assertTrue('The resource was found at' in str(result))
         self.assertTrue('https://yes.c3s.cc' in result.location)
         self.assertTrue('302' in result.status)
@@ -66,8 +70,12 @@ class TestViews(unittest.TestCase):
         request = testing.DummyRequest()
         request.registry.settings = {
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
-            'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            # 'yes_api_url': 'https://prototyp01.c3s.cc/lm',
+            'yes_api_url': 'http://0.0.0.0:6543/lm',
             'registration.access_denied_url': 'https://yes.c3s.cc',
+            'c3spartyticketing.mail_sender': 'tickets@test.c3s.cc',
+            'c3spartyticketing.mail_rec': 'tickets@test.c3s.cc',
+            'testing.mail_to_console': 'true',
         }
         request.matchdict['token'] = cfg['member']['token']
         request.matchdict['email'] = cfg['member']['email']
@@ -76,17 +84,17 @@ class TestViews(unittest.TestCase):
         #         'firstname': 'foo',
         #         'lastname': 'bar',
         #     }
-        #}
+        # }
         result = load_user(request)
-        #print result
-        #print dir(result)
+        # print result
+        # print dir(result)
         self.assertTrue('The resource was found at' in str(result))
-        #self.assertTrue('https://yes.c3s.cc' in result.location)
-        #self.assertTrue('https://yes.c3s.cc' in result.wsgi_response.location)
+        # self.assertTrue('https://yes.c3s.cc' in result.location)
+        # self.assertTrue('https://yes.c3s.cc' in result.wsgi_response.location)
         print result.location
         self.assertTrue('302' in result.status)
 
-        #print result.headers
+        # print result.headers
 
         self.assertTrue('userdata' in request.session)
         self.assertTrue('firstname' in request.session['userdata'])

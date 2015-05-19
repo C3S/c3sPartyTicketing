@@ -76,9 +76,9 @@ def accountants_login(request):
     """
     This view lets accountants log in
     """
-    #print(request)
+    # print(request)
     logged_in = authenticated_userid(request)
-    #print("authenticated_userid: " + str(logged_in))
+    # print("authenticated_userid: " + str(logged_in))
 
     log.info("login by %s" % logged_in)
 
@@ -112,13 +112,13 @@ def accountants_login(request):
             deform.Button('submit', u'Submit'),
             deform.Button('reset', u'Reset')
         ],
-        #use_ajax=True,
-        #renderer=zpt_renderer
+        # use_ajax=True,
+        # renderer=zpt_renderer
     )
 
     # if the form has been used and SUBMITTED, check contents
     if 'submit' in request.POST:
-        #print("the form was submitted")
+        # print("the form was submitted")
         controls = request.POST.items()
         try:
             appstruct = form.validate(controls)
@@ -165,26 +165,26 @@ def dashboard_view(request):
     This view lets accountants view applications and set their status:
     has their payment arrived?
     """
-    #print("who is it? %s" % request.user.login)
+    # print("who is it? %s" % request.user.login)
     _number_of_datasets = PartyTicket.get_number()
-    #print("request.matchdict['number']: %s" % request.matchdict['number'])
+    # print("request.matchdict['number']: %s" % request.matchdict['number'])
     try:  # check if
         # a page number was supplied with the URL
         _page_to_show = int(request.matchdict['number'])
-        #print("page to show: %s" % _page_to_show)
+        # print("page to show: %s" % _page_to_show)
     except:
         _page_to_show = 0
     # is it a number? yes, cast above
-    #if not isinstance(_page_to_show, type(1)):
+    # if not isinstance(_page_to_show, type(1)):
     #    _page_to_show = 0
-    #print("_page_to_show: %s" % _page_to_show)
+    # print("_page_to_show: %s" % _page_to_show)
 
     # check for input from "find dataset by confirm code" form
     if 'code_to_show' in request.POST:
         print("found code_to_show in POST: %s" % request.POST['code_to_show'])
         try:
             _code = request.POST['code_to_show']
-            #print(_code)
+            # print(_code)
             _entry = PartyTicket.get_by_code(_code)
             print(_entry)
             print(_entry.id)
@@ -203,9 +203,9 @@ def dashboard_view(request):
     """
     num_display determines how many items are to be shown on one page
     """
-    #print request.POST
+    # print request.POST
     if 'num_to_show' in request.POST:
-        #print("found it in POST")
+        # print("found it in POST")
         try:
             _num = int(request.POST['num_to_show'])
             if isinstance(_num, type(1)):
@@ -214,23 +214,23 @@ def dashboard_view(request):
             # choose default
             num_display = 20
     elif 'num_display' in request.cookies:
-        #print("found it in cookie")
+        # print("found it in cookie")
         num_display = int(request.cookies['num_display'])
     else:
-        #print("setting default")
+        # print("setting default")
         num_display = request.registry.settings[
             'c3spartyticketing.dashboard_number']
-    #print("num_display: %s " % num_display)
+    # print("num_display: %s " % num_display)
 
     """
     base_offset helps us to minimize impact on the database
     when querying for results.
     we can choose just those results we need for the page to show
     """
-    #try:
+    # try:
     base_offset = int(_page_to_show) * int(num_display)
-    #print("base offset: %s" % base_offset)
-    #except:
+    # print("base offset: %s" % base_offset)
+    # except:
     #    base_offset = 0
     #    if 'base_offset' in request.session:
     #        base_offset = request.session['base_offset']
@@ -250,7 +250,7 @@ def dashboard_view(request):
 
     # store info about current page in cookie
     request.response.set_cookie('on_page', value=str(_page_to_show))
-    #print("num_display: %s" % num_display)
+    # print("num_display: %s" % num_display)
     request.response.set_cookie('num_display', value=str(num_display))
 
     #
@@ -260,10 +260,10 @@ def dashboard_view(request):
     # http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/subrequest.html
     subreq = Request.blank('/all_codes')  # see http://0.0.0.0:6543/all_codes
     response = request.invoke_subrequest(subreq)
-    #print("the subrequests response: %s" % response.body)
-    #import requests
-    #r = requests.get('http://0.0.0.0:6543/all_codes')
-    #the_codes = json.loads(r.text)  # gotcha: json needed!
+    # print("the subrequests response: %s" % response.body)
+    # import requests
+    # r = requests.get('http://0.0.0.0:6543/all_codes')
+    # the_codes = json.loads(r.text)  # gotcha: json needed!
     the_codes = json.loads(response.body)  # gotcha: json needed!
 
     my_autoc_wid = deform.widget.AutocompleteInputWidget(
@@ -290,7 +290,7 @@ def dashboard_view(request):
     form = deform.Form(
         schema,
         buttons=('go!',),
-        #use_ajax=True,  # <-- whoa!
+        # use_ajax=True,  # <-- whoa!
         renderer=zpt_renderer,
     )
     autoformhtml = form.render()
@@ -312,20 +312,20 @@ def stats_view(request):
     This view lets accountants view statistics:
     how many tickets of which category, payment status, etc.
     """
-    #print("who is it? %s" % request.user.login)
-    
+    # print("who is it? %s" % request.user.login)
+
     stats = {}
 
-    ### General
+    # ## General
     stats['general'] = PartyTicket.get_stats_general()
 
-    ### Events
+    # ## Events
     stats['events'] = PartyTicket.get_stats_events()
 
-    ### Extras
+    # ## Extras
     stats['extras'] = PartyTicket.get_stats_extras()
 
-    ### Abrechnung
+    # ## Abrechnung
     stats['accounting'] = {}
     # Bestellung
     stats['accounting']['order'] = {
@@ -334,77 +334,77 @@ def stats_view(request):
         'sum_tickets_paid': PartyTicket.get_sum_tickets_paid(),
         'sum_tickets_paid_desk': PartyTicket.get_sum_tickets_paid_desk(),
     }
-    
+
     # Tickets
-    #stats['accounting']['tickets'] = {
+    # stats['accounting']['tickets'] = {
     #    'sum_tickets_preorder_cash': PartyTicket.get_sum_tickets_preorder_cash(),
     #    'sum_tickets_new_cash': PartyTicket.get_sum_tickets_new_cash(),
     #    'num_passengers_paid_checkedin': PartyTicket.get_num_passengers_paid_checkedin(),
-    #}
-    
-    #_number_of_tickets = PartyTicket.get_num_tickets()
-    #_num_passengers = PartyTicket.num_passengers()
-    #_num_open_tickets = int(_number_of_tickets) - int(_num_passengers)
-    #_num_tickets_unpaid = PartyTicket.get_num_unpaid()
+    # }
+
+    # _number_of_tickets = PartyTicket.get_num_tickets()
+    # _num_passengers = PartyTicket.num_passengers()
+    # _num_open_tickets = int(_number_of_tickets) - int(_num_passengers)
+    # _num_tickets_unpaid = PartyTicket.get_num_unpaid()
 
     return {
         'stats': stats
     }
 
 
-@view_config(renderer='templates/print.pt',
-             permission='manage',
-             route_name='print')
-def print_view(request):
-    """
-    This view lets accountants print a ticket list
-    for backup strategies, e.g. offline mode
-    """
-    # get data sets from DB
-    _number_of_datasets = PartyTicket.get_number()
-    _tickets = PartyTicket.ticket_listing(
-        PartyTicket.id.desc(), how_many=_number_of_datasets, offset=0)
+# @view_config(renderer='templates/print.pt',
+#              permission='manage',
+#              route_name='print')
+# def print_view(request):
+#     """
+#     This view lets accountants print a ticket list
+#     for backup strategies, e.g. offline mode
+#     """
+#     # get data sets from DB
+#     _number_of_datasets = PartyTicket.get_number()
+#     _tickets = PartyTicket.ticket_listing(
+#         PartyTicket.id.desc(), how_many=_number_of_datasets, offset=0)
 
-    #print("who is it? %s" % request.user.login)
-    _number_of_datasets = PartyTicket.get_number()
-    _number_of_tickets = PartyTicket.get_num_tickets()
-    _num_passengers = PartyTicket.num_passengers()
-    _num_open_tickets = int(_number_of_tickets) - int(_num_passengers)
-    _num_tickets_unpaid = PartyTicket.get_num_unpaid()
-    #
-    #_num_hobos = PartyTicket.get_num_hobos()
-    #_num_class_2 = PartyTicket.get_num_class_2()
-    #_num_class_2_food = PartyTicket.get_num_class_2_food()
-    #_num_class_1 = PartyTicket.get_num_class_1()
-    #_num_class_green = PartyTicket.get_num_class_green()
-    #
-    _sum_tickets_total = PartyTicket.get_sum_tickets_total()
-    _sum_tickets_unpaid = PartyTicket.get_sum_tickets_unpaid()
-    _sum_tickets_paid = PartyTicket.get_sum_tickets_paid()
-    _sum_tickets_paid_desk = PartyTicket.get_sum_tickets_paid_desk()
-    #_num_passengers_paid_checkedin = PartyTicket.get_num_passengers_paid_checkedin()
+#     # print("who is it? %s" % request.user.login)
+#     _number_of_datasets = PartyTicket.get_number()
+#     _number_of_tickets = PartyTicket.get_num_tickets()
+#     _num_passengers = PartyTicket.num_passengers()
+#     _num_open_tickets = int(_number_of_tickets) - int(_num_passengers)
+#     _num_tickets_unpaid = PartyTicket.get_num_unpaid()
+#     #
+#     # _num_hobos = PartyTicket.get_num_hobos()
+#     # _num_class_2 = PartyTicket.get_num_class_2()
+#     # _num_class_2_food = PartyTicket.get_num_class_2_food()
+#     # _num_class_1 = PartyTicket.get_num_class_1()
+#     # _num_class_green = PartyTicket.get_num_class_green()
+#     #
+#     _sum_tickets_total = PartyTicket.get_sum_tickets_total()
+#     _sum_tickets_unpaid = PartyTicket.get_sum_tickets_unpaid()
+#     _sum_tickets_paid = PartyTicket.get_sum_tickets_paid()
+#     _sum_tickets_paid_desk = PartyTicket.get_sum_tickets_paid_desk()
+#     # _num_passengers_paid_checkedin = PartyTicket.get_num_passengers_paid_checkedin()
 
-    return {
-        'tickets': _tickets,
-        '_number_of_datasets': _number_of_datasets,
-        '_number_of_tickets': _number_of_tickets,
-        '_num_passengers': _num_passengers,
-        '_num_open_tickets': _num_open_tickets,
-        '_num_tickets_unpaid': _num_tickets_unpaid,
-        # ticket categories
-        #'num_hobos': _num_hobos,
-        #'num_class_2': _num_class_2,
-        #'num_class_2_food': _num_class_2_food,
-        #'num_class_1': _num_class_1,
-        #'num_class_green': _num_class_green,
-        # focus on cash
-        'sum_tickets_total': _sum_tickets_total,
-        'sum_tickets_unpaid': _sum_tickets_unpaid,
-        'sum_tickets_paid': _sum_tickets_paid,
-        'sum_tickets_paid_desk': _sum_tickets_paid_desk,
-        #'num_passengers_paid_checkedin': _num_passengers_paid_checkedin,
+#     return {
+#         'tickets': _tickets,
+#         '_number_of_datasets': _number_of_datasets,
+#         '_number_of_tickets': _number_of_tickets,
+#         '_num_passengers': _num_passengers,
+#         '_num_open_tickets': _num_open_tickets,
+#         '_num_tickets_unpaid': _num_tickets_unpaid,
+#         # ticket categories
+#         # 'num_hobos': _num_hobos,
+#         # 'num_class_2': _num_class_2,
+#         # 'num_class_2_food': _num_class_2_food,
+#         # 'num_class_1': _num_class_1,
+#         # 'num_class_green': _num_class_green,
+#         # focus on cash
+#         'sum_tickets_total': _sum_tickets_total,
+#         'sum_tickets_unpaid': _sum_tickets_unpaid,
+#         'sum_tickets_paid': _sum_tickets_paid,
+#         'sum_tickets_paid_desk': _sum_tickets_paid_desk,
+#         # 'num_passengers_paid_checkedin': _num_passengers_paid_checkedin,
 
-    }
+#     }
 
 
 @view_config(route_name='hobo',
@@ -459,8 +459,8 @@ def make_hobo_view(request):
         """
         person = PersonalData(
             title=u"Persönliche Daten",
-            #description=_(u"this is a test"),
-            #css_class="thisisjustatest"
+            # description=_(u"this is a test"),
+            # css_class="thisisjustatest"
         )
 
     schema = HoboForm()
@@ -471,7 +471,7 @@ def make_hobo_view(request):
             deform.Button('submit', u'Absenden'),
             deform.Button('reset', u'Zurücksetzen')
         ],
-        #use_ajax=True,
+        # use_ajax=True,
         renderer=zpt_renderer
     )
 
@@ -506,15 +506,15 @@ def make_hobo_view(request):
             )
             hobo.payment_received = True
             dbsession = DBSession
-            #try:
+            # try:
             print "about to add ticket"
             dbsession.add(hobo)
             dbsession.flush()
             print "added ticket"
-            #except InvalidRequestError, e:  # pragma: no cover
+            # except InvalidRequestError, e:  # pragma: no cover
             #    print("InvalidRequestError! %s") % e
-            #except IntegrityError, ie:  # pragma: no cover
-            #print("IntegrityError! %s") % ie
+            # except IntegrityError, ie:  # pragma: no cover
+            # print("IntegrityError! %s") % ie
             return HTTPFound(
                 request.route_url('detail',
                                   ticket_id=hobo.id)
@@ -546,9 +546,9 @@ def send_ticket_mail_view(request):
             )
         )
 
-    subject_de = u"C3S Generalversammlung & Barcamp2014: " \
+    subject_de = u"C3S Generalversammlung & Barcamp 2015: " \
             +"Deine Tickets/Gutscheine zum Herunterladen!"
-    subject_en = u"C3S General Assembly & BarCamp2014: " \
+    subject_en = u"C3S General Assembly & BarCamp 2015: " \
             +"your tickets/vouchers for download!"
 
     body_lines_de = (  # a list of lines
@@ -635,7 +635,8 @@ Your C3S team''',
         except SMTPRecipientsRefused:  # folks with newly bought tickets (no mail)
             print('SMTPRecipientsRefused')
             return HTTPFound(
-                request.route_url('dashboard', number=request.cookies['on_page'],))
+                request.route_url(
+                    'dashboard', number=request.cookies['on_page'],))
 
     # 'else': send user to the form
     return HTTPFound(request.route_url('dashboard',
@@ -703,12 +704,12 @@ def staff_view(request):
 
     if 'action' in request.POST:
         print(request.POST['id'])
-        #try:
+        # try:
         _cashier = C3sStaff.get_by_id(int(request.POST['id']))
-        #except:
+        # except:
         #    print("exception!")
         #    return HTTPFound(location=request.route_url('staff'))
-        #print(request.POST['action'])
+        # print(request.POST['action'])
         if request.POST['action'] == u'delete':
             print("will delete staff id %s" % _cashier.id)
             C3sStaff.delete_by_id(_cashier.id)
@@ -727,7 +728,7 @@ def staff_view(request):
             return {
                 'cashierform': e.render()
             }
-        #try:
+        # try:
         # create an appstruct for persistence
         cashier = C3sStaff(
             login=appstruct['login'],
@@ -735,18 +736,18 @@ def staff_view(request):
             email='',
         )
         cashier.groups = [Group.get_cashiers_group()]
-        #print "about to add user"
+        # print "about to add user"
         DBSession.add(cashier)
         DBSession.flush()
         print "added cashier"
-            #except InvalidRequestError, e:  # pragma: no cover
+            # except InvalidRequestError, e:  # pragma: no cover
             #    print("InvalidRequestError! %s") % e
-            #except IntegrityError, ie:  # pragma: no cover
-            #print("IntegrityError! %s") % ie
+            # except IntegrityError, ie:  # pragma: no cover
+            # print("IntegrityError! %s") % ie
         return HTTPFound(
             request.route_url('staff')
         )
-        #except:
+        # except:
         #    print('did not work out.')
 
     return {
@@ -761,61 +762,29 @@ def staff_view(request):
              route_name='give_ticket')
 def give_ticket(request):
     """
-    this view gives a user access to her ticket via URL with code
+    this view gives staff access to tickets
+    via URL with code
     the response is a PDF download
     """
     _code = request.matchdict['code']
     _ticket = PartyTicket.get_by_code(_code)
-#    _url = 'https://events.c3s.cc/ci/p1402/' + _ticket.email_confirm_code
-#    _url = 'https://192.168.2.128:6544/ci/p1402/' + _ticket.email_confirm_code
     _url = request.registry.settings[
-        'c3spartyticketing.url'] + '/ci/p1402/' + _ticket.email_confirm_code
+        'c3spartyticketing.url'] + '/ci/' \
+        + request.registry.settings['ticketurl.infix'] + '/' \
+        + _ticket.email_confirm_code
     # return a pdf file
-    pdf_file = make_qr_code_pdf(_url)
+    pdf_file = make_qr_code_pdf(_ticket, _url)
     response = Response(content_type='application/pdf')
     pdf_file.seek(0)  # rewind to beginning
     response.app_iter = open(pdf_file.name, "r")
     return response
-
-# @view_config(permission='manage',
-#              route_name='switch_sig')
-# def switch_sig(request):
-#     """
-#     This view lets accountants switch member signature info
-#     has their signature arrived?
-#     """
-#     memberid = request.matchdict['memberid']
-#     #log.info("the id: %s" % memberid)
-
-#     # store the dashboard page the admin came from
-#     dashboard_page = request.cookies['on_page']
-
-#     _member = C3sMember.get_by_id(memberid)
-#     if _member.signature_received is True:
-#         _member.signature_received = False
-#         _member.signature_received_date = datetime(1970, 1, 1)
-#     elif _member.signature_received is False:
-#         _member.signature_received = True
-#         _member.signature_received_date = datetime.now()
-
-#     log.info(
-#         "signature status of member.id %s changed by %s to %s" % (
-#             _member.id,
-#             request.user.login,
-#             _member.signature_received
-#         )
-#     )
-
-#     return HTTPFound(
-#         request.route_url('dashboard',
-#                           number=dashboard_page,))
 
 
 @view_config(permission='manage',
              route_name='delete_entry')
 def delete_entry(request):
     """
-    This view lets accountants delete entries (doublettes)
+    This view lets accountants delete entries (e.g. doublettes)
     """
     _id = request.matchdict['ticket_id']
     dashboard_page = request.cookies['on_page']
@@ -835,8 +804,8 @@ def delete_entry(request):
              route_name='switch_pay')
 def switch_pay(request):
     """
-    This view lets accountants switch member signature info
-    has their signature arrived?
+    This view lets accountants switch member payment info
+    has their payment arrived?
 
     it also sends out mails to confirm reception of payment
     """
@@ -852,28 +821,36 @@ def switch_pay(request):
         _entry.payment_received_date = datetime.now()
         # send email
         if 'de' in _entry.locale:
-            _subject = u'C3S Generalversammlung & Barcamp 2014: Zahlung erhalten'
+            _subject = (u'C3S Generalversammlung & Barcamp 2015: '
+                        u'Zahlung erhalten')
         else:
-            _subject = u'C3S Generalversammlung & Barcamp 2014: payment received'
+            _subject = (u'C3S Generalversammlung & Barcamp 2015: '
+                        u'payment received')
         the_mail = Message(
             subject=_subject,
             sender="noreply@c3s.cc",
             recipients=[_entry.email],
             body=render(
-                'templates/mails/usermail_payment_received-' + _entry.locale + '.pt',
+                'templates/mails/usermail_payment_received-'
+                + _entry.locale + '.pt',
                 {'ticket': _entry}
             )
         )
-        mailer = get_mailer(request)
-        mailer.send(the_mail)
+        if 'true' in request.registry.settings['testing.mail_to_console']:
+            # ^^ yes, a little ugly, but works; it's a string
+            # print "printing mail"
+            print(the_mail.body.encode('utf-8'))
+        else:
+            mailer = get_mailer(request)
+            mailer.send(the_mail)
 
-#    log.info(
-#        "payment info of speedfunding.id %s changed by %s to %s" % (
-#            _entry.id,
-#            request.user.login,
-#            _entry.payment_received
-#        )
-#    )
+    log.info(
+        "payment info of ticket.id %s changed by %s to %s" % (
+            _entry.id,
+            request.user.login,
+            _entry.payment_received
+        )
+    )
     return HTTPFound(
         request.route_url('dashboard',
                           number=dashboard_page,))
@@ -889,11 +866,11 @@ def ticket_detail(request):
     """
     # check if staffer wanted to look at specific ticket id
     tid = request.matchdict['ticket_id']
-    #log.info("the id: %s" % tid)
+    # log.info("the id: %s" % tid)
 
     _ticket = PartyTicket.get_by_id(tid)
 
-    #print(_speedfunding)
+    # print(_speedfunding)
     if _ticket is None:  # that speed_id did not produce good results
         return HTTPFound(  # back to base
             request.route_url('dashboard',
@@ -915,8 +892,8 @@ def ticket_detail(request):
             deform.Button('submit', _(u'Submit')),
             deform.Button('reset', _(u'Reset'))
         ],
-        #use_ajax=True,
-        #renderer=zpt_renderer
+        # use_ajax=True,
+        # renderer=zpt_renderer
     )
 
     # if the form has been used and SUBMITTED, check contents
@@ -926,12 +903,12 @@ def ticket_detail(request):
             appstruct = form.validate(controls)
         except ValidationFailure, e:  # pragma: no cover
             log.info(e)
-            #print("the appstruct from the form: %s \n") % appstruct
-            #for thing in appstruct:
+            # print("the appstruct from the form: %s \n") % appstruct
+            # for thing in appstruct:
             #    print("the thing: %s") % thing
             #    print("type: %s") % type(thing)
             print(e)
-            #message.append(
+            # message.append(
             request.session.flash(
                 _(u"Please note: There were errors, "
                   "please check the form below."),
@@ -963,10 +940,9 @@ def ticket_detail(request):
     # else: form was not submitted: just show speedfunding info and form
     else:
         appstruct = {  # populate form with values from DB
-            #'signature_received': _speedfunding.signature_received,
             'payment_received': _ticket.payment_received}
         form.set_appstruct(appstruct)
-        #print("the appstruct: %s") % appstruct
+        # print("the appstruct: %s") % appstruct
     html = form.render()
 
     return {'ticket': _ticket,
@@ -987,7 +963,7 @@ def logout_view(request):
 
 
 @view_config(renderer='json',
-             #permission='manage',  # XXX make this work w/ permission
+             # permission='manage',  # XXX make this work w/ permission
              route_name='all_codes')
 def list_codes(request):
     """

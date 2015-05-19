@@ -14,18 +14,18 @@ def make_random_string():
     """
     used as email confirmation code
     """
-    randomstring = ''.join(
+    randomstring = u''.join(
         random.choice(
             string.ascii_uppercase + string.digits
         ) for x in range(10))
     # check if confirmation code is already used
-    #print(
+    # print(
     #    "checking if ex. conf"
     #    ".code: %s" % PartyTicket.check_for_existing_confirm_code(
     #        randomstring))
     while (PartyTicket.check_for_existing_confirm_code(randomstring)):
             # create a new one, if the new one already exists in the database
-            #print("generating new code")
+            # print("generating new code")
             randomstring = make_random_string()  # pragma: no cover
 
     return randomstring
@@ -120,13 +120,15 @@ def make_qr_code_pdf(_ticket, _url, util='pdflatex'):
     if util == 'pdflatex':
         return make_qr_code_pdf_pdflatex(_ticket, _url)
 
-    raise Exception('utility for pdf generation not found. exiting ...')
+    raise Exception(  # pragma: no cover
+        'utility for pdf generation not found. exiting ...')
 
 
 def make_qr_code_pdf_pdftk(_ticket, _url):
     """
     this function uses pdftk to create a QR-Code PDF
     """
+    DEBUG = False
 
     _img = qrcode.make(_url)  # the qr-code image, unsaved
     _ticket_path = os.path.join(
@@ -139,17 +141,19 @@ def make_qr_code_pdf_pdftk(_ticket, _url):
 
     _pdf_to_use = use_pdf['bcgv']
 
-    #import os.path
-    #print(u'_pdf_to_use %s') % _pdf_to_use
-    #print(u'isfile: %s') % os.path.isfile(_pdf_to_use)
+    # import os.path
+    if DEBUG:  # pragma: no cover
+        print(u'_pdf_to_use %s') % _pdf_to_use
+        print(u'isfile: %s') % os.path.isfile(_pdf_to_use)
 
     tmp_img = tempfile.NamedTemporaryFile()  # for the qr-code
     tmp_pdf = tempfile.NamedTemporaryFile()  # converted to pdf
 
     _img.save(tmp_img)  # save the qr-code to tempfile
 
-    #print(u'tmp_img %s') % tmp_img.name
-    #print(u'isfile: %s') % os.path.isfile(tmp_img.name)
+    if DEBUG:  # pragma: no cover
+        print(u'tmp_img %s') % tmp_img.name
+        print(u'isfile: %s') % os.path.isfile(tmp_img.name)
 
     tmp_pdf.name = tmp_pdf.name + '.pdf'  # rename so convert knows what to do
     #
@@ -191,7 +195,7 @@ def make_qr_code_pdf_pdftk(_ticket, _url):
          '-page',
          'A4+364+440',  # A4, push image right (x) and up (y)
          _caption_code,  # 'caption:ABCDEFGHIJ',
-         #'caption:ABCDEFGHIJ',
+         # 'caption:ABCDEFGHIJ',
          tmp_code.name]
     )
     #
@@ -273,7 +277,7 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
     _tex_vars['representsOneName'] = ' '
     if _ticket.represents_id1:
         _ticket_rep1 = PartyTicket.get_by_id(int(_ticket.represents_id1))
-        if _ticket_rep1 != None:
+        if _ticket_rep1 is not None:
             _tex_vars['representsOne'] = True
             _tex_vars['representsOneName'] = _ticket_rep1.firstname + ' ' \
                 + _ticket_rep1.lastname
@@ -281,7 +285,7 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
     _tex_vars['representsTwoName'] = ' '
     if _ticket.represents_id2:
         _ticket_rep2 = PartyTicket.get_by_id(int(_ticket.represents_id2))
-        if _ticket_rep2 != None:
+        if _ticket_rep2 is not None:
             _tex_vars['representsTwo'] = True
             _tex_vars['representsTwoName'] = _ticket_rep2.firstname + ' ' \
                 + _ticket_rep2.lastname
@@ -295,6 +299,7 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
 
     # generate pdf
     # XXX: try to find out, why utf-8 doesn't work on debian
+    FNULL = open(os.devnull, 'w')  # hide output here ;-)
     pdflatex = subprocess.Popen(
         [
             'pdflatex',
@@ -303,7 +308,8 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
             '-interaction', 'nonstopmode',
             '-halt-on-error',
             tex_cmd.encode('latin_1')
-        ], 
+        ],
+        stdout=FNULL, stderr=subprocess.STDOUT,
         cwd=pdflatex_dir
     )
 
@@ -346,6 +352,8 @@ def make_qr_code_pdf_mobile(_ticket, _url):
          '-format', 'pdf',
          '-size', '320x50',
          tmp_pdf.name])
+    # note: you DO need "convert" available on the command line!
+    # available via apt-get install imagemagick
     tmp_pdf.seek(0)
     # make image with alphanum code
     tmp_code = tempfile.NamedTemporaryFile()
@@ -365,6 +373,8 @@ def make_qr_code_pdf_mobile(_ticket, _url):
         ['pdftk', tmp_pdf.name,  # input
          'stamp', tmp_code.name,  # use code as stamp
          'output', tmp_ticket2.name
-         ]
+         ],
     )
+    # note: you DO need "pdftk" available on the command line.
+    # available via apt-get install pdftk
     return tmp_ticket2

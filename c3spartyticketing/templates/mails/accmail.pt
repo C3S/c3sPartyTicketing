@@ -18,10 +18,6 @@ REPRESENTATION: ${gv_representation}
   country: ${rep_country}
   type: ${rep_type}
 
-TSHIRT: ${tshirt}
-  tshirt type: ${tshirt_type}
-  tshirt size: ${tshirt_size}
-
 SUPPORTER TICKETS:
   supporter ticket: ${supporter}
   supporter ticket XL: ${supporter_x}

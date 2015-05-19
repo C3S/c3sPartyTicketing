@@ -97,6 +97,88 @@
       </div>
     </tal:block>
     <tal:block metal:fill-slot="footer">
+
+      <h2>Legende</h2>
+      <p>Auf den Tickets sind im Code wichtige Informationen sichtbar</p>
+      
+      <h3>Präfix: (Generalversammlung)(Barcamp)(Mitgliedstyp)</h3>
+      
+      <h4>(Generalversammlung) -> A|R|0</h4>
+      <table class="table table-striped">
+        <tr>
+          <td>A</td><td>Teilnahme ("attendance")</td>
+        </tr><tr>
+          <td>R</td><td>Representation (wird von jemandem repräsentiert)</td>
+        </tr><tr>
+          <td>0</td><td>Absage</td>
+        </tr>
+      </table>
+      
+      <h4>(Barcamp) -> B|0</h4>
+
+      <table class="table table-striped">
+        <tr>
+          <td>B</td><td>Teilnahme ("Barcamp")</td>
+        </tr><tr>
+          <td>0</td><td>Absage</td>
+        </tr>
+      </table>
+
+
+      <h4>(Mitgliedstyp) -> N|I|0</h4>
+
+      <table class="table table-striped">
+        <tr>
+          <td>N</td><td>Normal</td>
+        </tr><tr>
+          <td>I</td><td>Investierend</td>
+        </tr><tr>
+          <td>0</td><td>Nicht-Mitglied</td>
+        </tr>
+      </table>
+
+      <p>z.B. R0N = Representation Generalversammlung, Absage Barcamp, Normales Mitglied</p>
+
+
+      <h3>Suffix: (Generalversammlung)(Barcamp)</h3>
+      
+      <h4>(Generalversammlung) -> H|G|E|P|R|0</h4>
+      
+      <table class="table table-striped">
+        <tr>
+          <td>H</td><td>Helfer</td>
+        </tr><tr>
+          <td>G</td><td>Gast</td>
+        </tr><tr>
+          <td>E</td><td>Ehrengast</td>
+        </tr><tr>
+          <td>P</td><td>Presse</td>
+        </tr><tr>
+          <td>R</td><td>Representant (repräsentiert jemanden)</td>
+        </tr><tr>
+          <td>0</td><td>Keine Helferkategorie</td>
+        </tr>
+      </table>
+
+      
+      <h4>(Barcamp) -> H|G|E|P|0</h4>
+      <table class="table table-striped">
+        <tr>
+          <td>H</td><td>Helfer</td>
+        </tr><tr>
+          <td>G</td><td>Gast</td>
+        </tr><tr>
+          <td>E</td><td>Ehrengast</td>
+        </tr><tr>
+          <td>P</td><td>Presse</td>
+        </tr><tr>
+          <td>0</td><td>Keine Helferkategorie</td>
+        </tr>
+      </table>
+
+      <p>z.B. H0 = Helfer Generalversammlung, Keine Helferkategorie Barcamp</p>
+
+
       <a href="${request.route_url('new_ticket')}" class="btn btn-success">Neues Ticket</a>
       <a href="${request.route_url('logout')}" class="btn btn-danger">Abmelden</a>
     </tal:block>
