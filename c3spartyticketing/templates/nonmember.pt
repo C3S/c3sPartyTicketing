@@ -83,7 +83,7 @@
               <iframe width="100%" height="350"
                       frameborder="0" scrolling="no"
                       marginheight="0" marginwidth="0"
-                      src="http://www.openstreetmap.org/export/embed.html?bbox=13.075465857982634%2C52.388146747126434%2C13.078799843788147%2C52.3904744662748&amp;layer=mapnik&amp;marker=52.38931062204438%2C13.077132850885391"
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=13.075465857982634%2C52.388146747126434%2C13.078799843788147%2C52.3904744662748&amp;layer=mapnik&amp;marker=52.38931062204438%2C13.077132850885391"
                       style="border: 1px solid black">
               </iframe><br/>
               <small i18n:translate="">
