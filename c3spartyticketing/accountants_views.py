@@ -820,7 +820,7 @@ def switch_pay(request):
         _entry.payment_received = True
         _entry.payment_received_date = datetime.now()
         # send email
-        if 'de' in _entry.locale:
+        if 'de' in _entry.locale.lower():
             _subject = (u'C3S Generalversammlung & Barcamp 2015: '
                         u'Zahlung erhalten')
         else:
@@ -832,7 +832,7 @@ def switch_pay(request):
             recipients=[_entry.email],
             body=render(
                 'templates/mails/usermail_payment_received-'
-                + _entry.locale + '.pt',
+                + _entry.locale.lower() + '.pt',
                 {'ticket': _entry}
             )
         )
