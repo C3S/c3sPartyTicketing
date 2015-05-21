@@ -214,8 +214,9 @@ def ticket_member_schema(request, appstruct, readonly=False):
             ),
             missing='',
             description=_(
-                u'The buffet consists of e.g., salads, vegetables, dips, '
-                u'cheese and meat platters. A free drink is included.'
+                u'The freiLand offers catering for a fixed price. '
+                u'There will be Coffee and a snack or cake in the afternoon '
+                u'and a cooked meal at the end of the day.'
             ),
             oid="ticket_bc"
         )
