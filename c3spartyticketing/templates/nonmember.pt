@@ -36,9 +36,11 @@
       </h1>
 
       <div style="font-size:12px; margin-top:40px; color:#999;">
-        <span i18n:translate="">If you already are a member of the C3S, please use your personal link which you received by e-mail on May 11th.</span>
-        <br />
-        <span i18n:translate="">Please scroll down for filling in the form.</span>
+        <p class="alert alert-info" 
+           i18n:translate="">
+          If you already are a member of the C3S, please use your personal link which you received by e-mail on May 22th.
+        </p>
+        <p i18n:translate="">Please scroll down for filling in the form.</p>
       </div>
     </div>
   </tal:block>

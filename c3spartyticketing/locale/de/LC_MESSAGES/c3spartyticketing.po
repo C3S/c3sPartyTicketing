@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-05-21 04:21+0200\n"
-"PO-Revision-Date: 2015-05-21 23:01+0100\n"
+"POT-Creation-Date: 2015-05-22 13:16+0200\n"
+"PO-Revision-Date: 2015-05-22 13:17+0100\n"
 "Last-Translator: Christoph Scheid <christoph.scheid@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -150,7 +150,7 @@ msgid "E-mail"
 msgstr "Email"
 
 #: c3spartyticketing/edit_ticket.py:293 c3spartyticketing/new_ticket.py:239
-#: c3spartyticketing/templates/nonmember.pt:55
+#: c3spartyticketing/templates/nonmember.pt:57
 #: c3spartyticketing/templates/success.pt:139
 #: c3spartyticketing/templates/nonmember_success.pt:43
 #: c3spartyticketing/templates/party.pt:63
@@ -458,20 +458,20 @@ msgstr "hier bekommst Du Dein Ticket für das"
 msgid "C3S BarCamp!"
 msgstr "C3S Barcamp!"
 
-#: c3spartyticketing/templates/nonmember.pt:39
+#: c3spartyticketing/templates/nonmember.pt:40
 msgid ""
 "If you already are a member of the C3S, please use your personal link which "
-"you received by e-mail on May 11th."
+"you received by e-mail on May 22th."
 msgstr ""
 "Falls Ihr Mitglied der C3S seid, bitten wir Euch, Euren individuellen Link "
-"in der Mail vom 11. Mai zu nutzen."
+"in der Mail vom 22. Mai zu nutzen."
 
-#: c3spartyticketing/templates/nonmember.pt:41
+#: c3spartyticketing/templates/nonmember.pt:43
 #: c3spartyticketing/templates/party.pt:48
 msgid "Please scroll down for filling in the form."
 msgstr "Bitte zum Formular herunterscrollen."
 
-#: c3spartyticketing/templates/nonmember.pt:60
+#: c3spartyticketing/templates/nonmember.pt:62
 #: c3spartyticketing/templates/success.pt:144
 #: c3spartyticketing/templates/success.pt:172
 #: c3spartyticketing/templates/nonmember_success.pt:48
@@ -480,7 +480,7 @@ msgstr "Bitte zum Formular herunterscrollen."
 msgid "Starts in"
 msgstr "Beginn in"
 
-#: c3spartyticketing/templates/nonmember.pt:61
+#: c3spartyticketing/templates/nonmember.pt:63
 #: c3spartyticketing/templates/success.pt:145
 #: c3spartyticketing/templates/success.pt:173
 #: c3spartyticketing/templates/nonmember_success.pt:49
@@ -489,7 +489,7 @@ msgstr "Beginn in"
 msgid "weeks"
 msgstr "Wochen"
 
-#: c3spartyticketing/templates/nonmember.pt:62
+#: c3spartyticketing/templates/nonmember.pt:64
 #: c3spartyticketing/templates/success.pt:146
 #: c3spartyticketing/templates/success.pt:174
 #: c3spartyticketing/templates/nonmember_success.pt:50
@@ -498,28 +498,28 @@ msgstr "Wochen"
 msgid "days(s)"
 msgstr "Tag(en)"
 
-#: c3spartyticketing/templates/nonmember.pt:70
+#: c3spartyticketing/templates/nonmember.pt:72
 #: c3spartyticketing/templates/success.pt:154
 #: c3spartyticketing/templates/nonmember_success.pt:58
 #: c3spartyticketing/templates/party.pt:76
 msgid "12.06.2015"
 msgstr "12.06.2015"
 
-#: c3spartyticketing/templates/nonmember.pt:71
+#: c3spartyticketing/templates/nonmember.pt:73
 #: c3spartyticketing/templates/success.pt:155
 #: c3spartyticketing/templates/nonmember_success.pt:59
 #: c3spartyticketing/templates/party.pt:77
 msgid "12am - 8pm"
 msgstr "12:00 - 20:00 Uhr"
 
-#: c3spartyticketing/templates/nonmember.pt:75
+#: c3spartyticketing/templates/nonmember.pt:77
 #: c3spartyticketing/templates/success.pt:198
 #: c3spartyticketing/templates/nonmember_success.pt:63
 #: c3spartyticketing/templates/party.pt:123
 msgid "Location"
 msgstr "Ort"
 
-#: c3spartyticketing/templates/nonmember.pt:76
+#: c3spartyticketing/templates/nonmember.pt:78
 #: c3spartyticketing/templates/success.pt:188
 #: c3spartyticketing/templates/success.pt:199
 #: c3spartyticketing/templates/nonmember_success.pt:64
@@ -528,22 +528,22 @@ msgstr "Ort"
 msgid "freiLand"
 msgstr "freiLand"
 
-#: c3spartyticketing/templates/nonmember.pt:77
+#: c3spartyticketing/templates/nonmember.pt:79
 #: c3spartyticketing/templates/success.pt:200
 #: c3spartyticketing/templates/nonmember_success.pt:65
 #: c3spartyticketing/templates/party.pt:125
 msgid "Potsdam"
 msgstr "Potsdam"
 
-#: c3spartyticketing/templates/nonmember.pt:80
+#: c3spartyticketing/templates/nonmember.pt:82
 #: c3spartyticketing/templates/success.pt:203
 #: c3spartyticketing/templates/nonmember_success.pt:68
 #: c3spartyticketing/templates/party.pt:128
 msgid "Adress"
 msgstr "Adresse"
 
-#: c3spartyticketing/templates/nonmember.pt:92
-#: c3spartyticketing/templates/nonmember.pt:107
+#: c3spartyticketing/templates/nonmember.pt:94
+#: c3spartyticketing/templates/nonmember.pt:109
 #: c3spartyticketing/templates/success.pt:212
 #: c3spartyticketing/templates/success.pt:226
 #: c3spartyticketing/templates/nonmember_success.pt:79
