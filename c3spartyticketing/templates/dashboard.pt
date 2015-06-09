@@ -145,7 +145,7 @@
           <span tal:condition="ticket.checked_persons is not ticket.num_tickets"
                 style="color:red;">
             <a href="${request.route_url('check_in',
-                     event='p1402',
+                     event='ga2bc',
                      code=ticket.email_confirm_code
                      )}">
               ${ticket.num_tickets - ticket.checked_persons}

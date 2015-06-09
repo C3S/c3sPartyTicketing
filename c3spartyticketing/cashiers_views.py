@@ -294,7 +294,7 @@ def kasse(request):
             return HTTPFound(
                 location=request.route_url(
                     'check_in',
-                    event='p1402',
+                    event=request.registry.settings['eventcode'],
                     code=_entry.email_confirm_code)
             )
         except:

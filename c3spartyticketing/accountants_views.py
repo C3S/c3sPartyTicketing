@@ -770,7 +770,7 @@ def give_ticket(request):
     _ticket = PartyTicket.get_by_code(_code)
     _url = request.registry.settings[
         'c3spartyticketing.url'] + '/ci/' \
-        + request.registry.settings['ticketurl.infix'] + '/' \
+        + request.registry.settings['eventcode'] + '/' \
         + _ticket.email_confirm_code
     # return a pdf file
     pdf_file = make_qr_code_pdf(_ticket, _url)

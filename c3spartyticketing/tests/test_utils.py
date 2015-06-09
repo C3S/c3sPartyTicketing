@@ -37,6 +37,7 @@ class TestUtilities(unittest.TestCase):
             'available_languages': 'da de en es fr',
             'mailrecipient': 'c@c3s.cc',
             'mail.debug': True,
+            'eventcode': 'ga2bc',
         }
         engine = engine_from_config(test_settings)
         DBSession.configure(bind=engine)
@@ -186,7 +187,10 @@ class TestUtilities(unittest.TestCase):
         
         result = make_qr_code_pdf(
             PartyTicket.get_by_id(1),
-            "http://192.168.2.128:6544/ci/p1402/ABCDEFGBAR")
+            "http://192.168.2.128:6544/ci/{}/ABCDEFGBAR".format(
+                'ga2bc'
+                # request.registry.settings['eventcode']
+            ))
         result
 
         result = make_qr_code_pdf(

@@ -2833,7 +2833,9 @@ def get_ticket(request):
     # 'https://192.168.2.128:6544/ci/p1402/'
     #          + _ticket.email + _ticket.email_confirm_code
     _url = request.registry.settings[
-        'c3spartyticketing.url'] + '/ci/p1402/' + _ticket.email_confirm_code
+        'c3spartyticketing.url'] + '/ci/' + \
+        request.registry.settings['eventcode'] + \
+        '/' + _ticket.email_confirm_code
 
     # return a pdf file
     pdf_file = make_qr_code_pdf(_ticket, _url)
@@ -2858,8 +2860,11 @@ def get_ticket_mobile(request):
         # print("no match!")
         return HTTPFound(location=request.route_url('party'))
 
+    # prepare check-in URL for qr-code
     _url = request.registry.settings[
-        'c3spartyticketing.url'] + '/ci/p1402/' + _ticket.email_confirm_code
+        'c3spartyticketing.url'] + '/ci/' \
+        + request.registry.settings['eventcode'] \
+        + '/' + _ticket.email_confirm_code
 
     # return a pdf file
     pdf_file = make_qr_code_pdf_mobile(_ticket, _url)
