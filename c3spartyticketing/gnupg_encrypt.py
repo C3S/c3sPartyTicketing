@@ -1,5 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+This module holds GnuPG functionality for c3sPartyTicketing.
+
+GnuPG is used:
+
+* to encrypt email to staff when new tickets are booked
+* for data export (e.g. CSV)
+"""
 #
 # you need python-gnupg, so
 # bin/pip install python-gnupg
@@ -14,20 +22,17 @@ DEBUG = False
 
 def encrypt_with_gnupg(data):
     """
-    this function encrypts "data" with gnupg.
+    This function encrypts "data" with gnupg.
 
-    returns strings:
-    -----BEGIN PGP MESSAGE-----\nVersion: GnuPG v1.4.11 (GNU/Linux)\n
-    ...
-    -----END PGP MESSAGE-----\n
+    Returns:
+        multiline strings containing GnuPG messages
     """
     # we use a temporary folder to store stuff
     keyfolder = tempfile.mkdtemp()
     if DEBUG:  # pragma: no cover
         print(keyfolder)
-    # gpg = gnupg.GPG(homedir=keyfolder)
-    # gpg = gnupg.GPG(gnupghome=keyfolder)  # might work better locally.
-    gpg = gnupg.GPG()
+
+    gpg = gnupg.GPG(gnupghome=keyfolder)
     gpg.encoding = 'utf-8'
 
     # check if we have the membership key
@@ -41,7 +46,7 @@ def encrypt_with_gnupg(data):
         pubkey_content = """
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v2.0.22 (GNU/Linux)
-Comment: GPGTools - http://gpgtools.org
+
 mQENBFBIqlMBCADR7hxvDnwJkLgXU3Xol71eRkdNCAdIDnXQq/+Bmn5rxcJcXzNK
 DyibSGbVVpwMMOIiVuKxM66QdlvBm+2/QUdD/kdcMTwRBFqP40N9T+vaIVDpit4r
 6ZH1w8QD6EJTL0wbtmIkdAYMhYd0k4wDJ+xOcfx/VINiwhS5/DT38jimqmkaOEzs
@@ -49,26 +54,26 @@ DqzbBBogdZ+Tw+leC+D9JkSzGRjwO+UzUxjw4kdib9KbSppTbjv7HdL+Pn1y0ACd
 2ELZjTumqQzQi19WFENNhMaRHlUU5iGp9sLbKUN0GtgxGYIs85QNXH/5/0Qr2ZjH
 2/yZCyyWzZR0efut6WthcxFNb4OMDs056v5LABEBAAG0KUMzUyBZZXMhIChodHRw
 Oi8vd3d3LmMzcy5jYykgPHllc0BjM3MuY2M+iQE+BBMBAgAoAhsDBgsJCAcDAgYV
-CAIJCgsEFgIDAQIeAQIXgAUCVA3JQwUJBaISzQAKCRBx9rqRzdKBEBs/B/94ppy5
-UeeYB7+dfM5Mw4fA5MDqsFYxWydeH8x9CrBjVwJp/sN9unJU21P8v4bGcpUAN1EC
-cKZ0KREhF98xOUpAejc+6PcaXVKnrRDq2djZXlqchic0jVGF/OSFJGbdZbnArLly
-KNV52x6LDt2RqcIjcq9T3aLOEztIVBao/VSNmmrYDZrMANCEEo7Nvkao4uowoApj
-qan+sMKYjVPjQ/RwKgWlwYOTdUbAW6bQnfmVJWkNnDXD4uhMmiBirFvxUDvlXGnG
-OnksFbWS1XUZ7VD5uNodNQqeu1u23DgOsD0QwriWgVObNxZeALnrm9iRr43NrqFw
-LRUzdTkPdbgcFRShuQENBFBIqlMBCACoys54nxs3nrRcUkwFG0lp3L8N0udCzckI
+CAIJCgsEFgIDAQIeAQIXgAUCVfFpxQUJB4SXzQAKCRBx9rqRzdKBEGp6B/9jblJX
++Kn4z6H8f85DlUT+cXqzi+rwI553726fWln7RnpgSLzcHKNsEAPO8lFs4MfvNMG9
+KlCgWQ0mB2lZgJ17P3aidJ1qgv4fBc3DhlDVGcmbXfY2ifVa0DIziFoLQLpXelil
+wM5eU3m34e9SfN+BmTFIQ+tQP3fl8/FKWkHcMxaPRPwmpXKhp9NvhYx00RDT3uJH
+P4yoLVk3gVNVfLV35/H48CvdXE7bQDVRZxFLEMvKHOLOnxhR6dg1WscOxcGzjTxC
++ergK2LOGf8YYT3MU3eDFEqrKhkJHsuMRqwr+aH4i3JCCpMOwsSLPzRy9YG8SjTD
+bbxbf2k+cRyUyN2VuQENBFBIqlMBCACoys54nxs3nrRcUkwFG0lp3L8N0udCzckI
 iVgU/1SdgbfAD9rnRdKv4UE/uvn7MkfyO8V2V2OZANu8ZL+dtjmi6DWS2iTEXOl6
 Mn6j0FyvZNDe6scvahPDjWYnrjOwrNy6FC5Y4eAyHTprABioZgfwNkonK5Oh0pXL
 Rkr5z00lHjnkxYwyoFoMa3T7j7sxS0t3bkYZxETMCd+5YqDyt7fPEZ2sPugi1oqV
 U/ytADNgEpjkzUhl4iWYYkk8RlQ8MFWVWEJd34HO6iOT+Pz6A9anuRbEqYCWYlHx
 M3wBc2Klv/heN0yz5ldZVx1ug0/eLwexNecJOTpy2eQYjVLP/BwTABEBAAGJASUE
-GAECAA8CGwwFAlQNyVEFCQWiEs0ACgkQcfa6kc3SgRBAlQgAh+ZYCUOTNJskIElC
-VuTa/ZoOlFhpo75izChsbRzeDhw6tMCQCKv+O6tBcwfgxw0sSKPKmvzJdWAvfDyI
-a/dAmp88nozK9Yfy6HVn58eZlBVQa03k5oPleUS5xarNrOoq5PjR0whncniHs9Q7
-tcmod4dnoGQCpS8hBzHnECYY9BVPCp2x/xU6BwfTdYsY2kYOToNU+6WSYb+X0/jC
-kj9pmyjtubzvemWoDDCoudrweP9gocVBkQDHkFlWz2jL4FN8uyXKyDOt3OX+keOn
-TgVyB8kFNXmwAMWT8wnQaG9Yxn4d1FY+x0hAOZ9RFtmT6vqtWMjq+UWRvr/ql3PC
-ivCXjw==
-=ABY4
+GAECAA8CGwwFAlXxad0FCQeEl80ACgkQcfa6kc3SgRDLxwf5AZ20HfLw3zryIh0j
+E5/GuYw18z396sY7+MmBaYSklazvu4aIPXZhLRMWjrRf7BuqmJgpxt+C9FDhH/41
+hKoJW4FVu/qLqrEdgrOsPrujf2dNa2SqfVUhJyMOAWifjlm7669ItlMEO5nBXgHD
+w11FO4vFhEnYtyANABFIOkmHQyf7Z7VfSjZfrcpnY4TXHmibn7uOY/ZcaaVtXsuv
+VlO6byBzfMYAHo6Zlpo1gNCaiEXzDg2ouarvAGo/ngMJBSLhm3a1KrgiYKJ54yFz
+/uAvSZ0NtUWOhIlghX5/AKq6GMIOJWtRVazVr1aZAHL+CzUwTqHtGvJ2JkaRH0Gm
+kViZMg==
+=+viX
 -----END PGP PUBLIC KEY BLOCK-----
 """
 
@@ -80,7 +85,9 @@ ivCXjw==
         pass
 
     if DEBUG:  # pragma: no cover
-        print "list_keys(): " + str(gpg.list_keys())
+        print("===============================================")
+        print("list_keys(): {}".format(gpg.list_keys()))
+        print("===============================================")
 
     # prepare
     to_encode = data

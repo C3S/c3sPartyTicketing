@@ -1,25 +1,20 @@
 # -*- coding: utf-8 -*-
-import os
 import unittest
-#import shutil
 from pyramid import testing
-
-from c3spartyticketing.models import DBSession
-from c3spartyticketing.scripts import initializedb
 
 
 class TestGnuPG(unittest.TestCase):
+    """
+    Test some utility functions used to interact with GnuPG.
+
+    * encrypt some lines
+    * encrypt some unicode lines (with umlauts)
+    * import key
+    """
     def setUp(self):
         self.config = testing.setUp()
-        #import pdb; pdb.set_trace()
-        #os.remove('c3spartyticketing.db')
-        #DBSession.remove()
-        #self.session = _initTestingDB()
-        #initializedb.main()
 
     def tearDown(self):
-        DBSession.remove()
-        #shutil.rm('c3spartyticketing.db')
         testing.tearDown()
 
     def test_encrypt_with_gnupg_w_umlauts(self):
@@ -28,7 +23,6 @@ class TestGnuPG(unittest.TestCase):
         """
         from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
         result = encrypt_with_gnupg(u'fuck the umläuts')
-        #print ("the result: " + str(result))
         self.assertTrue('-----BEGIN PGP MESSAGE-----' in str(result))
         self.assertTrue('-----END PGP MESSAGE-----' in str(result))
 
@@ -38,6 +32,5 @@ class TestGnuPG(unittest.TestCase):
         """
         from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
         result = encrypt_with_gnupg('foo')
-        #print ("the result: " + str(result))
         self.assertTrue('-----BEGIN PGP MESSAGE-----' in str(result))
         self.assertTrue('-----END PGP MESSAGE-----' in str(result))
