@@ -15,6 +15,8 @@ from .models import (
     DBSession,
     Base,
 )
+from pkg_resources import get_distribution
+__version__ = get_distribution('c3sPartyTicketing').version
 
 
 def main(global_config, **settings):
