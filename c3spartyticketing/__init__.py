@@ -48,8 +48,9 @@ def main(global_config, **settings):
         'deform:locale/',
         'c3spartyticketing:locale/')
     config.add_static_view('static_deform', 'deform:static')
-    config.add_subscriber('c3spartyticketing.subscribers.add_base_template',
-                          'pyramid.events.BeforeRender')
+    config.add_subscriber(
+        'c3spartyticketing.subscribers.add_base_template',
+        'pyramid.events.BeforeRender')
     config.add_subscriber('c3spartyticketing.subscribers.add_locale_to_cookie',
                           'pyramid.events.NewRequest')
     config.add_static_view('static', 'static', cache_max_age=3600)
