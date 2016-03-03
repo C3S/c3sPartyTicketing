@@ -11,7 +11,7 @@ from c3spartyticketing.security import (
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 
-from .models import (
+from c3spartyticketing.models import (
     DBSession,
     Base,
 )
