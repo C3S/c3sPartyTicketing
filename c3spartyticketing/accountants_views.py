@@ -27,6 +27,10 @@ from c3spartyticketing.models import (
     DBSession,
     Group,
 )
+from c3spartyticketing.mail_utils import (
+    make_ticket_email,
+    make_payment_reception_email,
+)
 from c3spartyticketing.utils import (
     make_qr_code_pdf,
     make_random_string,
@@ -39,7 +43,7 @@ from deform import ValidationFailure
 from pyramid.i18n import (
     get_localizer,
 )
-from pyramid.renderers import render
+# from pyramid.renderers import render
 from pyramid.request import Request
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -580,75 +584,14 @@ def send_ticket_mail_view(request):
             )
         )
 
-    subject_de = u"C3S Generalversammlung & Barcamp 2015: " \
-            +"Deine Tickets/Gutscheine zum Herunterladen!"
-    subject_en = u"C3S General Assembly & BarCamp 2015: " \
-            +"your tickets/vouchers for download!"
-
-    body_lines_de = (  # a list of lines
-        u'''Hallo ''', _ticket.firstname, ' ', _ticket.lastname, u''' !
-
-Mit dieser Mail erhältst Du Dein(e) Ticket(s) bzw. den/die
-Gutscheine für die bestellten Goodies. Es gibt mehrere
-Möglichkeiten, das Ticket mitzubringen:
-
-1) Lade Dein Ticket herunter und drucke es aus. Wir scannen
-dann den QR-Code.
-
-   ''', request.route_url('get_ticket',
-                          email=_ticket.email,
-                          code=_ticket.email_confirm_code), u'''
-
-2) Lade die mobile version für dein Smartphone (oder Tablet).
-
-   ''', request.route_url('get_ticket_mobile',
-                          email=_ticket.email,
-                          code=_ticket.email_confirm_code), u'''
-
-3) Bringe einfach diesen Code mit: ''' + _ticket.email_confirm_code + u'''
-
-Bis bald!
-
-Dein C3S-Team''',
-    )
-    body_lines_en = (  # a list of lines
-        u'''Hallo ''', _ticket.firstname, ' ', _ticket.lastname, u''' !
-
-This e-mail contains your ticket(s) and/or voucher(s) for
-your goodies. There are several options to bring the ticket:
-
-1) Download the ticket and print it. We will scan the QR-code.
-
-   ''', request.route_url('get_ticket',
-                          email=_ticket.email,
-                          code=_ticket.email_confirm_code), u'''
-
-2) Download the mobile version to the device of your choice --
-mobile phone or tablet:
-
-   ''', request.route_url('get_ticket_mobile',
-                          email=_ticket.email,
-                          code=_ticket.email_confirm_code), u'''
-
-3) Simply bring the code: ''' + _ticket.email_confirm_code + u'''
-
-See you soon!
-
-Your C3S team''',
-    )
-    subject = subject_de
-    body_lines = body_lines_de
-    if _ticket.locale == 'en':
-        subject = subject_en
-        body_lines = body_lines_en
+    email_subject, email_body = make_ticket_email(request, _ticket)
 
     mailer = get_mailer(request)
-    the_mail_body = ''.join([line for line in body_lines])
     the_mail = Message(
-        subject=subject,
+        subject=email_subject,
         sender="noreply@c3s.cc",
         recipients=[_ticket.email],
-        body=the_mail_body
+        body=email_body
     )
     from smtplib import SMTPRecipientsRefused
 
@@ -854,21 +797,20 @@ def switch_pay(request):
         _entry.payment_received = True
         _entry.payment_received_date = datetime.now()
         # send email
-        if 'de' in _entry.locale.lower():
-            _subject = (u'C3S Generalversammlung & Barcamp 2015: '
-                        u'Zahlung erhalten')
-        else:
-            _subject = (u'C3S Generalversammlung & Barcamp 2015: '
-                        u'payment received')
+        email_subject, email_body = make_payment_reception_email(
+            request, _entry
+        )
+
         the_mail = Message(
-            subject=_subject,
+            subject=email_subject,
             sender="noreply@c3s.cc",
             recipients=[_entry.email],
-            body=render(
-                'templates/mails/usermail_payment_received-'
-                + _entry.locale.lower() + '.pt',
-                {'ticket': _entry}
-            )
+            body=email_body,
+            # render(
+            #    'templates/mails/usermail_payment_received-'
+            #    + _entry.locale.lower() + '.pt',
+            #    {'ticket': _entry}
+            # )
         )
         if 'true' in request.registry.settings['testing.mail_to_console']:
             # ^^ yes, a little ugly, but works; it's a string
@@ -1004,6 +946,7 @@ def list_codes(request):
     return the list of codes
     """
     if 'localhost' not in request.host:
+        print(request.host)
         return 'foo'
     codes = PartyTicket.get_all_codes()
     return codes

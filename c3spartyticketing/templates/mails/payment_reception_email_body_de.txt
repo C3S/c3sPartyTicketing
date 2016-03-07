@@ -1,0 +1,7 @@
+Hallo {salutation},
+
+vielen Dank, wir haben die vollständige Bezahlung Deiner Bestellung erhalten.
+
+Bis bald,
+
+Dein C3S-Team

@@ -1,0 +1,20 @@
+Hallo {salutation} !
+
+This e-mail contains your ticket(s) and/or voucher(s) for
+your goodies. There are several options to bring the ticket:
+
+1) Simply bring the code: {ticket_email_confirm_code}
+
+2) Download the mobile version to the device of your choice --
+   mobile phone or tablet:
+
+   {ticket_url_mobile}
+
+3) Download the ticket and print it. We will scan the QR-code.
+
+   {ticket_url}
+
+
+See you soon!
+
+Your C3S team
