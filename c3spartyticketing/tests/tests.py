@@ -35,6 +35,7 @@ class TestViews(unittest.TestCase):
         """
         from c3spartyticketing.views import load_user
         self.config.add_route('party_view', '/')
+        self.config.add_route('error_page', '/error')
         request = testing.DummyRequest()
         request.registry.settings = {
             'yes_auth_token': '1234567890ABCDEFGHIJKL',

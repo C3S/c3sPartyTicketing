@@ -1,4 +1,4 @@
-Hallo ${ticket.firstname} ${ticket.lastname},
+Hallo {salutation},
 
 vielen Dank, wir haben die vollständige Bezahlung Deiner Bestellung erhalten.
 

@@ -12,11 +12,9 @@
               });
             </script>
 
-            <h2>&nbsp;</h2>
-
             <h2>
-              <span i18n:translate="">16.04.2016</span>
-              <small i18n:translate="">12am - 8pm</small>
+              <span i18n:translate="">${request.barcamp_date}</span>
+              <small i18n:translate="">${request.barcamp_timespan}</small>
             </h2>
 
             <tal:block metal:use-macro="load: location.hpz.pt">

@@ -10,7 +10,7 @@
           type="text/css" media="screen" charset="utf-8" />
     <script src="${request.static_url('c3spartyticketing:static/bootstrap-3.0.3-dist/js/bootstrap.js')}" type="text/javascript"></script>
     <script type="text/javascript"
-      src="${request.static_url('c3spartyticketing:static/countdown/countdown.js')}"></script>
+            src="${request.static_url('c3spartyticketing:static/countdown/countdown.js')}"></script>
   </tal:block>
   <tal:block metal:fill-slot="middle">
 
@@ -49,7 +49,7 @@
         <p>
           <span i18n:translate="">you should have received a confirmation e-mail from</span>
           <strong i18n:translate="">noreply@c3s.cc</strong> <span i18n:translate="">that features the subject</span>
-          "<strong i18n:translate="">C3S BarCamp 2015: your order</strong>".
+          "<strong i18n:translate="">C3S BarCamp 2016: your order</strong>".
           <br />
           <span i18n:translate="">This e-mail contains all relevant information for the payment of your order.</span>
           (<span i18n:translate="">Important</span>: <strong i18n:translate="">Referral Code</strong>!)
@@ -59,7 +59,7 @@
           and/or vouchers for the rest of your order. You will receive your ticket(s) in time.</span>
           <br />
           <span i18n:translate="">Your order has to be fully paid by</span>
-          <strong i18n:translate="">9th June 2015</strong>
+          <strong>${request.fully_paid_date}</strong>
           <span i18n:translate="">at latest. The date of entry of payment on our account applies.</span>
         </p>
         <p>
@@ -73,7 +73,7 @@
 
       <div tal:condition="not canceled and not transaction">
         <hr />
-        <h2 i18n:translate="" style="color:#666; margin-left:40px;">Many thanks for attending the general assembly -- looking forward to meet you in Potsdam!</h2>
+        <h2 i18n:translate="" style="color:#666; margin-left:40px;">Many thanks for attending the general assembly -- looking forward to meet you there!</h2>
         <h3 i18n:translate="" style="color:#999; margin-left:80px;">Your C3S-Team</h3>
       </div>
 
@@ -84,7 +84,7 @@
         </p>
         <p>
           <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around,</span><br />
-          <span i18n:translate="">please contact our team at office@c3s.cc until 9th June, 2015.</span>
+          <span i18n:translate="">please contact our team at office@c3s.cc until </span>${request.fully_paid_date}.
         </p>
         <p i18n:translate="">
           You will receive more information on your order and how to pay in an e-mail.
@@ -101,7 +101,7 @@
         </p>
         <p>
           <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around,</span><br />
-          <span i18n:translate="">please contact our team at office@c3s.cc until 9th June, 2015.</span>
+          <span i18n:translate="">please contact our team at office@c3s.cc until </span> ${request.fully_paid_date}.
         </p>
         <p i18n:translate="">
           You will receive more information on your order and how to pay in an e-mail.
@@ -118,7 +118,7 @@
         </p>
         <p>
           <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around,</span><br />
-          <span i18n:translate="">please contact our team at office@c3s.cc until 9th June, 2015.</span>
+          <span i18n:translate="">please contact our team at office@c3s.cc until </span> ${request.fully_paid_date}.
         </p>
         <hr />
         <h2 i18n:translate="" style="color:#666; margin-left:40px;">See you soon,</h2>
@@ -131,106 +131,18 @@
     <!-- If NOT CANCELLED -->
     <div class="row" tal:condition="not canceled">
 
-
-
         <div class="col-md-6">
-          <div class="alert alert-success">
-
-            <h1 i18n:translate="" style="color:#000;">BarCamp</h1>
-
-            <div id="getting-started-bc" style="color:#999"></div>
-            <script type="text/javascript">
-              $('#getting-started-bc').countdown('2015/06/12 12:00', function(event) {
-              $(this).html(event.strftime('<span i18n:translate="">Starts in</span> '
-              + '<span>%w</span> <span i18n:translate="">weeks</span> '
-              + '<span>%d</span> <span i18n:translate="">days(s)</span> '
-              + '%H:%M:%S'));
-              });
-            </script>
-
-            <h2>&nbsp;</h2>
-
-            <h2>
-              <span i18n:translate="">12.06.2015</span>
-              <small i18n:translate="">12am - 8pm</small>
-            </h2>
-
-          </div>
+          <tal:block metal:use-macro="load: barcamp.hpz.pt">
+            <!-- BARCAMP TEMPLATE -->
+          </tal:block>
         </div>
 
         <div class="col-md-6">
-          <div class="alert alert-success">
-
-            <h1 style="color:#000;">
-              <span i18n:translate="">General Assembly</span> &amp;
-              <span i18n:translate="">Party</span>
-            </h1>
-
-            <div id="getting-started-gv" style="color:#999"></div>
-            <script type="text/javascript">
-              $('#getting-started-gv').countdown('2015/06/13 14:00', function(event) {
-              $(this).html(event.strftime('<span i18n:translate="">Starts in</span> '
-              + '<span>%w</span> <span i18n:translate="">weeks</span> '
-              + '<span>%d</span> <span i18n:translate="">days(s)</span> '
-              + '%H:%M:%S'));
-              });
-            </script>
-
-            <h2>
-              <span i18n:translate="">13.06.2015</span>
-              <small i18n:translate="">2pm - 6pm</small>
-            </h2>
-
-            <h2 style="margin-bottom:40px;">
-              <small i18n:translate="">Afterwards, we'll</small>
-              <span i18n:translate="">Party</span>
-              <small i18n:translate="">w/DJ at the</small>
-              <span i18n:translate="">freiLand</span>
-            </h2>
-
-
-          </div>
+          <tal:block metal:use-macro="load: assembly.c3shq.pt">
+            <!-- ASSEMBLY TEMPLATE -->
+          </tal:block>
 
         </div>
-        <div class="col-md-12">
-          <div class="alert alert-success">
-	    <h2 style="margin-bottom:40px;">
-              <small><span i18n:translate="">Location</span>:</small>
-              <span i18n:translate="">freiLand</span>
-              <small i18n:translate="">Potsdam</small>
-            </h2>
-
-            <span i18n:translate="" style="color:#999">Adress</span>: <span i18n:translate="">Friedrich-Engels-Straße 22, 14473 Potsdam</span>
-
-            <div class="visible-xs">
-	      <!-- freiland, potsdam -->
-	      <iframe width="425" height="350"
-		      frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-		      src="https://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.389238596920535%2C13.077431917190552"
-		      style="border: 1px solid black">
-	      </iframe><br/>
-	      <small><a i18n:translate="" href="http://www.openstreetmap.org/?mlat=52.38931&amp;mlon=13.07692#map=19/52.38924/13.07743">
-                  Display enlarged map
-              </a></small>
-            </div>
-
-
-            <div class="hidden-xs">
-              <iframe width="90%" height="400"
-                      frameborder="0" scrolling="no"
-                      marginheight="0" marginwidth="0"
-		      src="https://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.389238596920535%2C13.077431917190552"
-                      style="border: 1px solid black">
-              </iframe><br/>
-              <small>
-                <a i18n:translate="" href="http://www.openstreetmap.org/?mlat=52.38931&amp;mlon=13.07692#map=19/52.38924/13.07743">
-                  Display enlarged map
-                </a>
-              </small>
-            </div>
-
-      </div>
     </div>
-
   </tal:block>
 </html>

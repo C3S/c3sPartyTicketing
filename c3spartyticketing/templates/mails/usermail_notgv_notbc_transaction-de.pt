@@ -3,7 +3,7 @@ Hallo ${firstname} ${lastname} !
 Du hast Deine Teilnahme an der Generalversammlung und dem Barcamp abgesagt.
 
 Falls Du irrtümlich abgesagt hast oder Du Dich anders entscheiden möchtest,
-melde Dich bitte bis zum 09. Juni 2015 bei unserem Team: office@c3s.cc
+melde Dich bitte bis zum ${fully_paid_date} bei unserem Team: office@c3s.cc
 
 
 Wir haben auch Deine Bestellung erhalten. Bitte überweise
@@ -15,7 +15,7 @@ auf unser Konto:
 Bank:			EthikBank eG
 Kontoinhaber:		C3S SCE
 Betrag:			€ ${the_total}
-Verwendungszweck:	Versammlung und Barcamp2015 ${email_confirm_code}
+Verwendungszweck:	Versammlung und Barcamp 2016 ${email_confirm_code}
 BIC:			GENO DE F1 ETK
 IBAN:			DE79 8309 4495 0003 2643 78
 
@@ -26,7 +26,7 @@ BLZ:			83094495
 
 Wenn Deine Zahlung auf unserem Konto eingegangen ist, schicken wir Dir
 die Gutscheine für Deine bestellten Artikel rechtzeitig zu. Deine
-Bestellung muss spätestens zum 9. Juni vollständig bezahlt sein.
+Bestellung muss spätestens zum ${fully_paid_date} vollständig bezahlt sein.
 Es gilt der Zahlungseingang auf unserem Konto.
 
 Eine Rückerstattung der überwiesenen Summe ist nicht möglich.

@@ -9,12 +9,12 @@ to our bank account:
 Bank:			EthikBank eG
 Account holder:		C3S SCE
 Amount:			€ ${the_total}
-Purpose of use:		Barcamp2015 ${email_confirm_code}
+Purpose of use:		Barcamp 2016 ${email_confirm_code}
 BIC:			GENO DE F1 ETK
 IBAN:			DE79 8309 4495 0003 2643 78
 
 As soon as we have received your payment we are going to send you an
-email with your ticket. Your order has to be fully paid by 9th June 2015
+email with your ticket. Your order has to be fully paid by ${fully_paid_date}
 latest. The date of entry of payment on our account applies.
 
 We are sending the ticket in time by e-mail.

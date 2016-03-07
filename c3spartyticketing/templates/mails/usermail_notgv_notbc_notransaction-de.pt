@@ -3,7 +3,7 @@ Hallo ${firstname} ${lastname} !
 Du hast Deine Teilnahme an der Generalversammlung und dem Barcamp abgesagt.
 
 Falls Du irrtümlich abgesagt hast oder Du Dich anders entscheiden möchtest,
-melde Dich bitte bis zum 09. Juni 2015 bei unserem Team: office@c3s.cc
+melde Dich bitte bis zum ${fully_paid_date} bei unserem Team: office@c3s.cc
 
 
     Bis zum nächsten Mal,

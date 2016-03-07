@@ -36,9 +36,9 @@
       </h1>
 
       <div style="font-size:12px; margin-top:40px; color:#999;">
-        <p class="alert alert-info" 
-           i18n:translate="">
-          If you already are a member of the C3S, please use your personal link which you received by e-mail on May 22th.
+        <p class="alert alert-info"> 
+          <span i18n:translate="">
+          If you already are a member of the C3S, please use your personal link which you received by e-mail on</span>&nbsp;${request.invitation_date}.
         </p>
         <p i18n:translate="">Please scroll down for filling in the form.</p>
       </div>
@@ -50,69 +50,9 @@
 
       <div class="row" tal:condition="not formerror and not reedit">
 
-        <!-- div class="col-md-8 col-md-offset-2" -->
-        <div>
-          <div class="alert alert-success">
-
-            <h1 i18n:translate="" style="color:#000;">BarCamp</h1>
-
-            <div id="getting-started-bc" style="color:#999"></div>
-            <script type="text/javascript">
-              $('#getting-started-bc').countdown('2015/06/12 12:00', function(event) {
-              $(this).html(event.strftime('<span i18n:translate="">Starts in</span> '
-              + '<span>%w</span> <span i18n:translate="">weeks</span> '
-              + '<span>%d</span> <span i18n:translate="">days(s)</span> '
-              + '%H:%M:%S'));
-              });
-            </script>
-
-            <h2>&nbsp;</h2>
-
-            <h2>
-              <span i18n:translate="">12.06.2015</span>
-              <small i18n:translate="">12am - 8pm</small>
-            </h2>
-
-            <h2 style="margin-bottom:40px;">
-              <small><span i18n:translate="">Location</span>:</small>
-              <span i18n:translate="">freiLand</span>
-              <small i18n:translate="">Potsdam</small>
-            </h2>
-
-            <span i18n:translate="" style="color:#999">Adress</span>: <span>freiLand, Friedrich-Engels-Straße 22, 14473 Potsdam</span>
-
-            <div class="visible-xs"><!-- small screens -->
-              <iframe width="100%" height="350"
-                      frameborder="0" scrolling="no"
-                      marginheight="0" marginwidth="0"
-                      src="https://www.openstreetmap.org/export/embed.html?bbox=13.075465857982634%2C52.388146747126434%2C13.078799843788147%2C52.3904744662748&amp;layer=mapnik&amp;marker=52.38931062204438%2C13.077132850885391"
-                      style="border: 1px solid black">
-              </iframe><br/>
-              <small>
-                <a href="http://www.openstreetmap.org/?mlat=52.38921&amp;mlon=13.07743#map=19/52.38924/13.07743"
-                   target="_blank"
-                   i18n:translate="">
-                  Display enlarged map
-                </a>
-              </small>
-            </div>
-            <div class="hidden-xs"><!-- normal screens -->
-              <iframe width="100%" height="550"
-                      frameborder="0" scrolling="no"
-                      marginheight="0" marginwidth="0"
-                      src="https://www.openstreetmap.org/export/embed.html?bbox=13.075661659240723%2C52.388074720103525%2C13.07920217514038%2C52.39040244305003&amp;layer=mapnik&amp;marker=52.389238596920535%2C13.077431917190552"
-                      style="border: 1px solid black"></iframe>
-              <br/>
-              <small>
-                <a href="https://www.openstreetmap.org/?mlat=52.38924&amp;mlon=13.07743#map=19/52.38924/13.07743"
-                   target="_blank"
-                    i18n:translate="">
-                  Display enlarged map
-                </a>
-              </small>
-            </div>
-          </div>
-        </div>
+        <tal:block metal:use-macro="load: barcamp.hpz.pt">
+          <!-- HPZ BARCAMP TEMPLATE -->
+        </tal:block>
 
       </div>
     

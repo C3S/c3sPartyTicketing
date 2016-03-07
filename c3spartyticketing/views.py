@@ -307,7 +307,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
             ),
             missing='',
             description=_(
-                u'The freiLand offers catering for a fixed price. '
+                u'We will try to offer catering for a fixed price. '
                 u'There will be Coffee and a snack or cake in the afternoon '
                 u'and a cooked meal at the end of the day.'
             ),
@@ -391,7 +391,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 ),
                 title=_(u"Total"),
                 description=_(
-                    u'Your order has to be fully paid by 09.06.2015 at the '
+                    u'Your order has to be fully paid by 09.04.2016 at the '
                     u'latest (payment receipt on our account applies)'
                     u'Otherwise we will have to cancel the entire order. '
                     u'Money transfer is the only payment method. Payment '
@@ -452,7 +452,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
 
     class RepresentationData(colander.MappingSchema):
         """
-        colander schema of respresentation form
+        Colander schema of respresentation form.
         """
         note_top = colander.SchemaNode(
             colander.String(),
@@ -1340,7 +1340,7 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
             ),
             missing='',
             description=_(
-                u'The freiLand offers coffee and cake, '
+                u'We try to offer coffee and cake, '
                 u'as well as a warm meal.'
             ),
             oid="ticket_bc"
@@ -1401,7 +1401,7 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
                 ),
                 title=_(u"Total"),
                 description=_(
-                    u'Your order has to be fully paid by 09.06.2015 at the '
+                    u'Your order has to be fully paid by 09.04.2016 at the '
                     u'latest (payment receipt on our account applies)'
                     u'Otherwise we will have to cancel the entire order. '
                     u'Money transfer is the only payment method. Payment '
@@ -1803,6 +1803,7 @@ def load_user(request):
                 'lastname': _ticket.lastname,
                 'email': _ticket.email,
                 'mtype': _ticket.membership_type,
+                'is_legalentity': _ticket.is_legalentity,
                 'email_confirm_code': _ticket.email_confirm_code
             }
             request.session['userdata'] = userdata
@@ -1834,14 +1835,15 @@ def load_user(request):
                 request.registry.settings['c3spartyticketing.mail_rec']],
             body="""{}
 
-                 """.format(
-                     ce
-                 )
+                 """.format(ce)
         )
         if 'true' in request.registry.settings['testing.mail_to_console']:
             # ^^ yes, a little ugly, but works; it's a string
             # print "printing mail"
-            print(message_to_staff)
+            print(
+                message_to_staff.subject,
+                message_to_staff.body,
+            )
         else:
             # print "sending mail"
             mailer.send(message_to_staff)
@@ -1865,7 +1867,8 @@ def load_user(request):
             'firstname': res.json()['firstname'],
             'lastname': res.json()['lastname'],
             'email': res.json()['email'],
-            'mtype': res.json()['mtype']
+            'mtype': res.json()['mtype'],
+            'is_legalentity': res.json()['is_legalentity'],
         }
         assert(res.json()['email'] == _email)
         request.session['userdata'] = userdata
@@ -2295,10 +2298,10 @@ def success_view(request):
 
     #######################################################################
     usermail_gv_transaction_subject = \
-        u'C3S General Assembly & Barcamp 2015: your participation & order'
+        u'C3S General Assembly & Barcamp 2016: your participation & order'
     if lang == "de":
         usermail_gv_transaction_subject = (
-            u'C3S Generalversammlung & Barcamp 2015: '
+            u'C3S Generalversammlung & Barcamp 2016: '
             u'Deine Teilnahme & Bestellung')
     usermail_gv_transaction = render(
         'templates/mails/usermail_gv_transaction-'+lang+'.pt',
@@ -2306,16 +2309,17 @@ def success_view(request):
             'firstname': appstruct['ticket']['firstname'],
             'lastname': appstruct['ticket']['lastname'],
             'the_total': appstruct['ticket']['the_total'],
-            'email_confirm_code': appstruct['email_confirm_code']
+            'email_confirm_code': appstruct['email_confirm_code'],
+            'fully_paid_date': request.fully_paid_date,
         }
     )
 
     #######################################################################
     usermail_gv_notransaction_subject = \
-        u'C3S General Assembly & Barcamp 2015: your participation'
+        u'C3S General Assembly & Barcamp 2016: your participation'
     if lang == "de":
         usermail_gv_notransaction_subject = \
-            u'C3S Generalversammlung & Barcamp 2015: Deine Teilnahme'
+            u'C3S Generalversammlung & Barcamp 2016: Deine Teilnahme'
     usermail_gv_notransaction = render(
         'templates/mails/usermail_gv_notransaction-'+lang+'.pt',
         {
@@ -2326,11 +2330,11 @@ def success_view(request):
 
     #######################################################################
     usermail_notgv_bc_subject = (
-        u'C3S General Assembly & Barcamp 2015: your BarCamp ticket / '
+        u'C3S General Assembly & Barcamp 2016: your BarCamp ticket / '
         u'your cancellation of the general assembly')
     if lang == "de":
         usermail_notgv_bc_subject = (
-            u'C3S Generalversammlung & Barcamp 2015: Dein Barcamp-Ticket / '
+            u'C3S Generalversammlung & Barcamp 2016: Dein Barcamp-Ticket / '
             u'Deine Absage der Generalversammlung')
     usermail_notgv_bc = render(
         'templates/mails/usermail_notgv_bc-'+lang+'.pt',
@@ -2338,16 +2342,17 @@ def success_view(request):
             'firstname': appstruct['ticket']['firstname'],
             'lastname': appstruct['ticket']['lastname'],
             'the_total': appstruct['ticket']['the_total'],
-            'email_confirm_code': appstruct['email_confirm_code']
+            'email_confirm_code': appstruct['email_confirm_code'],
+            'fully_paid_date': request.fully_paid_date,
         }
     )
 
     #######################################################################
     usermail_notgv_notbc_transaction_subject = \
-        u'C3S General Assembly & Barcamp 2015: your cancellation / your order'
+        u'C3S General Assembly & Barcamp 2016: your cancellation / your order'
     if lang == "de":
         usermail_notgv_notbc_transaction_subject = (
-            u'C3S Generalversammlung & Barcamp 2015: '
+            u'C3S Generalversammlung & Barcamp 2016: '
             'Deine Absage / Deine Bestellung')
     usermail_notgv_notbc_transaction = render(
         'templates/mails/usermail_notgv_notbc_transaction-'+lang+'.pt',
@@ -2355,16 +2360,17 @@ def success_view(request):
             'firstname': appstruct['ticket']['firstname'],
             'lastname': appstruct['ticket']['lastname'],
             'the_total': appstruct['ticket']['the_total'],
-            'email_confirm_code': appstruct['email_confirm_code']
+            'email_confirm_code': appstruct['email_confirm_code'],
+            'fully_paid_date': request.fully_paid_date,
         }
     )
 
     #######################################################################
     usermail_notgv_notbc_notransaction_subject = (
-        u'C3S General Assembly & Barcamp 2015: your cancellation')
+        u'C3S General Assembly & Barcamp 2016: your cancellation')
     if lang == "de":
         usermail_notgv_notbc_notransaction_subject = (
-            'C3S Generalversammlung & Barcamp 2015: Deine Absage')
+            'C3S Generalversammlung & Barcamp 2016: Deine Absage')
     usermail_notgv_notbc_notransaction = render(
         'templates/mails/usermail_notgv_notbc_notransaction-'+lang+'.pt',
         {
@@ -2856,10 +2862,10 @@ def nonmember_success_view(request):
 
     #######################################################################
     usermail_nonmember_subject = \
-        u'C3S Barcamp 2015: your order'
+        u'C3S Barcamp 2016: your order'
     if lang == "de":
         usermail_nonmember_subject = \
-            'C3S Barcamp 2015: Deine Bestellung'
+            'C3S Barcamp 2016: Deine Bestellung'
     usermail_nonmember = render(
         'templates/mails/usermail_nonmember-'+lang+'.pt',
         {
