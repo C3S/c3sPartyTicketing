@@ -42,6 +42,10 @@ test_requires = [
     'webtest',
     'selenium',
 ]
+docs_require = [
+    'sphinx',  # for generating the documentation
+    'sphinxcontrib-plantuml',
+]
 setup(
     name='c3sPartyTicketing',
     version='0.0',
@@ -61,7 +65,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     test_suite='c3spartyticketing',
-    install_requires=requires + test_requires,
+    install_requires=requires + test_requires + docs_require,
     entry_points="""\
       [paste.app_factory]
       main = c3spartyticketing:main

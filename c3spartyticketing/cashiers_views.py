@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+This module holds functionality needed at the cashdesk of venues.
+
+
+"""
 import json
 from c3spartyticketing.models import (
     PartyTicket,
@@ -46,9 +51,17 @@ if LOGGING:  # pragma: no cover
              route_name='new_ticket')
 def new_ticket(request):
     """
-    This view lets cachiers make/issue new tickets
+    This view lets cachiers make/issue new tickets.
+    We used this form during the HQ inauguration party for bookkeeping,
+    as we had to count how many people were in the building.
 
-    a form permits checkin of people, up to the amount of tickets
+    === ============================
+    URL http/s://app:port/new_ticket
+    === ============================
+
+    Returns:
+       | a form permits issuing tickets for people
+       | rendered to **templates/new_ticket.pt**
     """
     logged_in = authenticated_userid(request)
     print("authenticated_userid: " + str(logged_in))
@@ -120,9 +133,16 @@ def new_ticket(request):
              route_name='check_in')
 def check_in(request):
     """
-    This view lets cachiers log in people
+    This view lets cashiers check-in people at the actual event.
 
-    a form permits checkin of people, up to the amount of tickets
+    === ======================================
+    URL http/s://app:port/ci/ga4bc/EXAMPLECODE
+    === ======================================
+
+
+    Returns:
+       | a form permitting checkin of people,
+       | up to the amount of person on this ticket.
     """
     logged_in = authenticated_userid(request)
     print("authenticated_userid: " + str(logged_in))
@@ -275,7 +295,19 @@ def kasse_forbidden(request):
              route_name='kasse')
 def kasse(request):
     """
-    This view lets cachiers do stuff
+    This view lets cachiers be cashiers:
+
+    * Search for tickets using the code in an autocomplete form.
+    * Display a statisitc about tickets checked in or pending.
+    * Display information about code prefix and suffix.
+
+    === =======================
+    URL http/s://app:port/kasse
+    === =======================
+
+    Returns:
+       | a) a form, statistics, useful information, rendered to a template;
+       | b) if a valid code was submitted, redirect to check-in for ticket.
     """
     logged_in = authenticated_userid(request)
     print("authenticated_userid: " + str(logged_in))
@@ -350,7 +382,15 @@ def kasse(request):
              route_name='k')
 def cashiers_login(request):
     """
-    This view lets cashiers log in
+    This view lets cashiers log in.
+
+    The view shows a form to enter login and password.
+    If a person is logged in and belongs to group 'kasse' or 'staff'
+    she is redirected to the cashiers desk/check_in
+
+    === ===================
+    URL http/s://app:port/k
+    === ===================
     """
     logged_in = authenticated_userid(request)
     #print("authenticated_userid: " + str(logged_in))

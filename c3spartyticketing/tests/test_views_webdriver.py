@@ -1,4 +1,30 @@
 # _*_ coding: utf-8 _*_
+"""
+This module holds selenium/webdriver tests for the views.
+
+* TicketMemberFormAccessTests
+
+  * test_access_without_token
+  * test_access_with_token_not_in_db
+  * test_access_with_token_in_db
+
+* TicketMemberFormFieldValuesTests
+* TicketMemberFormFieldLogicTests
+* TicketMemberFormActionRedirectsTests
+* TicketMemberFormActionDataTests
+* TicketMemberCasesUserfeedbackTests
+* TicketMemberFormGvonlyAccessTests
+* TicketMemberFormGvonlyFieldValuesTests
+* TicketMemberFormGvonlyActionDataTests
+* TicketMemberRegistrationEndTests
+
+* TicketNonmemberFormAccessTests
+* TicketNonemberFormFieldValuesTests
+* TicketNonmemberFormActionRedirectsTests
+* TicketNonmemberFormActionDataTests
+* TicketNonmemberRegistrationEndTests
+
+"""
 import os
 import unittest
 from selenium import webdriver
@@ -1320,9 +1346,9 @@ class TicketNonmemberFormActionRedirectsTests(SeleniumTestBaseTicketing):
         )
 
 
-class TicketMemberFormActionDataTests_2(SeleniumTestBaseTicketing):
+class TicketNonmemberFormActionDataTests(SeleniumTestBaseTicketing):
     """
-    XXX check: name of class was a duplicate, see line 571
+    Tests for form action data (Nonmember)
     """
 
     def setUp(self):

@@ -1,4 +1,25 @@
 # -*- coding: utf-8 -*-
+"""
+This module holds views with accountants functionality.
+
+Staff can
+
+* log in (**accountants_login**)
+* see all ticketing database entries (**dashboard_view**)
+* check statistics (**stats_view**)
+* create tickets for helpers, guests (**make_hobo_view**)
+* send ticket links to users (**send_ticket_mail_view**)
+* manage staff accounts (**staff_view**)
+* see peoples ticket PDFs (**give_tickets**)
+* delete ticketing database entries (**delete_entry**)
+* change payment status (**switch_pay**)
+* see details for single ticketing database entries (**ticket_detail**)
+* log out (**logout_view**)
+
+
+Yet another view lists all codes (**list_codes**).
+This is used for an auto-complete form.
+"""
 import json
 from c3spartyticketing.models import (
     PartyTicket,
@@ -74,7 +95,18 @@ if LOGGING:  # pragma: no cover
              route_name='login')
 def accountants_login(request):
     """
-    This view lets accountants log in
+    This view lets accountants log in.
+
+    After successful login, staff are redirected to the dashboard.
+    Visiting this view when already logged in also redirects there.
+
+    The form submits to this view, so errors are rendered nearby.
+
+    Template used:
+        templates/login.pt
+    Returns:
+        | the form, rendered in a template,
+        | or a redirect to the dashboard.
     """
     # print(request)
     logged_in = authenticated_userid(request)
@@ -412,7 +444,9 @@ def stats_view(request):
              permission='manage')
 def make_hobo_view(request):
     """
-    this view adds schwarzfahrers to the gästeliste
+    This view adds schwarzfahrers to the gästeliste.
+
+    Staff can issue tickets for guests, press or co-workers.
     """
     class PersonalData(colander.MappingSchema):
         """
@@ -804,10 +838,10 @@ def delete_entry(request):
              route_name='switch_pay')
 def switch_pay(request):
     """
-    This view lets accountants switch member payment info
+    This view lets accountants switch member payment info.
     has their payment arrived?
 
-    it also sends out mails to confirm reception of payment
+    It also sends out mails to confirm reception of payment.
     """
     speed_id = request.matchdict['ticket_id']
     dashboard_page = request.cookies['on_page']

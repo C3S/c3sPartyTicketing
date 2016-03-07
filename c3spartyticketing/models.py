@@ -1,4 +1,10 @@
 # -*- coding: utf-8  -*-
+"""
+This module holds the Database Model for c3sPartyTicketing.
+
+For each data object used there is a class below.
+"""
+
 # import transaction
 # import cryptacular.bcrypt
 from datetime import (
@@ -174,15 +180,27 @@ class C3sStaff(Base):
 
 
 class PartyTicket(Base):
+    """
+    The ticket database entries.
+    """
     __tablename__ = 'tickets'
     id = Column(Integer, primary_key=True)
+    """technical id; number of database entry in table"""
     # person info
     token = Column(Text)
+    """a unique token"""
     firstname = Column(Text)
+    """the first name"""
     lastname = Column(Text)
+    """the last name"""
     email = Column(Unicode(255))
+    """email address"""
     membership_type = Column(Unicode(255), unique=False)
+    """membership type"""
+    is_legalentity = Column(Boolean, default=False)
+    """flag for legal entities"""
     _password = Column('password', Unicode(60))
+    """a password hash"""
     last_password_change = Column(
         DateTime,
         default=func.current_timestamp())

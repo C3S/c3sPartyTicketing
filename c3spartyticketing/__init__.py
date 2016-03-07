@@ -54,6 +54,8 @@ def main(global_config, **settings):
     config.add_subscriber('c3spartyticketing.subscribers.add_locale_to_cookie',
                           'pyramid.events.NewRequest')
     config.add_static_view('static', 'static', cache_max_age=3600)
+    config.add_static_view('docs',
+                           '../docs/_build/html', cache_max_age=30)
     config.add_renderer(name='csv',
                         factory='c3spartyticketing.renderers.CSVRenderer')
     # user views

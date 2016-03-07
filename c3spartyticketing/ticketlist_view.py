@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+This module holds views for ticket list generation used for check-in.
 
+"""
 from datetime import date
 from pyramid.view import view_config
 
@@ -10,6 +13,13 @@ from c3spartyticketing.models import PartyTicket
              permission='manage',
              route_name='ticket_listing_ga_printout')
 def ticket_list_ga_print_view(request):
+    """
+    Shows a **printable** listing of all tickets for the general assembly.
+
+    Returns:
+       | a dictionary with all tickets, their number and todays date
+       | to be rendered by **templates/ticket_list_ga.pt**.
+    """
     _order_by = 'lastname'
     _num = PartyTicket.get_number()
     _tickets = PartyTicket.ticket_listing_ga(
@@ -33,6 +43,13 @@ def ticket_list_ga_print_view(request):
              permission='manage',
              route_name='ticket_listing_bc_printout')
 def ticket_list_bc_print_view(request):
+    """
+    Shows a **printable** listing of all tickets for the BarCamp.
+
+    Returns:
+       | a dictionary with all tickets, their number and todays date
+       | to be rendered by **templates/ticket_list_bc.pt**.
+    """
     _order_by = 'lastname'
     _num = PartyTicket.get_number()
     _tickets = PartyTicket.ticket_listing_bc(
@@ -56,6 +73,12 @@ def ticket_list_bc_print_view(request):
              permission='manage',
              route_name='ticket_namelist')
 def ticket_namelist_view(request):
+    """
+    Create a CSV of all tickets.
+
+    Returns:
+       a CSV file.
+    """
     _order_by = 'lastname'
     _num = PartyTicket.get_number()
     _tickets = PartyTicket.ticket_listing(

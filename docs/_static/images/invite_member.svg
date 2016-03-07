@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="535" version="1.1" viewBox="0 0 1081 535" width="1081">
+  <defs>
+    <linearGradient id="g1" x1="0%" x2="0%" y1="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#cfcfcf"/>
+    </linearGradient>
+    <svg height="16.0" id="i1" width="16.0">
+      <image height="16.0" width="16.0" xlink:href="data:image/png;base64,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"/>
+    </svg>
+    <svg height="16.0" id="i2" width="16.0">
+      <image height="16.0" width="16.0" xlink:href="data:image/png;base64,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"/>
+    </svg>
+    <svg height="16.0" id="i3" width="16.0">
+      <image height="16.0" width="16.0" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAhZJREFUeNqEUk1oE0EU/naz2f4YQ0kWUmKs2LSXtmAPYsGDSkDQIoggKJ4UoaBXqdqDiODfSVDEQz14r0JF9KgsWMUfLFG0ii1NbAmEmhaa7q66u7PjmyQbIt2aB4+Z9zHfm2++NxJzVuGHfjXeR8sVyqP4T3ihzdxu7ckzpeOQAvAaWdtCy8vuzKVYaugM5JAaSF6amcTH5+MSQ2Q7lTfqDSgudu44Hts6dBp2eQrc+7OOrEZ3YvHNXTg8CkgVKKOA1xscSA6egGt+AXdXg7VzD1ZpDsOjOcmHSIHn77va4ykw4y0ddALYMuEumG3aDRyBiqICqLKomEEX/QpIs9Ig3B5X9WudXT5PFrIqCSw41hIkibowKzipgda7X5w95vPkqokVH56VZnUomwYItwLTMaaxbfeImNA5/XpKFbxGBeOF6Qlyl3AxgQAFzPiMcFsLEgNHEr6Kugf7xnJZa3n+UfHTY7RohzdU4a69Q6JvWFw48q8HVRWX868fMO4Jo+1gFWtZRLSkODsoOIp+M80bh+X+LmPqzsF1Q2yLpdGf6acnhuFWv3+Ekwf0D2DsGZ2JSKEwOHM2/P+vbu8iVWmo9LzlhQ8CyqHWoFj+8bQHTaI1qqHwXUZ3sgOL7x8KaLJmIp7MvrjXjI/ezFmUi98wr9+H+XPOIOiWr2DMLOVXshPnT9K+qRLPC4nl1N4LXwuiwV8BBgBa7ylg5mm97AAAAABJRU5ErkJggg=="/>
+    </svg>
+    <svg height="16.0" id="i4" width="16.0">
+      <image height="16.0" width="16.0" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA1ZJREFUeNrsV8tKI1EQPd0m8QEjguAzvojGhQtBQVwYEAIu3Cnq0hchn5FP8ANEXERdqKgouhBFIZsQDbpyJf5AQPGJiiZOn5rcJol5jNGJi7GgsPveSp1TdetWtdrb2xu+U3R8s/wQ+HYCFp/PN2P89ei6jlgsVhBQTdMQL/45iwHqGRoa+uV0OlFWVlYQAs/Pzzg7O8Pm5qZHZ9QVFRU4Pj7Gw8ODMOPav1D6fnp6QigUQnl5uawxA6iqqsLr6yuCwSB6e3tRXFyMr+4PTPvLy4tg1NXViQqBaDQqDzU1NUIiEAjA5XLBZrN9WU2wvpRvu92OhoYG8U1si3qg1NbWiuHBwQH6+/thsVjMvXylqKhIwOhTgSufSRlQUl9fLyT29vbgdruFBN/zumLxAPb39wW4ubk5CUsyQOepUZIp13d3dzEwMCBR8Pw+IlarVcDog/5aWlre4RBD52I6JeOmpibs7OzIO0lksk1V2lK2t7elthwOR0ZbPZsjEmDatra2/pxXPKXZlDYsOuOOS021trZmtdfVEWRSEiCR9fV1M7WZbLlHAmtraxJ5W1tbVt9yBLkIUHl+1dXV8Pv9AsIrmmrDtdLSUszPz6OyshLsrLn8Zq2BRL28vMT5+Tm6urqwtLQkUbJZqX0+l5SUYHFxEe3t7bi4uMDt7e1f1UvODFxdXeHw8BDj4+NobGyUIyEJRkxQKmfIwsKCpL2jowNjY2NyjXORIHbaa6jk5uYGJycn8Hq9UoRMLbskQWdnZ5Nsu7u7pY2z5VKmp6elEDs7O8U+nQgBxSZVyP7o6Egif3x8lIiV856eHtFMPV81t8HBQWxsbAi5dCTk1qQjQHBOx4mJCZleqpdnmw1qdOkGATX9KMaox+rqqpBgkb4jkHoEd3d3Aj45OSnjmQXHyZjYCfmuspFKAPE9kqYddXh4OC0J8wgUW0bOM2fkfE4E+eh4Vr+lb3bG0dFRrKysyE1SJJKm4f39PcLhMKampnB9fW06yXcQJRKhD2ZwZGQEy8vLZk2Y05BpPz09lbTzzivWiZHn84FC8MRMEItXlJkgCckA7Rg5wSORiHkcn4080xcR/apMGEFpWl9f34yx6eE148diIYTtnEQMAnPaz/+G/z2B3wIMAEYkpOK1o6E/AAAAAElFTkSuQmCC"/>
+    </svg>
+  </defs>
+  <rect fill="url(#g1)" height="165" stroke="#000000" stroke-width="1.0" width="25" x="0" y="1"/>
+  <rect fill="none" height="165" stroke="#000000" stroke-width="1.0" width="1053" x="25" y="1"/>
+  <g id="_3"/>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="14" font-weight="bold" text-anchor="middle" transform="rotate(270 18.0 83.0)" x="18" y="86">c3sMembership/Staff</text>
+  <g id="_6">
+    <rect fill="url(#g1)" height="55" rx="8.25" ry="8.25" stroke="#000000" stroke-width="1.0" width="85" x="140" y="86"/>
+    <use height="16.0" preserveAspectRatio="none" width="16.0" x="145.0" xlink:href="#i1" y="89.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="182" y="111">Invite</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="182" y="122">Member(s)</text>
+  <g id="_9">
+    <rect fill="url(#g1)" height="55" rx="8.25" ry="8.25" stroke="#000000" stroke-width="1.0" width="105" x="254" y="85"/>
+    <use height="16.0" preserveAspectRatio="none" width="16.0" x="259.0" xlink:href="#i2" y="88.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="306" y="104">Send</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="306" y="115">Invitation</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="306" y="126">(autom. Email)</text>
+  <g id="_16">
+    <rect fill="url(#g1)" height="55" rx="8.25" ry="8.25" stroke="#000000" stroke-width="1.0" width="85" x="401" y="85"/>
+    <use height="16.0" preserveAspectRatio="none" width="16.0" x="406.0" xlink:href="#i3" y="88.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="443" y="99">Find &amp;</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="443" y="110">Provide</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="443" y="121">Member</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="443" y="132">Information</text>
+  <g id="_26">
+    <rect fill="url(#g1)" height="55" rx="8.25" ry="8.25" stroke="#000000" stroke-width="1.0" width="111" x="641" y="415"/>
+    <use height="16.0" preserveAspectRatio="none" width="16.0" x="646.0" xlink:href="#i4" y="418.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="697" y="440">Receive</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="697" y="451">Transfer</text>
+  <g id="_28">
+    <path d=" M 284 21.0 C 284 13.0 319 13.0 319 21.0 L 319 39.0 C 319 47.0 284 47.0 284 39.0 Z" fill="url(#g1)" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 284 21.0 C 284 27.0 319 27.0 319 21.0 M 284 24.0 C 284 30.0 319 30.0 319 24.0 M 284 27.0 C 284 33.0 319 33.0 319 27.0" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="301" y="57">Data Store</text>
+  <g id="_38">
+    <rect fill="url(#g1)" height="55" rx="8.25" ry="8.25" stroke="#000000" stroke-width="1.0" width="103" x="808" y="415"/>
+    <use height="16.0" preserveAspectRatio="none" width="16.0" x="813.0" xlink:href="#i1" y="418.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="859" y="434">Acknowledge</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="859" y="445">Money</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="859" y="456">(bookkeeping)</text>
+  <g id="_5">
+    <ellipse cx="72" cy="115" fill="url(#g1)" rx="16" ry="16" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="72" y="150">Start Event</text>
+  <g id="_29">
+    <path d="M 272.5 41.26470588235293 L 282.5 35.26470588235293 L 272.5 29.264705882352928 M 284.5 35.26470588235293" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 202.8529411764706 86.0 L 202.8529411764706 45.26470588235293 Q 202.8529411764706 35.26470588235293 212.8529411764706 35.26470588235293 L 285.0 35.26470588235293" fill="none" stroke="#000000" stroke-dasharray="3, 3" stroke-width="1.0"/>
+  </g>
+  <g id="_7">
+    <path d="M 140.5 115.26470588235293 L 130.5 120.26470588235293 L 133.0 115.26470588235293 L 130.5 110.26470588235293 z" fill="#000000" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 89.49781018751779 115.26470588235293 L 102.85294117647061 115.26470588235293 Q 112.85294117647061 115.26470588235293 112.85294117647061 115.26470588235293 L 112.85294117647061 115.26470588235293 L 141.0 115.26470588235293" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <g id="_10">
+    <path d="M 254.5 115.26470588235293 L 244.5 120.26470588235293 L 247.0 115.26470588235293 L 244.5 110.26470588235293 z" fill="#000000" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 226.5 115.26470588235293 L 236.8529411764706 115.26470588235293 Q 246.8529411764706 115.26470588235293 246.8529411764706 115.26470588235293 L 246.8529411764706 115.26470588235293 L 255.0 115.26470588235293" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <g id="_39">
+    <path d="M 808.5 442.7647058823529 L 798.5 447.7647058823529 L 801.0 442.7647058823529 L 798.5 437.7647058823529 z" fill="#000000" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 753.5 442.7647058823529 L 770.8529411764706 442.7647058823529 Q 780.8529411764706 442.7647058823529 780.8529411764706 442.7647058823529 L 780.8529411764706 442.7647058823529 L 809.0 442.7647058823529" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <g id="_33">
+    <path d="M 332.5 28.264705882352928 L 322.5 34.26470588235293 L 332.5 40.26470588235293 M 320.5 34.26470588235293" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 401.0 112.50154798761605 L 392.4264705882353 112.50154798761605 Q 383.8529411764706 112.50154798761605 383.8529411764706 102.50154798761605 L 383.8529411764706 44.26470588235293 Q 383.8529411764706 34.26470588235293 373.8529411764706 34.26470588235293 L 320.0 34.26470588235293" fill="none" stroke="#000000" stroke-dasharray="3, 3" stroke-width="1.0"/>
+  </g>
+  <rect fill="url(#g1)" height="133" stroke="#000000" stroke-width="1.0" width="25" x="0" y="208"/>
+  <rect fill="none" height="133" stroke="#000000" stroke-width="1.0" width="1053" x="25" y="208"/>
+  <g id="_4"/>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="14" font-weight="bold" text-anchor="middle" transform="rotate(270 18.0 274.0)" x="18" y="277">Member</text>
+  <g id="_12">
+    <rect fill="url(#g1)" height="55" rx="8.25" ry="8.25" stroke="#000000" stroke-width="1.0" width="85" x="51" y="242"/>
+    <use height="16.0" preserveAspectRatio="none" width="16.0" x="56.0" xlink:href="#i4" y="245.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="93" y="272">Receive Email</text>
+  <g id="_8">
+    <rect fill="url(#g1)" height="55" rx="8.25" ry="8.25" stroke="#000000" stroke-width="1.0" width="173" x="158" y="242"/>
+    <use height="16.0" preserveAspectRatio="none" width="16.0" x="163.0" xlink:href="#i1" y="245.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="244" y="261">Use Link to</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="244" y="272">c3sPartyTicketing</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="244" y="283">events.c3s.cc/token/email</text>
+  <g id="_13">
+    <rect fill="url(#g1)" height="55" rx="8.25" ry="8.25" stroke="#000000" stroke-width="1.0" width="85" x="510" y="241"/>
+    <use height="16.0" preserveAspectRatio="none" width="16.0" x="515.0" xlink:href="#i1" y="244.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="552" y="267">Get a</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="552" y="278">Ticket</text>
+  <g id="_18">
+    <rect fill="url(#g1)" height="55" rx="8.25" ry="8.25" stroke="#000000" stroke-width="1.0" width="95" x="387" y="417"/>
+    <use height="16.0" preserveAspectRatio="none" width="16.0" x="392.0" xlink:href="#i3" y="420.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="435" y="436">Query</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="435" y="447">membership</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="435" y="458">database</text>
+  <g id="_24">
+    <rect fill="url(#g1)" height="55" rx="8.25" ry="8.25" stroke="#000000" stroke-width="1.0" width="85" x="641" y="241"/>
+    <use height="16.0" preserveAspectRatio="none" width="16.0" x="646.0" xlink:href="#i2" y="244.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="684" y="266">Transfer</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="684" y="277">Money</text>
+  <g id="_34">
+    <path d=" M 538 430.0 C 538 422.0 573 422.0 573 430.0 L 573 448.0 C 573 456.0 538 456.0 538 448.0 Z" fill="url(#g1)" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 538 430.0 C 538 436.0 573 436.0 573 430.0 M 538 433.0 C 538 439.0 573 439.0 573 433.0 M 538 436.0 C 538 442.0 573 442.0 573 436.0" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="555" y="466">Data Store</text>
+  <g id="_21">
+    <rect fill="url(#g1)" height="55" rx="8.25" ry="8.25" stroke="#000000" stroke-width="1.0" width="85" x="774" y="242"/>
+    <use height="16.0" preserveAspectRatio="none" width="16.0" x="779.0" xlink:href="#i1" y="245.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="816" y="267">Check In</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="816" y="278">@event</text>
+  <g id="_15">
+    <ellipse cx="959" cy="269" fill="url(#g1)" rx="16" ry="16" stroke="#000000" stroke-width="4.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="middle" x="958" y="303">End Event</text>
+  <g id="_25">
+    <path d="M 641.5 266.2647058823529 L 631.5 271.2647058823529 L 634.0 266.2647058823529 L 631.5 261.2647058823529 z" fill="#000000" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 595.5 266.2647058823529 L 610.8529411764706 266.2647058823529 Q 620.8529411764706 266.2647058823529 620.8529411764706 266.2647058823529 L 620.8529411764706 266.2647058823529 L 642.0 266.2647058823529" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <g id="_19">
+    <path d="M 387.5 429.2647058823529 L 377.5 434.2647058823529 L 380.0 429.2647058823529 L 377.5 424.2647058823529 z" fill="#000000" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 332.5 269.7647058823529 L 340.6764705882353 269.7647058823529 Q 348.8529411764706 269.7647058823529 348.8529411764706 279.7647058823529 L 348.8529411764706 419.2647058823529 Q 348.8529411764706 429.2647058823529 358.8529411764706 429.2647058823529 L 388.0 429.2647058823529" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <g id="_44">
+    <path d="M 509.5 269.3405572755418 L 499.5 274.3405572755418 L 502.0 269.3405572755418 L 499.5 264.3405572755418 z" fill="#000000" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 483.5 444.7647058823529 L 490.0514705882353 444.7647058823529 Q 496.6029411764706 444.7647058823529 496.6029411764706 434.7647058823529 L 496.6029411764706 279.3405572755418 Q 496.6029411764706 269.3405572755418 503.3014705882353 269.3405572755418 L 510.0 269.3405572755418" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <g id="_11">
+    <path d="M 158.5 266.2647058823529 L 148.5 271.2647058823529 L 151.0 266.2647058823529 L 148.5 261.2647058823529 z" fill="#000000" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 136.5 266.2647058823529 L 142.6764705882353 266.2647058823529 Q 148.8529411764706 266.2647058823529 148.8529411764706 266.2647058823529 L 148.8529411764706 266.2647058823529 L 159.0 266.2647058823529" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <g id="_37">
+    <path d="M 942.5943797880982 267.2647058823529 L 932.5943797880982 272.2647058823529 L 935.0943797880982 267.2647058823529 L 932.5943797880982 262.2647058823529 z" fill="#000000" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 859.5 267.2647058823529 L 890.8529411764706 267.2647058823529 Q 900.8529411764706 267.2647058823529 900.8529411764706 267.2647058823529 L 900.8529411764706 267.2647058823529 L 943.0943797880982 267.2647058823529" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <g id="_36">
+    <path d="M 546.8529411764706 412.5 L 552.8529411764706 422.5 L 558.8529411764706 412.5 M 552.8529411764706 424.5" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 552.8529411764706 297.0 L 552.8529411764706 425.0" fill="none" stroke="#000000" stroke-dasharray="3, 3" stroke-width="1.0"/>
+  </g>
+  <g id="_35">
+    <path d="M 773.5 267.2647058823529 L 763.5 272.2647058823529 L 766.0 267.2647058823529 L 763.5 262.2647058823529 z" fill="#000000" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 727.5 267.2647058823529 L 753.8529411764706 267.2647058823529 Q 763.8529411764706 267.2647058823529 763.8529411764706 267.2647058823529 L 763.8529411764706 267.2647058823529 L 774.0 267.2647058823529" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <rect fill="url(#g1)" height="138" stroke="#000000" stroke-width="1.0" width="25" x="0" y="381"/>
+  <rect fill="none" height="138" stroke="#000000" stroke-width="1.0" width="1053" x="25" y="381"/>
+  <g id="_14"/>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="14" font-weight="bold" text-anchor="middle" transform="rotate(270 18.0 449.0)" x="18" y="452">c3sPartyTicketing Staff</text>
+  <g id="_17">
+    <rect fill="url(#g1)" height="76" width="216" x="73" y="403"/>
+    <path d="M 93.0 403 L 73 403 L 73 479 L 93.0 479" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="start" x="76" y="421">c3sPartyTicketing (events.c3s.cc)</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="start" x="76" y="432">will query c3sMembership (yes.c3s.cc)</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="start" x="76" y="443">for membership information</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="start" x="76" y="454">using a token for authentication</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="start" x="76" y="465">via REST API call</text>
+  <g id="_30">
+    <rect fill="url(#g1)" height="53" width="145" x="508" y="21"/>
+    <path d="M 528.0 21 L 508 21 L 508 74 L 528.0 74" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="start" x="511" y="39">use token for member</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="start" x="511" y="50">to authorize access</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="start" x="511" y="61">to user information</text>
+  <g id="_40">
+    <rect fill="url(#g1)" height="32" width="76" x="93" y="21"/>
+    <path d="M 113.0 21 L 93 21 L 93 53 L 113.0 53" fill="none" stroke="#000000" stroke-width="1.0"/>
+  </g>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="start" x="96" y="34">store token</text>
+  <text fill="#000000" font-decoration="none" font-family="Ubuntu" font-size="11" font-weight="normal" text-anchor="start" x="96" y="45">for member</text>
+  <g id="_27">
+    <path d="M 690.0529411764707 301.7 a 4.2 4.2 0  1,1 0.0 -1.05 z" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 685.8529411764706 414.5 L 680.8529411764706 404.5 L 690.8529411764706 404.5 z" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 685.8529411764706 305.4 L 685.8529411764706 347.2647058823529 Q 685.8529411764706 357.2647058823529 685.8529411764706 357.2647058823529 L 685.8529411764706 357.2647058823529 L 685.8529411764706 405.0" fill="none" stroke="#000000" stroke-dasharray="3, 3" stroke-width="1.0"/>
+  </g>
+  <g id="_23">
+    <path d="M 464.0529411764706 144.7 a 4.2 4.2 0  1,1 0.0 -1.05 z" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 459.8529411764706 416.5 L 454.8529411764706 406.5 L 464.8529411764706 406.5 z" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 459.8529411764706 148.4 L 459.8529411764706 173.26470588235293 Q 459.8529411764706 183.26470588235293 459.8529411764706 183.26470588235293 L 459.8529411764706 183.26470588235293 L 459.8529411764706 407.0" fill="none" stroke="#000000" stroke-dasharray="3, 3" stroke-width="1.0"/>
+  </g>
+  <g id="_22">
+    <path d="M 417.6529411764706 412.3 a 4.2 4.2 0  1,1 0.0 1.05 z" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 421.8529411764706 140.5 L 426.8529411764706 150.5 L 416.8529411764706 150.5 z" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 421.8529411764706 408.6 L 421.8529411764706 192.26470588235293 Q 421.8529411764706 182.26470588235293 421.8529411764706 182.26470588235293 L 421.8529411764706 182.26470588235293 L 421.8529411764706 150.0" fill="none" stroke="#000000" stroke-dasharray="3, 3" stroke-width="1.0"/>
+  </g>
+  <g id="_45">
+    <path d="M 561.8529411764706 467.5 L 555.8529411764706 457.5 L 549.8529411764706 467.5 M 555.8529411764706 455.5" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 860.3529411764706 470.0 L 860.3529411764706 488.2647058823529 Q 860.3529411764706 498.2647058823529 850.3529411764706 498.2647058823529 L 565.8529411764706 498.2647058823529 Q 555.8529411764706 498.2647058823529 555.8529411764706 488.2647058823529 L 555.8529411764706 455.0" fill="none" stroke="#000000" stroke-dasharray="3, 3" stroke-width="1.0"/>
+  </g>
+  <g id="_2">
+    <path d="M 311.5529411764706 144.7 a 4.2 4.2 0  1,1 0.0 -1.05 z" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 93.74767801857593 242.5 L 88.74767801857593 232.5 L 98.74767801857593 232.5 z" fill="none" stroke="#000000" stroke-width="1.0"/>
+    <path d="M 307.3529411764706 148.4 L 307.3529411764706 172.26470588235293 Q 307.3529411764706 182.26470588235293 297.3529411764706 182.26470588235293 L 103.74767801857593 182.26470588235293 Q 93.74767801857593 182.26470588235293 93.74767801857593 192.26470588235293 L 93.74767801857593 233.0" fill="none" stroke="#000000" stroke-dasharray="3, 3" stroke-width="1.0"/>
+  </g>
+  <g id="_20">
+    <path d="M 290.0 442.5173122647117 L 388.0 443.8941326530612" fill="none" stroke="#000000" stroke-dasharray="3, 3" stroke-width="1.0"/>
+  </g>
+  <g id="_43">
+    <path d="M 486.0 92.50690985736969 L 525.3407754042533 74.0" fill="none" stroke="#000000" stroke-dasharray="3, 3" stroke-width="1.0"/>
+  </g>
+  <g id="_42">
+    <path d="M 164.94365576227847 86.0 L 142.67604267701262 53.0" fill="none" stroke="#000000" stroke-dasharray="3, 3" stroke-width="1.0"/>
+  </g>
+</svg>

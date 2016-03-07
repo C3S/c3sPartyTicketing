@@ -1,5 +1,69 @@
 # -*- coding: utf-8 -*-
+"""
+This module holds the main Ticket forms.
 
+There are different Forms, depending on where the user comes from:
+
+**C3S Members**
+  have received an invitation email with a link (containing a **token**).
+  This link triggers c3sPartyTicketing to ask relevant information
+  via REST-API call from c3sMembership, so first and last name
+  as well as membership type are known to c3sPartyTicketing.
+
+**Nonmembers**
+  who go to the ticketing site
+  are presented with the non-member form.
+
+
+As this module is very loooong, I'll try and list all defs and classes here:
+
+def **ticket_member_schema**
+    - def validator
+    - class TicketData
+    - class RegistrationData
+    - class TicketForm
+
+def **ticket_member_gvonly_schema**
+    - def validator
+    - class TicketGvonlyData
+    - class RegistrationData
+    - class TicketForm
+
+def **ticket_member_nonmember_schema**
+    - def validator
+    - class TicketData
+    - class RegistrationData
+    - class TicketForm
+
+def ticket_appstruct
+
+def check_route
+
+def load_user
+
+def party_view
+
+def confirm_view
+
+def success_view
+
+def finished_view
+
+def end_view             # registration time is over
+
+def nonmember_view              # nonmember-ticket (barcamp)
+
+def nonmember_confirm_view      # nonmember-ticket (barcamp)
+
+def nonmember_success_view      # nonmember-ticket (barcamp)
+
+def nonmember_end_view          # nonmember-ticket (barcamp)
+
+def get_ticket                  # produce PDF
+
+def get_ticket_mobile           # produce smaller PDF
+"""
+from c3spartyticketing.gnupg_encrypt import encrypt_with_gnupg
 from c3spartyticketing.models import (
     DBSession,
     PartyTicket,
@@ -72,10 +136,24 @@ zpt_renderer = deform.ZPTRendererFactory(
 
 
 def ticket_member_schema(request, appstruct, readonly=False):
+    """
+    A Schema for the Member Ticket Form.
 
+    Args:
+        request: the current request.
+        appstruct: a data structure containing user/ticket data.
+        readonly: decides whether form is editable or not.
+
+
+    * comes with a validator
+    
+    """
     # ### validator
 
     def validator(form, value):
+        """
+        A validator ...
+        """
         # XXX: herausfinden, wie man per klassenvalidator colander.Invalid
         #      ansprechen muss, damit deform den error am richtigen ort
         #      platziert und die richtigen klassen vergibt
@@ -147,12 +225,18 @@ def ticket_member_schema(request, appstruct, readonly=False):
         )),
         (3, _(u'I will not attend the C3S SCE General Assembly.'))
     )
+    """
+    Options for the General Assembly.
+    """
 
     ticket_gv_food_option = (
         ('buffet', _(
             u'I\'d like to have Coffee and Cake during '
             u' and a cooked meal after the BarCamp. (€12)'))
     )
+    """
+    Food Options for the General Assembly.
+    """
 
     ticket_bc_options = (
         ('attendance', _(u'I will attend the BarCamp. (€15)')),
@@ -166,6 +250,9 @@ def ticket_member_schema(request, appstruct, readonly=False):
         (2, _(u'Supporter Ticket XL (€10)')),
         (3, _(u'Supporter Ticket XXL (€100)'))
     )
+    """
+    Supporter Ticket Options.
+    """
 
     rep_type_options = (
         ('member', _(u'a member of C3S SCE')),
@@ -174,6 +261,9 @@ def ticket_member_schema(request, appstruct, readonly=False):
         ('child', _(u'my child')),
         ('sibling', _(u'my sibling'))
     )
+    """
+    Options for choosing a Representative.
+    """
 
     # tshirt_type_options = (
     #    ('m', _(u'male')),
@@ -192,6 +282,9 @@ def ticket_member_schema(request, appstruct, readonly=False):
     # ### formparts
 
     class TicketData(colander.MappingSchema):
+        """
+        A Colander schema for Ticket Data.
+        """
 
         locale_name = get_locale_name(request)
         ticket_gv = colander.SchemaNode(
@@ -657,6 +750,18 @@ def ticket_member_schema(request, appstruct, readonly=False):
 
 
 def ticket_member_gvonly_schema(request, appstruct, readonly=False):
+    """
+    A Schema for the Member Ticket Form. GV only.
+
+    Args:
+        request: the current request.
+        appstruct: a data structure containing user/ticket data.
+        readonly: decides whether form is editable or not.
+
+
+    * comes with a validator
+    
+    """
 
     # ### validator
 
@@ -738,6 +843,9 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
     # ## formparts
 
     class TicketGvonlyData(colander.MappingSchema):
+        """
+        A Colander Schema for GV only Ticket Data.
+        """
 
         locale_name = get_locale_name(request)
         ticket_gv = colander.SchemaNode(
@@ -1532,18 +1640,19 @@ def ticket_appstruct(request, view=''):
 
 def check_route(request, view=''):
     '''
-        A. checks:
-            1.  userdata check:
-                userdata has to be set in load_user. load_user() is the only
-                entrance door. if userdata is not set,
+        A. This function performs checks:
+            1.  *userdata* check:
+                *userdata* has to be set in *load_user*.
+                *load_user()* is the only entrance door.
+                If *userdata* is not set,
                 redirect to access denied url
 
             3.  dbentry check:
-                if finish_on_submit is active and user has already submitted,
+                If *finish_on_submit* is active and user has already submitted,
                 redirect to finished view
 
             4.  date check:
-                if registration period is over,
+                If registration period is over,
                 redirect to finished view
 
         B. individual routes:
@@ -1654,9 +1763,15 @@ def check_route(request, view=''):
 @view_config(route_name='load_user')
 def load_user(request):
     '''
-    receive link containing token and load user details. saves details in
-    userdata. userdata should only be changed in this view. load_user is the
-    only entrance door.
+    A view for all members with invitation link from invitation email.
+
+    Receive link containing **token** and load user details.
+
+    Saves details in userdata.
+
+    Userdata should only be changed in this view.
+
+    *load_user* is the only entrance door.
     '''
     print('--- load user ---------------------------------------------------')
 
@@ -1768,7 +1883,10 @@ def load_user(request):
              renderer='templates/party.pt')
 def party_view(request):
     """
-    the view users use to order a ticket
+    The view users use to order a ticket.
+
+    Renderer:
+        templates/party.pt
     """
 
     # ## pick route
@@ -1968,7 +2086,10 @@ def party_view(request):
              renderer='templates/confirm.pt')
 def confirm_view(request):
     """
-    the form was submitted correctly. show the result for the user to confirm
+    The form was submitted correctly. Show the result for the user to confirm.
+
+    Renderer:
+        templates/confirm.pt
     """
 
     # ## pick route
@@ -2017,10 +2138,14 @@ def confirm_view(request):
              renderer='templates/success.pt')
 def success_view(request):
     """
-    the user has confirmed the order
-        1. save to db (update, if token exists in db; create otherwise)
-        2. send emails (usermail, accmail)
-        3. show userfeedback
+    The user has confirmed the order
+
+    1. save to db (update, if token exists in db; create otherwise)
+    2. send emails (usermail, accmail)
+    3. show userfeedback
+
+    Renderer:
+        templates/success.pt
     """
 
     # ## pick route
@@ -2355,8 +2480,11 @@ def success_view(request):
 @view_config(route_name='finished', renderer='templates/finished.pt')
 def finished_view(request):
     """
-    show the ticket readonly, e.g. if user has already submitted and
-    finish_on_submit is on
+    Show the ticket readonly, e.g. if user has already submitted and
+    finish_on_submit is on.
+
+    Renderer:
+        templates/finished.pt
     """
 
     # ## pick route
@@ -2388,7 +2516,10 @@ def finished_view(request):
              renderer='templates/end.pt')
 def end_view(request):
     """
-    show message after registration time is over
+    Show message after registration time is over.
+
+    Renderer:
+        templates/end.pt
     """
     # ## pick route
     today = datetime.today().date()
@@ -2405,7 +2536,10 @@ def end_view(request):
              renderer='templates/nonmember.pt')
 def nonmember_view(request):
     """
-    the view nonmember-users use to order a ticket
+    The view nonmember-users use to order a ticket.
+
+    Renderer:
+        templates/nonmember.pt
     """
 
     # ## clear session
@@ -2557,7 +2691,11 @@ def nonmember_view(request):
              renderer='templates/nonmember_confirm.pt')
 def nonmember_confirm_view(request):
     """
-    the form was submitted correctly. show the result for the user to confirm
+    The nonmember form was submitted correctly.
+    Show the result for the user to confirm.
+
+    Renderer:
+        templates/nonmember_confirm.pt
     """
 
     # ## pick route
@@ -2616,10 +2754,14 @@ def nonmember_confirm_view(request):
              renderer='templates/nonmember_success.pt')
 def nonmember_success_view(request):
     """
-    the user has confirmed the order
-        1. save to db
-        2. send emails (usermail, accmail)
-        3. show userfeedback
+    The user has confirmed the order
+
+    1. save to db
+    2. send emails (usermail, accmail)
+    3. show userfeedback
+
+    Renderer:
+        templates/nonmember_success.pt
     """
 
     # ## pick route
@@ -2799,7 +2941,10 @@ def nonmember_success_view(request):
              renderer='templates/nonmember_end.pt')
 def nonmember_end_view(request):
     """
-    show message after registration time is over
+    Show message after registration time is over.
+
+    Renderer:
+        templates/nonmember_end.pt
     """
     # ## pick route
     today = datetime.today().date()
@@ -2815,8 +2960,10 @@ def nonmember_end_view(request):
 @view_config(route_name='get_ticket')
 def get_ticket(request):
     """
-    this view gives a user access to her ticket via URL with code
-    the response is a PDF download
+    This view gives a user access to her ticket via URL with code.
+
+    Returns:
+        a PDF download
     """
     _code = request.matchdict['code']
     _email = request.matchdict['email']
@@ -2848,8 +2995,10 @@ def get_ticket(request):
 @view_config(route_name='get_ticket_mobile')
 def get_ticket_mobile(request):
     """
-    this view gives a user access to her ticket via URL with code
-    the response is a PDF download
+    This view gives a user access to her ticket via URL with code.
+
+    Returns:
+        a PDF download
     """
     _code = request.matchdict['code']
     _email = request.matchdict['email']
