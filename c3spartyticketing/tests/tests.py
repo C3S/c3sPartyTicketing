@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-#from pyramid.config import Configurator
 from pyramid import testing
 from c3spartyticketing.models import (
     Base,
@@ -91,7 +90,6 @@ class TestViews(unittest.TestCase):
         self.assertTrue('The resource was found at' in str(result))
         # self.assertTrue('https://yes.c3s.cc' in result.location)
         # self.assertTrue('https://yes.c3s.cc' in result.wsgi_response.location)
-        print result.location
         self.assertTrue('302' in result.status)
 
         # print result.headers

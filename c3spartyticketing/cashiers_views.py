@@ -11,24 +11,24 @@ from c3spartyticketing.models import (
     DBSession,
 )
 from c3spartyticketing.utils import make_random_string
-#from pkg_resources import resource_filename
+# from pkg_resources import resource_filename
 import colander
 import deform
 from deform import ValidationFailure
 
-#from pyramid.i18n import (
+# from pyramid.i18n import (
 #    get_localizer,
-#)
+# )
 from pyramid.request import Request
 from pyramid.view import (
     view_config,
     forbidden_view_config
 )
-#from pyramid.threadlocal import get_current_request
+# from pyramid.threadlocal import get_current_request
 from pyramid.httpexceptions import HTTPFound
 from pyramid.security import (
     remember,
-    #forget,
+    # forget,
     authenticated_userid,
 )
 from pyramid.url import route_url
@@ -103,20 +103,14 @@ def new_ticket(request):
             date_of_submission=datetime.now(),
             payment_received=True
         )
-        #try:
         dbsession = DBSession()
         _new.payment_received = True
-        #import pdb
-        #pdb.set_trace()
         _new.checked_persons = int(_num)
         _new.payment_received_date = datetime.now()
         _new.email_confirm_code = 'CASHDESK' + make_random_string()
         _new.accountant_comment = 'issued by %s' % logged_in
         dbsession.add(_new)
 
-        #except:
-        #    print("new_ticket: something went wrong")
-            #pass
     _num_passengers = PartyTicket.num_passengers()
     _num_open_tickets = int(
         PartyTicket.get_num_tickets()) - int(_num_passengers)
@@ -145,11 +139,11 @@ def check_in(request):
        | up to the amount of person on this ticket.
     """
     logged_in = authenticated_userid(request)
-    print("authenticated_userid: " + str(logged_in))
+    # print("authenticated_userid: " + str(logged_in))
     log.info("check in conducted by %s" % logged_in)
 
     # check for input from checkin function POST
-    #print(request.POST)
+    # print(request.POST)
     # MultiDict([('persons', u'10'),
     #            ('checkin', u'Check in!'),
     #            ('code', u'ABCDEFGHIJ')])
@@ -158,11 +152,11 @@ def check_in(request):
     __received_extra1 = ('received_extra1' in request.POST)
     __received_extra2 = ('received_extra2' in request.POST)
     __code = ('code' in request.POST)
-    #__personen = ('persons' in request.POST)
+    # __personen = ('persons' in request.POST)
 
     if __check_bc and __code:
         _code = request.POST['code']
-        #_persons = request.POST['persons']
+        # _persons = request.POST['persons']
         _ticket = PartyTicket.get_by_code(_code)
         if isinstance(_ticket, NoneType):
             "if the ticket code was not found, return to base"
@@ -172,12 +166,12 @@ def check_in(request):
         if _ticket.ticket_bc_attendance:
             _ticket.checked_bc = True
             _ticket.checked_bc_time = datetime.now()
-            #_ticket.checkin_seen = True
-            #_ticket.checked_persons += int(_persons)
+            # _ticket.checkin_seen = True
+            # _ticket.checked_persons += int(_persons)
 
     if __check_gv and __code:
         _code = request.POST['code']
-        #_persons = request.POST['persons']
+        # _persons = request.POST['persons']
         _ticket = PartyTicket.get_by_code(_code)
         if isinstance(_ticket, NoneType):
             "if the ticket code was not found, return to base"
@@ -187,12 +181,12 @@ def check_in(request):
         if _ticket.ticket_gv_attendance == 1:
             _ticket.checked_gv = True
             _ticket.checked_gv_time = datetime.now()
-        #_ticket.checkin_seen = True
-        #_ticket.checked_persons += int(_persons)
+        # _ticket.checkin_seen = True
+        # _ticket.checked_persons += int(_persons)
 
     if __received_extra1 and __code:
         _code = request.POST['code']
-        #_persons = request.POST['persons']
+        # _persons = request.POST['persons']
         _ticket = PartyTicket.get_by_code(_code)
         if isinstance(_ticket, NoneType):
             "if the ticket code was not found, return to base"
@@ -201,12 +195,12 @@ def check_in(request):
                 location=request.route_url('kasse'))
         _ticket.received_extra1 = True
         _ticket.received_extra1_time = datetime.now()
-        #_ticket.checkin_seen = True
-        #_ticket.checked_persons += int(_persons)
+        # _ticket.checkin_seen = True
+        # _ticket.checked_persons += int(_persons)
 
     if __received_extra2 and __code:
         _code = request.POST['code']
-        #_persons = request.POST['persons']
+        # _persons = request.POST['persons']
         _ticket = PartyTicket.get_by_code(_code)
         if isinstance(_ticket, NoneType):
             "if the ticket code was not found, return to base"
@@ -215,8 +209,8 @@ def check_in(request):
                 location=request.route_url('kasse'))
         _ticket.received_extra2 = True
         _ticket.received_extra2_time = datetime.now()
-        #_ticket.checkin_seen = True
-        #_ticket.checked_persons += int(_persons)
+        # _ticket.checkin_seen = True
+        # _ticket.checked_persons += int(_persons)
 
     '''
     checkin was called from a prepared URL ('/ci/{event}/{code}')
@@ -273,7 +267,7 @@ def check_in(request):
     _paid = (1 if _ticket.payment_received or _ticket.the_total == 0 else 0)
 
     return {
-        #'vacancies': _vacancies,  # the free tickets of this visitor
+        # 'vacancies': _vacancies,  # the free tickets of this visitor
         'logged_in': logged_in,
         'code': _code,
         'paid': _paid,
@@ -310,15 +304,15 @@ def kasse(request):
        | b) if a valid code was submitted, redirect to check-in for ticket.
     """
     logged_in = authenticated_userid(request)
-    print("authenticated_userid: " + str(logged_in))
-    #log.info("check in conducted by %s" % logged_in)
+    # print("authenticated_userid: " + str(logged_in))
+    # log.info("check in conducted by %s" % logged_in)
 
     # check for input from "find dataset by confirm code" form
     if 'code_to_show' in request.POST:
         print("found code_to_show in POST: %s" % request.POST['code_to_show'])
         try:
             _code = request.POST['code_to_show']
-            #print(_code)
+            # print(_code)
             _entry = PartyTicket.get_by_code(_code)
             print(_entry)
             print(_entry.id)
@@ -366,8 +360,8 @@ def kasse(request):
     form = deform.Form(
         schema,
         buttons=('go!',),
-        #use_ajax=True,  # <-- whoa!
-        #renderer=zpt_renderer,
+        # use_ajax=True,  # <-- whoa!
+        # renderer=zpt_renderer,
     )
     autoformhtml = form.render()
 
@@ -393,7 +387,7 @@ def cashiers_login(request):
     === ===================
     """
     logged_in = authenticated_userid(request)
-    #print("authenticated_userid: " + str(logged_in))
+    # print("authenticated_userid: " + str(logged_in))
 
     log.info("login by %s" % logged_in)
 
@@ -430,7 +424,7 @@ def cashiers_login(request):
 
     # if the form has been used and SUBMITTED, check contents
     if 'submit' in request.POST:
-        #print("the form was submitted")
+        # print("the form was submitted")
         controls = request.POST.items()
         try:
             appstruct = form.validate(controls)

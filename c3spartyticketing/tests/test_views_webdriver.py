@@ -27,7 +27,7 @@ This module holds selenium/webdriver tests for the views.
 """
 import os
 import unittest
-from selenium import webdriver
+# from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
 from cfg import cfg
@@ -50,7 +50,7 @@ import transaction
 import string
 import random
 
-import coverage
+# import coverage
 
 # clear screen once for all selenium tests
 folder = cfg['dbg']['screenshotPath']
@@ -119,7 +119,7 @@ class SeleniumTestBaseTicketing(SeleniumTestBase):
     @classmethod
     def appSettings(cls):
         today = datetime.today().date()
-        yesterday = (datetime.today() - timedelta(1)).date()
+        # yesterday = (datetime.today() - timedelta(1)).date()
         return {
             'registration.finish_on_submit': 'true',
             'registration.end': str(today),
@@ -213,7 +213,7 @@ class SeleniumTestBaseTicketing(SeleniumTestBase):
 # XXX: test cases of user feedback
 # XXX: test changes of route inbetween member/nonmember
 
-### Member #####################################################################
+# ## Member ###################################################################
 
 
 class TicketMemberFormAccessTests(SeleniumTestBaseTicketing):
@@ -230,8 +230,12 @@ class TicketMemberFormAccessTests(SeleniumTestBaseTicketing):
             self.cli.delete_all_cookies()
 
     def test_access_without_token(self):
+        """
+        accessing the form without a valid token
+        will take you to the nonmember url.
+        """
         # route: root
-        self.cli.get(self.srv.url);
+        self.cli.get(self.srv.url)
         self.screen('ticket')
         self.assertTrue(
             self.cli.current_url.endswith(
@@ -268,6 +272,10 @@ class TicketMemberFormAccessTests(SeleniumTestBaseTicketing):
         self.checkErrorPage()
 
     def test_access_with_token_not_in_db(self):
+        """
+        accessing the form with an invalid token
+        will take you to the nonmember url.
+        """
         # load user
         self.cli.get(self.srv.url+self.srv.lu)
         self.screen('ticket')
@@ -275,6 +283,10 @@ class TicketMemberFormAccessTests(SeleniumTestBaseTicketing):
         self.checkErrorPage()
 
     def test_access_with_token_in_db(self):
+        """
+        accessing the form with a valid token
+        will take you where?
+        """
         with transaction.manager:
             ticket = self._makeRandom(
                 firstname=self.cfg['member']['firstname'],
@@ -1038,7 +1050,7 @@ class TicketMemberRegistrationEndTests(SeleniumTestBaseTicketing):
     
     @classmethod
     def appSettings(cls):
-        today = datetime.today().date()  # unused?
+        # today = datetime.today().date()  # unused?
         yesterday = (datetime.today() - timedelta(1)).date()
         return {
             'registration.finish_on_submit': 'true',
@@ -1117,7 +1129,7 @@ class TicketMemberRegistrationEndTests(SeleniumTestBaseTicketing):
         self.checkErrorPage()
 
 
-### Nonmember ##################################################################
+# ## Nonmember ################################################################
 
 class TicketNonmemberFormAccessTests(SeleniumTestBaseTicketing):
     """
@@ -1131,7 +1143,7 @@ class TicketNonmemberFormAccessTests(SeleniumTestBaseTicketing):
     def test_access(self):
         self.logSection()
         # route: nonmember
-        self.cli.get(self.srv.url+"barcamp");
+        self.cli.get(self.srv.url+"barcamp")
         self.screen('ticket')
         self.assertTrue(self.cli.current_url.endswith("/barcamp"))
         self.checkErrorPage()
