@@ -1,0 +1,38 @@
+            <h2>
+              <span i18n:translate="">freiLand</span>
+              <small i18n:translate="">Potsdam</small>
+            </h2>
+
+            <span i18n:translate="" style="color:#999">Adress</span>:
+            <span>Friedrich-Engels-Straße 22, 14473 Potsdam</span>
+
+            <div class="visible-xs"><!-- map for small screens -->
+	      <!-- freiland, potsdam -->
+	      <iframe width="100%" height="350"
+		      frameborder="0" scrolling="no"
+                      marginheight="0" marginwidth="0"
+		      src="https://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.389238596920535%2C13.077431917190552"
+		      style="border: 1px solid black">
+	      </iframe><br/>
+	      <small>
+                <a href="http://www.openstreetmap.org/?mlat=52.38931&amp;mlon=13.07759#map=19/52.38931/13.07692"
+                   target="_blank"
+                   i18n:translate="">
+                  Display enlarged map
+                </a>
+              </small>
+            </div><!-- END map for small screens -->
+            <div class="hidden-xs"><!-- map for normal screens -->
+              <iframe width="100%" height="600"
+                      frameborder="0" scrolling="no"
+                      marginheight="0" marginwidth="0"
+		      src="https://www.openstreetmap.org/export/embed.html?bbox=13.07382434606552%2C52.38812546642737%2C13.080020248889923%2C52.39049574584144&amp;layer=mapnik&amp;marker=52.389238596920535%2C13.077431917190552"
+                      style="border: 1px solid black">
+              </iframe><br/>
+              <small>
+                <a i18n:translate=""
+                   href="http://www.openstreetmap.org/?mlat=52.38931&amp;mlon=13.07756#map=19/52.38931/13.07692">
+                  Display enlarged map
+                </a>
+              </small>
+            </div><!-- END map for normal screens -->

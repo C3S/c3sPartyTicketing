@@ -1,0 +1,29 @@
+          <!-- ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## -->
+          <div class="alert alert-success">
+            <h1 style="color:#000;">
+              <span i18n:translate="">General Assembly</span> &amp;
+            </h1>
+
+            <div id="getting-started-gv" style="color:#999"></div>
+            <script type="text/javascript">
+              $('#getting-started-gv').countdown('${request.assembly_counter}', function(event) {
+              $(this).html(event.strftime('<span i18n:translate="">Starts in</span> '
+              + '<span>%w</span> <span i18n:translate="">weeks</span> '
+              + '<span>%d</span> <span i18n:translate="">days(s)</span> '
+              + '%H:%M:%S'));
+              });
+            </script>
+
+            <h2>
+              <span i18n:translate="">17.04.2016</span>
+              <small i18n:translate="">2pm - 6pm</small>
+            </h2>
+
+            <!-- ASSEMBLY AFTERPARTY TEMPLATE can go here-->
+
+            <tal:block metal:use-macro="load: location.c3s_hq.pt">
+              <!-- HPZ LOCATION TEMPLATE -->
+            </tal:block>
+
+          </div>
+          <!-- ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## -->

@@ -1,0 +1,40 @@
+	    <h2 style="margin-bottom:40px;">
+              <small><span i18n:translate="">Location</span>:</small>
+            </h2>
+            <h2>
+              <span>${request.c3shq_shortname}</span>
+              <small>${request.c3shq_city}</small>
+            </h2>
+
+            <span i18n:translate="" style="color:#999">Adress</span>:
+            <span>${request.c3shq_address}</span>
+
+            <div class="visible-xs"><!-- map for small screens -->
+	      <iframe width="100%" height="350"
+		      frameborder="0" scrolling="no"
+                      marginheight="0" marginwidth="0"
+		      src="${request.c3shq_map_small}"
+		      style="border: 1px solid black">
+	      </iframe><br/>
+	      <small>
+                <a href="%{request.c3shq_map_URL}"
+                   target="_blank"
+                   i18n:translate="">
+                  Display enlarged map
+                </a>
+              </small>
+            </div><!-- END map for small screens -->
+            <div class="hidden-xs"><!-- map for normal screens -->
+              <iframe width="100%" height="600"
+                      frameborder="0" scrolling="no"
+                      marginheight="0" marginwidth="0"
+		      src="${request.c3shq_map_small}"
+                      style="border: 1px solid black">
+              </iframe><br/>
+              <small>
+                <a i18n:translate=""
+                   href="${request.c3shq_map_URL}">
+                  Display enlarged map
+                </a>
+              </small>
+            </div><!-- END map for normal screens -->

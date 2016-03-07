@@ -1,0 +1,27 @@
+          <!-- ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** -->
+          <div class="alert alert-success">
+            <h1 i18n:translate="" style="color:#000;">BarCamp</h1>
+
+            <div id="getting-started-bc" style="color:#999"></div>
+            <script type="text/javascript">
+              $('#getting-started-bc').countdown('${request.barcamp_counter}', function(event) {
+              $(this).html(event.strftime('<span i18n:translate="">Starts in</span> '
+              + '<span>%w</span> <span i18n:translate="">weeks</span> '
+              + '<span>%d</span> <span i18n:translate="">days(s)</span> '
+              + '%H:%M:%S'));
+              });
+            </script>
+
+            <h2>&nbsp;</h2>
+
+            <h2>
+              <span i18n:translate="">16.04.2016</span>
+              <small i18n:translate="">12am - 8pm</small>
+            </h2>
+
+            <tal:block metal:use-macro="load: location.hpz.pt">
+              <!-- HPZ LOCATION TEMPLATE -->
+            </tal:block>
+
+          </div>
+          <!-- ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** -->
