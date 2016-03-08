@@ -15,7 +15,7 @@
   <tal:block metal:fill-slot="middle">
 
     <h1 i18n:translate="">Sorry, you can't register for the barcamp anymore!</h1>
-    <p><span i18n:translate="">Registration ended</span>&nbsp;${registration_end}</p>
+    <p><span i18n:translate="">Registration ended</span>&nbsp;${request.registration_end}</p>
     <br />
 
   </tal:block>

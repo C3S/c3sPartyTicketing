@@ -181,14 +181,22 @@ class RequestWithUserAttribute(Request):
         """
         Returns the registration end date string ('2016-04-14')
         """
-        return request.registry.settings['registration.bc_date']
+        return format_date(
+            datetime.strptime(
+                request.registry.settings['registration.end'],
+                '%Y-%m-%d').date(),
+            request.locale_name)
 
     @reify
     def invitation_date(request):
         """
         Returns the email invitation date string ('2016-03-04')
         """
-        return request.registry.settings['registration.bc_date']
+        return format_date(
+            datetime.strptime(
+                request.registry.settings['registration.invitation_date'],
+                '%Y-%m-%d').date(),
+            request.locale_name)
 
     # BarCamp
     @reify
