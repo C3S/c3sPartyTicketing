@@ -22,7 +22,7 @@
             <!-- ASSEMBLY AFTERPARTY TEMPLATE can go here-->
 
             <tal:block metal:use-macro="load: location.c3s_hq.pt">
-              <!-- HPZ LOCATION TEMPLATE -->
+              <!-- C3S HQ LOCATION TEMPLATE -->
             </tal:block>
 
           </div>
