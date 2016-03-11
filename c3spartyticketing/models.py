@@ -196,7 +196,7 @@ class PartyTicket(Base):
     email = Column(Unicode(255))
     """email address"""
     membership_type = Column(Unicode(255), unique=False)
-    """membership type"""
+    """membership type: 'normal' or 'investing'"""
     is_legalentity = Column(Boolean, default=False)
     """flag for legal entities"""
     _password = Column('password', Unicode(60))
@@ -204,19 +204,27 @@ class PartyTicket(Base):
     last_password_change = Column(
         DateTime,
         default=func.current_timestamp())
+    """timestamp of last password change"""
     locale = Column(Unicode(255))
+    """persons locale"""
     email_is_confirmed = Column(Boolean, default=False)
+    """flag: has email been confirmed"""
     email_confirm_code = Column(Unicode(255), unique=True)
+    """token"""
     # ticket info
     tcodes = Column(Unicode(255), unique=True)
     num_tickets = Column(Integer, default=1)
     checked_persons = Column(Integer, default=0)
     checked_gv = Column(Boolean, default=False)
+    """flag for assembly check-in"""
     checked_gv_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
+    """timestamp of assembly check-in"""
     checked_bc = Column(Boolean, default=False)
+    """flag for barcamp check-in"""
     checked_bc_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
+    """timestamp of barcamp check-in"""
     received_extra1 = Column(Boolean, default=False)  # brief
     received_extra1_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
@@ -241,31 +249,53 @@ class PartyTicket(Base):
     the_total = Column(Float)
     # representation
     rep_firstname = Column(Text, default='')
+    """representatives first name"""
     rep_lastname = Column(Text, default='')
+    """representatives last name"""
     rep_street = Column(Text, default='')
+    """representatives street address"""
     rep_zip = Column(Text, default='')
+    """representatives postal code"""
     rep_city = Column(Text, default='')
+    """city of representative"""
     rep_country = Column(Text, default='')
+    """country of representative"""
     rep_type = Column(Integer)
+    """type of representative"""
     rep_email = Column(Text, default='')
+    """representatives email address"""
     represents_id1 = Column(Integer)
+    """reference to represented member 1: XXX do we actually use this?"""
     represents_id2 = Column(Integer)
+    """reference to represented member 2: XXX do we actually use this?"""
     # guestlist
     guestlist = Column(Boolean, default=False)
+    """flag: person on guest list?"""
     guestlist_gv = Column(Unicode(255), unique=False)
+    """guestlist barcamp string"""
     guestlist_bc = Column(Unicode(255), unique=False)
+    """guestlist assembly string"""
     # meta
     date_of_submission = Column(DateTime(), nullable=False)
+    """timestamp: submitted when?"""
     payment_received = Column(Boolean, default=False)
+    """flag: payment received"""
     payment_received_date = Column(
         DateTime(), default=datetime(1970, 1, 1))
+    """timestamp: payment received when?"""
     ticketmail_sent = Column(Boolean, default=False)
+    """flag: ticketmail sent"""
     ticketmail_sent_date = Column(
         DateTime(), default=datetime(1970, 1, 1))
+    """timestamp: ticketmail sent when?"""
     user_comment = Column(Unicode(255))
+    """users comment"""
     accountant_comment = Column(Unicode(255))
+    """accountants comment"""
     staff_comment = Column(Text, default='')
+    """staff comment"""
     cashiers_comment = Column(Text, default='')
+    """cashiers comment"""
 
     def __init__(self, token, firstname, lastname, email, password,
                  locale,
@@ -975,7 +1005,18 @@ class PartyTicket(Base):
 
     @classmethod
     def stats_cashiers(cls):
-        """return stats of people attending / checked in"""
+        """
+        This function returns statistics for cashiers.
+
+        * How many people have checked in to the venue(s)?
+        * How many are still expected?
+
+        Template used:
+            templates/kasse.pt
+
+        Returns:
+            dictionary of counted items
+        """
         _all = DBSession.query(cls).all()
         _data = {
             'bc': {
