@@ -6,10 +6,10 @@ Collecting Society SCE mit beschränkter Haftung).
 
 It has been used for several C3S events:
 
-* 2014 headquarters inauguration party
-* 2014 barcamp and general assembly
-* 2015 barcamp and general assembly
-* 2016 barcamp and general assembly (coming up)
+* 2014 headquarters inauguration party (C3S HQ, Düsseldorf)
+* 2014 barcamp and general assembly (Düsseldorf, Köln)
+* 2015 barcamp and general assembly (Potsdam)
+* 2016 barcamp and general assembly (coming up...)
 
 
 Contents:
@@ -19,14 +19,15 @@ Contents:
    :numbered:
 
    overview/index
+   overview/kasse
    code/index
    templates/index
-   models/index
    tests/index
-   glossary/index
-   bibliography/index
-   license_texts/index
 
+..   models/index
+..   license_texts/index
+..   glossary/index
+..   bibliography/index
 ..   requirements/index
 ..   design/index
 ..   development/index
