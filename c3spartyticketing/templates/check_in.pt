@@ -13,48 +13,9 @@
 
     <h1>Check-In <code>${ticket.email_confirm_code}</code></h1>
 
-    <table cellpadding="5">
-      <tr>
-        <td><b>Barcamp</b></td>
-        <td>
-          eingecheckt:
-          <b>${stats.bc.checkedin.all}</b>
-          (${stats.bc.checkedin.helper} H, 
-          ${stats.bc.checkedin.guest} G,
-          ${stats.bc.checkedin.specialguest} E,
-          ${stats.bc.checkedin.press} P)
-        </td>
-        <td>
-          erwarten noch:
-          <b>${stats.bc.expected.all}</b>
-          (${stats.bc.expected.helper} H, 
-          ${stats.bc.expected.guest} G,
-          ${stats.bc.expected.specialguest} E,
-          ${stats.bc.expected.press} P)
-        </td>
-      </tr>
-      <tr>
-        <td><b>Generalversammlung</b></td>
-        <td>
-          eingecheckt:
-          <b>${stats.gv.checkedin.all}</b>
-          (${stats.gv.checkedin.helper} H,
-          ${stats.gv.checkedin.guest} G,
-          ${stats.gv.checkedin.specialguest} E,
-          ${stats.gv.checkedin.press} P,
-          ${stats.gv.checkedin.representative} R)
-        </td>
-        <td>
-          erwarten noch:
-          <b>${stats.gv.expected.all}</b>
-          (${stats.gv.expected.helper} H,
-          ${stats.gv.expected.guest} G,
-          ${stats.gv.expected.specialguest} E,
-          ${stats.gv.expected.press} P,
-          ${stats.gv.expected.representative} R)
-        </td>
-      </tr>
-    </table>
+    <tal:block metal:use-macro="load: checkin_stats.pt">
+      <!-- CHECKIN STATS TEMPLATE -->
+    </tal:block>
     <br />
 
     <div class="row-fluid">
