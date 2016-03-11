@@ -4,9 +4,7 @@ This module holds views with accountants functionality.
 
 Staff can
 
-* log in (**accountants_login**)
 * see all ticketing database entries (**dashboard_view**)
-* check statistics (**stats_view**)
 * create tickets for helpers, guests (**make_hobo_view**)
 * send ticket links to users (**send_ticket_mail_view**)
 * manage staff accounts (**staff_view**)
@@ -14,11 +12,6 @@ Staff can
 * delete ticketing database entries (**delete_entry**)
 * change payment status (**switch_pay**)
 * see details for single ticketing database entries (**ticket_detail**)
-* log out (**logout_view**)
-
-
-Yet another view lists all codes (**list_codes**).
-This is used for an auto-complete form.
 """
 import json
 from c3spartyticketing.models import (
@@ -49,11 +42,6 @@ from pyramid.response import Response
 from pyramid.view import view_config
 from pyramid.threadlocal import get_current_request
 from pyramid.httpexceptions import HTTPFound
-from pyramid.security import (
-    remember,
-    forget,
-    authenticated_userid,
-)
 from pyramid.url import route_url
 
 from pyramid_mailer import get_mailer
@@ -93,104 +81,6 @@ LOGGING = True
 if LOGGING:  # pragma: no cover
     import logging
     log = logging.getLogger(__name__)
-
-
-@view_config(renderer='templates/login.pt',
-             route_name='login')
-def accountants_login(request):
-    """
-    This view lets accountants log in.
-
-    After successful login, staff are redirected to the dashboard.
-    Visiting this view when already logged in also redirects there.
-
-    The form submits to this view, so errors are rendered nearby.
-
-    Template used:
-        templates/login.pt
-    Returns:
-        | the form, rendered in a template,
-        | or a redirect to the dashboard.
-    """
-    # print(request)
-    logged_in = authenticated_userid(request)
-    # print("authenticated_userid: " + str(logged_in))
-
-    log.info("login by %s" % logged_in)
-
-    if logged_in is not None:  # if user is already authenticated
-        return HTTPFound(  # redirect her to the dashboard
-            request.route_url('dashboard',
-                              number=0,))
-
-    class AccountantLogin(colander.MappingSchema):
-        """
-        colander schema for login form
-        """
-        login = colander.SchemaNode(
-            colander.String(),
-            title="login",
-            oid="login",
-        )
-        password = colander.SchemaNode(
-            colander.String(),
-            validator=colander.Length(min=5, max=100),
-            widget=deform.widget.PasswordWidget(size=20),
-            title="password",
-            oid="password",
-        )
-
-    schema = AccountantLogin()
-
-    form = deform.Form(
-        schema,
-        buttons=[
-            deform.Button('submit', u'Submit'),
-            deform.Button('reset', u'Reset')
-        ],
-        # use_ajax=True,
-        # renderer=zpt_renderer
-    )
-
-    # if the form has been used and SUBMITTED, check contents
-    if 'submit' in request.POST:
-        # print("the form was submitted")
-        controls = request.POST.items()
-        try:
-            appstruct = form.validate(controls)
-        except ValidationFailure, e:
-            print(e)
-
-            request.session.flash(
-                _(u"Please note: There were errors, "
-                  "please check the form below."),
-                'message_above_form',
-                allow_duplicate=False)
-            return{'form': e.render()}
-
-        # get user and check pw...
-        login = appstruct['login']
-        password = appstruct['password']
-
-        try:
-            checked = C3sStaff.check_password(login, password)
-        except AttributeError:  # pragma: no cover
-            checked = False
-        if checked:
-            log.info("password check for %s: good!" % login)
-            headers = remember(request, login)
-            log.info("logging in %s" % login)
-            return HTTPFound(  # redirect to accountants dashboard
-                location=route_url(  # after successful login
-                    'dashboard',
-                    number=0,
-                    request=request),
-                headers=headers)
-        else:
-            log.info("password check: failed.")
-
-    html = form.render()
-    return {'form': html, }
 
 
 @view_config(renderer='templates/dashboard.pt',
@@ -339,55 +229,6 @@ def dashboard_view(request):
             'autoform': autoformhtml,
             }
 
-
-@view_config(renderer='templates/stats.pt',
-             permission='manage',
-             route_name='stats')
-def stats_view(request):
-    """
-    This view lets accountants view statistics:
-    how many tickets of which category, payment status, etc.
-    """
-    # print("who is it? %s" % request.user.login)
-
-    stats = {}
-
-    # ## General
-    stats['general'] = PartyTicket.get_stats_general()
-
-    # ## Events
-    stats['events'] = PartyTicket.get_stats_events()
-
-    # ## Extras
-    stats['extras'] = PartyTicket.get_stats_extras()
-
-    # ## Abrechnung
-    stats['accounting'] = {}
-    # Bestellung
-    stats['accounting']['order'] = {
-        'sum_tickets_total': PartyTicket.get_sum_tickets_total(),
-        'sum_tickets_unpaid': PartyTicket.get_sum_tickets_unpaid(),
-        'sum_tickets_paid': PartyTicket.get_sum_tickets_paid(),
-        'sum_tickets_paid_desk': PartyTicket.get_sum_tickets_paid_desk(),
-    }
-
-    # Tickets
-    # stats['accounting']['tickets'] = {
-    #    'sum_tickets_preorder_cash': PartyTicket.get_sum_tickets_preorder_cash(),
-    #    'sum_tickets_new_cash': PartyTicket.get_sum_tickets_new_cash(),
-    #    'num_passengers_paid_checkedin': PartyTicket.get_num_passengers_paid_checkedin(),
-    # }
-
-    # _number_of_tickets = PartyTicket.get_num_tickets()
-    # _num_passengers = PartyTicket.num_passengers()
-    # _num_open_tickets = int(_number_of_tickets) - int(_num_passengers)
-    # _num_tickets_unpaid = PartyTicket.get_num_unpaid()
-
-    return {
-        'stats': stats
-    }
-
-
 # @view_config(renderer='templates/print.pt',
 #              permission='manage',
 #              route_name='print')
@@ -418,8 +259,9 @@ def stats_view(request):
 #     _sum_tickets_unpaid = PartyTicket.get_sum_tickets_unpaid()
 #     _sum_tickets_paid = PartyTicket.get_sum_tickets_paid()
 #     _sum_tickets_paid_desk = PartyTicket.get_sum_tickets_paid_desk()
-#     # _num_passengers_paid_checkedin = PartyTicket.get_num_passengers_paid_checkedin()
-
+#     # _num_passengers_paid_checkedin =
+#                      PartyTicket.get_num_passengers_paid_checkedin()
+#
 #     return {
 #         'tickets': _tickets,
 #         '_number_of_datasets': _number_of_datasets,
@@ -609,7 +451,8 @@ def send_ticket_mail_view(request):
             _ticket.ticketmail_sent = True
             _ticket.ticketmail_sent_date = datetime.now()
 
-        except SMTPRecipientsRefused:  # folks with newly bought tickets (no mail)
+        except SMTPRecipientsRefused:  # folks with newly bought tickets
+            # (no mail)
             print('SMTPRecipientsRefused')
             return HTTPFound(
                 request.route_url(
@@ -717,10 +560,7 @@ def staff_view(request):
         DBSession.add(cashier)
         DBSession.flush()
         print "added cashier"
-            # except InvalidRequestError, e:  # pragma: no cover
-            #    print("InvalidRequestError! %s") % e
-            # except IntegrityError, ie:  # pragma: no cover
-            # print("IntegrityError! %s") % ie
+
         return HTTPFound(
             request.route_url('staff')
         )
@@ -737,7 +577,7 @@ def staff_view(request):
 @view_config(renderer='templates/.pt',
              permission='manage',
              route_name='give_ticket')
-def give_ticket(request):
+def reproduce_ticket(request):
     """
     this view gives staff access to tickets
     via URL with code
@@ -923,30 +763,3 @@ def ticket_detail(request):
 
     return {'ticket': _ticket,
             'form': html}
-
-
-@view_config(permission='view',
-             route_name='logout')
-def logout_view(request):
-    """
-    can be used to log a user/staffer off. "forget"
-    """
-    request.session.invalidate()
-    request.session.flash(u'Logged out successfully.')
-    headers = forget(request)
-    return HTTPFound(location=route_url('login', request),
-                     headers=headers)
-
-
-@view_config(renderer='json',
-             # permission='manage',  # XXX make this work w/ permission
-             route_name='all_codes')
-def list_codes(request):
-    """
-    return the list of codes
-    """
-    if 'localhost' not in request.host:
-        print(request.host)
-        return 'foo'
-    codes = PartyTicket.get_all_codes()
-    return codes
