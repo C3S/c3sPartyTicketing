@@ -2,7 +2,20 @@
 """
 This module holds functionality needed at the cashdesk of venues.
 
+For some types of events it can be useful to issue tickets
+during the event.
 
+**new_ticket**
+   During headquarters inauguration party the people going in
+   had to be counted to comply with safety rules ("not more than
+   200 people in at any time!").
+
+**check_in**
+   People who ordered tickets before the venue
+   have to be checked in using the alphanumeric code they received
+   with the ticket, thereby revisiting the options they booked
+   and confirming they had paid.
+   The QR-codes contain check-in URLs which can only be used by staff.
 """
 import json
 from c3spartyticketing.models import (

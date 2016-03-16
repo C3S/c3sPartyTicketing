@@ -7,13 +7,15 @@ __author__ = 'Kristin Kuche'
 class PartyPageObject(object):
     def __init__(self, driver):
         self.driver = driver
-        #self.firstname_field = self.driver.find_element_by_name("firstname")
-        #self.lastname_field = self.driver.find_element_by_name("lastname")
-        #self.email_field = self.driver.find_element_by_name("email")
+        # self.firstname_field = self.driver.find_element_by_name("firstname")
+        # self.lastname_field = self.driver.find_element_by_name("lastname")
+        # self.email_field = self.driver.find_element_by_name("email")
         self.comment_field = self.driver.find_element_by_id("comment")
         self.submit_button = self.driver.find_element_by_id("deformsubmit")
-        #self.tickets_count_field = self.driver.find_element_by_id("num_tickets")
-        #self.tickets_sold_field = self.driver.find_element_by_id("qty_tickets_sold")
+        # self.tickets_count_field = self.driver.find_element_by_id(
+        #     "num_tickets")
+        # self.tickets_sold_field = self.driver.find_element_by_id(
+        #     "qty_tickets_sold")
 
     def submit_form(self):
         self.submit_button.click()
@@ -125,8 +127,10 @@ class ConfirmPageObject(object):
 class GuestsCountingPageObject(object):
     def __init__(self, driver):
         self.driver = driver
-        self.already_checked_in_field = self.driver.find_element_by_id("already_checked_in")
-        self.still_awaiting_field = self.driver.find_element_by_id("still_awaiting")
+        self.already_checked_in_field = self.driver.find_element_by_id(
+            "already_checked_in")
+        self.still_awaiting_field = self.driver.find_element_by_id(
+            "still_awaiting")
 
     @property
     def already_checked_in(self):
@@ -145,7 +149,8 @@ class CashPointPageObject(GuestsCountingPageObject):
 
     def submit_form(self):
         self.submit_form_btn.click()
-        # ToDo: Find a better way to determine which page object should be returned
+        # ToDo: Find a better way to determine
+        # which page object should be returned
         if '/kasse' in self.driver.current_url:
             return CashPointPageObject(self.driver)
         else:
@@ -160,7 +165,8 @@ class PayPage(GuestsCountingPageObject):
     def __init__(self, driver):
         super(PayPage, self).__init__(driver)
         try:
-            self._has_paid_btn = self.driver.find_element_by_xpath('/html/body/div[2]/div/form/input[1]')
+            self._has_paid_btn = self.driver.find_element_by_xpath(
+                '/html/body/div[2]/div/form/input[1]')
         except NoSuchElementException:
             pass
 
@@ -175,22 +181,26 @@ class CheckInPageObject(GuestsCountingPageObject):
         self.has_submit_button = True
         try:
             self._checkin_btn = self.driver.find_element_by_id('checkin-btn')
-        except NoSuchElementException, ex:
+        except NoSuchElementException:
             self.has_submit_button = False
 
         try:
-            self._persons_select_field = self.driver.find_element_by_name('persons')
-        except NoSuchElementException, ex:
+            self._persons_select_field = self.driver.find_element_by_name(
+                'persons')
+        except NoSuchElementException:
             pass
         try:
-            self._qty_tickets_field = self.driver.find_element_by_id('num_tickets')
-        except NoSuchElementException, ex:
+            self._qty_tickets_field = self.driver.find_element_by_id(
+                'num_tickets')
+        except NoSuchElementException:
             pass
-        self._already_checked_in_persons_field = self.driver.find_element_by_id('checked_in_persons')
+
+        self._already_checked_in_persons_field = self.driver.find_element_by_id(
+            'checked_in_persons')
 
     @property
     def persons_to_checkin(self):
-         return int(self._persons_select_field.get_attribute('value'))
+        return int(self._persons_select_field.get_attribute('value'))
 
     @persons_to_checkin.setter
     def persons_to_checkin(self, qty):
@@ -215,8 +225,10 @@ class CheckInPageObject(GuestsCountingPageObject):
 class DashboardPageObject(object):
     def __init__(self, driver):
         self.driver = driver
-        self._first_code_field = self.driver.find_element_by_xpath('//*[@id="main"]/table/tbody/tr[2]/td[2]/a')
-        self._last_code_field = self.driver.find_element_by_css_selector('#main table tr:last-child td:nth-child(2) a')
+        self._first_code_field = self.driver.find_element_by_xpath(
+            '//*[@id="main"]/table/tbody/tr[2]/td[2]/a')
+        self._last_code_field = self.driver.find_element_by_css_selector(
+            '#main table tr:last-child td:nth-child(2) a')
         self._num_to_show_field = self.driver.find_element_by_id('num_to_show')
 
     @property

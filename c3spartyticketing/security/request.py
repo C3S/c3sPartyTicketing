@@ -49,6 +49,20 @@ class RequestWithUserAttribute(Request):
 
         # /end of ### Making A 'User Object' Available as a Request Attribute
 
+    # things that cost money
+    @reify
+    def bc_cost(request):
+        """
+        Returns the cost of the attendance to the barcamp
+        """
+        return request.registry.settings['registration.bc_cost']
+
+    @reify
+    def bc_food_cost(request):
+        """
+        Returns the cost of the food served at the barcamp
+        """
+        return request.registry.settings['registration.bc_food_cost']
 
     @reify
     def supporter_M(request):

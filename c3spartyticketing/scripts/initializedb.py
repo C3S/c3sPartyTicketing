@@ -141,6 +141,7 @@ def main(argv=sys.argv):
             # num_foodstamps=10,
             user_comment=u'no comment.'
         )
+        ticket.membership_type = u'investing'
         try:
             DBSession.add(ticket)
             print("adding Firstnäme")

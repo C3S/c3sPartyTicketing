@@ -1,6 +1,10 @@
+"""
+This module holds the locators.
+"""
+
 from webutils import (
-	Server,
-	Client
+    Server,
+    Client
 )
 
 locators = {}
@@ -8,7 +12,7 @@ server = Server()
 client = Client()
 
 
-### member
+# ### member
 
 # fields
 locators["ticket.member.token"] = "token"
@@ -34,8 +38,8 @@ locators["ticket.member.rep.city"] = "rep-city"
 locators["ticket.member.rep.country"] = "rep-country"
 locators["ticket.member.rep.firstname"] = "rep-firstname"
 locators["ticket.member.rep.type"] = "rep-type"
-locators["ticket.member.tshirt.type"] = "tshirt-type"
-locators["ticket.member.tshirt.size"] = "tshirt-size"
+# locators["ticket.member.tshirt.type"] = "tshirt-type"
+# locators["ticket.member.tshirt.size"] = "tshirt-size"
 
 # buttons
 locators["ticket.member.ticket.submit"] = "deformsubmit"
@@ -43,7 +47,7 @@ locators["ticket.member.confirm.reedit"] = "deformreedit"
 locators["ticket.member.confirm.confirm"] = "deformconfirmed"
 
 
-### nonmember
+# ### nonmember
 
 # fields
 locators["ticket.nonmember.firstname"] = "firstname"
@@ -57,8 +61,8 @@ locators["ticket.nonmember.supportl"] = "ticket_support-1"
 locators["ticket.nonmember.supportxl"] = "ticket_support-2"
 locators["ticket.nonmember.supportxxl"] = "ticket_support-3"
 locators["ticket.nonmember.comment"] = "comment"
-locators["ticket.nonmember.tshirt.type"] = "tshirt-type"
-locators["ticket.nonmember.tshirt.size"] = "tshirt-size"
+# locators["ticket.nonmember.tshirt.type"] = "tshirt-type"
+# locators["ticket.nonmember.tshirt.size"] = "tshirt-size"
 
 # buttons
 locators["ticket.nonmember.ticket.submit"] = "deformsubmit"

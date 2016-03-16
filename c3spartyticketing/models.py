@@ -212,9 +212,9 @@ class PartyTicket(Base):
     email_confirm_code = Column(Unicode(255), unique=True)
     """token"""
     # ticket info
-    tcodes = Column(Unicode(255), unique=True)
-    num_tickets = Column(Integer, default=1)
-    checked_persons = Column(Integer, default=0)
+    tcodes = Column(Unicode(255), unique=True)  # unused?
+    num_tickets = Column(Integer, default=1)  # unused ?
+    checked_persons = Column(Integer, default=0)  # unused?
     checked_gv = Column(Boolean, default=False)
     """flag for assembly check-in"""
     checked_gv_time = Column(
@@ -226,15 +226,26 @@ class PartyTicket(Base):
         DateTime(), default=datetime(1970, 1, 1))
     """timestamp of barcamp check-in"""
     received_extra1 = Column(Boolean, default=False)  # brief
+    """flag: has person received material (papers)?"""
     received_extra1_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
+    """timestamp: when has person received material?"""
     received_extra2 = Column(Boolean, default=False)  # tshirt
+    """flag: has person received material (shirt)?"""
     received_extra2_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
+    """timestamp: when has person received shirt?"""
     received_extra3 = Column(Boolean, default=False)  # unbenutzt
+    """flag: has person received material (unused)?"""
     received_extra3_time = Column(
         DateTime(), default=datetime(1970, 1, 1))
+    """timestamp: when has person received whatever else?"""
+
+    # attendance info
     ticket_gv_attendance = Column(Integer)
+    """
+    a number saying what? XXX DOC'ME!
+    """
     ticket_bc_attendance = Column(Boolean, default=False)
     ticket_bc_buffet = Column(Boolean, default=False)
     ticket_tshirt = Column(Boolean, default=False)
@@ -251,9 +262,12 @@ class PartyTicket(Base):
     ticket_support_xxl = Column(Boolean, default=False)
     """supporter ticket XXL"""
     support = Column(Float)
-    discount = Column(Float)
+    """ a float?  XXX DOC'ME!"""
+    discount = Column(Float)  # unused ?
+    """ a float?  XXX DOC'ME!"""
     the_total = Column(Float)
-    # representation
+    """the total amount payable for the ticket"""
+    # representation data
     rep_firstname = Column(Text, default='')
     """representatives first name"""
     rep_lastname = Column(Text, default='')
@@ -333,6 +347,9 @@ class PartyTicket(Base):
                  user_comment,
                  payment_received=False
                  ):
+        """
+        Create a new PartyTicket Object.
+        """
         self.token = token
         self.firstname = firstname
         self.lastname = lastname
@@ -1051,6 +1068,8 @@ class PartyTicket(Base):
                     'specialguest': 0,
                     'press': 0,
                     'representative': 0,
+                    'voting': 0,
+                    'non_voting': 0,
                 },
                 'expected': {
                     'all': 0,
@@ -1059,6 +1078,8 @@ class PartyTicket(Base):
                     'specialguest': 0,
                     'press': 0,
                     'representative': 0,
+                    'voting': 0,
+                    'non_voting': 0,
                 },
             }
         }
@@ -1109,6 +1130,17 @@ class PartyTicket(Base):
                         _data['gv']['expected']['press'] += 1
                     if item.guestlist_gv == 'representative':
                         _data['gv']['expected']['representative'] += 1
+            if item.checked_gv:  # already checked in to assembly
+                if 'normal' in item.membership_type:
+                    _data['gv']['checkedin']['voting'] += 1
+                elif 'investing' in item.membership_type:
+                    _data['gv']['checkedin']['non_voting'] += 1
+            else:
+                if 'normal' in item.membership_type:
+                    _data['gv']['expected']['voting'] += 1
+                elif 'investing' in item.membership_type:
+                    _data['gv']['expected']['non_voting'] += 1
+
         return _data
 
     @classmethod

@@ -2,60 +2,68 @@
 """
 This module holds selenium/webdriver tests for the views.
 
-* TicketMemberFormAccessTests
+* TicketMemberFormAccessTests -- 3 tests
 
   * test_access_without_token
   * test_access_with_token_not_in_db
   * test_access_with_token_in_db
 
-* TicketMemberFormFieldValuesTests
-* TicketMemberFormFieldLogicTests
-* TicketMemberFormActionRedirectsTests
-* TicketMemberFormActionDataTests
-* TicketMemberCasesUserfeedbackTests
-* TicketMemberFormGvonlyAccessTests
-* TicketMemberFormGvonlyFieldValuesTests
-* TicketMemberFormGvonlyActionDataTests
-* TicketMemberRegistrationEndTests
+* TicketMemberFormFieldValuesTests -- 17 tests
+* TicketMemberFormFieldLogicTests -- 2 tests
+* TicketMemberFormActionRedirectsTests -- 3 tests
+* TicketMemberFormActionDataTests -- 2 tests
 
-* TicketNonmemberFormAccessTests
-* TicketNonemberFormFieldValuesTests
-* TicketNonmemberFormActionRedirectsTests
-* TicketNonmemberFormActionDataTests
-* TicketNonmemberRegistrationEndTests
+* TicketMemberCasesUserfeedbackTests (5 skips)
+
+* TicketMemberFormGvonlyAccessTests -- 2 tests
+* TicketMemberFormGvonlyFieldValuesTests -- 11 tests
+* TicketMemberFormGvonlyActionDataTests -- 2 tests
+
+* TicketMemberRegistrationEndTests -- 2 tests
+
+* TicketNonmemberFormAccessTests -- 1 test
+* TicketNonemberFormFieldValuesTests -- 10 tests
+* TicketNonmemberFormActionRedirectsTests -- 3 tests
+* TicketNonmemberFormActionDataTests -- 2 tests
+* TicketNonmemberRegistrationEndTests -- 1 test
 
 """
-import os
-import unittest
-# from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
-
-from cfg import cfg
-from pageobject import (
-        server,
-        client
-)
-import re
 from datetime import (
         date,
         datetime,
         timedelta
 )
+import os
+import random
+import re
+# from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
+import string
+import transaction
+import unittest
+
+# local code
+from cfg import cfg
+from pageobject import (
+        server,
+        client
+)
 from pageobject.ticket_member import TicketMemberObject
 from pageobject.ticket_nonmember import TicketNonmemberObject
 
 from c3spartyticketing.models import PartyTicket
-import transaction
 
-import string
-import random
 
-# import coverage
-
-# clear screen once for all selenium tests
+# delete screenshots once for all selenium tests
 folder = cfg['dbg']['screenshotPath']
 png = re.compile('^.*\.png$')
-for f in os.listdir(folder):
+_folder = os.path.abspath(
+    os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        '../..',
+        folder))
+
+for f in os.listdir(_folder):
     file_path = os.path.join(folder, f)
     try:
         if os.path.isfile(file_path) and png.match(f):
@@ -66,8 +74,9 @@ for f in os.listdir(folder):
 
 # XXX: put class in webutils
 class SeleniumTestBase(unittest.TestCase):
-
-    # overload: configuration of individual appSettings
+    """
+    overload: configuration of individual appSettings
+    """
     @classmethod
     def appSettings(cls):
         return {}
@@ -77,7 +86,7 @@ class SeleniumTestBase(unittest.TestCase):
         cls.cfg = cfg
         cls.srv = server.connect(
             cfg=cls.cfg,
-            customAppSettings=cls.appSettings(),
+            customAppSettings=cls.appSettings(),  # overwrite settings
             wrapper='StopableWSGIServer'
         )
         cls.cli = client.connect(
@@ -118,6 +127,9 @@ class SeleniumTestBaseTicketing(SeleniumTestBase):
 
     @classmethod
     def appSettings(cls):
+        """
+        Overwrite the registry
+        """
         today = datetime.today().date()
         # yesterday = (datetime.today() - timedelta(1)).date()
         return {
@@ -300,27 +312,27 @@ class TicketMemberFormAccessTests(SeleniumTestBaseTicketing):
             # load user
             self.cli.get(self.srv.url+self.srv.lu)
             self.screen('lu')
-            self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+            self.assertEqual(self.cli.current_url, self.srv.url)
             self.checkErrorPage()
             # route: ticket
             self.cli.get(self.srv.url)
             self.screen('ticket')
-            self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+            self.assertEqual(self.cli.current_url, self.srv.url)
             self.checkErrorPage()
             # route: confirm
             self.cli.get(self.srv.url+'confirm')
             self.screen('confirm')
-            self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+            self.assertEqual(self.cli.current_url, self.srv.url)
             self.checkErrorPage()
             # route: success
             self.cli.get(self.srv.url+'success')
             self.screen('success')
-            self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+            self.assertEqual(self.cli.current_url, self.srv.url)
             self.checkErrorPage()
             # route: finished
             self.cli.get(self.srv.url+'finished')
             self.screen('finished')
-            self.assertEqual(self.cli.current_url, self.srv.url+"finished")
+            self.assertEqual(self.cli.current_url, self.srv.url)
             self.checkErrorPage()
 
 
@@ -369,11 +381,11 @@ class TicketMemberFormFieldValuesTests(SeleniumTestBaseTicketing):
             f.buffet.set(i)
             self.assertEqual(f.buffet.get(), i)
 
-    def test_tshirt_values(self):
-        f = self.form
-        for i in self.data_checkbox:
-            f.tshirt.set(i)
-            self.assertEqual(f.tshirt.get(), i)
+    # def test_tshirt_values(self):
+    #    f = self.form
+    #    for i in self.data_checkbox:
+    #        f.tshirt.set(i)
+    #        self.assertEqual(f.tshirt.get(), i)
 
     def test_support_values(self):
         f = self.form
@@ -453,19 +465,19 @@ class TicketMemberFormFieldValuesTests(SeleniumTestBaseTicketing):
             f.rep_type.set(i)
             self.assertEqual(f.rep_type.get(), i)
 
-    def test_tshirt_type_values(self):
-        f = self.form
-        f.tshirt.set(True)
-        for i in self.data_tshirt_type:
-            f.tshirt_type.set(i)
-            self.assertEqual(f.tshirt_type.get(), i)
+    # def test_tshirt_type_values(self):
+    #     f = self.form
+    #     f.tshirt.set(True)
+    #     for i in self.data_tshirt_type:
+    #         f.tshirt_type.set(i)
+    #         self.assertEqual(f.tshirt_type.get(), i)
 
-    def test_tshirt_size_values(self):
-        f = self.form
-        f.tshirt.set(True)
-        for i in self.data_tshirt_size:
-            f.tshirt_size.set(i)
-            self.assertEqual(f.tshirt_size.get(), i)
+    # def test_tshirt_size_values(self):
+    #     f = self.form
+    #     f.tshirt.set(True)
+    #     for i in self.data_tshirt_size:
+    #         f.tshirt_size.set(i)
+    #         self.assertEqual(f.tshirt_size.get(), i)
 
 
 class TicketMemberFormFieldLogicTests(SeleniumTestBaseTicketing):
@@ -484,53 +496,53 @@ class TicketMemberFormFieldLogicTests(SeleniumTestBaseTicketing):
         f.barcamp.set(True)
         self.assertEqual(f.buffet().is_enabled(), True)
 
-    def test_allinc_logic(self):
-        f = self.form
-        # activation
-        f.allinc.set(True)
-        self.assertEqual(f.allinc.get(), True)
-        self.assertEqual(f.allinc().is_enabled(), False)
-        self.assertEqual(f.generalassembly.get(), "1")
-        self.assertEqual(f.barcamp.get(), True)
-        self.assertEqual(f.buffet.get(), True)
-        self.assertEqual(f.tshirt.get(), True)
-        # deactivation
-        f.allinc.set(True)
-        f.generalassembly.set("2")
-        self.assertEqual(f.allinc.get(), False)
-        f.allinc.set(True)
-        f.generalassembly.set("3")
-        self.assertEqual(f.allinc.get(), False)
-        f.allinc.set(True)
-        f.barcamp.set(False)
-        self.assertEqual(f.allinc.get(), False)
-        f.allinc.set(True)
-        f.buffet.set(False)
-        self.assertEqual(f.allinc.get(), False)
-        f.allinc.set(True)
-        f.tshirt.set(False)
-        self.assertEqual(f.allinc.get(), False)
+    # def test_allinc_logic(self):
+    #     f = self.form
+    #     # activation
+    #     f.allinc.set(True)
+    #     self.assertEqual(f.allinc.get(), True)
+    #     self.assertEqual(f.allinc().is_enabled(), False)
+    #     self.assertEqual(f.generalassembly.get(), "1")
+    #     self.assertEqual(f.barcamp.get(), True)
+    #     self.assertEqual(f.buffet.get(), True)
+    #     # self.assertEqual(f.tshirt.get(), True)
+    #     # deactivation
+    #     f.allinc.set(True)
+    #     f.generalassembly.set("2")
+    #     self.assertEqual(f.allinc.get(), False)
+    #     f.allinc.set(True)
+    #     f.generalassembly.set("3")
+    #     self.assertEqual(f.allinc.get(), False)
+    #     f.allinc.set(True)
+    #     f.barcamp.set(False)
+    #     self.assertEqual(f.allinc.get(), False)
+    #     f.allinc.set(True)
+    #     f.buffet.set(False)
+    #     self.assertEqual(f.allinc.get(), False)
+    #     f.allinc.set(True)
+    #     # f.tshirt.set(False)
+    #     self.assertEqual(f.allinc.get(), False)
 
-    def test_tshirt_logic(self):
-        f = self.form
-        f.tshirt.set(False)
-        self.assertEqual(
-            self.cli.find_element_by_id("item-tshirt-type").is_displayed(),
-            False
-        )
-        self.assertEqual(
-            self.cli.find_element_by_id("item-tshirt-size").is_displayed(),
-            False
-        )
-        f.tshirt.set(True)
-        self.assertEqual(
-            self.cli.find_element_by_id("item-tshirt-type").is_displayed(),
-            True
-        )
-        self.assertEqual(
-            self.cli.find_element_by_id("item-tshirt-size").is_displayed(),
-            True
-        )
+    # def test_tshirt_logic(self):
+    #     f = self.form
+    #     f.tshirt.set(False)
+    #     self.assertEqual(
+    #         self.cli.find_element_by_id("item-tshirt-type").is_displayed(),
+    #         False
+    #     )
+    #     self.assertEqual(
+    #         self.cli.find_element_by_id("item-tshirt-size").is_displayed(),
+    #         False
+    #     )
+    #     f.tshirt.set(True)
+    #     self.assertEqual(
+    #         self.cli.find_element_by_id("item-tshirt-type").is_displayed(),
+    #         True
+    #     )
+    #     self.assertEqual(
+    #         self.cli.find_element_by_id("item-tshirt-size").is_displayed(),
+    #         True
+    #     )
 
     def test_rep_logic(self):
         f = self.form
@@ -629,7 +641,7 @@ class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
         f.generalassembly.set("2")
         f.barcamp.set(True)
         f.buffet.set(True)
-        f.tshirt.set(True)
+        # f.tshirt.set(True)
         f.support.set(True)
         f.supportl.set(True)
         f.supportxl.set(True)
@@ -643,8 +655,8 @@ class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
         f.rep_city.set("rep_city")
         f.rep_country.set("rep_country")
         f.rep_type.set("sibling")
-        f.tshirt_type.set("f")
-        f.tshirt_size.set("L")
+        # f.tshirt_type.set("f")
+        # f.tshirt_size.set("L")
         self.screen("before")
         f.submit()
         self.screen("after")
@@ -655,8 +667,9 @@ class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
         self.assertEqual(f.generalassembly.getRo(), "1")
         self.assertEqual(f.barcamp.getRo(), True)
         self.assertEqual(f.buffet.getRo(), True)
-        self.assertEqual(f.tshirt.getRo(), True)
+        # self.assertEqual(f.tshirt.getRo(), True)
         self.assertEqual(f.support.getRo(), True)
+        self.assertEqual(f.supportl.getRo(), True)
         self.assertEqual(f.supportxl.getRo(), True)
         self.assertEqual(f.supportxxl.getRo(), True)
         self.assertEqual(f.comment.getRo(), "comment")
@@ -668,8 +681,8 @@ class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
         self.assertEqual(f.rep_city.getRo(), "rep_city")
         self.assertEqual(f.rep_country.getRo(), "rep_country")
         self.assertEqual(f.rep_type.getRo(), "4")
-        self.assertEqual(f.tshirt_type.getRo(), "1")
-        self.assertEqual(f.tshirt_size.getRo(), "2")
+        # self.assertEqual(f.tshirt_type.getRo(), "1")
+        # self.assertEqual(f.tshirt_size.getRo(), "2")
 
     def test_confirm_reedit_data(self):
         f = self.form
@@ -677,7 +690,7 @@ class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
         f.generalassembly.set("2")
         f.barcamp.set(True)
         f.buffet.set(True)
-        f.tshirt.set(True)
+        # f.tshirt.set(True)  # no shirts a.t.m.
         f.support.set(True)
         f.supportl.set(True)
         f.supportxl.set(True)
@@ -691,8 +704,8 @@ class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
         f.rep_city.set("rep_city")
         f.rep_country.set("rep_country")
         f.rep_type.set("sibling")
-        f.tshirt_type.set("f")
-        f.tshirt_size.set("L")
+        # f.tshirt_type.set("f")
+        # f.tshirt_size.set("L")
         f.submit()
         f.reedit()
         # reedit and check rep fields
@@ -716,20 +729,20 @@ class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
         self.assertEqual(f.rep_country.getRo(), "rep_country-reedit")
         self.assertEqual(f.rep_type.getRo(), "0")
         # reedit and check tshirt fields
-        f.reedit()
-        f.tshirt_type.set("m")
-        f.tshirt_size.set("S")
-        self.screen("tshirt-before")
-        f.submit()
-        self.screen("tshirt-after")
-        self.assertEqual(f.tshirt_type.getRo(), "0")
-        self.assertEqual(f.tshirt_size.getRo(), "0")
+        # f.reedit()
+        # f.tshirt_type.set("m")
+        # f.tshirt_size.set("S")
+        # self.screen("tshirt-before")
+        # f.submit()
+        # self.screen("tshirt-after")
+        # self.assertEqual(f.tshirt_type.getRo(), "0")
+        # self.assertEqual(f.tshirt_size.getRo(), "0")
         # reedit and check ticket fields
         f.reedit()
         f.generalassembly.set("3")
         f.buffet.set(False)
         f.barcamp.set(False)
-        f.tshirt.set(False)
+        # f.tshirt.set(False)
         f.support.set(False)
         f.supportl.set(False)
         f.supportxl.set(False)
@@ -741,8 +754,9 @@ class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
         self.assertEqual(f.generalassembly.getRo(), "2")
         self.assertEqual(f.barcamp.getRo(), False)
         self.assertEqual(f.buffet.getRo(), False)
-        self.assertEqual(f.tshirt.getRo(), False)
+        # self.assertEqual(f.tshirt.getRo(), False)
         self.assertEqual(f.support.getRo(), False)
+        self.assertEqual(f.supportl.getRo(), False)
         self.assertEqual(f.supportxl.getRo(), False)
         self.assertEqual(f.supportxxl.getRo(), False)
         self.assertEqual(f.comment.getRo(), "comment-reedit")
@@ -845,10 +859,10 @@ class TicketMemberFormGvonlyAccessTests(SeleniumTestBaseTicketing):
             f.barcamp()
         with self.assertRaises(NoSuchElementException):
             f.buffet()
-        with self.assertRaises(NoSuchElementException):
-            f.tshirt()
-        with self.assertRaises(NoSuchElementException):
-            f.allinc()
+        # with self.assertRaises(NoSuchElementException):
+        #     f.tshirt()
+        # with self.assertRaises(NoSuchElementException):
+        #    f.allinc()
         with self.assertRaises(NoSuchElementException):
             f.support()
         with self.assertRaises(NoSuchElementException):
@@ -857,10 +871,10 @@ class TicketMemberFormGvonlyAccessTests(SeleniumTestBaseTicketing):
             f.supportxl()
         with self.assertRaises(NoSuchElementException):
             f.supportxxl()
-        with self.assertRaises(NoSuchElementException):
-            f.tshirt_type()
-        with self.assertRaises(NoSuchElementException):
-            f.tshirt_size()
+        # with self.assertRaises(NoSuchElementException):
+        #     f.tshirt_type()
+        # with self.assertRaises(NoSuchElementException):
+        #    f.tshirt_size()
 
 
 class TicketMemberFormGvonlyFieldValuesTests(SeleniumTestBaseTicketing):
@@ -1185,8 +1199,8 @@ class TicketNonemberFormFieldValuesTests(SeleniumTestBaseTicketing):
         self.form = TicketNonmemberObject(self.cfg)
         # data provider
         self.data_checkbox = [False, False, True, True, False, True, False]
-        self.data_tshirt_type = ["m", "f"]
-        self.data_tshirt_size = ["S", "M", "L", "XL", "XXL", "XXXL"]
+        # self.data_tshirt_type = ["m", "f"]
+        # self.data_tshirt_size = ["S", "M", "L", "XL", "XXL", "XXXL"]
 
     def test_firstname_values(self):
         self.logSection()
@@ -1221,12 +1235,12 @@ class TicketNonemberFormFieldValuesTests(SeleniumTestBaseTicketing):
             f.buffet.set(i)
             self.assertEqual(f.buffet.get(), i)
 
-    def test_tshirt_values(self):
-        self.logSection()
-        f = self.form
-        for i in self.data_checkbox:
-            f.tshirt.set(i)
-            self.assertEqual(f.tshirt.get(), i)
+    # def test_tshirt_values(self):
+    #     self.logSection()
+    #     f = self.form
+    #     for i in self.data_checkbox:
+    #        f.tshirt.set(i)
+    #        self.assertEqual(f.tshirt.get(), i)
 
     def test_support_values(self):
         self.logSection()
@@ -1234,6 +1248,13 @@ class TicketNonemberFormFieldValuesTests(SeleniumTestBaseTicketing):
         for i in self.data_checkbox:
             f.support.set(i)
             self.assertEqual(f.support.get(), i)
+
+    def test_supportl_values(self):
+        self.logSection()
+        f = self.form
+        for i in self.data_checkbox:
+            f.supportl.set(i)
+            self.assertEqual(f.supportl.get(), i)
 
     def test_supportxl_values(self):
         self.logSection()
@@ -1255,21 +1276,21 @@ class TicketNonemberFormFieldValuesTests(SeleniumTestBaseTicketing):
         f.comment.set("test")
         self.assertEqual(f.comment.get(), "test")
 
-    def test_tshirt_type_values(self):
-        self.logSection()
-        f = self.form
-        f.tshirt.set(True)
-        for i in self.data_tshirt_type:
-            f.tshirt_type.set(i)
-            self.assertEqual(f.tshirt_type.get(), i)
+    # def test_tshirt_type_values(self):
+    #     self.logSection()
+    #     f = self.form
+    #     f.tshirt.set(True)
+    #     for i in self.data_tshirt_type:
+    #         f.tshirt_type.set(i)
+    #         self.assertEqual(f.tshirt_type.get(), i)
 
-    def test_tshirt_size_values(self):
-        self.logSection()
-        f = self.form
-        f.tshirt.set(True)
-        for i in self.data_tshirt_size:
-            f.tshirt_size.set(i)
-            self.assertEqual(f.tshirt_size.get(), i)
+    # def test_tshirt_size_values(self):
+    #     self.logSection()
+    #     f = self.form
+    #     f.tshirt.set(True)
+    #     for i in self.data_tshirt_size:
+    #         f.tshirt_size.set(i)
+    #         self.assertEqual(f.tshirt_size.get(), i)
 
 
 class TicketNonmemberFormFieldLogicTests(SeleniumTestBaseTicketing):
@@ -1288,27 +1309,27 @@ class TicketNonmemberFormFieldLogicTests(SeleniumTestBaseTicketing):
         f.barcamp.set(True)
         self.assertEqual(f.buffet().is_enabled(), True)
 
-    def test_tshirt_logic(self):
-        self.logSection()
-        f = self.form
-        f.tshirt.set(False)
-        self.assertEqual(
-            self.cli.find_element_by_id("item-tshirt-type").is_displayed(),
-            False
-        )
-        self.assertEqual(
-            self.cli.find_element_by_id("item-tshirt-size").is_displayed(),
-            False
-        )
-        f.tshirt.set(True)
-        self.assertEqual(
-            self.cli.find_element_by_id("item-tshirt-type").is_displayed(),
-            True
-        )
-        self.assertEqual(
-            self.cli.find_element_by_id("item-tshirt-size").is_displayed(),
-            True
-        )
+    # def test_tshirt_logic(self):
+    #     self.logSection()
+    #     f = self.form
+    #     f.tshirt.set(False)
+    #     self.assertEqual(
+    #         self.cli.find_element_by_id("item-tshirt-type").is_displayed(),
+    #         False
+    #     )
+    #     self.assertEqual(
+    #         self.cli.find_element_by_id("item-tshirt-size").is_displayed(),
+    #         False
+    #     )
+    #     f.tshirt.set(True)
+    #     self.assertEqual(
+    #         self.cli.find_element_by_id("item-tshirt-type").is_displayed(),
+    #         True
+    #     )
+    #     self.assertEqual(
+    #         self.cli.find_element_by_id("item-tshirt-size").is_displayed(),
+    #         True
+    #     )
 
 
 class TicketNonmemberFormActionRedirectsTests(SeleniumTestBaseTicketing):
@@ -1391,13 +1412,14 @@ class TicketNonmemberFormActionDataTests(SeleniumTestBaseTicketing):
         f.email.set("test@c3s.cc")
         f.barcamp.set(True)
         f.buffet.set(True)
-        f.tshirt.set(True)
+        # f.tshirt.set(True)
         f.support.set(True)
+        f.supportl.set(True)
         f.supportxl.set(True)
         f.supportxxl.set(True)
         f.comment.set("comment")
-        f.tshirt_type.set("f")
-        f.tshirt_size.set("L")
+        # f.tshirt_type.set("f")
+        # f.tshirt_size.set("L")
         self.screen("before")
         f.submit()
         self.screen("after")
@@ -1407,13 +1429,14 @@ class TicketNonmemberFormActionDataTests(SeleniumTestBaseTicketing):
         self.assertEqual(f.email.getRo(), "test@c3s.cc")
         self.assertEqual(f.barcamp.getRo(), True)
         self.assertEqual(f.buffet.getRo(), True)
-        self.assertEqual(f.tshirt.getRo(), True)
+        # self.assertEqual(f.tshirt.getRo(), True)
         self.assertEqual(f.support.getRo(), True)
+        self.assertEqual(f.supportl.getRo(), True)
         self.assertEqual(f.supportxl.getRo(), True)
         self.assertEqual(f.supportxxl.getRo(), True)
         self.assertEqual(f.comment.getRo(), "comment")
-        self.assertEqual(f.tshirt_type.getRo(), "1")
-        self.assertEqual(f.tshirt_size.getRo(), "2")
+        # self.assertEqual(f.tshirt_type.getRo(), "1")
+        # self.assertEqual(f.tshirt_size.getRo(), "2")
 
     def test_confirm_reedit_data(self):
         f = self.form
@@ -1423,29 +1446,31 @@ class TicketNonmemberFormActionDataTests(SeleniumTestBaseTicketing):
         f.email.set("test@c3s.cc")
         f.barcamp.set(True)
         f.buffet.set(True)
-        f.tshirt.set(True)
+        # f.tshirt.set(True)
         f.support.set(True)
+        f.supportl.set(True)
         f.supportxl.set(True)
         f.supportxxl.set(True)
         f.comment.set("comment")
-        f.tshirt_type.set("f")
-        f.tshirt_size.set("L")
+        # f.tshirt_type.set("f")
+        # f.tshirt_size.set("L")
         f.submit()
         # reedit and check tshirt fields
-        f.reedit()
-        f.tshirt_type.set("m")
-        f.tshirt_size.set("S")
-        self.screen("tshirt-before")
-        f.submit()
-        self.screen("tshirt-after")
-        self.assertEqual(f.tshirt_type.getRo(), "0")
-        self.assertEqual(f.tshirt_size.getRo(), "0")
+        # f.reedit()
+        # f.tshirt_type.set("m")
+        # f.tshirt_size.set("S")
+        # self.screen("tshirt-before")
+        # f.submit()
+        # self.screen("tshirt-after")
+        # self.assertEqual(f.tshirt_type.getRo(), "0")
+        # self.assertEqual(f.tshirt_size.getRo(), "0")
         # reedit and check ticket fields
         f.reedit()
         f.barcamp.set(True)
         f.buffet.set(False)
-        f.tshirt.set(False)
+        # f.tshirt.set(False)
         f.support.set(False)
+        f.supportl.set(False)
         f.supportxl.set(False)
         f.supportxxl.set(False)
         f.comment.set("comment-reedit")
@@ -1454,8 +1479,9 @@ class TicketNonmemberFormActionDataTests(SeleniumTestBaseTicketing):
         self.screen("ticket-after")
         self.assertEqual(f.barcamp.getRo(), True)
         self.assertEqual(f.buffet.getRo(), False)
-        self.assertEqual(f.tshirt.getRo(), False)
+        # self.assertEqual(f.tshirt.getRo(), False)
         self.assertEqual(f.support.getRo(), False)
+        self.assertEqual(f.supportl.getRo(), False)
         self.assertEqual(f.supportxl.getRo(), False)
         self.assertEqual(f.supportxxl.getRo(), False)
         self.assertEqual(f.comment.getRo(), "comment-reedit")
