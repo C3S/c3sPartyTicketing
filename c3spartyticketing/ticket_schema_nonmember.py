@@ -12,6 +12,8 @@ from pyramid.i18n import (
     TranslationStringFactory,
 )
 
+from c3spartyticketing import ticket_options
+
 _ = TranslationStringFactory('c3spartyticketing')
 
 
@@ -54,8 +56,8 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
         #         )
         # no option set raises an exception
         if (
-                ('attendance' not in value['ticket']['ticket_bc'])
-                # and (not value['ticket']['ticket_tshirt']) and
+                ('attendance' not in value['ticket']['ticket_bc']) and
+                # (not value['ticket']['ticket_tshirt']) and
                 (not value['ticket']['ticket_support'])):
             raise colander.Invalid(
                 form,
@@ -64,39 +66,9 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
 
     # ## options
 
-    ticket_bc_options = (
-        ('attendance', _(u'I will attend the BarCamp. (€15)')),
-        ('buffet', _(u'I\'d like to have coffee and cake during '
-                     u'and a warm meal after the BarCamp. (€12)'))
-    )
-
-    ticket_support_options = (
-        (1, _(u'Supporter Ticket (€5)')),
-        (2, _(u'Supporter Ticket XL (€10)')),
-        (3, _(u'Supporter Ticket XXL (€100)'))
-    )
-
-    # rep_type_options = (
-    #     ('member', _(u'a member of C3S SCE')),
-    #     ('partner', _(u'my spouse / registered civil partner')),
-    #     ('parent', _(u'my parent')),
-    #     ('child', _(u'my child')),
-    #     ('sibling', _(u'my sibling'))
-    # )
-
-    # tshirt_type_options = (
-    #     ('m', _(u'male')),
-    #     ('f', _(u'female'))
-    # )
-
-    # tshirt_size_options = (
-    #     ('S', _(u'S')),
-    #     ('M', _(u'M')),
-    #     ('L', _(u'L')),
-    #     ('XL', _(u'XL')),
-    #     ('XXL', _(u'XXL')),
-    #     ('XXXL', _(u'XXXL'))
-    # )
+    ticket_bc_options = ticket_options.get_ticket_bc_options(request)
+    ticket_support_options = ticket_options.get_ticket_support_options(
+        request)
 
     # ## formparts
 

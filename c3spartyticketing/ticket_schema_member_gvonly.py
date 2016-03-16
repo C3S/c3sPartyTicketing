@@ -15,9 +15,9 @@ from pyramid.i18n import (
 _ = TranslationStringFactory('c3spartyticketing')
 
 
-def ticket_member_schema(request, appstruct, readonly=False):
+def ticket_member_gvonly_schema(request, appstruct, readonly=False):
     """
-    A Schema for the Member Ticket Form.
+    A Schema for the Member Ticket Form. GV only.
 
     Args:
         request: the current request.
@@ -28,29 +28,10 @@ def ticket_member_schema(request, appstruct, readonly=False):
     * comes with a validator
 
     """
+
     # ### validator
 
     def validator(form, value):
-        """
-        A validator ...
-        """
-        # XXX: herausfinden, wie man per klassenvalidator colander.Invalid
-        #      ansprechen muss, damit deform den error am richtigen ort
-        #      platziert und die richtigen klassen vergibt
-        # node.raise_invalid()?
-        # add exc as child?
-        # form.raise_invalid('test', form.get('tshirt').get('tshirt_size'))
-        # if value['ticket']['ticket_tshirt']:
-        #    if not value['tshirt']['tshirt_type']:
-        #        raise colander.Invalid(
-        #            form,
-        #            _(u'Gender selection for T-shirt is mandatory.')
-        #        )
-        #    if not value['tshirt']['tshirt_size']:
-        #        raise colander.Invalid(
-        #            form,
-        #            _(u'Size of T-shirt ist mandatory.')
-        #        )
         if value['ticket']['ticket_gv'] == 2:
             if not value['representation']['firstname']:
                 raise colander.Invalid(
@@ -105,34 +86,18 @@ def ticket_member_schema(request, appstruct, readonly=False):
         )),
         (3, _(u'I will not attend the C3S SCE General Assembly.'))
     )
-    """
-    Options for the General Assembly.
-    """
 
-    # ticket_gv_food_option = (
-    #    ('buffet', _(
-    #        u'I\'d like to have Coffee and Cake during '
-    #        u' and a cooked meal after the BarCamp. (€12)'))
+    # ticket_bc_options = (
+    #     ('attendance', _(
+    #         u'I will attend the BarCamp.') + u'{request.bc_cost}€'),
+    #     ('buffet', _(u'I\'d like to dine from the BarCamp buffet. (€12)'))
     # )
-    # """
-    # Food Options for the General Assembly.
-    # """
 
-    ticket_bc_options = (
-        ('attendance', _(u'I will attend the BarCamp.')),
-        ('buffet', _(
-            u'I\'d like to have Coffee and Cake during '
-            u' and a cooked meal after the BarCamp. (€12)'))
-    )
-
-    ticket_support_options = (
-        (1, _(u'Supporter Ticket (€5)')),
-        (2, _(u'Supporter Ticket XL (€10)')),
-        (3, _(u'Supporter Ticket XXL (€100)'))
-    )
-    """
-    Supporter Ticket Options.
-    """
+    # ticket_support_options = (
+    #     (1, _(u'Supporter Ticket (€5)')),
+    #     (2, _(u'Supporter Ticket XL (€10)')),
+    #     (3, _(u'Supporter Ticket XXL (€100)'))
+    # )
 
     rep_type_options = (
         ('member', _(u'a member of C3S SCE')),
@@ -141,29 +106,12 @@ def ticket_member_schema(request, appstruct, readonly=False):
         ('child', _(u'my child')),
         ('sibling', _(u'my sibling'))
     )
-    """
-    Options for choosing a Representative.
-    """
 
-    # tshirt_type_options = (
-    #    ('m', _(u'male')),
-    #    ('f', _(u'female'))
-    # )
+    # ## formparts
 
-    # tshirt_size_options = (
-    #     ('S', _(u'S')),
-    #     ('M', _(u'M')),
-    #     ('L', _(u'L')),
-    #     ('XL', _(u'XL')),
-    #     ('XXL', _(u'XXL')),
-    #     ('XXXL', _(u'XXXL'))
-    # )
-
-    # ### formparts
-
-    class TicketData(colander.MappingSchema):
+    class TicketGvonlyData(colander.MappingSchema):
         """
-        A Colander schema for Ticket Data.
+        A Colander Schema for GV only Ticket Data.
         """
 
         locale_name = get_locale_name(request)
@@ -177,108 +125,6 @@ def ticket_member_schema(request, appstruct, readonly=False):
             ),
             oid="ticket_gv"
         )
-        ticket_bc = colander.SchemaNode(
-            colander.Set(),
-            title=_(u"BarCamp:"),
-            widget=deform.widget.CheckboxChoiceWidget(
-                size=1, css_class='ticket_types_input',
-                values=ticket_bc_options,
-                readonly=readonly
-            ),
-            missing='',
-            description=_(
-                u'We will try to offer catering for a fixed price. '
-                u'There will be Coffee and a snack or cake in the afternoon '
-                u'and a cooked meal at the end of the day.'
-            ),
-            oid="ticket_bc"
-        )
-        if readonly:
-            ticket_bc.description = None
-            if not appstruct['ticket']['ticket_bc']:
-                ticket_bc = None
-        # ticket_tshirt = colander.SchemaNode(
-        #     colander.Boolean(),
-        #     title=_(u"Extras:"),
-        #     widget=deform.widget.CheckboxWidget(
-        #         readonly=readonly,
-        #         readonly_template='forms/checkbox_label.pt'
-        #     ),
-        #     label="T-shirt (€25)",
-        #     missing='',
-        #     description=_(
-        #         u'There will be one joint T-shirt design for both events in '
-        #         u'C3S green, black and white. Exclusively for participants, '
-        #         u'available only if pre-ordered! You can collect your '
-        #         u'pre-ordered T-shirt at both the BarCamp and the general '
-        #         u'assembly. If you chose to order a shirt, '
-        #         u'you can specify its size below.'
-        #     ),
-        #     oid="ticket_tshirt"
-        # )
-        # if readonly:
-        #     ticket_tshirt.description = None
-        #     if not appstruct['ticket']['ticket_tshirt']:
-        #        ticket_tshirt = None
-        # ticket_all = colander.SchemaNode(
-        #     colander.Boolean(),
-        #     title=_(u"Special Offer:"),
-        #     widget=deform.widget.CheckboxWidget(
-        #         readonly=readonly,
-        #         readonly_template='forms/checkbox_label.pt'
-        #     ),
-        #     label="All-Inclusive (€42)",
-        #     missing='',
-        #     description=_(
-        #         u'The all-inclusive package covers the participation in the '
-        #         u'BarCamp (including coffee, cake and a warm meal), '
-        #         u'participation in the general assembly. '
-        #         # u'and a T-shirt (Supporter) as well.'
-        #     ),
-        #     oid="ticket_all"
-        # )
-        # if readonly:
-        #    ticket_all.description = None
-        #    ticket_all.label = _(u"All-Inclusive Discount (-€2,50)")
-        #    if not appstruct['ticket']['ticket_all']:
-        #        ticket_all = None
-        ticket_support = colander.SchemaNode(
-            colander.Set(),
-            title=_(u"Supporter Tickets:"),
-            widget=deform.widget.CheckboxChoiceWidget(
-                size=1, css_class='ticket_types_input',
-                values=ticket_support_options,
-                readonly=readonly
-            ),
-            missing='',
-            description=_(
-                u'These ticket options are selectable indepently from the '
-                u'other options. They help the cooperative a great deal to '
-                u'bear the costs occasioned by the events.'
-            ),
-            oid="ticket_support"
-        )
-        if readonly:
-            ticket_support.description = None
-            if not appstruct['ticket']['ticket_support']:
-                ticket_support = None
-        if readonly and appstruct['ticket']['the_total'] > 0:
-            the_total = colander.SchemaNode(
-                colander.Decimal(quant='1.00'),
-                widget=deform.widget.TextInputWidget(
-                    readonly=readonly,
-                    readonly_template="forms/textinput_money.pt",
-                ),
-                title=_(u"Total"),
-                description=_(
-                    u'Your order has to be fully paid by 09.04.2016 at the '
-                    u'latest (payment receipt on our account applies)'
-                    u'Otherwise we will have to cancel the entire order. '
-                    u'Money transfer is the only payment method. Payment '
-                    u'informations will be sent to you shortly by e-mail.'
-                ),
-                oid="the-total",
-            )
         comment = colander.SchemaNode(
             colander.String(),
             title=_(u"Notes"),
@@ -332,7 +178,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
 
     class RepresentationData(colander.MappingSchema):
         """
-        Colander schema of respresentation form.
+        colander schema of respresentation form
         """
         note_top = colander.SchemaNode(
             colander.String(),
@@ -514,34 +360,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
         if readonly:
             note_bottom = None
 
-    # class TshirtData(colander.MappingSchema):
-    #     """
-    #     colander schema of tshirt form
-    #     """
-    #     tshirt_type = colander.SchemaNode(
-    #         colander.String(),
-    #         title=_(u"Gender:"),
-    #         widget=deform.widget.RadioChoiceWidget(
-    #             size=1, css_class='ticket_types_input',
-    #             values=tshirt_type_options,
-    #             readonly=readonly
-    #         ),
-    #         missing=0,
-    #         oid="tshirt-type",
-    #     )
-    #     tshirt_size = colander.SchemaNode(
-    #         colander.String(),
-    #         title=_(u"Size:"),
-    #         widget=deform.widget.RadioChoiceWidget(
-    #             size=1, css_class='ticket_types_input',
-    #             values=tshirt_size_options,
-    #             readonly=readonly
-    #         ),
-    #         missing=0,
-    #         oid="tshirt-size",
-    #     )
-
-    # ### form
+    # ## form
 
     class TicketForm(colander.Schema):
         """
@@ -549,22 +368,76 @@ def ticket_member_schema(request, appstruct, readonly=False):
         - Ticketing Information
         - Representation Data
         """
-        ticket = TicketData(
+        gvonlynote = colander.SchemaNode(
+            colander.String(),
+            title='',
+            widget=deform.widget.TextInputWidget(
+                readonly=True,
+                readonly_template="forms/textinput_htmlrendered.pt"
+            ),
+            default=u'''
+            <div class="alert alert-info" role="alert">
+                <strong>
+                    From 14th August on only limited registration!
+                </strong><br />
+                <br />
+                There's no option to register for the BarCamp anymore.
+                However, you may
+                still register for attending the general assembly.
+                Participation is free. For organizational reasons, we are
+                strongly recommending to register immediately.<br />
+                <br />
+                There is no option to buy tickets for the BarCamp at the door.
+            </div>''',
+            missing='',
+            oid='gvonly-note'
+        )
+        if get_locale_name(request) == 'de':
+            gvonlynote = colander.SchemaNode(
+                colander.String(),
+                title='',
+                widget=deform.widget.TextInputWidget(
+                    readonly=True,
+                    readonly_template="forms/textinput_htmlrendered.pt"
+                ),
+                default=u'''
+            <div class="alert alert-info" role="alert">
+                <strong>
+                    Seit 14. August nur noch eingeschränkte Anmeldung!
+                </strong><br />
+                <br />
+                Die Möglichkeit zur Anmeldung fürs Barcamp
+                besteht leider nicht mehr.
+                Für die Generalversammlung kannst Du Dich jedoch nach wie
+                vor anmelden. Die Teilnahme ist kostenlos. Wir bitten Dich
+                aber, Dich aus Planungsgründen umgehend anzumelden.<br />
+                <br />
+                Wir werden im Rahmen der Generalversammlung Restbestände der
+                T-Shirts zum Verkauf anbieten. Wir können Dir aber nicht
+                garantieren, dass die passende Größe darunter ist.<br />
+                <br />
+                Für das Barcamp besteht keine Möglichkeit, ein Ticket direkt
+                vor Ort zu kaufen.
+            </div>''',
+                missing='',
+                oid='gvonly-note'
+            )
+        gvonlynote.missing = gvonlynote.default  # otherwise empty on redit
+        if readonly:
+            gvonlynote = None
+
+        ticket = TicketGvonlyData(
             title=_(u"Ticket Information"),
             oid="ticket-data",
         )
+
         representation = RepresentationData(
             title=_(u"Representative"),
             oid="rep-data",
         )
         if readonly and not appstruct['ticket']['ticket_gv'] == 2:
             representation = None
-        # tshirt = TshirtData(
-        #    title=_(u"T-Shirt"),
-        #    oid="tshirt-data"
-        # )
-        # if readonly and not appstruct['ticket']['ticket_tshirt']:
-        #    tshirt = None
+
         finalnote = colander.SchemaNode(
             colander.String(),
             title='',
@@ -580,10 +453,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 You can't edit the order form after hitting the button
                 "Submit & Buy" below. However, you can click the personal
                 link you received as part of the invitation link. There you
-                can view but not edit your order. A full refund of your
-                money once transferred is not possible. Only in case the
-                BarCamp is cancelled by C3S SCE a refund for the BarCamp
-                ticket and food is possible. If you have any questions
+                can view but not edit your order. If you have any questions
                 please contact
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
@@ -610,11 +480,8 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 Kaufen" unten absendest, kannst Du an der Bestellung im
                 Formular keine Änderung mehr vornehmen. Du kannst Deine
                 Bestellung jedoch unter Deinem persönlichen Link aus der
-                Einladungs-Mail weiterhin aufrufen und anschauen. Eine
-                Erstattung der überwiesenen Summe ist nicht möglich. Nur
-                im Fall der Absage des Barcamps durch die C3S SCE werden
-                die Kosten für Ticket und Essen erstattet. Falls Du Fragen
-                zu Deiner Bestellung hast, wende Dich bitte an
+                Einladungs-Mail weiterhin aufrufen und anschauen. Falls Du
+                Fragen zu Deiner Bestellung hast, wende Dich bitte an
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
                 </a>
