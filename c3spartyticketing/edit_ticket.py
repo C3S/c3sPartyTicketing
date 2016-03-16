@@ -132,25 +132,25 @@ def edit_ticket(request):
         #      platziert und die richtigen klassen vergibt
         # node.raise_invalid()?
         # add exc as child?
-        #form.raise_invalid('test', form.get('tshirt').get('tshirt_size'))
+        # form.raise_invalid('test', form.get('tshirt').get('tshirt_size'))
         if value['ticket']['ticket_tshirt']:
             if not value['tshirt']['tshirt_type']:
-                raise colander.Invalid(form,
-                    _(u'Gender selection for T-shirt is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'Gender selection for T-shirt is mandatory.')
                 )
             if not value['tshirt']['tshirt_size']:
-                raise colander.Invalid(form,
-                    _(u'Size of T-shirt ist mandatory.')
+                raise colander.Invalid(
+                    form, _(u'Size of T-shirt ist mandatory.')
                 )
         if _ticket.membership_type in ('normal', 'investing') \
-            and value['ticket']['ticket_gv'] == 2:
+           and value['ticket']['ticket_gv'] == 2:
             if not value['representation']['firstname']:
-                raise colander.Invalid(form,
-                    _(u'First name of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'First name of representative is mandatory.')
                 )
             if not value['representation']['lastname']:
-                raise colander.Invalid(form,
-                    _(u'Last name of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'Last name of representative is mandatory.')
                 )
             validate_email = colander.Email(
                 _(u'Email of representative is invalid.')
@@ -160,36 +160,38 @@ def edit_ticket(request):
                 value['representation']['email']
             )
             if not value['representation']['street']:
-                raise colander.Invalid(form,
-                    _(u'Address of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'Address of representative is mandatory.')
                 )
             if not value['representation']['zip']:
-                raise colander.Invalid(form,
-                    _(u'Postal code of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'Postal code of representative is mandatory.')
                 )
             if not value['representation']['city']:
-                raise colander.Invalid(form,
-                    _(u'City of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'City of representative is mandatory.')
                 )
             if not value['representation']['country']:
-                raise colander.Invalid(form,
-                    _(u'Country of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'Country of representative is mandatory.')
                 )
             if not value['representation']['representation_type']:
-                raise colander.Invalid(form,
-                    _(u'Relation of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'Relation of representative is mandatory.')
                 )
         if value['represents']['represents1'] != 0:
-            if PartyTicket.get_by_id(value['represents']['represents1']) is None:
-                raise colander.Invalid(form,
-                    'Repräsentiert (1): Ticket ID '
-                    +str(value['represents']['represents1'])+' ungültig'
+            if PartyTicket.get_by_id(
+                    value['represents']['represents1']) is None:
+                raise colander.Invalid(
+                    form, 'Repräsentiert (1): Ticket ID ' +
+                    str(value['represents']['represents1'])+' ungültig'
                 )
         if value['represents']['represents2'] != 0:
-            if PartyTicket.get_by_id(value['represents']['represents2']) is None:
-                raise colander.Invalid(form,
-                    'Repräsentiert (2): Ticket ID '
-                    +str(value['represents']['represents2'])+' ungültig'
+            if PartyTicket.get_by_id(
+                    value['represents']['represents2']) is None:
+                raise colander.Invalid(
+                    form, 'Repräsentiert (2): Ticket ID ' +
+                    str(value['represents']['represents2']) + ' ungültig'
                 )
 
     # XXX: convert ticket_*_schema into class and import here
@@ -267,7 +269,7 @@ def edit_ticket(request):
         ('representative', 'Repräsentant'),
     )
 
-    ### generate form
+    # ### generate form
     class PersonalData(colander.MappingSchema):
 
         firstname = colander.SchemaNode(
@@ -319,7 +321,7 @@ def edit_ticket(request):
             ),
             oid="ticket_gv"
         )
-        #if _ticket.membership_type == "nonmember":
+        # if _ticket.membership_type == "nonmember":
         #    ticket_gv = None
         ticket_bc = colander.SchemaNode(
             colander.Set(),
@@ -523,7 +525,7 @@ def edit_ticket(request):
             title="zu zahlen",
             widget=deform.widget.TextInputWidget(
             ),
-            #missing='',
+            # missing='',
             default=0,
             oid="price-the-total"
         )
@@ -535,7 +537,7 @@ def edit_ticket(request):
             oid="price-calc"
         )
 
-    ### form
+    # ### form
     class TicketForm(colander.Schema):
         """
         The Form consists of
@@ -581,7 +583,7 @@ def edit_ticket(request):
             colander.String(),
             title=_(u"Staff Kommentar"),
             missing='',
-            #validator=colander.Length(max=250),
+            # validator=colander.Length(max=250),
             widget=deform.widget.TextAreaWidget(
                 rows=3, cols=50,
             ),
@@ -599,7 +601,7 @@ def edit_ticket(request):
     form.set_appstruct(appstruct)
 
     # if the form has NOT been used and submitted, remove error messages if any
-    if not 'submit' in request.POST:
+    if 'submit' not in request.POST:
         request.session.pop_flash()
 
     # if the form has been used and SUBMITTED, check contents
@@ -608,7 +610,7 @@ def edit_ticket(request):
         controls = request.POST.items()
         print(controls)
 
-        ### validation of user input
+        # ### validation of user input
 
         try:
             print('about to validate form input')
@@ -632,7 +634,7 @@ def edit_ticket(request):
                 'formerror': True
             }
 
-        ### derived values
+        # ### derived values
 
         # member
         if _ticket.membership_type in ('normal', 'investing'):
@@ -682,13 +684,14 @@ def edit_ticket(request):
                 the_values['ticket_bc_buffet'] = 0
 
             # option 'all' equivalent to all options checked
-            if appstruct['ticket']['ticket_gv'] == 1 \
-                and set(['attendance', 'buffet']).issubset(
-                    appstruct['ticket']['ticket_bc']
-                ) \
-                and appstruct['ticket']['ticket_tshirt']:
+            if (
+                    (appstruct['ticket']['ticket_gv'] == 1) and
+                    (set(['attendance', 'buffet']).issubset(
+                        appstruct['ticket']['ticket_bc'])) and
+                    (appstruct['ticket']['ticket_tshirt'])):
                 appstruct['ticket']['ticket_all'] = True
 
+            # XXX there was an indeentation error here: trying a fix...
             # ensure options equivalent to option 'all'
             if appstruct['ticket']['ticket_all']:
                 appstruct['ticket']['ticket_gv'] = 1
@@ -719,7 +722,7 @@ def edit_ticket(request):
                 _the_total += the_support.get(int(support))
                 _support += the_support.get(int(support))
 
-            derivedvalues= {}
+            derivedvalues = {}
             derivedvalues['the_total'] = _the_total
             derivedvalues['discount'] = _discount
             derivedvalues['support'] = _support
@@ -773,7 +776,7 @@ def edit_ticket(request):
                 _the_total += the_support.get(int(support))
                 _support += the_support.get(int(support))
 
-            derivedvalues= {}
+            derivedvalues = {}
             derivedvalues['the_total'] = _the_total
             derivedvalues['discount'] = 0
             derivedvalues['support'] = _support
@@ -787,11 +790,10 @@ def edit_ticket(request):
             if appstruct['price']['the_total'] == _ticket.the_total:
                 derivedvalues['discount'] = _ticket.discount
             derivedvalues['the_total'] = appstruct['price']['the_total']
-            
 
-        ### save to db
+        # ### save to db
 
-        #_ticket.date_of_submission = datetime.now()
+        # _ticket.date_of_submission = datetime.now()
         if _ticket.membership_type in ('normal', 'investing'):
             _ticket.ticket_all = appstruct['ticket']['ticket_all']
             _ticket.rep_firstname = appstruct['representation']['firstname']
@@ -801,7 +803,8 @@ def edit_ticket(request):
             _ticket.rep_zip = appstruct['representation']['zip']
             _ticket.rep_city = appstruct['representation']['city']
             _ticket.rep_country = appstruct['representation']['country']
-            _ticket.rep_type = appstruct['representation']['representation_type']
+            _ticket.rep_type = appstruct[
+                'representation']['representation_type']
             _ticket.ticket_gv_attendance = appstruct['ticket']['ticket_gv']
         elif appstruct['ticket']['ticket_gv'] in [1, 3]:
             _ticket.ticket_gv_attendance = appstruct['ticket']['ticket_gv']
@@ -840,10 +843,10 @@ def edit_ticket(request):
         _ticket.support = derivedvalues['support']
         _ticket.discount = derivedvalues['discount']
         _ticket.the_total = derivedvalues['the_total']
-        #_ticket.guestlist = False
+        # _ticket.guestlist = False
 
         # bestelldatum
-        #_ticket.date_of_submission = appstruct['order']['date_of_submission']
+        # _ticket.date_of_submission = appstruct['order']['date_of_submission']
 
         # zahlungseingang / datum
         same = (  # changed value through form (different from db)?
