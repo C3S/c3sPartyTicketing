@@ -49,6 +49,35 @@ class RequestWithUserAttribute(Request):
 
         # /end of ### Making A 'User Object' Available as a Request Attribute
 
+
+    @reify
+    def supporter_M(request):
+        """
+        Returns the cost of the food served at the barcamp
+        """
+        return request.registry.settings['registration.supporter_M_cost']
+
+    @reify
+    def supporter_L(request):
+        """
+        Returns the cost of the food served at the barcamp
+        """
+        return request.registry.settings['registration.supporter_L_cost']
+
+    @reify
+    def supporter_XL(request):
+        """
+        Returns the cost of the food served at the barcamp
+        """
+        return request.registry.settings['registration.supporter_XL_cost']
+
+    @reify
+    def supporter_XXL(request):
+        """
+        Returns the cost of the food served at the barcamp
+        """
+        return request.registry.settings['registration.supporter_XXL_cost']
+
     @reify
     def fully_paid_date(request):
         """

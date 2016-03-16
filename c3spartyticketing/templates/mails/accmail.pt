@@ -20,5 +20,6 @@ REPRESENTATION: ${gv_representation}
 
 SUPPORTER TICKETS:
   supporter ticket: ${supporter}
-  supporter ticket XL: ${supporter_x}
-  supporter ticket XXL: ${supporter_xl}
+  supporter ticket L: ${supporter_l}
+  supporter ticket XL: ${supporter_xl}
+  supporter ticket XXL: ${supporter_xxl}

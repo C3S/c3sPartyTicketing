@@ -1,5 +1,4 @@
 # -*- coding: utf-8  -*-
-# import os
 import unittest
 import transaction
 # from pyramid.config import Configurator
@@ -20,6 +19,9 @@ DEBUG = False
 
 
 class PartyTicketTests(unittest.TestCase):
+    """
+    Test cases for the PartyTicket data objects
+    """
     def setUp(self):
         self.config = testing.setUp()
         self.config.include('pyramid_mailer.testing')
@@ -56,8 +58,9 @@ class PartyTicketTests(unittest.TestCase):
                 ticket_tshirt_size=0,
                 ticket_all=False,
                 ticket_support=False,
-                ticket_support_x=False,
+                ticket_support_l=False,
                 ticket_support_xl=False,
+                ticket_support_xxl=False,
                 support=0,
                 discount=0,
                 rep_firstname=u'',
@@ -100,8 +103,9 @@ class PartyTicketTests(unittest.TestCase):
                  ticket_tshirt_size=u'xxl',
                  ticket_all=False,
                  ticket_support=False,
-                 ticket_support_x=False,
+                 ticket_support_l=False,
                  ticket_support_xl=False,
+                 ticket_support_xxl=False,
                  support=0,
                  discount=0,
                  the_total=15,
@@ -115,6 +119,9 @@ class PartyTicketTests(unittest.TestCase):
                  guestlist=False,
                  user_comment=u'foo',
                  ):
+        """
+        Make one PartyTicket data object.
+        """
         # print "type(self.session): " + str(type(self.session))
         return self._getTargetClass()(  # order of params DOES matter
             token,
@@ -135,8 +142,9 @@ class PartyTicketTests(unittest.TestCase):
             ticket_tshirt_size,
             ticket_all,
             ticket_support,
-            ticket_support_x,
+            ticket_support_l,
             ticket_support_xl,
+            ticket_support_xxl,
             support,
             discount,
             the_total,
@@ -170,8 +178,9 @@ class PartyTicketTests(unittest.TestCase):
                         ticket_tshirt_size=u'xxl',
                         ticket_all=False,
                         ticket_support=False,
-                        ticket_support_x=False,
+                        ticket_support_l=False,
                         ticket_support_xl=False,
+                        ticket_support_xxl=False,
                         support=0,
                         discount=0,
                         the_total=150,
@@ -185,6 +194,9 @@ class PartyTicketTests(unittest.TestCase):
                         guestlist=False,
                         user_comment=u'bar',
                         ):
+        """
+        Make another PartyTicket data object.
+        """
         return self._getTargetClass()(  # order of params DOES matter
             token,
             firstname,
@@ -204,8 +216,9 @@ class PartyTicketTests(unittest.TestCase):
             ticket_tshirt_size,
             ticket_all,
             ticket_support,
-            ticket_support_x,
+            ticket_support_l,
             ticket_support_xl,
+            ticket_support_xxl,
             support,
             discount,
             the_total,
@@ -221,6 +234,9 @@ class PartyTicketTests(unittest.TestCase):
         )
 
     def test_constructor(self):
+        """
+        Test the constructor.
+        """
         instance = self._makeOne()
         print(instance.firstname)
         self.assertEqual(instance.firstname, u'SomeFirstnäme', "No match!")
@@ -233,6 +249,9 @@ class PartyTicketTests(unittest.TestCase):
         # self.assertEqual(instance.ticket_type, 3, "No match!")
 
     def test_get_by_code(self):
+        """
+        Test the 'get by code' classmethod.
+        """
         instance = self._makeOne()
         self.session.add(instance)
         myTestClass = self._getTargetClass()
@@ -241,6 +260,9 @@ class PartyTicketTests(unittest.TestCase):
         self.assertEqual(instance_from_DB.email, u'some@shri.de')
 
     def test_get_by_token(self):
+        """
+        Test the 'get by token' classmethod.
+        """
         instance = self._makeOne()
         self.session.add(instance)
         # self.session.flush()
@@ -250,6 +272,9 @@ class PartyTicketTests(unittest.TestCase):
         self.assertEqual(instance_from_DB.email, u'some@shri.de')
 
     def test_get_by_id(self):
+        """
+        Test the 'get by id' classmethod.
+        """
         instance = self._makeOne()
         self.session.add(instance)
         self.session.flush()
@@ -270,6 +295,9 @@ class PartyTicketTests(unittest.TestCase):
         self.assertEqual(instance_from_DB.num_tickets, 1)
 
     def test_delete_by_id(self):
+        """
+        Test the 'delete by id' classmethod.
+        """
         instance = self._makeOne()
         self.session.add(instance)
         myMembershipSigneeClass = self._getTargetClass()
@@ -280,6 +308,9 @@ class PartyTicketTests(unittest.TestCase):
         self.assertEqual(None, instance_from_DB)
 
     def test_check_user_or_None(self):
+        """
+        Test the 'check user or None' classmethod.
+        """
         instance = self._makeOne()
         self.session.add(instance)
         myMembershipSigneeClass = self._getTargetClass()
@@ -293,6 +324,9 @@ class PartyTicketTests(unittest.TestCase):
         self.assertEqual(None, result2)
 
     def test_check_for_existing_confirm_code(self):
+        """
+        Test the 'check for existing confirm code' classmethod.
+        """
         instance = self._makeOne()
         self.session.add(instance)
         myClass = self._getTargetClass()
@@ -307,6 +341,9 @@ class PartyTicketTests(unittest.TestCase):
         self.assertEqual(result2, False)
 
     def test_listing(self):
+        """
+        Test the 'ticket listing' classmethod.
+        """
         instance = self._makeOne()
         self.session.add(instance)
         instance2 = self._makeAnotherOne()
@@ -321,6 +358,9 @@ class PartyTicketTests(unittest.TestCase):
         self.failUnless(result[2].firstname == u"SomeFirstnäme")
 
     def test_get_all_codes(self):
+        """
+        Test the 'get all codes' classmethod.
+        """
         instance = self._makeOne()
         self.session.add(instance)
         instance2 = self._makeAnotherOne()
@@ -335,12 +375,17 @@ class PartyTicketTests(unittest.TestCase):
         self.assertTrue(u'0987654321' in result)
 
     def test_get_number(self):
+        """
+        Test the 'get number' classmethod.
+        """
         myClass = self._getTargetClass()
         result = myClass.get_number()
-        # print result1
         self.assertEqual(result, 1)
 
     def test_get_num_tickets(self):
+        """
+        Test the 'get number of tickets' classmethod.
+        """
         myClass = self._getTargetClass()
         result = myClass.get_num_tickets()
         self.assertEqual(result, 1)
@@ -364,7 +409,9 @@ class PartyTicketTests(unittest.TestCase):
 
 
 class PartyTicketStatsTests(unittest.TestCase):
-
+    """
+    Test the statistics foo.
+    """
     def setUp(self):
         self.config = testing.setUp()
         self.config.include('pyramid_mailer.testing')
@@ -413,8 +460,9 @@ class PartyTicketStatsTests(unittest.TestCase):
                     ticket_tshirt_size=None,
                     ticket_all=False,
                     ticket_support=False,
-                    ticket_support_x=False,
+                    ticket_support_l=False,
                     ticket_support_xl=False,
+                    ticket_support_xxl=False,
                     support=0,
                     discount=0,
                     the_total=0,
@@ -448,8 +496,9 @@ class PartyTicketStatsTests(unittest.TestCase):
             ticket_tshirt_size,
             ticket_all,
             ticket_support,
-            ticket_support_x,
+            ticket_support_l,
             ticket_support_xl,
+            ticket_support_xxl,
             support,
             discount,
             the_total,
@@ -752,8 +801,6 @@ class C3sStaffTests(unittest.TestCase):
         '''test check_user_or_None'''
         res1 = C3sStaff.check_user_or_None(u'cashier1')
         res2 = C3sStaff.check_user_or_None(u'staffer1')
-        # print res1
-        # print res2
         self.assertTrue(res1 is not None)
         self.assertTrue(res2 is None)
 

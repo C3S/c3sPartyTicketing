@@ -71,7 +71,8 @@ def edit_ticket(request):
             'ticket_support': [
                 '1',
                 '2',
-                '3'
+                '3',
+                '4',
             ],
             'support': _ticket.support,
             'the_total': _ticket.the_total,
@@ -118,10 +119,12 @@ def edit_ticket(request):
         appstruct['ticket']['ticket_bc'].remove('buffet')
     if not _ticket.ticket_support:
         appstruct['ticket']['ticket_support'].remove('1')
-    if not _ticket.ticket_support_x:
+    if not _ticket.ticket_support_l:
         appstruct['ticket']['ticket_support'].remove('2')
     if not _ticket.ticket_support_xl:
         appstruct['ticket']['ticket_support'].remove('3')
+    if not _ticket.ticket_support_xxl:
+        appstruct['ticket']['ticket_support'].remove('4')
 
     def validator(form, value):
         # XXX: herausfinden, wie man per klassenvalidator colander.Invalid
@@ -220,8 +223,9 @@ def edit_ticket(request):
 
     ticket_support_options = (
         (1, _(u'Supporter Ticket (€5)')),
-        (2, _(u'Supporter Ticket XL (€10)')),
-        (3, _(u'Supporter Ticket XXL (€100)'))
+        (2, _(u'Supporter Ticket L (€10)')),
+        (3, _(u'Supporter Ticket XL (€50)')),
+        (4, _(u'Supporter Ticket XXL (€100)')),
     )
 
     rep_type_options = (
@@ -651,7 +655,8 @@ def edit_ticket(request):
             the_support = {
                 1: 5,
                 2: 10,
-                3: 100
+                3: 50,
+                4: 100,
             }
 
             # guest auto calc
@@ -717,7 +722,7 @@ def edit_ticket(request):
             derivedvalues= {}
             derivedvalues['the_total'] = _the_total
             derivedvalues['discount'] = _discount
-            derivedvalues['support'] = _support    
+            derivedvalues['support'] = _support
 
         # nonmember
         else:
@@ -819,15 +824,18 @@ def edit_ticket(request):
         _ticket.ticket_tshirt = appstruct['ticket']['ticket_tshirt']
         _ticket.ticket_tshirt_type = appstruct['tshirt']['tshirt_type']
         _ticket.ticket_tshirt_size = appstruct['tshirt']['tshirt_size']
-        
+
         _ticket.ticket_support = (
             '1' in appstruct['ticket']['ticket_support']
         )
-        _ticket.ticket_support_x = (
+        _ticket.ticket_support_l = (
             '2' in appstruct['ticket']['ticket_support']
         )
         _ticket.ticket_support_xl = (
             '3' in appstruct['ticket']['ticket_support']
+        )
+        _ticket.ticket_support_xxl = (
+            '4' in appstruct['ticket']['ticket_support']
         )
         _ticket.support = derivedvalues['support']
         _ticket.discount = derivedvalues['discount']

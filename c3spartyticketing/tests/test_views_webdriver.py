@@ -155,8 +155,9 @@ class SeleniumTestBaseTicketing(SeleniumTestBase):
                     ticket_tshirt_size=None,
                     ticket_all=False,
                     ticket_support=False,
-                    ticket_support_x=False,
+                    ticket_support_l=False,
                     ticket_support_xl=False,
+                    ticket_support_xxl=False,
                     support=0,
                     discount=0,
                     the_total=0,
@@ -189,8 +190,9 @@ class SeleniumTestBaseTicketing(SeleniumTestBase):
             ticket_tshirt_size,
             ticket_all,
             ticket_support,
-            ticket_support_x,
+            ticket_support_l,
             ticket_support_xl,
+            ticket_support_xxl,
             support,
             discount,
             the_total,
@@ -378,6 +380,12 @@ class TicketMemberFormFieldValuesTests(SeleniumTestBaseTicketing):
         for i in self.data_checkbox:
             f.support.set(i)
             self.assertEqual(f.support.get(), i)
+
+    def test_supportl_values(self):
+        f = self.form
+        for i in self.data_checkbox:
+            f.supportl.set(i)
+            self.assertEqual(f.supportl.get(), i)
 
     def test_supportxl_values(self):
         f = self.form
@@ -623,6 +631,7 @@ class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
         f.buffet.set(True)
         f.tshirt.set(True)
         f.support.set(True)
+        f.supportl.set(True)
         f.supportxl.set(True)
         f.supportxxl.set(True)
         f.comment.set("comment")
@@ -670,6 +679,7 @@ class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
         f.buffet.set(True)
         f.tshirt.set(True)
         f.support.set(True)
+        f.supportl.set(True)
         f.supportxl.set(True)
         f.supportxxl.set(True)
         f.comment.set("comment")
@@ -721,6 +731,7 @@ class TicketMemberFormActionDataTests(SeleniumTestBaseTicketing):
         f.barcamp.set(False)
         f.tshirt.set(False)
         f.support.set(False)
+        f.supportl.set(False)
         f.supportxl.set(False)
         f.supportxxl.set(False)
         f.comment.set("comment-reedit")
@@ -840,6 +851,8 @@ class TicketMemberFormGvonlyAccessTests(SeleniumTestBaseTicketing):
             f.allinc()
         with self.assertRaises(NoSuchElementException):
             f.support()
+        with self.assertRaises(NoSuchElementException):
+            f.supportl()
         with self.assertRaises(NoSuchElementException):
             f.supportxl()
         with self.assertRaises(NoSuchElementException):

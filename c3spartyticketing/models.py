@@ -241,9 +241,15 @@ class PartyTicket(Base):
     ticket_tshirt_type = Column(Integer)
     ticket_tshirt_size = Column(Integer)
     ticket_all = Column(Boolean, default=False)
+    # supporter options
     ticket_support = Column(Boolean, default=False)
-    ticket_support_x = Column(Boolean, default=False)
+    """supporter ticket M"""
+    ticket_support_l = Column(Boolean, default=False)
+    """supporter ticket L"""
     ticket_support_xl = Column(Boolean, default=False)
+    """supporter ticket XL"""
+    ticket_support_xxl = Column(Boolean, default=False)
+    """supporter ticket XXL"""
     support = Column(Float)
     discount = Column(Float)
     the_total = Column(Float)
@@ -310,8 +316,9 @@ class PartyTicket(Base):
                  ticket_tshirt_size,
                  ticket_all,
                  ticket_support,
-                 ticket_support_x,
+                 ticket_support_l,
                  ticket_support_xl,
+                 ticket_support_xxl,
                  support,
                  discount,
                  the_total,
@@ -339,8 +346,9 @@ class PartyTicket(Base):
         self.ticket_tshirt_size = ticket_tshirt_size
         self.ticket_all = ticket_all
         self.ticket_support = ticket_support
-        self.ticket_support_x = ticket_support_x
+        self.ticket_support_l = ticket_support_l
         self.ticket_support_xl = ticket_support_xl
+        self.ticket_support_xxl = ticket_support_xxl
         self.support = support
         self.discount = discount
         self.the_total = the_total

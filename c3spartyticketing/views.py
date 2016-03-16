@@ -187,7 +187,8 @@ def ticket_appstruct(request, view=''):
             'ticket_support': [
                 '1',
                 '2',
-                '3'
+                '3',
+                '4',
             ],
             'support': _ticket.support,
             'the_total': _ticket.the_total,
@@ -220,10 +221,12 @@ def ticket_appstruct(request, view=''):
         appstruct['ticket']['ticket_bc'].remove('buffet')
     if not _ticket.ticket_support:
         appstruct['ticket']['ticket_support'].remove('1')
-    if not _ticket.ticket_support_x:
+    if not _ticket.ticket_support_l:
         appstruct['ticket']['ticket_support'].remove('2')
     if not _ticket.ticket_support_xl:
         appstruct['ticket']['ticket_support'].remove('3')
+    if not _ticket.ticket_support_xxl:
+        appstruct['ticket']['ticket_support'].remove('4')
 
     print "-- appstruct: {}".format(appstruct)
     return appstruct
