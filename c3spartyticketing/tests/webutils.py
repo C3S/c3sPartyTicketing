@@ -1,5 +1,6 @@
 import os
 from sqlalchemy import engine_from_config
+import time
 from c3spartyticketing.models import (
     DBSession,
     Base,
@@ -24,6 +25,30 @@ class Server(object):
             return cls._instance
 
     def connect(self, cfg, customAppSettings={}, wrapper='StopableWSGIServer'):
+        # check if port is already in use, then wait a bit
+        port_free = False
+        attempts = 0
+        # port_free = True
+        while port_free is False and attempts < 5:
+            print("checking if port is free...")
+            import socket
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+            try:
+                s.bind(("127.0.0.1", 6544))
+                s.close()
+                port_free = True
+            except socket.error as e:
+                if e.errno == 98:
+                    print("Port is already in use. wait for 1 second")
+                    time.sleep(1)
+                else:
+                    # something else raised the socket.error exception
+                    print(e)
+                attempts += 1
+            if attempts is 5:
+                break
+
         self.cfg = cfg
         # clear old connections
         # try:
@@ -92,8 +117,8 @@ class Client(object):
 
     def connect(self, cfg):
         self.cfg = cfg
-        # self.cli = webdriver.PhantomJS()
-        self.cli = webdriver.Firefox()
+        self.cli = webdriver.PhantomJS()
+        # self.cli = webdriver.Firefox()
         return self.cli
 
     def disconnect(self):
