@@ -113,8 +113,8 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
             ),
             missing='',
             description=_(
-                u'We try to offer coffee and cake, '
-                u'as well as a warm meal.'
+                # u'We try to offer coffee and cake, '
+                # u'as well as a warm meal.'
             ),
             oid="ticket_bc"
         )
