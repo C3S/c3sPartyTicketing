@@ -55,6 +55,10 @@
           <!-- h3>Kasse</h3 -->
           <div tal:content="structure autoform">the autocomplete form to search for codes</div>
         </div>
+
+        <h3>Repräsentanten einchecken?</h3>
+        <a href="${request.route_url('checkin_rep')}"
+           class="btn btn-warning">hier entlang</a> 
       </div>
     </tal:block>
     <tal:block metal:fill-slot="footer">

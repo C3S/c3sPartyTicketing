@@ -31,16 +31,18 @@ def list_codes(request):
 
 @view_config(renderer='json',
              # permission='manage',  # XXX make this work w/ permission
-             route_name='all_names')
-def list_names(request):
+             route_name='match_rep_names')
+def match_representatives_names(request):
     """
-    return the list of names
+    return the list of tickets matching a representatives lastname prefix
 
     Returns:
         JSON
     """
     if 'localhost' not in request.host:
-        print(request.host)
+        # print(request.host)
         return 'foo'
-    names = PartyTicket.get_all_names()
+    text = request.params.get('term', '')
+    print u"DEBUG: autocomp. rep search for: {}".format(text)
+    names = PartyTicket.get_matching_names_rep(text)
     return names

@@ -33,18 +33,16 @@
                   <td>${ticket.payment_received or "No"}</td>
                 </tr>
                 <tr tal:condition="ticket.payment_received">
-                    <td>Zeitpunkt</td>
-                    <td>
-                      ${ticket.payment_received_date}
-                    </td>
-                  </tr>
+                  <td>Zeitpunkt</td>
+                  <td>${ticket.payment_received_date}</td>
+                </tr>
                 <tr>
                   <td>Betrag</td>
                   <td>${ticket.the_total} €</td>
                 </tr>
               </table>
               <div tal:condition="not paid">
-                  <input type="submit" name="Bezahlt" value="hat bezahlt" class="btn btn-success"/>
+                <input type="submit" name="Bezahlt" value="hat bezahlt" class="btn btn-success"/>
               </div>
 
               <div tal:condition="ticket.ticket_bc_attendance">
@@ -52,23 +50,19 @@
                 <table class="table-striped" cellpadding="5" width="100%">
                   <tr>
                     <td>Eingecheckt?</td>
-                    <td>
-                      ${ticket.checked_bc or "No"}
-                    </td>
+                    <td>${ticket.checked_bc or "No"}</td>
                   </tr>
                   <tr tal:condition="ticket.checked_bc">
                     <td>Zeitpunkt</td>
-                    <td>
-                      ${ticket.checked_bc_time}
-                    </td>
+                    <td>${ticket.checked_bc_time}</td>
                   </tr>
                 </table>
                 <div tal:condition="python: not ticket.checked_bc">
-                    <input type="submit" name="checked_bc" value="hat eingecheckt" class="btn btn-success"/>
+                  <input type="submit" name="checked_bc" value="hat eingecheckt" class="btn btn-success"/>
                 </div>
               </div>
 
-              <div tal:condition="ticket.ticket_gv_attendance == 1">
+              <div tal:condition="ticket.ticket_gv_attendance == 1 or ticket.ticket_gv_attendance == 2">
                 <h3>Generalversamlung</h3>
                 <table class="table-striped" cellpadding="5" width="100%">
                   <tr>
@@ -77,17 +71,15 @@
                   </tr>
                   <tr tal:condition="ticket.checked_gv">
                     <td>Zeitpunkt</td>
-                    <td>
-                      ${ticket.checked_gv_time}
-                    </td>
+                    <td>${ticket.checked_gv_time}</td>
                   </tr>
                 </table>
                 <div tal:condition="python: not ticket.checked_gv">
-                    <input type="submit" name="checked_gv" value="hat eingecheckt" class="btn btn-success"/>
+                  <input type="submit" name="checked_gv" value="hat eingecheckt" class="btn btn-success"/>
                 </div>
               </div>
 
-              <div tal:condition="ticket.ticket_gv_attendance == 1">
+              <div tal:condition="ticket.ticket_gv_attendance == 1 or ticket.ticket_gv_attendance == 2">
                 <h3>Brief</h3>
                 <table class="table-striped" cellpadding="5" width="100%">
                   <tr>
@@ -96,13 +88,11 @@
                   </tr>
                   <tr tal:condition="ticket.received_extra1">
                     <td>Zeitpunkt</td>
-                    <td>
-                      ${ticket.received_extra1_time}
-                    </td>
+                    <td>${ticket.received_extra1_time}</td>
                   </tr>
                 </table>
                 <div tal:condition="python: not ticket.received_extra1">
-                    <input type="submit" name="received_extra1" value="hat Brief erhalten" class="btn btn-success"/>
+                  <input type="submit" name="received_extra1" value="hat Brief erhalten" class="btn btn-success"/>
                 </div>
               </div>
               

@@ -244,10 +244,19 @@ class PartyTicket(Base):
     # attendance info
     ticket_gv_attendance = Column(Integer)
     """
-    a number saying what? XXX DOC'ME!
+    a number telling the status of the member:
+
+    1:
+      member will attend
+    2:
+      member will not attend but send a representant
+    3:
+      member will not attend, not be represented
     """
     ticket_bc_attendance = Column(Boolean, default=False)
+    """flag: person will attend barcamp or not"""
     ticket_bc_buffet = Column(Boolean, default=False)
+    """flag: person wants barcamp food or not"""
     ticket_tshirt = Column(Boolean, default=False)
     ticket_tshirt_type = Column(Integer)
     ticket_tshirt_size = Column(Integer)
@@ -441,6 +450,26 @@ class PartyTicket(Base):
             codes.append(item.email_confirm_code)
         # print("codes before returning from classmethod: %s" % codes)
         return codes
+
+    @classmethod
+    def get_matching_names_rep(cls, prefix):
+        """
+        Get the matching names of representatives
+        This is needed when a staffer searches for rep.names using autocomplete
+        """
+        all = DBSession.query(cls).all()
+        names = {}
+        for item in all:
+            if (
+                    (item.rep_lastname.startswith(prefix)) and
+                    (item.ticket_gv_attendance is 2)
+            ):
+                _key = (
+                    item.email_confirm_code + ' ' +
+                    item.lastname + ', ' + item.firstname + ' ==> ' +
+                    item.rep_lastname + ', ' + item.rep_firstname)
+                names[_key] = _key
+        return names
 
     @classmethod
     def check_for_existing_confirm_code(cls, email_confirm_code):
