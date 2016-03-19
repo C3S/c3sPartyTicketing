@@ -77,6 +77,7 @@ def main(global_config, **settings):
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('all_codes', '/all_codes')
+    config.add_route('all_names', '/all_names')
     config.add_route('dashboard', '/dashboard/{number}')
     config.add_route('stats', '/stats')
     # config.add_route('print', '/print')
