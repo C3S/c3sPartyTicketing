@@ -112,10 +112,6 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
                 readonly=readonly
             ),
             missing='',
-            description=_(
-                # u'We try to offer coffee and cake, '
-                # u'as well as a warm meal.'
-            ),
             oid="ticket_bc"
         )
         if readonly:
