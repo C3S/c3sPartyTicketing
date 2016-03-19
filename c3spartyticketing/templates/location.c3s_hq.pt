@@ -6,7 +6,7 @@
               <small>${request.c3shq_city}</small>
             </h2>
 
-            <span i18n:translate="" style="color:#999">Adress</span>:
+            <span i18n:translate="" style="color:#999">Address</span>:
             <span>${request.c3shq_address}</span>
 
             <div class="visible-xs"><!-- map for small screens -->

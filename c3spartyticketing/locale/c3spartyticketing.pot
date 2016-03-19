@@ -320,7 +320,7 @@ msgstr ""
 
 #: ./c3spartyticketing/views.py:1160
 msgid ""
-"I'd like to have coffee and cake during and a warm meal after the BarCamp. "
+"I'd like to have coffee and cake during and buffet after the BarCamp. "
 "(€12)"
 msgstr ""
 
@@ -509,7 +509,7 @@ msgstr ""
 #: ./c3spartyticketing/templates/success.pt:203
 #: ./c3spartyticketing/templates/nonmember_success.pt:68
 #: ./c3spartyticketing/templates/party.pt:128
-msgid "Adress"
+msgid "Address"
 msgstr ""
 
 #: ./c3spartyticketing/templates/nonmember.pt:94

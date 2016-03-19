@@ -52,7 +52,7 @@ def get_ticket_bc_options(request):
         ) + u' (€{})'.format(request.bc_cost)),
         ('buffet', _(
             u'I\'d like to have coffee and cake during '
-            u'and a warm meal after the BarCamp.'
+            u'and buffet after the BarCamp.'
         ) + u' (€{})'.format(request.bc_food_cost))
     )
     return ticket_bc_options

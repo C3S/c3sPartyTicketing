@@ -299,7 +299,7 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
             default=u'''
             <div class="help-block">
                 <strong>Please note:</strong>
-                You may only nominate as your representative members
+                You may only nominate as your voting representative members
                 of the cooperative, your spouse, parents, children or
                 siblings. Each representative may represent two members
                 at most (see § 13 (6), sentence 3, of the articles of
@@ -315,7 +315,7 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                 original document.
                 <br>
                 Download authorization form:
-                <a href='http://url.c3s.cc/authorization' target='_blank'>
+                <a href='http://url.c3s.cc/auprivateR' target='_blank'>
                     http://url.c3s.cc/authorization
                 </a>
             </div>''',
@@ -333,7 +333,7 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                 default=u'''
             <div class="help-block">
                 <strong>Hinweis:</strong>
-                Du darfst als Deine(n) Bevollmächtigten nur ein
+                Du darfst als Deine(n) Abstimmungs-Bevollmächtigten nur ein
                 Mitglied der Genossenschaft, Deine(n) Ehemann/Ehefrau,
                 ein Elternteil, ein Kind oder einen Geschwisterteil
                 benennen. Jede(r) Bevollmächtigte kann maximal zwei
@@ -349,8 +349,8 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                 Kopie, kein Fax, kein Scan, kein Bild, sondern das
                 Original.
                 <br>
-                Download für den Vordruck einer Vollmacht:
-                <a href='http://url.c3s.cc/vollmacht' target='_blank'>
+                Download für den Vordruck einer Abstimmungs-Vollmacht:
+                <a href='http://url.c3s.cc/vmprivatO' target='_blank'>
                     http://url.c3s.cc/vollmacht
                 </a>
             </div>''',
