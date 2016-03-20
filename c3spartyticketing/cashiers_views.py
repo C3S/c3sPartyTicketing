@@ -365,7 +365,7 @@ def kasse(request):
         """
         code_to_show = colander.SchemaNode(
             colander.String(),
-            title="Code eingeben (autocomplete)",
+            title="Ticket-Code eingeben (autocomplete)",
             validator=colander.Length(min=1, max=8),
             widget=my_autoc_wid,
             description='start typing. use arrows. press enter. twice.'
@@ -451,7 +451,7 @@ def checkin_rep(request):
         """
         code_to_show = colander.SchemaNode(
             colander.String(),
-            title="Code eingeben (autocomplete)",
+            title="Repräsentanten-Nachnamen eingeben (autocomplete)",
             validator=colander.Length(min=1, max=8),
             widget=my_autoc_wid,
             description='start typing. use arrows. press enter. twice.'
