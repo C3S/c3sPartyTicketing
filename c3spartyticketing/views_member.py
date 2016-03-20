@@ -398,15 +398,14 @@ def success_view(request):
         ticket.ticket_tshirt_type = 0
         ticket.ticket_tshirt_size = 0
         ticket.ticket_all = False
-        ticket.ticket_support = (
-            '1' in appstruct['ticket']['ticket_support']
-        )
-        ticket.ticket_support_x = (
-            '2' in appstruct['ticket']['ticket_support']
-        )
-        ticket.ticket_support_xl = (
-            '3' in appstruct['ticket']['ticket_support']
-        )
+        ticket.ticket_support = True if (
+            '1' in appstruct['ticket']['ticket_support']) else False
+        ticket.ticket_support_x = True if (
+            '2' in appstruct['ticket']['ticket_support']) else False
+        ticket.ticket_support_xl = True if (
+            '3' in appstruct['ticket']['ticket_support']) else False
+        ticket.ticket_support_xxl = True if (
+            '4' in appstruct['ticket']['ticket_support']) else False
         ticket.support = request.session['derivedvalues']['support']
         ticket.discount = request.session['derivedvalues']['discount']
         ticket.the_total = request.session['derivedvalues']['the_total']
@@ -451,14 +450,14 @@ def success_view(request):
             ticket_tshirt_type=0,  # appstruct['tshirt']['tshirt_type'],
             ticket_tshirt_size=0,  # appstruct['tshirt']['tshirt_size'],
             ticket_all=False,  # appstruct['ticket']['ticket_all'],
-            ticket_support=(
-                '1' in appstruct['ticket']['ticket_support']),
-            ticket_support_l=(
-                '2' in appstruct['ticket']['ticket_support']),
-            ticket_support_xl=(
-                '3' in appstruct['ticket']['ticket_support']),
-            ticket_support_xxl=(
-                '4' in appstruct['ticket']['ticket_support']),
+            ticket_support=True if (
+                '1' in appstruct['ticket']['ticket_support']) else False,
+            ticket_support_l=True if (
+                '2' in appstruct['ticket']['ticket_support']) else False,
+            ticket_support_xl=True if (
+                '3' in appstruct['ticket']['ticket_support']) else False,
+            ticket_support_xxl=True if (
+                '4' in appstruct['ticket']['ticket_support']) else False,
             support=request.session['derivedvalues']['support'],
             discount=request.session['derivedvalues']['discount'],
             the_total=request.session['derivedvalues']['the_total'],
