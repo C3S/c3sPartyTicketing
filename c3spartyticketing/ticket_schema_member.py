@@ -132,11 +132,6 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 readonly=readonly
             ),
             missing='',
-            description=_(
-                u'We will try to offer catering for a fixed price. '
-                u'There will be Coffee and a snack or cake in the afternoon '
-                u'and a cooked meal at the end of the day.'
-            ),
             oid="ticket_bc"
         )
         if readonly:
@@ -199,8 +194,9 @@ def ticket_member_schema(request, appstruct, readonly=False):
             missing='',
             description=_(
                 u'These ticket options are selectable indepently from the '
-                u'other options. They help the cooperative a great deal to '
-                u'bear the costs occasioned by the events.'
+                u'other options. They help the cooperative to '
+                u'bear the costs occasioned by the events. '
+                u'You may choose more than one supporter ticket.' 
             ),
             oid="ticket_support"
         )
