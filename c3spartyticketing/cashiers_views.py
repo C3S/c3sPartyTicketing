@@ -388,6 +388,93 @@ def kasse(request):
     }
 
 
+@view_config(renderer='templates/checkin_name.pt',
+             permission='cashdesk',
+             route_name='checkin_name')
+def checkin_name(request):
+    """
+    This view lets cashiers check in people by Lastname,
+    e.g. in case of a forgotten ticket or ticket code.
+
+    * Search for tickets using the names of a member in an autocomplete form.
+    * Display a statistic about tickets checked in or pending.
+    * Display information about code prefix and suffix.
+
+    === ==============================
+    URL http/s://app:port/checkin_name
+    === ==============================
+
+    Returns:
+       | a) a form, statistics, useful information, rendered to a template;
+       | b) if a valid code was submitted, redirect to check-in for ticket.
+    """
+    logged_in = authenticated_userid(request)
+
+    # check for input from "find representative by lastname" form
+    if 'code_to_show' in request.POST:
+        print("found code_to_show in POST: %s" % request.POST['code_to_show'])
+        try:
+            _code = request.POST['code_to_show'].split(' ')[0]
+            # print(_code)
+            _entry = PartyTicket.get_by_code(_code)
+            print(_entry)
+            print(_entry.id)
+
+            return HTTPFound(
+                location=request.route_url(
+                    'check_in',
+                    event=request.registry.settings['eventcode'],
+                    code=_entry.email_confirm_code)
+            )
+        except:
+            # choose default
+            print("barf!")
+            request.session.flash('Ticket nicht gefunden.')
+            pass
+
+    # prepare the autocomplete form with codes
+    # get codes from another view via subrequest, see
+    # http://docs.pylonsproject.org/projects/pyramid/en/latest/narr/subrequest.html
+    subreq = Request.blank('/all_names')
+    response = request.invoke_subrequest(subreq)
+    the_names = json.loads(response.body)  # gotcha: json needed!
+
+    my_autoc_wid = deform.widget.AutocompleteInputWidget(
+        min_length=1,
+        title="widget title",
+        values=the_names,
+    )
+
+    # prepare a form for autocomplete search for names.
+    class CodeAutocompleteForm(colander.MappingSchema):
+        """
+        colander schema to make deform autocomplete form
+        """
+        code_to_show = colander.SchemaNode(
+            colander.String(),
+            title="Nachnamen eingeben (autocomplete)",
+            validator=colander.Length(min=1, max=8),
+            widget=my_autoc_wid,
+            description='start typing. use arrows. press enter. twice.'
+
+        )
+
+    schema = CodeAutocompleteForm()
+    form = deform.Form(
+        schema,
+        buttons=('go!',),
+        # use_ajax=True,  # <-- whoa!
+        # renderer=zpt_renderer,
+    )
+    autoformhtml = form.render()
+
+    return {
+        'autoform': autoformhtml,
+        'logged_in': logged_in,
+        'stats': PartyTicket.stats_cashiers()
+    }
+
+
 @view_config(renderer='templates/checkin_rep.pt',
              permission='cashdesk',
              route_name='checkin_rep')

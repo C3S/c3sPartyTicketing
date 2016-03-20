@@ -50,17 +50,16 @@
     </tal:block>
 
     <tal:block metal:fill-slot="middle">
-      <div id="wrap">
-        <div id="main">
           <!-- h3>Kasse</h3 -->
-          <div tal:content="structure autoform">the autocomplete form to search for codes</div>
-        </div>
 
-        <h3>Repräsentanten einchecken?</h3>
+          <div tal:content="structure autoform">the autocomplete form to search for codes</div>
+        <a href="${request.route_url('checkin_name')}"
+           class="btn btn-warning">alternativ: Nachnamen suchen</a> 
         <a href="${request.route_url('checkin_rep')}"
-           class="btn btn-warning">hier entlang</a> 
-      </div>
+           class="btn btn-warning">oder: Repräsentanten einchecken</a> 
     </tal:block>
+
+
     <tal:block metal:fill-slot="footer">
 
       <h2>Legende</h2>

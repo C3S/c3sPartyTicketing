@@ -29,6 +29,24 @@ def list_codes(request):
     return codes
 
 
+@view_config(
+    renderer='json',
+    # permission='manage',  # XXX make this work w/ permission
+    route_name='all_names')
+def list_names(request):
+    """
+    return the list of codes
+
+    Returns:
+        JSON
+    """
+    if 'localhost' not in request.host:
+        print(request.host)
+        return 'foo'
+    names = PartyTicket.get_all_names()
+    return names
+
+
 @view_config(renderer='json',
              # permission='manage',  # XXX make this work w/ permission
              route_name='match_rep_names')

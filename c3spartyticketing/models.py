@@ -452,6 +452,23 @@ class PartyTicket(Base):
         return codes
 
     @classmethod
+    def get_all_names(cls):
+        """
+        get all the names
+        this is needed when a staffer searches for names using autocomplete
+        """
+        all = DBSession.query(cls).all()
+        names = {}
+        for item in all:
+            _key = (
+                item.email_confirm_code + ' ' +
+                item.lastname + ', ' + item.firstname
+            )
+            names[_key] = _key
+        # print("names before returning from classmethod: %s" % names)
+        return names
+
+    @classmethod
     def get_matching_names_rep(cls, prefix):
         """
         Get the matching names of representatives
