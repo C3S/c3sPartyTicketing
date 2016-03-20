@@ -127,49 +127,6 @@
             </table>
           </td>
         </tr>
-        <tr tal:condition="ticket_rep1 or ticket_rep2">
-          <td>Vertreter für:</td>
-          <td tal:condition="ticket_rep1">
-            <table>
-              <tr>
-                <td>Ticket ID</td>
-                <td>${ticket_rep1.id}</td>
-              </tr>
-              <tr>
-                <td>Vorname</td>
-                <td>${ticket_rep1.firstname}</td>
-              </tr>
-              <tr>
-                <td>Nachname</td>
-                <td>${ticket_rep1.lastname}</td>
-              </tr>
-              <tr>
-                <td>Email</td>
-                <td>${ticket_rep1.email}</td>
-              </tr>
-            </table>
-          </td>
-          <td tal:condition="ticket_rep2">
-            <table>
-              <tr>
-                <td>Ticket ID</td>
-                <td>${ticket_rep2.id}</td>
-              </tr>
-              <tr>
-                <td>Vorname</td>
-                <td>${ticket_rep2.firstname}</td>
-              </tr>
-              <tr>
-                <td>Nachname</td>
-                <td>${ticket_rep2.lastname}</td>
-              </tr>
-              <tr>
-                <td>Email</td>
-                <td>${ticket_rep2.email}</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
         <tr>
           <td>Event-T-Shirt</td>
           <td>${'Yes' if ticket.ticket_tshirt else "No"}</td>
@@ -177,6 +134,22 @@
         <tr tal:condition="ticket.ticket_tshirt">
           <td>Shirt-Specs</td>
           <td>Type: ${ticket.ticket_tshirt_type} Size: ${ticket.ticket_tshirt_size}</td>
+        </tr>
+        <tr>
+          <td>Supporter M</td>
+          <td>${'Yes' if ticket.ticket_support else "No"}</td>
+        </tr>
+        <tr>
+          <td>Supporter L</td>
+          <td>${'Yes' if ticket.ticket_support_l else "No"}</td>
+        </tr>
+        <tr>
+          <td>Supporter XL</td>
+          <td>${'Yes' if ticket.ticket_support_xl else "No"}</td>
+        </tr>
+        <tr>
+          <td>Supporter XXL</td>
+          <td>${'Yes' if ticket.ticket_support_xxl else "No"}</td>
         </tr>
         <tr>
           <td>Rabatt</td>
