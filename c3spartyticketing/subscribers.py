@@ -51,9 +51,9 @@ def add_locale_to_cookie(event):
 
             if DEBUG:  # pragma: no cover
                 print("switching language to " + lang)
-            #from pyramid.httpexceptions import HTTPFound
-            #print("XXXXXXXXXXXXXXX ==> REDIRECTING in subscriber")
-            #return HTTPFound(location=event.request.route_url('intent'),
+            # from pyramid.httpexceptions import HTTPFound
+            # print("XXXXXXXXXXXXXXX ==> REDIRECTING in subscriber")
+            # return HTTPFound(location=event.request.route_url('intent'),
             #                 headers=event.request.response.headers)
             #
             # redirect not working here!
@@ -69,20 +69,21 @@ def add_locale_to_cookie(event):
 
     # if locale is not already set, look at browser information
     if locale is None and event.request.accept_language:
-        #print "request.accept_language: " + str(event.request.accept_language)
-        #print "locale is None but accept_language exists!"
+        # print "request.accept_language: " + str(
+        #     event.request.accept_language)
+        # print "locale is None but accept_language exists!"
         locale = event.request.accept_language.best_match(BROWSER_LANGUAGES)
-        #print "locale aus accept_language:" + locale
+        # print "locale aus accept_language:" + locale
         locale = BROWSER_LANGUAGES.get(locale)
-        #print "locale aus BROWSER_LANGUAGES:" + str(locale)
+        # print "locale aus BROWSER_LANGUAGES:" + str(locale)
 
     # if we have nothing, assume english as fallback
     if locale is None and not event.request.accept_language:
-        #print("locale could not be determined by browsers Accept-Language. "
+        # print("locale could not be determined by browsers Accept-Language. "
         #      + "defaulting to English")
         locale = 'en'
 
-    #print "setting locale: " + str(locale)
+    # print "setting locale: " + str(locale)
     # make the request know which language to respond with
     event.request._LOCALE_ = locale
     # store language setting in cookie

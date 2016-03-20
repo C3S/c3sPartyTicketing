@@ -141,19 +141,6 @@
                 <td>${ticket.membership_type}</td>
               </tr>
             </table>
-            <div tal:condition="ticket_rep1 or ticket_rep2">
-              <h3>Repräsentant_in</h3>
-              <table class="table-striped" cellpadding="5" width="100%">
-                <tr tal:condition="ticket_rep1">
-                  <td>1.</td>
-                  <td>${ticket_rep1.firstname} ${ticket_rep1.lastname}</td>
-                </tr>
-                <tr tal:condition="ticket_rep2">
-                  <td>2.</td>
-                  <td>${ticket_rep2.firstname} ${ticket_rep2.lastname}</td>
-                </tr>
-              </table>
-            </div>
           </div>
 
           <div class="alert alert-info">

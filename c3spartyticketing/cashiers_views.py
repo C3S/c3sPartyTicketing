@@ -225,8 +225,6 @@ def check_in(request):
                 location=request.route_url('kasse'))
         _ticket.received_extra2 = True
         _ticket.received_extra2_time = datetime.now()
-        # _ticket.checkin_seen = True
-        # _ticket.checked_persons += int(_persons)
 
     '''
     checkin was called from a prepared URL ('/ci/{event}/{code}')
@@ -265,31 +263,13 @@ def check_in(request):
             + '\r\n\r\n' \
             + unicode(_comment)
 
-    # types of tickets displayed in the backend
-    ticket_type_options = {
-        ('ticket_gv', u'Attendance General Assembly'),
-        ('ticket_bc', u'Attendance BarCamp'),
-        ('ticket_bc_buffet', u'Buffet Barcamp'),
-        ('ticket_tshirt', u'T-shirt'),
-        ('ticket_all', u'All-Inclusive')
-    }
-
-    _ticket_rep1 = None
-    if _ticket.represents_id1:
-        _ticket_rep1 = PartyTicket.get_by_id(int(_ticket.represents_id1))
-    _ticket_rep2 = None
-    if _ticket.represents_id2:
-        _ticket_rep2 = PartyTicket.get_by_id(int(_ticket.represents_id2))
     _paid = (1 if _ticket.payment_received or _ticket.the_total == 0 else 0)
 
     return {
-        # 'vacancies': _vacancies,  # the free tickets of this visitor
         'logged_in': logged_in,
         'code': _code,
         'paid': _paid,
         'ticket': _ticket,
-        'ticket_rep1': _ticket_rep1,
-        'ticket_rep2': _ticket_rep2,
         'stats': PartyTicket.stats_cashiers(),
         'cashiers_comment': _ticket.cashiers_comment
     }

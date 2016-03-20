@@ -138,51 +138,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
             ticket_bc.description = None
             if not appstruct['ticket']['ticket_bc']:
                 ticket_bc = None
-        # ticket_tshirt = colander.SchemaNode(
-        #     colander.Boolean(),
-        #     title=_(u"Extras:"),
-        #     widget=deform.widget.CheckboxWidget(
-        #         readonly=readonly,
-        #         readonly_template='forms/checkbox_label.pt'
-        #     ),
-        #     label="T-shirt (€25)",
-        #     missing='',
-        #     description=_(
-        #         u'There will be one joint T-shirt design for both events in '
-        #         u'C3S green, black and white. Exclusively for participants, '
-        #         u'available only if pre-ordered! You can collect your '
-        #         u'pre-ordered T-shirt at both the BarCamp and the general '
-        #         u'assembly. If you chose to order a shirt, '
-        #         u'you can specify its size below.'
-        #     ),
-        #     oid="ticket_tshirt"
-        # )
-        # if readonly:
-        #     ticket_tshirt.description = None
-        #     if not appstruct['ticket']['ticket_tshirt']:
-        #        ticket_tshirt = None
-        # ticket_all = colander.SchemaNode(
-        #     colander.Boolean(),
-        #     title=_(u"Special Offer:"),
-        #     widget=deform.widget.CheckboxWidget(
-        #         readonly=readonly,
-        #         readonly_template='forms/checkbox_label.pt'
-        #     ),
-        #     label="All-Inclusive (€42)",
-        #     missing='',
-        #     description=_(
-        #         u'The all-inclusive package covers the participation in the '
-        #         u'BarCamp (including coffee, cake and a warm meal), '
-        #         u'participation in the general assembly. '
-        #         # u'and a T-shirt (Supporter) as well.'
-        #     ),
-        #     oid="ticket_all"
-        # )
-        # if readonly:
-        #    ticket_all.description = None
-        #    ticket_all.label = _(u"All-Inclusive Discount (-€2,50)")
-        #    if not appstruct['ticket']['ticket_all']:
-        #        ticket_all = None
+
         ticket_support = colander.SchemaNode(
             colander.Set(),
             title=_(u"Supporter Tickets:"),
@@ -196,7 +152,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 u'These ticket options are selectable indepently from the '
                 u'other options. They help the cooperative to '
                 u'bear the costs occasioned by the events. '
-                u'You may choose more than one supporter ticket.' 
+                u'You may choose more than one supporter ticket.'
             ),
             oid="ticket_support"
         )
