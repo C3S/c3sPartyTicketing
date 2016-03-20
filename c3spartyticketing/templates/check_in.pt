@@ -179,6 +179,17 @@
                 <td>Teilnahme</td>
                 <td>${'Yes' if ticket.ticket_gv_attendance == 1 else "No"}</td>
               </tr>
+              <tr tal:condition="ticket.ticket_gv_attendance == 2">
+                <td>Repräsentiert durch</td>
+                <td>
+                  <table>
+                    <tr><td>${ticket.rep_firstname} ${ticket.rep_lastname}</td></tr>
+                    <tr><td>${ticket.rep_street}</td></tr>
+                    <tr><td>${ticket.rep_zip} ${ticket.rep_city}</td></tr>
+                    <tr><td>${ticket.rep_country}; ${ticket.rep_type}</td></tr>
+                  </table>
+                </td>
+              </tr>
               <tr>
                 <td>Gästeliste</td>
                 <td>${ticket.guestlist_gv or 'no'}</td>
