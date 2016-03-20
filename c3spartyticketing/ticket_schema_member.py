@@ -398,9 +398,9 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 You may only nominate as your representative members
                 of the cooperative, your spouse, parents, children or
                 siblings. Each representative may represent two members
-                at most (see § 13 (6), sentence 3, of the articles of
-                <a href='http://url.c3s.cc/statutes' target='_blank'>
-                    association
+                at most (see § 13 (6), sentence 3, of the 
+                <a href='https://url.c3s.cc/statutes' target='_blank'>
+                    articles of association
                 </a>).
                 Registered civil partners are treated as spouses.
                 <br>
@@ -410,9 +410,9 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 a copy, fax, scan, or picture. We can only accept the
                 original document.
                 <br>
-                Download authorization form:
-                <a href='http://url.c3s.cc/authorization' target='_blank'>
-                    http://url.c3s.cc/authorization
+                Download 
+                <a href='https://url.c3s.cc/auprivater' target='_blank'>
+                authorization form
                 </a>
             </div>''',
             oid='rep-note'
@@ -434,7 +434,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 ein Elternteil, ein Kind oder einen Geschwisterteil
                 benennen. Jede(r) Bevollmächtigte kann maximal zwei
                 Mitglieder vertreten (siehe § 13 (6), Satz 3 der
-                <a href='http://url.c3s.cc/satzung' target='_blank'>
+                <a href='https://url.c3s.cc/satzung' target='_blank'>
                     Satzung
                 </a>).
                 Eingetragene Lebenspartner werden wie Ehegatten behandelt.
@@ -445,9 +445,9 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 Kopie, kein Fax, kein Scan, kein Bild, sondern das
                 Original.
                 <br>
-                Download für den Vordruck einer Vollmacht:
-                <a href='http://url.c3s.cc/vollmacht' target='_blank'>
-                    http://url.c3s.cc/vollmacht
+                Download für den 
+                <a href='https://url.c3s.cc/vmprivato' target='_blank'>
+                    Vordruck einer Vollmacht
                 </a>
             </div>''',
                 oid='rep-note'
