@@ -1,680 +1,461 @@
-# 
+#
 # SOME DESCRIPTIVE TITLE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2015-05-22 13:16+0200\n"
+"POT-Creation-Date: 2016-03-20 10:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Lingua 3.10\n"
+"Language: \n"
+"Generated-By: Lingua 4.8.1\n"
 
-#: ./c3spartyticketing/edit_ticket.py:202 ./c3spartyticketing/views.py:143
-#: ./c3spartyticketing/views.py:711 ./c3spartyticketing/new_ticket.py:130
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:39
+#: ./c3spartyticketing/new_ticket.py:65 ./c3spartyticketing/edit_ticket.py:149
+#: ./c3spartyticketing/ticket_schema_member.py:60
+msgid "First name of representative is mandatory."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:44
+#: ./c3spartyticketing/new_ticket.py:69 ./c3spartyticketing/edit_ticket.py:153
+#: ./c3spartyticketing/ticket_schema_member.py:65
+msgid "Last name of representative is mandatory."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:47
+#: ./c3spartyticketing/new_ticket.py:72 ./c3spartyticketing/edit_ticket.py:156
+#: ./c3spartyticketing/ticket_schema_member.py:68
+msgid "Email of representative is invalid."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:56
+#: ./c3spartyticketing/new_ticket.py:80 ./c3spartyticketing/edit_ticket.py:164
+#: ./c3spartyticketing/ticket_schema_member.py:77
+msgid "Address of representative is mandatory."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:61
+#: ./c3spartyticketing/new_ticket.py:84 ./c3spartyticketing/edit_ticket.py:168
+#: ./c3spartyticketing/ticket_schema_member.py:82
+msgid "Postal code of representative is mandatory."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:66
+#: ./c3spartyticketing/new_ticket.py:88 ./c3spartyticketing/edit_ticket.py:172
+#: ./c3spartyticketing/ticket_schema_member.py:87
+msgid "City of representative is mandatory."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:71
+#: ./c3spartyticketing/new_ticket.py:92 ./c3spartyticketing/edit_ticket.py:176
+#: ./c3spartyticketing/ticket_schema_member.py:92
+msgid "Country of representative is mandatory."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:76
+#: ./c3spartyticketing/new_ticket.py:96 ./c3spartyticketing/edit_ticket.py:180
+#: ./c3spartyticketing/ticket_schema_member.py:97
+msgid "Relation of representative is mandatory."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:82
+#: ./c3spartyticketing/new_ticket.py:130 ./c3spartyticketing/edit_ticket.py:207
+#: ./c3spartyticketing/ticket_options.py:13
 msgid "I will attend the C3S SCE General Assembly."
 msgstr ""
 
-#: ./c3spartyticketing/edit_ticket.py:203 ./c3spartyticketing/views.py:144
-#: ./c3spartyticketing/views.py:712 ./c3spartyticketing/new_ticket.py:131
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:83
+#: ./c3spartyticketing/new_ticket.py:131 ./c3spartyticketing/edit_ticket.py:208
+#: ./c3spartyticketing/ticket_options.py:14
 msgid ""
 "I will not attend the C3S SCE General Assembly personally. I will be "
 "represented by an authorized person."
 msgstr ""
 
-#: ./c3spartyticketing/edit_ticket.py:207 ./c3spartyticketing/views.py:148
-#: ./c3spartyticketing/views.py:716 ./c3spartyticketing/new_ticket.py:135
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:87
+#: ./c3spartyticketing/new_ticket.py:135 ./c3spartyticketing/edit_ticket.py:212
+#: ./c3spartyticketing/ticket_options.py:18
 msgid "I will not attend the C3S SCE General Assembly."
 msgstr ""
 
-#: ./c3spartyticketing/edit_ticket.py:222 ./c3spartyticketing/views.py:165
-#: ./c3spartyticketing/views.py:1165 ./c3spartyticketing/new_ticket.py:144
-msgid "Supporter Ticket (€5)"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:223 ./c3spartyticketing/views.py:166
-#: ./c3spartyticketing/views.py:1166 ./c3spartyticketing/new_ticket.py:145
-msgid "Supporter Ticket XL (€10)"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:224 ./c3spartyticketing/views.py:167
-#: ./c3spartyticketing/views.py:1167 ./c3spartyticketing/new_ticket.py:146
-msgid "Supporter Ticket XXL (€100)"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:228 ./c3spartyticketing/views.py:171
-#: ./c3spartyticketing/views.py:731 ./c3spartyticketing/new_ticket.py:150
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:103
+#: ./c3spartyticketing/new_ticket.py:150 ./c3spartyticketing/edit_ticket.py:234
+#: ./c3spartyticketing/ticket_options.py:37
 msgid "a member of C3S SCE"
 msgstr ""
 
-#: ./c3spartyticketing/edit_ticket.py:229 ./c3spartyticketing/views.py:172
-#: ./c3spartyticketing/views.py:732 ./c3spartyticketing/new_ticket.py:151
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:104
+#: ./c3spartyticketing/new_ticket.py:151 ./c3spartyticketing/edit_ticket.py:235
+#: ./c3spartyticketing/ticket_options.py:38
 msgid "my spouse / registered civil partner"
 msgstr ""
 
-#: ./c3spartyticketing/edit_ticket.py:230 ./c3spartyticketing/views.py:173
-#: ./c3spartyticketing/views.py:733 ./c3spartyticketing/new_ticket.py:152
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:105
+#: ./c3spartyticketing/new_ticket.py:152 ./c3spartyticketing/edit_ticket.py:236
+#: ./c3spartyticketing/ticket_options.py:39
 msgid "my parent"
 msgstr ""
 
-#: ./c3spartyticketing/edit_ticket.py:231 ./c3spartyticketing/views.py:174
-#: ./c3spartyticketing/views.py:734 ./c3spartyticketing/new_ticket.py:153
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:106
+#: ./c3spartyticketing/new_ticket.py:153 ./c3spartyticketing/edit_ticket.py:237
+#: ./c3spartyticketing/ticket_options.py:40
 msgid "my child"
 msgstr ""
 
-#: ./c3spartyticketing/edit_ticket.py:232 ./c3spartyticketing/views.py:175
-#: ./c3spartyticketing/views.py:735 ./c3spartyticketing/new_ticket.py:154
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:107
+#: ./c3spartyticketing/new_ticket.py:154 ./c3spartyticketing/edit_ticket.py:238
+#: ./c3spartyticketing/ticket_options.py:41
 msgid "my sibling"
 msgstr ""
 
-#: ./c3spartyticketing/edit_ticket.py:236 ./c3spartyticketing/new_ticket.py:158
-msgid "male"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:237 ./c3spartyticketing/new_ticket.py:159
-msgid "female"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:241 ./c3spartyticketing/new_ticket.py:163
-msgid "S"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:242 ./c3spartyticketing/new_ticket.py:164
-msgid "M"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:243 ./c3spartyticketing/new_ticket.py:165
-msgid "L"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:244 ./c3spartyticketing/new_ticket.py:166
-msgid "XL"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:245 ./c3spartyticketing/new_ticket.py:167
-msgid "XXL"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:246 ./c3spartyticketing/new_ticket.py:168
-msgid "XXXL"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:153 ./c3spartyticketing/views.py:108
-#: ./c3spartyticketing/views.py:676 ./c3spartyticketing/new_ticket.py:72
-msgid "Email of representative is invalid."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:212
-msgid "I will attend the BarCamp. (€9)"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:213
-#: ./c3spartyticketing/edit_ticket.py:218 ./c3spartyticketing/new_ticket.py:140
-msgid "I'd like to dine from the BarCamp buffet. (€12)"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:217
-msgid "I will attend the BarCamp. (€11)"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:271
-#: ./c3spartyticketing/edit_ticket.py:371 ./c3spartyticketing/views.py:400
-#: ./c3spartyticketing/views.py:844 ./c3spartyticketing/views.py:1198
-#: ./c3spartyticketing/new_ticket.py:204 ./c3spartyticketing/new_ticket.py:313
-msgid "First Name"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:277
-#: ./c3spartyticketing/edit_ticket.py:379 ./c3spartyticketing/views.py:409
-#: ./c3spartyticketing/views.py:853 ./c3spartyticketing/views.py:1206
-#: ./c3spartyticketing/new_ticket.py:210 ./c3spartyticketing/new_ticket.py:321
-msgid "Last Name"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:283
-#: ./c3spartyticketing/edit_ticket.py:387 ./c3spartyticketing/views.py:418
-#: ./c3spartyticketing/views.py:862 ./c3spartyticketing/views.py:1214
-#: ./c3spartyticketing/new_ticket.py:216 ./c3spartyticketing/new_ticket.py:329
-msgid "E-mail"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:293 ./c3spartyticketing/new_ticket.py:239
-#: ./c3spartyticketing/templates/nonmember.pt:57
-#: ./c3spartyticketing/templates/success.pt:139
-#: ./c3spartyticketing/templates/nonmember_success.pt:43
-#: ./c3spartyticketing/templates/party.pt:63
-msgid "BarCamp"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:300 ./c3spartyticketing/new_ticket.py:246
-#: ./c3spartyticketing/templates/success.pt:165
-#: ./c3spartyticketing/templates/party.pt:87
-msgid "General Assembly"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:311 ./c3spartyticketing/views.py:199
-#: ./c3spartyticketing/views.py:745 ./c3spartyticketing/new_ticket.py:256
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:120
+#: ./c3spartyticketing/new_ticket.py:256 ./c3spartyticketing/edit_ticket.py:317
+#: ./c3spartyticketing/ticket_schema_member.py:118
 msgid "General Assembly:"
 msgstr ""
 
-#: ./c3spartyticketing/edit_ticket.py:322 ./c3spartyticketing/views.py:209
-#: ./c3spartyticketing/views.py:1227 ./c3spartyticketing/new_ticket.py:266
-msgid "BarCamp:"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:333 ./c3spartyticketing/new_ticket.py:277
-msgid "Extras:"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:343 ./c3spartyticketing/new_ticket.py:287
-msgid "Special Offer:"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:355 ./c3spartyticketing/views.py:274
-#: ./c3spartyticketing/views.py:1269 ./c3spartyticketing/new_ticket.py:297
-msgid "Supporter Tickets:"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:395 ./c3spartyticketing/views.py:427
-#: ./c3spartyticketing/views.py:871 ./c3spartyticketing/new_ticket.py:337
-msgid "Address"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:403 ./c3spartyticketing/views.py:436
-#: ./c3spartyticketing/views.py:880 ./c3spartyticketing/new_ticket.py:345
-msgid "Postal Code"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:411 ./c3spartyticketing/views.py:445
-#: ./c3spartyticketing/views.py:889 ./c3spartyticketing/new_ticket.py:353
-msgid "City"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:419 ./c3spartyticketing/views.py:454
-#: ./c3spartyticketing/views.py:898 ./c3spartyticketing/new_ticket.py:361
-msgid "Country"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:427 ./c3spartyticketing/views.py:463
-#: ./c3spartyticketing/views.py:907 ./c3spartyticketing/new_ticket.py:369
-msgid "My representative is..."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:442 ./c3spartyticketing/new_ticket.py:384
-msgid "Ticket ID of represented person (1) ..."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:448 ./c3spartyticketing/new_ticket.py:390
-msgid "Ticket ID of represented person (2) ..."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:459 ./c3spartyticketing/new_ticket.py:401
-msgid "Gender:"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:469 ./c3spartyticketing/new_ticket.py:411
-msgid "Size:"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:543 ./c3spartyticketing/views.py:1363
-#: ./c3spartyticketing/new_ticket.py:456
-msgid "Personal Data"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:551 ./c3spartyticketing/views.py:580
-#: ./c3spartyticketing/views.py:1055 ./c3spartyticketing/views.py:1367
-#: ./c3spartyticketing/new_ticket.py:464
-msgid "Ticket Information"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:565 ./c3spartyticketing/new_ticket.py:476
-msgid "T-Shirt"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:578 ./c3spartyticketing/new_ticket.py:485
-msgid "Staff Kommentar"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:136 ./c3spartyticketing/new_ticket.py:55
-msgid "Gender selection for T-shirt is mandatory."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:140 ./c3spartyticketing/new_ticket.py:59
-msgid "Size of T-shirt ist mandatory."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:146 ./c3spartyticketing/views.py:100
-#: ./c3spartyticketing/views.py:668 ./c3spartyticketing/new_ticket.py:65
-msgid "First name of representative is mandatory."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:150 ./c3spartyticketing/views.py:105
-#: ./c3spartyticketing/views.py:673 ./c3spartyticketing/new_ticket.py:69
-msgid "Last name of representative is mandatory."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:161 ./c3spartyticketing/views.py:117
-#: ./c3spartyticketing/views.py:685 ./c3spartyticketing/new_ticket.py:80
-msgid "Address of representative is mandatory."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:165 ./c3spartyticketing/views.py:122
-#: ./c3spartyticketing/views.py:690 ./c3spartyticketing/new_ticket.py:84
-msgid "Postal code of representative is mandatory."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:169 ./c3spartyticketing/views.py:127
-#: ./c3spartyticketing/views.py:695 ./c3spartyticketing/new_ticket.py:88
-msgid "City of representative is mandatory."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:173 ./c3spartyticketing/views.py:132
-#: ./c3spartyticketing/views.py:700 ./c3spartyticketing/new_ticket.py:92
-msgid "Country of representative is mandatory."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:177 ./c3spartyticketing/views.py:137
-#: ./c3spartyticketing/views.py:705 ./c3spartyticketing/new_ticket.py:96
-msgid "Relation of representative is mandatory."
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:591
-#: ./c3spartyticketing/accountants_views.py:892
-#: ./c3spartyticketing/views.py:2001 ./c3spartyticketing/views.py:2601
-#: ./c3spartyticketing/views.py:1799 ./c3spartyticketing/views.py:2443
-#: ./c3spartyticketing/new_ticket.py:497
-msgid "Submit"
-msgstr ""
-
-#: ./c3spartyticketing/edit_ticket.py:621
-#: ./c3spartyticketing/accountants_views.py:129
-#: ./c3spartyticketing/accountants_views.py:913
-#: ./c3spartyticketing/cashiers_views.py:401 ./c3spartyticketing/views.py:1830
-#: ./c3spartyticketing/views.py:2474 ./c3spartyticketing/new_ticket.py:528
-msgid "Please note: There were errors, please check the form below."
-msgstr ""
-
-#: ./c3spartyticketing/accountants_views.py:893
-msgid "Reset"
-msgstr ""
-
-#: ./c3spartyticketing/views.py:1999 ./c3spartyticketing/views.py:2599
-msgid "Submit & Buy"
-msgstr ""
-
-#: ./c3spartyticketing/views.py:152 ./c3spartyticketing/views.py:159
-msgid ""
-"I'd like to have Coffee and Cake during  and a cooked meal after the BarCamp."
-" (€12)"
-msgstr ""
-
-#: ./c3spartyticketing/views.py:158 ./c3spartyticketing/views.py:1159
-msgid "I will attend the BarCamp. (€15)"
-msgstr ""
-
-#: ./c3spartyticketing/views.py:1160
-msgid ""
-"I'd like to have coffee and cake during and buffet after the BarCamp. "
-"(€12)"
-msgstr ""
-
-#: ./c3spartyticketing/views.py:216
-msgid ""
-"The freiLand offers catering for a fixed price. There will be Coffee and a "
-"snack or cake in the afternoon and a cooked meal at the end of the day."
-msgstr ""
-
-#: ./c3spartyticketing/views.py:281 ./c3spartyticketing/views.py:1276
-msgid ""
-"These ticket options are selectable indepently from the other options. They "
-"help the cooperative a great deal to bear the costs occasioned by the events."
-msgstr ""
-
-#: ./c3spartyticketing/views.py:311 ./c3spartyticketing/views.py:755
-#: ./c3spartyticketing/views.py:1306
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:130
+#: ./c3spartyticketing/ticket_schema_member.py:226
+#: ./c3spartyticketing/ticket_schema_nonmember.py:184
 msgid "Notes"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:318 ./c3spartyticketing/views.py:762
-#: ./c3spartyticketing/views.py:1313
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:137
+#: ./c3spartyticketing/ticket_schema_member.py:233
+#: ./c3spartyticketing/ticket_schema_nonmember.py:191
 msgid "Your notes (255 chars)"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:584 ./c3spartyticketing/views.py:1060
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:219
+#: ./c3spartyticketing/new_ticket.py:204 ./c3spartyticketing/new_ticket.py:313
+#: ./c3spartyticketing/edit_ticket.py:277
+#: ./c3spartyticketing/edit_ticket.py:377
+#: ./c3spartyticketing/ticket_schema_member.py:315
+#: ./c3spartyticketing/ticket_schema_nonmember.py:79
+msgid "First Name"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:228
+#: ./c3spartyticketing/new_ticket.py:210 ./c3spartyticketing/new_ticket.py:321
+#: ./c3spartyticketing/edit_ticket.py:283
+#: ./c3spartyticketing/edit_ticket.py:385
+#: ./c3spartyticketing/ticket_schema_member.py:324
+#: ./c3spartyticketing/ticket_schema_nonmember.py:87
+msgid "Last Name"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:237
+#: ./c3spartyticketing/new_ticket.py:216 ./c3spartyticketing/new_ticket.py:329
+#: ./c3spartyticketing/edit_ticket.py:289
+#: ./c3spartyticketing/edit_ticket.py:393
+#: ./c3spartyticketing/ticket_schema_member.py:333
+#: ./c3spartyticketing/ticket_schema_nonmember.py:95
+msgid "E-mail"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:246
+#: ./c3spartyticketing/new_ticket.py:337 ./c3spartyticketing/edit_ticket.py:401
+#: ./c3spartyticketing/ticket_schema_member.py:342
+msgid "Address"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:255
+#: ./c3spartyticketing/new_ticket.py:345 ./c3spartyticketing/edit_ticket.py:409
+#: ./c3spartyticketing/ticket_schema_member.py:351
+msgid "Postal Code"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:264
+#: ./c3spartyticketing/new_ticket.py:353 ./c3spartyticketing/edit_ticket.py:417
+#: ./c3spartyticketing/ticket_schema_member.py:360
+msgid "City"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:273
+#: ./c3spartyticketing/new_ticket.py:361 ./c3spartyticketing/edit_ticket.py:425
+#: ./c3spartyticketing/ticket_schema_member.py:369
+msgid "Country"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:282
+#: ./c3spartyticketing/new_ticket.py:369 ./c3spartyticketing/edit_ticket.py:433
+#: ./c3spartyticketing/ticket_schema_member.py:378
+msgid "My representative is..."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:430
+#: ./c3spartyticketing/new_ticket.py:464 ./c3spartyticketing/edit_ticket.py:557
+#: ./c3spartyticketing/ticket_schema_member.py:495
+#: ./c3spartyticketing/ticket_schema_nonmember.py:245
+msgid "Ticket Information"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:435
+#: ./c3spartyticketing/ticket_schema_member.py:499
 msgid "Representative"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1153
-msgid "You need to select at least one option."
+#: ./c3spartyticketing/new_ticket.py:55 ./c3spartyticketing/edit_ticket.py:139
+msgid "Gender selection for T-shirt is mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:1234
-msgid "The freiLand offers coffee and cake, as well as a warm meal."
+#: ./c3spartyticketing/new_ticket.py:59 ./c3spartyticketing/edit_ticket.py:143
+msgid "Size of T-shirt ist mandatory."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:299 ./c3spartyticketing/views.py:1294
+#: ./c3spartyticketing/new_ticket.py:139
+#: ./c3spartyticketing/ticket_options.py:50
+msgid "I will attend the BarCamp."
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:140 ./c3spartyticketing/edit_ticket.py:218
+#: ./c3spartyticketing/edit_ticket.py:223
+msgid "I'd like to dine from the BarCamp buffet. (€12)"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:144 ./c3spartyticketing/edit_ticket.py:227
+msgid "Supporter Ticket (€5)"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:145
+msgid "Supporter Ticket XL (€10)"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:146 ./c3spartyticketing/edit_ticket.py:230
+msgid "Supporter Ticket XXL (€100)"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:158 ./c3spartyticketing/edit_ticket.py:242
+msgid "male"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:159 ./c3spartyticketing/edit_ticket.py:243
+msgid "female"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:163 ./c3spartyticketing/edit_ticket.py:247
+msgid "S"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:164 ./c3spartyticketing/edit_ticket.py:248
+msgid "M"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:165 ./c3spartyticketing/edit_ticket.py:249
+msgid "L"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:166 ./c3spartyticketing/edit_ticket.py:250
+msgid "XL"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:167 ./c3spartyticketing/edit_ticket.py:251
+msgid "XXL"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:168 ./c3spartyticketing/edit_ticket.py:252
+msgid "XXXL"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:239 ./c3spartyticketing/edit_ticket.py:299
+msgid "BarCamp"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:246 ./c3spartyticketing/edit_ticket.py:306
+msgid "General Assembly"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:266 ./c3spartyticketing/edit_ticket.py:328
+#: ./c3spartyticketing/ticket_schema_member.py:128
+#: ./c3spartyticketing/ticket_schema_nonmember.py:108
+msgid "BarCamp:"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:277 ./c3spartyticketing/edit_ticket.py:339
+msgid "Extras:"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:287 ./c3spartyticketing/edit_ticket.py:349
+msgid "Special Offer:"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:297 ./c3spartyticketing/edit_ticket.py:361
+#: ./c3spartyticketing/ticket_schema_member.py:188
+#: ./c3spartyticketing/ticket_schema_nonmember.py:146
+msgid "Supporter Tickets:"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:384 ./c3spartyticketing/edit_ticket.py:448
+msgid "Ticket ID of represented person (1) ..."
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:390 ./c3spartyticketing/edit_ticket.py:454
+msgid "Ticket ID of represented person (2) ..."
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:401 ./c3spartyticketing/edit_ticket.py:465
+msgid "Gender:"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:411 ./c3spartyticketing/edit_ticket.py:475
+msgid "Size:"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:456 ./c3spartyticketing/edit_ticket.py:549
+#: ./c3spartyticketing/ticket_schema_nonmember.py:241
+msgid "Personal Data"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:476 ./c3spartyticketing/edit_ticket.py:571
+msgid "T-Shirt"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:485 ./c3spartyticketing/edit_ticket.py:584
+msgid "Staff Kommentar"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:497 ./c3spartyticketing/edit_ticket.py:597
+#: ./c3spartyticketing/views_nonmember.py:89
+#: ./c3spartyticketing/views_nonmember.py:252
+#: ./c3spartyticketing/views_member.py:112
+#: ./c3spartyticketing/views_member.py:318
+#: ./c3spartyticketing/accountants_views.py:708
+msgid "Submit"
+msgstr ""
+
+#: ./c3spartyticketing/new_ticket.py:528 ./c3spartyticketing/edit_ticket.py:627
+#: ./c3spartyticketing/cashiers_views.py:537
+#: ./c3spartyticketing/accountants_login_logout.py:102
+#: ./c3spartyticketing/views_nonmember.py:120
+#: ./c3spartyticketing/views_member.py:143
+#: ./c3spartyticketing/accountants_views.py:729
+msgid "Please note: There were errors, please check the form below."
+msgstr ""
+
+#: ./c3spartyticketing/edit_ticket.py:217
+msgid "I will attend the BarCamp. (€9)"
+msgstr ""
+
+#: ./c3spartyticketing/edit_ticket.py:222
+msgid "I will attend the BarCamp. (€11)"
+msgstr ""
+
+#: ./c3spartyticketing/edit_ticket.py:228
+msgid "Supporter Ticket L (€10)"
+msgstr ""
+
+#: ./c3spartyticketing/edit_ticket.py:229
+msgid "Supporter Ticket XL (€50)"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member.py:195
+msgid ""
+"These ticket options are selectable indepently from the other options. They "
+"help the cooperative to bear the costs occasioned by the events. You may "
+"choose more than one supporter ticket."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_member.py:214
+#: ./c3spartyticketing/ticket_schema_nonmember.py:172
 msgid "Total"
 msgstr ""
 
-#: ./c3spartyticketing/views.py:300 ./c3spartyticketing/views.py:1295
+#: ./c3spartyticketing/ticket_schema_member.py:215
+#: ./c3spartyticketing/ticket_schema_nonmember.py:173
 msgid ""
-"Your order has to be fully paid by 09.06.2015 at the latest (payment receipt "
+"Your order has to be fully paid by 09.04.2016 at the latest (payment receipt "
 "on our account applies)Otherwise we will have to cancel the entire order. "
 "Money transfer is the only payment method. Payment informations will be sent "
 "to you shortly by e-mail."
 msgstr ""
 
-#: ./c3spartyticketing/views.py:2006 ./c3spartyticketing/views.py:2606
+#: ./c3spartyticketing/ticket_options.py:53
+msgid "I'd like to have coffee and cake during and buffet after the BarCamp."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_options.py:66
+msgid "Supporter Ticket"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_options.py:68
+msgid "Supporter Ticket L"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_options.py:70
+msgid "Supporter Ticket XL"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_options.py:72
+msgid "Supporter Ticket XXL"
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_nonmember.py:64
+msgid "You need to select at least one option."
+msgstr ""
+
+#: ./c3spartyticketing/ticket_schema_nonmember.py:153
+msgid ""
+"These ticket options are selectable indepently from the other options. They "
+"help the cooperative to bear the costs occasioned by the events. You may "
+"choose more than one supporter ticket. "
+msgstr ""
+
+#: ./c3spartyticketing/views_nonmember.py:250
+#: ./c3spartyticketing/views_member.py:316
+msgid "Submit & Buy"
+msgstr ""
+
+#: ./c3spartyticketing/views_nonmember.py:257
+#: ./c3spartyticketing/views_member.py:323
 msgid "Wait, I might have to change..."
 msgstr ""
 
-#: ./c3spartyticketing/new_ticket.py:139
-msgid "I will attend the BarCamp."
+#: ./c3spartyticketing/accountants_views.py:709
+msgid "Reset"
 msgstr ""
 
 #: ./c3spartyticketing/templates/nonmember_end.pt:17
-#: ./c3spartyticketing/templates/end.pt:17
-msgid "From 14th August on, you can't register for the barcamp anymore!"
+msgid "Sorry, you can't register for the barcamp anymore!"
 msgstr ""
 
-#: ./c3spartyticketing/templates/nonmember_end.pt:25
+#: ./c3spartyticketing/templates/nonmember_end.pt:18
+msgid "Registration ended"
+msgstr ""
+
+#: ./c3spartyticketing/templates/nonmember_end.pt:26
 #: ./c3spartyticketing/templates/end.pt:25
 msgid ""
 "Unfortunately, there is no option to buy tickets for the BarCamp at the door."
 msgstr ""
 
-#: ./c3spartyticketing/templates/nonmember_end.pt:27
+#: ./c3spartyticketing/templates/nonmember_end.pt:28
 msgid ""
 "If you are a member of the C3S, you still may register for the General "
-"Assembly. The personalized link to the form is part of our invitation mail we"
-" sent you on 21st of July."
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember_end.pt:30
-#: ./c3spartyticketing/templates/success.pt:93
-#: ./c3spartyticketing/templates/success.pt:110
-#: ./c3spartyticketing/templates/success.pt:124
-#: ./c3spartyticketing/templates/end.pt:28
-#: ./c3spartyticketing/templates/nonmember_success.pt:32
-msgid "See you soon,"
+"Assembly using the personalized link in the invitation email."
 msgstr ""
 
 #: ./c3spartyticketing/templates/nonmember_end.pt:31
+#: ./c3spartyticketing/templates/nonmember_success.pt:32
+#: ./c3spartyticketing/templates/end.pt:28
+#: ./c3spartyticketing/templates/success.pt:93
+#: ./c3spartyticketing/templates/success.pt:110
+#: ./c3spartyticketing/templates/success.pt:124
+msgid "See you soon,"
+msgstr ""
+
+#: ./c3spartyticketing/templates/nonmember_end.pt:32
+#: ./c3spartyticketing/templates/nonmember_success.pt:33
+#: ./c3spartyticketing/templates/end.pt:29
 #: ./c3spartyticketing/templates/success.pt:94
 #: ./c3spartyticketing/templates/success.pt:111
 #: ./c3spartyticketing/templates/success.pt:125
-#: ./c3spartyticketing/templates/end.pt:29
-#: ./c3spartyticketing/templates/nonmember_success.pt:33
 msgid "Your C3S Team"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:31
-#: ./c3spartyticketing/templates/success.pt:46
-#: ./c3spartyticketing/templates/nonmember_success.pt:26
-#: ./c3spartyticketing/templates/party.pt:32
-msgid "Hello"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:34
-#: ./c3spartyticketing/templates/party.pt:38
-msgid "get your ticket for the"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:35
-msgid "C3S BarCamp!"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:40
-msgid ""
-"If you already are a member of the C3S, please use your personal link which "
-"you received by e-mail on May 22th."
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:43
-#: ./c3spartyticketing/templates/party.pt:48
-msgid "Please scroll down for filling in the form."
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:62
-#: ./c3spartyticketing/templates/success.pt:144
-#: ./c3spartyticketing/templates/success.pt:172
-#: ./c3spartyticketing/templates/nonmember_success.pt:48
-#: ./c3spartyticketing/templates/party.pt:68
-#: ./c3spartyticketing/templates/party.pt:94
-msgid "Starts in"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:63
-#: ./c3spartyticketing/templates/success.pt:145
-#: ./c3spartyticketing/templates/success.pt:173
-#: ./c3spartyticketing/templates/nonmember_success.pt:49
-#: ./c3spartyticketing/templates/party.pt:69
-#: ./c3spartyticketing/templates/party.pt:95
-msgid "weeks"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:64
-#: ./c3spartyticketing/templates/success.pt:146
-#: ./c3spartyticketing/templates/success.pt:174
-#: ./c3spartyticketing/templates/nonmember_success.pt:50
-#: ./c3spartyticketing/templates/party.pt:70
-#: ./c3spartyticketing/templates/party.pt:96
-msgid "days(s)"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:72
-#: ./c3spartyticketing/templates/success.pt:154
-#: ./c3spartyticketing/templates/nonmember_success.pt:58
-#: ./c3spartyticketing/templates/party.pt:76
-msgid "12.06.2015"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:73
-#: ./c3spartyticketing/templates/success.pt:155
-#: ./c3spartyticketing/templates/nonmember_success.pt:59
-#: ./c3spartyticketing/templates/party.pt:77
-msgid "12am - 8pm"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:77
-#: ./c3spartyticketing/templates/success.pt:198
-#: ./c3spartyticketing/templates/nonmember_success.pt:63
-#: ./c3spartyticketing/templates/party.pt:123
-msgid "Location"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:78
-#: ./c3spartyticketing/templates/success.pt:188
-#: ./c3spartyticketing/templates/success.pt:199
-#: ./c3spartyticketing/templates/nonmember_success.pt:64
-#: ./c3spartyticketing/templates/party.pt:113
-#: ./c3spartyticketing/templates/party.pt:124
-msgid "freiLand"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:79
-#: ./c3spartyticketing/templates/success.pt:200
-#: ./c3spartyticketing/templates/nonmember_success.pt:65
-#: ./c3spartyticketing/templates/party.pt:125
-msgid "Potsdam"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:82
-#: ./c3spartyticketing/templates/success.pt:203
-#: ./c3spartyticketing/templates/nonmember_success.pt:68
-#: ./c3spartyticketing/templates/party.pt:128
-msgid "Address"
-msgstr ""
-
-#: ./c3spartyticketing/templates/nonmember.pt:94
-#: ./c3spartyticketing/templates/nonmember.pt:109
-#: ./c3spartyticketing/templates/success.pt:212
-#: ./c3spartyticketing/templates/success.pt:226
-#: ./c3spartyticketing/templates/nonmember_success.pt:79
-#: ./c3spartyticketing/templates/nonmember_success.pt:92
-#: ./c3spartyticketing/templates/party.pt:141
-#: ./c3spartyticketing/templates/party.pt:157
-msgid "Display enlarged map"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:19
-#: ./c3spartyticketing/templates/success.pt:24
-#: ./c3spartyticketing/templates/success.pt:28
-#: ./c3spartyticketing/templates/success.pt:33
-#: ./c3spartyticketing/templates/nonmember_success.pt:17
-msgid "Your order at C3S SCE:"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:20
-#: ./c3spartyticketing/templates/success.pt:29
-#: ./c3spartyticketing/templates/success.pt:34
-#: ./c3spartyticketing/templates/nonmember_success.pt:18
-msgid "Please check your e-mails to get information on your payment."
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:50
-msgid "you should have received a confirmation e-mail from"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:51
-msgid "noreply@c3s.cc"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:51
-msgid "that features the subject"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:52
-msgid "C3S BarCamp 2015: your order"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:54
-msgid ""
-"This e-mail contains all relevant information for the payment of your order."
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:55
-msgid "Important"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:55
-#: ./c3spartyticketing/templates/finished.pt:22
-msgid "Referral Code"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:58
-msgid "After receiving"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:58
-msgid "your payment"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:58
-msgid ""
-", we are going to send you an email with your ticket(s) and/or vouchers for "
-"the rest of your order. You will receive your ticket(s) in time."
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:61
-msgid "Your order has to be fully paid by"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:62
-msgid "9th June 2015"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:63
-msgid "at latest. The date of entry of payment on our account applies."
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:66
-msgid "In case you did not receive our e-mail, please send a note to"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:70
-msgid "Thank you for your order at C3S SCE!"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:71
-#: ./c3spartyticketing/templates/success.pt:77
-msgid "Your C3S-Team"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:76
-msgid ""
-"Many thanks for attending the general assembly -- looking forward to meet you"
-" in Potsdam!"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:82
-msgid ""
-"you have cancelled your participation at the C3S General Assembly. However, "
-"you are attending the BarCamp."
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:86
-#: ./c3spartyticketing/templates/success.pt:103
-#: ./c3spartyticketing/templates/success.pt:120
-msgid ""
-"If you did cancel by mistake or you would like to decide the other way "
-"around,"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:87
-#: ./c3spartyticketing/templates/success.pt:104
-#: ./c3spartyticketing/templates/success.pt:121
-msgid "please contact our team at office@c3s.cc until 9th June, 2015."
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:89
-#: ./c3spartyticketing/templates/success.pt:106
-#: ./c3spartyticketing/templates/nonmember_success.pt:28
-msgid ""
-"You will receive more information on your order and how to pay in an e-mail."
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:99
-#: ./c3spartyticketing/templates/success.pt:116
-msgid ""
-"you have cancelled your participation in the C3S General Assembly as well as "
-"a participation in the BarCamp."
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:166
-#: ./c3spartyticketing/templates/success.pt:186
-#: ./c3spartyticketing/templates/party.pt:109
-msgid "Party"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:180
-#: ./c3spartyticketing/templates/party.pt:102
-msgid "13.06.2015"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:181
-msgid "2pm - 6pm"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:185
-#: ./c3spartyticketing/templates/party.pt:108
-msgid "Afterwards, we'll"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:187
-msgid "w/DJ at the"
-msgstr ""
-
-#: ./c3spartyticketing/templates/success.pt:203
-#: ./c3spartyticketing/templates/nonmember_success.pt:68
-#: ./c3spartyticketing/templates/party.pt:128
-msgid "Friedrich-Engels-Straße 22, 14473 Potsdam"
 msgstr ""
 
 #: ./c3spartyticketing/templates/base.pt:9
@@ -682,7 +463,7 @@ msgid "C3S Event Ticketing"
 msgstr ""
 
 #: ./c3spartyticketing/templates/base.pt:43
-msgid "Copyright 2015, C3S SCE."
+msgid "Copyright 2016, C3S SCE."
 msgstr ""
 
 #: ./c3spartyticketing/templates/base.pt:46
@@ -701,25 +482,16 @@ msgstr ""
 msgid "Imprint"
 msgstr ""
 
-#: ./c3spartyticketing/templates/confirm.pt:24
-#: ./c3spartyticketing/templates/nonmember_confirm.pt:24
-msgid "Please confirm your information"
+#: ./c3spartyticketing/templates/party.pt:32
+#: ./c3spartyticketing/templates/nonmember_success.pt:26
+#: ./c3spartyticketing/templates/nonmember.pt:31
+#: ./c3spartyticketing/templates/success.pt:46
+msgid "Hello"
 msgstr ""
 
-#: ./c3spartyticketing/templates/confirm.pt:29
-#: ./c3spartyticketing/templates/nonmember_confirm.pt:29
-msgid "What's next?"
-msgstr ""
-
-#: ./c3spartyticketing/templates/confirm.pt:30
-msgid ""
-"We will send you an e-mail with more information. Please check also your spam"
-" folder for our mail! You have to pay your order (and your ticket) before "
-"leaving for Potsdam!"
-msgstr ""
-
-#: ./c3spartyticketing/templates/finished.pt:25
-msgid "Your Ticket:"
+#: ./c3spartyticketing/templates/party.pt:38
+#: ./c3spartyticketing/templates/nonmember.pt:34
+msgid "get your ticket for the"
 msgstr ""
 
 #: ./c3spartyticketing/templates/party.pt:39
@@ -747,34 +519,64 @@ msgid "thank you"
 msgstr ""
 
 #: ./c3spartyticketing/templates/party.pt:46
+msgid "If possible, please respond by April 4th."
+msgstr ""
+
+#: ./c3spartyticketing/templates/party.pt:48
+#: ./c3spartyticketing/templates/nonmember.pt:43
+msgid "Please scroll down for filling in the form."
+msgstr ""
+
+#: ./c3spartyticketing/templates/confirm.pt:24
+#: ./c3spartyticketing/templates/nonmember_confirm.pt:24
+msgid "Please confirm your information"
+msgstr ""
+
+#: ./c3spartyticketing/templates/confirm.pt:29
+#: ./c3spartyticketing/templates/nonmember_confirm.pt:29
+msgid "What's next?"
+msgstr ""
+
+#: ./c3spartyticketing/templates/confirm.pt:30
 msgid ""
-"Please let us know in time whether you will participate. We must know as soon"
-" as possible whether the location will be large enough. If possible, please "
-"respond by May 29th at the latest."
+"We will send you an e-mail with more information. Please check also your spam"
+" folder for our mail! You have to pay your order (and your ticket) before "
+"leaving for the event(s)!"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:88
-msgid "Party w/ Live Music"
+#: ./c3spartyticketing/templates/nonmember_success.pt:17
+#: ./c3spartyticketing/templates/success.pt:19
+#: ./c3spartyticketing/templates/success.pt:24
+#: ./c3spartyticketing/templates/success.pt:28
+#: ./c3spartyticketing/templates/success.pt:33
+msgid "Your order at C3S SCE:"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:103
-msgid "1pm - 5pm"
+#: ./c3spartyticketing/templates/nonmember_success.pt:18
+#: ./c3spartyticketing/templates/success.pt:20
+#: ./c3spartyticketing/templates/success.pt:29
+#: ./c3spartyticketing/templates/success.pt:34
+msgid "Please check your e-mails to get information on your payment."
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:104
-msgid "(registration from 10:30am)"
+#: ./c3spartyticketing/templates/nonmember_success.pt:28
+#: ./c3spartyticketing/templates/success.pt:89
+#: ./c3spartyticketing/templates/success.pt:106
+msgid ""
+"You will receive more information on your order and how to pay in an e-mail."
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:110
-msgid "w/DJ and there will be a"
+#: ./c3spartyticketing/templates/end.pt:17
+msgid "From 14th August on, you can't register for the barcamp anymore!"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:111
-msgid "Concert"
+#: ./c3spartyticketing/templates/finished.pt:22
+#: ./c3spartyticketing/templates/success.pt:55
+msgid "Referral Code"
 msgstr ""
 
-#: ./c3spartyticketing/templates/party.pt:112
-msgid "at the"
+#: ./c3spartyticketing/templates/finished.pt:25
+msgid "Your Ticket:"
 msgstr ""
 
 #: ./c3spartyticketing/templates/nonmember_confirm.pt:30
@@ -782,4 +584,107 @@ msgid ""
 "We will send you an e-mail with more information. Please check also your spam"
 " folder for our mail! You have to pay your order (and your ticket) before "
 "leaving for Cologne/Düsseldorf!"
+msgstr ""
+
+#: ./c3spartyticketing/templates/nonmember.pt:35
+msgid "C3S BarCamp!"
+msgstr ""
+
+#: ./c3spartyticketing/templates/nonmember.pt:40
+msgid ""
+"If you already are a member of the C3S, please use your personal link which "
+"you received by e-mail on"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:50
+msgid "you should have received a confirmation e-mail from"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:51
+msgid "noreply@c3s.cc"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:51
+msgid "that features the subject"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:52
+msgid "C3S BarCamp 2016: your order"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:54
+msgid ""
+"This e-mail contains all relevant information for the payment of your order."
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:55
+msgid "Important"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:58
+msgid "After receiving"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:58
+msgid "your payment"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:58
+msgid ""
+", we are going to send you an email with your ticket(s) and/or vouchers for "
+"the rest of your order. You will receive your ticket(s) in time."
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:61
+msgid "Your order has to be fully paid by"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:63
+msgid "at latest. The date of entry of payment on our account applies."
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:66
+msgid "In case you did not receive our e-mail, please send a note to"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:70
+msgid "Thank you for your order at C3S SCE!"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:71
+#: ./c3spartyticketing/templates/success.pt:77
+msgid "Your C3S-Team"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:76
+msgid ""
+"Many thanks for attending the general assembly -- looking forward to meet you"
+" there!"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:82
+msgid ""
+"you have cancelled your participation at the C3S General Assembly. However, "
+"you are attending the BarCamp."
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:86
+#: ./c3spartyticketing/templates/success.pt:103
+#: ./c3spartyticketing/templates/success.pt:120
+msgid ""
+"If you did cancel by mistake or you would like to decide the other way "
+"around,"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:87
+#: ./c3spartyticketing/templates/success.pt:104
+#: ./c3spartyticketing/templates/success.pt:121
+msgid "please contact our team at office@c3s.cc until"
+msgstr ""
+
+#: ./c3spartyticketing/templates/success.pt:99
+#: ./c3spartyticketing/templates/success.pt:116
+msgid ""
+"you have cancelled your participation in the C3S General Assembly as well as "
+"a participation in the BarCamp."
 msgstr ""
