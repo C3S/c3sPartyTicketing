@@ -12,6 +12,8 @@ from pyramid.i18n import (
     TranslationStringFactory,
 )
 
+from c3spartyticketing import ticket_options
+
 _ = TranslationStringFactory('c3spartyticketing')
 
 
@@ -78,34 +80,10 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
 
     # ## options
 
-    ticket_gv_options = (
-        (1, _(u'I will attend the C3S SCE General Assembly.')),
-        (2, _(
-            u'I will not attend the C3S SCE General Assembly personally. '
-            u'I will be represented by an authorized person.'
-        )),
-        (3, _(u'I will not attend the C3S SCE General Assembly.'))
-    )
-
-    # ticket_bc_options = (
-    #     ('attendance', _(
-    #         u'I will attend the BarCamp.') + u'{request.bc_cost}€'),
-    #     ('buffet', _(u'I\'d like to dine from the BarCamp buffet. (€12)'))
-    # )
-
-    # ticket_support_options = (
-    #     (1, _(u'Supporter Ticket (€5)')),
-    #     (2, _(u'Supporter Ticket XL (€10)')),
-    #     (3, _(u'Supporter Ticket XXL (€100)'))
-    # )
-
-    rep_type_options = (
-        ('member', _(u'a member of C3S SCE')),
-        ('partner', _(u'my spouse / registered civil partner')),
-        ('parent', _(u'my parent')),
-        ('child', _(u'my child')),
-        ('sibling', _(u'my sibling'))
-    )
+    ticket_gv_options = ticket_options.get_ticket_gv_options(request)
+    rep_type_options = ticket_options.get_rep_type_options()
+    # ticket_support_options = ticket_options.get_ticket_support_options(
+    #    request)
 
     # ## formparts
 
