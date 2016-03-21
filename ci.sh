@@ -25,9 +25,9 @@ env/bin/pip install nose coverage pep8 pylint pyflakes pyquery
 # start Xvfband send it to the background: Xvfb :10 &
 # export DISPLAY=:10
 # run the tests
-env/bin/nosetests c3smembership/   --with-coverage --cover-html --with-xunit
+env/bin/nosetests c3spartyticketing/   --with-coverage --cover-html --with-xunit
 # this is how you can run individial tests:
-#env/bin/nosetests c3smembership/tests/test_webtest.py:FunctionalTests.test_faq_template
+#env/bin/nosetests c3spartyticketing/tests/test_webtest.py:FunctionalTests.test_faq_template
 
 # for pyflakes
 find c3spartyticketing -regex '.*.py' ! -regex '.*tests.*'|egrep -v '^./tests/'|xargs env/bin/pyflakes  > pyflakes.log || :
