@@ -88,3 +88,43 @@ def get_ticket_support_options(request):
 #     ('XXL', _(u'XXL')),
 #     ('XXXL', _(u'XXXL'))
 # )
+
+
+def get_guest_options_bc():
+    guest_options_bc = (
+        ('', ''),
+        ('helper', 'Helfer'),
+        ('guest', 'Gast'),
+        ('specialguest', 'Ehrengast'),
+        ('press', 'Presse'),
+    )
+    return guest_options_bc
+
+
+def get_guest_options_gv():
+    guest_options_gv = (
+        ('', ''),
+        ('helper', 'Helfer'),
+        ('guest', 'Gast'),
+        ('specialguest', 'Ehrengast'),
+        ('press', 'Presse'),
+        ('representative', 'Repräsentant'),
+    )
+    return guest_options_gv
+
+
+def get_membership_type_options():
+    membership_type_options = (
+        ('nonmember', 'Nicht-Mitglied'),
+        ('normal', 'Normal'),
+        ('investing', 'Investierend'),
+    )
+    return membership_type_options
+
+
+def get_locale_options():
+    locale_options = (
+        ('de', 'deutsch'),
+        ('en', 'englisch'),
+    )
+    return locale_options

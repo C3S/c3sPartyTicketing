@@ -163,37 +163,13 @@ def edit_ticket(request):
                 raise colander.Invalid(
                     form, _(u'Relation of representative is mandatory.')
                 )
-    # XXX: convert ticket_*_schema into class and import here
-    # from c3spartyticketing.options import (
-    #     ticket_gv_options,
-    #     ticket_bc_options,
-    #     ticket_support_options,
-    #     rep_type_options,
-    #     tshirt_type_options,
-    #     tshirt_size_options,
-    # )
 
     ticket_gv_options = ticket_options.get_ticket_gv_options(request)
     ticket_bc_options = ticket_options.get_ticket_bc_options(request)
     rep_type_options = ticket_options.get_rep_type_options()
     ticket_support_options = ticket_options.get_ticket_support_options(request)
-
-    guest_options_bc = (
-        ('', ''),
-        ('helper', 'Helfer'),
-        ('guest', 'Gast'),
-        ('specialguest', 'Ehrengast'),
-        ('press', 'Presse'),
-    )
-
-    guest_options_gv = (
-        ('', ''),
-        ('helper', 'Helfer'),
-        ('guest', 'Gast'),
-        ('specialguest', 'Ehrengast'),
-        ('press', 'Presse'),
-        ('representative', 'Repräsentant'),
-    )
+    guest_options_bc = ticket_options.get_guest_options_bc()
+    guest_options_gv = ticket_options.get_guest_options_gv()
 
     # ### generate form
     class PersonalData(colander.MappingSchema):

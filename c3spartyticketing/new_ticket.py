@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import colander
+from datetime import datetime
 import deform
 from deform import ValidationFailure
-
-
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 
@@ -12,20 +11,13 @@ from c3spartyticketing.models import (
     DBSession,
     PartyTicket
 )
+from c3spartyticketing import ticket_options
+from c3spartyticketing.utils import make_random_string
 from c3spartyticketing.views import (
     _,
     zpt_renderer
 )
-from c3spartyticketing.utils import make_random_string
 
-from datetime import (
-    date,
-    datetime,
-)
-from colander import (
-    Invalid,
-    Range,
-)
 
 LOGGING = True
 
@@ -48,26 +40,27 @@ def add_ticket(request):
         #      platziert und die richtigen klassen vergibt
         # node.raise_invalid()?
         # add exc as child?
-        #form.raise_invalid('test', form.get('tshirt').get('tshirt_size'))
-        if value['ticket']['ticket_tshirt']:
-            if not value['tshirt']['tshirt_type']:
-                raise colander.Invalid(form,
-                    _(u'Gender selection for T-shirt is mandatory.')
-                )
-            if not value['tshirt']['tshirt_size']:
-                raise colander.Invalid(form,
-                    _(u'Size of T-shirt ist mandatory.')
-                )
-        if value['personal']['membership_type'] in ('normal', 'investing') \
-            and value['ticket']['ticket_gv'] == 2:
+        # form.raise_invalid('test', form.get('tshirt').get('tshirt_size'))
+        # if value['ticket']['ticket_tshirt']:
+        #     if not value['tshirt']['tshirt_type']:
+        #         raise colander.Invalid(
+        #             form,
+        #             _(u'Gender selection for T-shirt is mandatory.')
+        #         )
+        #     if not value['tshirt']['tshirt_size']:
+        #         raise colander.Invalid(
+        #             form, _(u'Size of T-shirt ist mandatory.')
+        #        )
+        if ((value['personal']['membership_type'] in (
+                'normal', 'investing')) and
+                (value['ticket']['ticket_gv'] == 2)):
             if not value['representation']['firstname']:
-                raise colander.Invalid(form,
-                    _(u'First name of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'First name of representative is mandatory.')
                 )
             if not value['representation']['lastname']:
-                raise colander.Invalid(form,
-                    _(u'Last name of representative is mandatory.')
-                )
+                raise colander.Invalid(
+                    form, _(u'Last name of representative is mandatory.'))
             validate_email = colander.Email(
                 _(u'Email of representative is invalid.')
             )
@@ -76,127 +69,64 @@ def add_ticket(request):
                 value['representation']['email']
             )
             if not value['representation']['street']:
-                raise colander.Invalid(form,
-                    _(u'Address of representative is mandatory.')
-                )
+                raise colander.Invalid(
+                    form, _(u'Address of representative is mandatory.'))
             if not value['representation']['zip']:
-                raise colander.Invalid(form,
-                    _(u'Postal code of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'Postal code of representative is mandatory.')
                 )
             if not value['representation']['city']:
-                raise colander.Invalid(form,
-                    _(u'City of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'City of representative is mandatory.')
                 )
             if not value['representation']['country']:
-                raise colander.Invalid(form,
-                    _(u'Country of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'Country of representative is mandatory.')
                 )
             if not value['representation']['representation_type']:
-                raise colander.Invalid(form,
-                    _(u'Relation of representative is mandatory.')
+                raise colander.Invalid(
+                    form, _(u'Relation of representative is mandatory.')
                 )
-        if value['represents']['represents1'] != 0:
-            if PartyTicket.get_by_id(value['represents']['represents1']) is None:
-                raise colander.Invalid(form,
-                    'Repräsentiert (1): Ticket ID '
-                    +str(value['represents']['represents1'])+' ungültig'
-                )
-        if value['represents']['represents2'] != 0:
-            if PartyTicket.get_by_id(value['represents']['represents2']) is None:
-                raise colander.Invalid(form,
-                    'Repräsentiert (2): Ticket ID '
-                    +str(value['represents']['represents2'])+' ungültig'
-                )
+        # if value['represents']['represents1'] != 0:
+        #     if PartyTicket.get_by_id(
+        #             value['represents']['represents1']) is None:
+        #         raise colander.Invalid(
+        #             form,
+        #             'Repräsentiert (1): Ticket ID ' + str(
+        #                 value['represents']['represents1']) + u' ungültig'
+        #         )
+        # if value['represents']['represents2'] != 0:
+        #     if PartyTicket.get_by_id(
+        #             value['represents']['represents2']) is None:
+        #         raise colander.Invalid(
+        #             form,
+        #             'Repräsentiert (2): Ticket ID ' + str(
+        #                 value['represents']['represents2']) + u' ungültig'
+        #         )
         if value['guest']['bc'] != '' and not value['ticket']['ticket_bc']:
-            raise colander.Invalid(form,
-                'Gästelistenkategorie bei Barcamp angewählt, aber keine Teilnahme'
+            raise colander.Invalid(
+                form,
+                u'Gästelistenkategorie bei Barcamp angewählt, '
+                u'aber keine Teilnahme'
             )
-        if value['guest']['gv'] != '' and not value['ticket']['ticket_gv'] == 1:
-            raise colander.Invalid(form,
-                'Gästelistenkategorie bei Generalversammlung angewählt, '
-                +'aber keine Teilnahme'
+        if value['guest']['gv'] != '' and not value[
+                'ticket']['ticket_gv'] == 1:
+            raise colander.Invalid(
+                form,
+                u'Gästelistenkategorie bei Generalversammlung angewählt, '
+                u'aber keine Teilnahme'
             )
 
-    # XXX: convert ticket_*_schema into class an import here
-    # from c3spartyticketing.options import (
-    #     ticket_gv_options,
-    #     ticket_bc_options,
-    #     ticket_support_options,
-    #     rep_type_options,
-    #     tshirt_type_options,
-    #     tshirt_size_options,
-    # )
-    ticket_gv_options = (
-        (1, _(u'I will attend the C3S SCE General Assembly.')),
-        (2, _(
-            u'I will not attend the C3S SCE General Assembly personally. '
-            u'I will be represented by an authorized person.'
-        )),
-        (3, _(u'I will not attend the C3S SCE General Assembly.'))
-    )
+    ticket_gv_options = ticket_options.get_ticket_gv_options(request)
+    ticket_bc_options = ticket_options.get_ticket_bc_options(request)
+    rep_type_options = ticket_options.get_rep_type_options()
+    ticket_support_options = ticket_options.get_ticket_support_options(request)
+    guest_options_bc = ticket_options.get_guest_options_bc()
+    guest_options_gv = ticket_options.get_guest_options_gv()
+    membership_type_options = ticket_options.get_membership_type_options()
+    locale_options = ticket_options.get_locale_options()
 
-    ticket_bc_options = (
-        ('attendance', _(u'I will attend the BarCamp.')),
-        ('buffet', _(u'I\'d like to dine from the BarCamp buffet. (€12)'))
-    )
-
-    ticket_support_options = (
-        (1, _(u'Supporter Ticket (€5)')),
-        (2, _(u'Supporter Ticket XL (€10)')),
-        (3, _(u'Supporter Ticket XXL (€100)'))
-    )
-
-    rep_type_options = (
-        ('member', _(u'a member of C3S SCE')),
-        ('partner', _(u'my spouse / registered civil partner')),
-        ('parent', _(u'my parent')),
-        ('child', _(u'my child')),
-        ('sibling', _(u'my sibling'))
-    )
-
-    tshirt_type_options = (
-        ('m', _(u'male')),
-        ('f', _(u'female'))
-    )
-
-    tshirt_size_options = (
-        ('S', _(u'S')),
-        ('M', _(u'M')),
-        ('L', _(u'L')),
-        ('XL', _(u'XL')),
-        ('XXL', _(u'XXL')),
-        ('XXXL', _(u'XXXL'))
-    )
-
-    guest_options_bc = (
-        ('', ''),
-        ('helper', 'Helfer'),
-        ('guest', 'Gast'),
-        ('specialguest', 'Ehrengast'),
-        ('press', 'Presse'),
-    )
-
-    guest_options_gv = (
-        ('', ''),
-        ('helper', 'Helfer'),
-        ('guest', 'Gast'),
-        ('specialguest', 'Ehrengast'),
-        ('press', 'Presse'),
-        ('representative', 'Repräsentant'),
-    )
-
-    membership_type_options = (
-        ('nonmember', 'Nicht-Mitglied'),
-        ('normal', 'Normal'),
-        ('investing', 'Investierend'),
-    )
-
-    locale_options = (
-        ('de', 'deutsch'),
-        ('en', 'englisch'),
-    )
-
-    ### generate form
+    # ### generate form
     class PersonalData(colander.MappingSchema):
 
         firstname = colander.SchemaNode(
@@ -230,7 +160,6 @@ def add_ticket(request):
             widget=deform.widget.SelectWidget(values=locale_options),
             oid="locale",
         )
-
 
     class GuestData(colander.MappingSchema):
 
@@ -272,26 +201,26 @@ def add_ticket(request):
             description='',
             oid="ticket_bc"
         )
-        ticket_tshirt = colander.SchemaNode(
-            colander.Boolean(),
-            title=_(u"Extras:"),
-            widget=deform.widget.CheckboxWidget(
-            ),
-            label="T-shirt (€25)",
-            missing='',
-            description='',
-            oid="ticket_tshirt"
-        )
-        ticket_all = colander.SchemaNode(
-            colander.Boolean(),
-            title=_(u"Special Offer:"),
-            widget=deform.widget.CheckboxWidget(
-            ),
-            label="All-Inclusive (€42)",
-            missing='',
-            description='',
-            oid="ticket_all"
-        )
+        # ticket_tshirt = colander.SchemaNode(
+        #    colander.Boolean(),
+        #    title=_(u"Extras:"),
+        #    widget=deform.widget.CheckboxWidget(
+        #    ),
+        #    label="T-shirt (€25)",
+        #    missing='',
+        #    description='',
+        #    oid="ticket_tshirt"
+        # )
+        # ticket_all = colander.SchemaNode(
+        #    colander.Boolean(),
+        #    title=_(u"Special Offer:"),
+        #    widget=deform.widget.CheckboxWidget(
+        #    ),
+        #    label="All-Inclusive (€42)",
+        #    missing='',
+        #    description='',
+        #    oid="ticket_all"
+        # )
         ticket_support = colander.SchemaNode(
             colander.Set(),
             title=_(u"Supporter Tickets:"),
@@ -392,30 +321,30 @@ def add_ticket(request):
             oid="represents2",
         )
 
-    class TshirtData(colander.MappingSchema):
-        """
-        colander schema of tshirt form
-        """
-        tshirt_type = colander.SchemaNode(
-            colander.String(),
-            title=_(u"Gender:"),
-            widget=deform.widget.RadioChoiceWidget(
-                size=1, css_class='ticket_types_input',
-                values=tshirt_type_options,
-            ),
-            missing=0,
-            oid="tshirt-type",
-        )
-        tshirt_size = colander.SchemaNode(
-            colander.String(),
-            title=_(u"Size:"),
-            widget=deform.widget.RadioChoiceWidget(
-                size=1, css_class='ticket_types_input',
-                values=tshirt_size_options,
-            ),
-            missing=0,
-            oid="tshirt-size",
-        )
+    # class TshirtData(colander.MappingSchema):
+    #     """
+    #     colander schema of tshirt form
+    #     """
+    #     tshirt_type = colander.SchemaNode(
+    #         colander.String(),
+    #         title=_(u"Gender:"),
+    #         widget=deform.widget.RadioChoiceWidget(
+    #             size=1, css_class='ticket_types_input',
+    #             values=tshirt_type_options,
+    #         ),
+    #         missing=0,
+    #         oid="tshirt-type",
+    #     )
+    #     tshirt_size = colander.SchemaNode(
+    #         colander.String(),
+    #         title=_(u"Size:"),
+    #         widget=deform.widget.RadioChoiceWidget(
+    #             size=1, css_class='ticket_types_input',
+    #             values=tshirt_size_options,
+    #         ),
+    #         missing=0,
+    #         oid="tshirt-size",
+    #     )
 
     class PriceData(colander.MappingSchema):
         """
@@ -444,7 +373,7 @@ def add_ticket(request):
             oid="price-calc"
         )
 
-    ### form
+    # ### form
     class TicketForm(colander.Schema):
         """
         The Form consists of
@@ -468,14 +397,14 @@ def add_ticket(request):
             title="Wird repräsentiert von ...",
             oid="rep-data",
         )
-        represents = RepresentsData(
-            title="Repräsentiert ...",
-            oid="represents",
-        )
-        tshirt = TshirtData(
-            title=_(u"T-Shirt"),
-            oid="tshirt-data"
-        )
+        # represents = RepresentsData(
+        #    title="Repräsentiert ...",
+        #    oid="represents",
+        # )
+        # tshirt = TshirtData(
+        #    title=_(u"T-Shirt"),
+        #    oid="tshirt-data"
+        # )
         price = PriceData(
             title="Preis",
             oid="order-data"
@@ -502,7 +431,7 @@ def add_ticket(request):
         form.set_appstruct(request.session['appstruct'])
 
     # if the form has NOT been used and submitted, remove error messages if any
-    if not 'submit' in request.POST:
+    if 'submit' not in request.POST:
         request.session.pop_flash()
 
     # if the form has been used and SUBMITTED, check contents
@@ -511,7 +440,7 @@ def add_ticket(request):
         controls = request.POST.items()
         print(controls)
 
-        ### validation of user input
+        # ### validation of user input
 
         try:
             print('about to validate form input')
@@ -534,7 +463,7 @@ def add_ticket(request):
                 'formerror': True
             }
 
-        ### derived values
+        # ### derived values
 
         # member
         if appstruct['personal']['membership_type'] in ('normal', 'investing'):
@@ -542,8 +471,8 @@ def add_ticket(request):
             # map option to price
             the_values = {
                 'ticket_gv_attendance': 0,
-                'ticket_bc_attendance': 9,
-                'ticket_bc_buffet': 12,
+                'ticket_bc_attendance': int(request.bc_cost),
+                'ticket_bc_buffet': int(request.bc_food_cost),
                 'ticket_tshirt': 25,
                 'ticket_all': 42,
             }
@@ -555,9 +484,10 @@ def add_ticket(request):
 
             # map supporter tickets to price
             the_support = {
-                1: 5,
-                2: 10,
-                3: 100
+                1: int(request.support_M),
+                2: int(request.support_L),
+                3: int(request.support_XL),
+                4: int(request.support_XXL),
             }
 
             # guest auto calc
@@ -583,19 +513,19 @@ def add_ticket(request):
                 the_values['ticket_bc_buffet'] = 0
 
             # option 'all' equivalent to all options checked
-            if appstruct['ticket']['ticket_gv'] == 1 \
-                and set(['attendance', 'buffet']).issubset(
-                    appstruct['ticket']['ticket_bc']
-                ) \
-                and appstruct['ticket']['ticket_tshirt']:
-                appstruct['ticket']['ticket_all'] = True
+            # if appstruct['ticket']['ticket_gv'] == 1 \
+            #    and set(['attendance', 'buffet']).issubset(
+            #        appstruct['ticket']['ticket_bc']
+            #    ) \
+            #    and appstruct['ticket']['ticket_tshirt']:
+            #    appstruct['ticket']['ticket_all'] = True
 
             # ensure options equivalent to option 'all'
-            if appstruct['ticket']['ticket_all']:
-                appstruct['ticket']['ticket_gv'] = 1
-                appstruct['ticket']['ticket_tshirt'] = True
-                appstruct['ticket']['ticket_bc'].add('attendance')
-                appstruct['ticket']['ticket_bc'].add('buffet')
+            # if appstruct['ticket']['ticket_all']:
+            #    appstruct['ticket']['ticket_gv'] = 1
+            #    appstruct['ticket']['ticket_tshirt'] = True
+            #    appstruct['ticket']['ticket_bc'].add('attendance')
+            #    appstruct['ticket']['ticket_bc'].add('buffet')
 
             # bc: buffet only when attended
             if 'attendance' not in appstruct['ticket']['ticket_bc']:
@@ -620,10 +550,10 @@ def add_ticket(request):
                 _the_total += the_support.get(int(support))
                 _support += the_support.get(int(support))
 
-            derivedvalues= {}
+            derivedvalues = {}
             derivedvalues['the_total'] = _the_total
             derivedvalues['discount'] = _discount
-            derivedvalues['support'] = _support    
+            derivedvalues['support'] = _support
 
         # nonmember
         else:
@@ -638,17 +568,18 @@ def add_ticket(request):
 
             # map option to price
             the_values = {
-                'ticket_bc_attendance': 11,
-                'ticket_bc_buffet': 12,
+                'ticket_bc_attendance': int(request.bc_cost),
+                'ticket_bc_buffet': int(request.bc_food_cost),
                 'ticket_tshirt': 25,
                 'ticket_all': 42,
             }
 
             # map supporter tickets to price
             the_support = {
-                1: 5,
-                2: 10,
-                3: 100
+                1: int(request.supporter_M),
+                2: int(request.supporter_L),
+                3: int(request.supporter_XL),
+                4: int(request.supporter_XXL),
             }
 
             # guest auto calc
@@ -676,13 +607,13 @@ def add_ticket(request):
                 _the_total += the_values.get('ticket_bc_attendance')
             if 'buffet' in appstruct['ticket']['ticket_bc']:
                 _the_total += the_values.get('ticket_bc_buffet')
-            if appstruct['ticket']['ticket_tshirt']:
-                _the_total += the_values.get('ticket_tshirt')
+            # if appstruct['ticket']['ticket_tshirt']:
+            #    _the_total += the_values.get('ticket_tshirt')
             for support in appstruct['ticket']['ticket_support']:
                 _the_total += the_support.get(int(support))
                 _support += the_support.get(int(support))
 
-            derivedvalues= {}
+            derivedvalues = {}
             derivedvalues['the_total'] = _the_total
             derivedvalues['discount'] = 0
             derivedvalues['support'] = _support
@@ -695,7 +626,7 @@ def add_ticket(request):
             derivedvalues['discount'] = 0
             derivedvalues['the_total'] = appstruct['price']['the_total']
 
-        ### create in db
+        # ### create in db
         randomstring = make_random_string()
         _ticket = PartyTicket(
             token=None,
@@ -713,15 +644,17 @@ def add_ticket(request):
                 'attendance' in appstruct['ticket']['ticket_bc']),
             ticket_bc_buffet=(
                 'buffet' in appstruct['ticket']['ticket_bc']),
-            ticket_tshirt=appstruct['ticket']['ticket_tshirt'],
-            ticket_tshirt_type=appstruct['tshirt']['tshirt_type'],
-            ticket_tshirt_size=appstruct['tshirt']['tshirt_size'],
-            ticket_all=appstruct['ticket']['ticket_all'],
+            ticket_tshirt=None,  # appstruct['ticket']['ticket_tshirt'],
+            ticket_tshirt_type=None,  # appstruct['tshirt']['tshirt_type'],
+            ticket_tshirt_size=None,  # appstruct['tshirt']['tshirt_size'],
+            ticket_all=None,  # appstruct['ticket']['ticket_all'],
             ticket_support=('1' in appstruct['ticket']['ticket_support']),
-            ticket_support_x=(
+            ticket_support_l=(
                 '2' in appstruct['ticket']['ticket_support']),
             ticket_support_xl=(
                 '3' in appstruct['ticket']['ticket_support']),
+            ticket_support_xxl=(
+                '4' in appstruct['ticket']['ticket_support']),
             support=derivedvalues['support'],
             discount=derivedvalues['discount'],
             the_total=derivedvalues['the_total'],
@@ -741,8 +674,8 @@ def add_ticket(request):
         _ticket.guestlist_bc = appstruct['guest']['bc']
         _ticket.guestlist_gv = appstruct['guest']['gv']
 
-        _ticket.represents_id1 = appstruct['represents']['represents1']
-        _ticket.represents_id2 = appstruct['represents']['represents2']
+        _ticket.represents_id1 = None  # appstruct['represents']['represents1']
+        _ticket.represents_id2 = None  # appstruct['represents']['represents2']
 
         # zahlungseingang / datum
         _ticket.payment_received = appstruct['price']['payment_received']
