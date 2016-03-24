@@ -266,9 +266,8 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
                 You can't edit the order form after hitting the button
                 "Submit & Buy" below. A full refund of your
                 money once transferred is not possible. Only in case the
-                BarCamp is cancelled by C3S SCE a refund for the BarCamp
-                ticket and food is possible. If you have any questions
-                please contact
+                BarCamp is cancelled by C3S SCE a refund for the 
+                food is possible. If you have any questions please contact
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
                 </a>
@@ -295,7 +294,7 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
                 Formular keine Änderung mehr vornehmen. Eine
                 Erstattung der überwiesenen Summe ist nicht möglich. Nur
                 im Fall der Absage des Barcamps durch die C3S SCE werden
-                die Kosten für Ticket und Essen erstattet. Falls Du Fragen
+                die Kosten für das Essen erstattet. Falls Du Fragen
                 zu Deiner Bestellung hast, wende Dich bitte an
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc

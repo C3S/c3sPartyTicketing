@@ -55,8 +55,8 @@
           (<span i18n:translate="">Important</span>: <strong i18n:translate="">Referral Code</strong>!)
         </p>
         <p>
-          <span i18n:translate="">After receiving</span> <strong i18n:translate="">your payment</strong><span i18n:translate="">, we are going to send you an email with your ticket(s)
-          and/or vouchers for the rest of your order. You will receive your ticket(s) in time.</span>
+          <span i18n:translate="">After receiving</span> <strong i18n:translate="">your payment</strong><span i18n:translate="">, we are going to send you an email with your ticket(s).
+          </span>
           <br />
           <span i18n:translate="">Your order has to be fully paid by</span>
           <strong>${request.fully_paid_date}</strong>
