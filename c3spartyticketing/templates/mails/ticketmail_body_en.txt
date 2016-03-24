@@ -1,7 +1,7 @@
 Hallo {salutation} !
 
-This e-mail contains your ticket(s) and/or voucher(s) for
-your goodies. There are several options to bring the ticket:
+This e-mail contains your ticket(s). 
+There are several options to bring the ticket:
 
 1) Simply bring the code: {ticket_email_confirm_code}
 

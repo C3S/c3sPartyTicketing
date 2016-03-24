@@ -1,8 +1,7 @@
 Hallo {salutation} !
 
-Mit dieser Mail erhältst Du Dein(e) Ticket(s) bzw. den/die
-Gutscheine für die bestellten Goodies. Es gibt mehrere
-Möglichkeiten, das Ticket mitzubringen:
+Mit dieser Mail erhältst Du Dein(e) Ticket(s).
+Es gibt mehrere Möglichkeiten, das Ticket mitzubringen:
 
 1) Bringe einfach diesen Code mit: {ticket_email_confirm_code}
 
@@ -11,7 +10,7 @@ Möglichkeiten, das Ticket mitzubringen:
    {ticket_url_mobile}
 
 3) Lade Dein Ticket herunter und drucke es aus.
-    Wir scannen dann den QR-Code.
+   Wir scannen dann den QR-Code.
 
    {ticket_url}
 

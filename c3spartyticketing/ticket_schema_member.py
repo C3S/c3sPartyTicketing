@@ -169,11 +169,10 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 ),
                 title=_(u"Total"),
                 description=_(
-                    u'Your order has to be fully paid by 09.04.2016 at the '
-                    u'latest (payment receipt on our account applies)'
-                    u'Otherwise we will have to cancel the entire order. '
+                    u'Your order has to be fully paid by 14.04.2016 at the '
+                    u'latest (payment receipt on our account applies). '
                     u'Money transfer is the only payment method. Payment '
-                    u'informations will be sent to you shortly by e-mail.'
+                    u'information will be sent to you shortly by e-mail.'
                 ),
                 oid="the-total",
             )
@@ -473,7 +472,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
             default=u'''
             <div class="alert alert-info" role="alert">
                 <strong>
-                    We will send tickets and vouchers in time by e-mail
+                    We will send the tickets in time by e-mail
                 </strong><br />
                 You can't edit the order form after hitting the button
                 "Submit & Buy" below. However, you can click the personal
@@ -500,8 +499,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 default=u'''
             <div class="alert alert-info" role="alert">
                 <strong>
-                    Wir versenden die Tickets und Gutscheine rechtzeitig per
-                    Email.
+                    Wir versenden die Tickets rechtzeitig per Email.
                 </strong><br />
                 Sobald Du das Bestellformular mit dem Button "Absenden &
                 Kaufen" unten absendest, kannst Du an der Bestellung im
