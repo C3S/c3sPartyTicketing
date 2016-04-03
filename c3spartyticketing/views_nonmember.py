@@ -371,21 +371,34 @@ def nonmember_success_view(request):
         lang = request.locale_name
 
     #######################################################################
-    usermail_nonmember_subject = \
-        u'C3S Barcamp 2016: your order'
+    """
+    Here we send email to the person who wants a ticket.
+
+    If the total is 0 because the barcamp is free, then send mail,
+    but no transfer information. choose a different template
+    """
+    usermail_nonmember_subject = u'C3S Barcamp 2016: your order'
     if lang == "de":
-        usermail_nonmember_subject = \
-            'C3S Barcamp 2016: Deine Bestellung'
-    usermail_nonmember = render(
-        'templates/mails/usermail_nonmember-'+lang+'.pt',
-        {
-            'firstname': appstruct['personal']['firstname'],
-            'lastname': appstruct['personal']['lastname'],
-            'the_total': request.session['derivedvalues']['the_total'],
-            'email_confirm_code': appstruct['email_confirm_code'],
-            'fully_paid_date': request.fully_paid_date,
-        }
-    )
+        usermail_nonmember_subject = 'C3S Barcamp 2016: Deine Bestellung'
+    if request.session['derivedvalues']['the_total'] == 0:
+        usermail_nonmember = render(
+            'templates/mails/usermail_nonmember-free-' + lang + '.pt',
+            {
+                'firstname': appstruct['personal']['firstname'],
+                'lastname': appstruct['personal']['lastname'],
+            }
+        )
+    else:
+        usermail_nonmember = render(
+            'templates/mails/usermail_nonmember-'+lang+'.pt',
+            {
+                'firstname': appstruct['personal']['firstname'],
+                'lastname': appstruct['personal']['lastname'],
+                'the_total': request.session['derivedvalues']['the_total'],
+                'email_confirm_code': appstruct['email_confirm_code'],
+                'fully_paid_date': request.fully_paid_date,
+            }
+        )
 
     #######################################################################
     accmail_subject = u'[C3S_PT] neues nonmember ticket'
