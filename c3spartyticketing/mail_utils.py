@@ -79,7 +79,7 @@ def make_ticket_email(request, ticket):
     Gets an email subject and body to deliver links to the ticket PDFs.
     """
     return (
-        get_template_text('ticketmail_subject', ticket.locale),
+        get_template_text('ticketmail_subject', ticket.locale).rstrip(),
         get_template_text('ticketmail_body', ticket.locale).format(
             salutation=get_salutation(ticket),
             ticket_email_confirm_code=ticket.email_confirm_code,
