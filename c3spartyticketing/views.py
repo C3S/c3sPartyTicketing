@@ -187,21 +187,14 @@ def check_route(request, view=''):
             assert('mtype' in userdata)
         except:
             print('userdata test: user not found. redirecting...')
-            return HTTPFound(
-                location=request.registry.settings[
-                    'registration.access_denied_url']
-            )
+            return HTTPFound(location=request.access_denied_url)
     else:
         print('userdata test: user not found. redirecting...')
-        return HTTPFound(
-            location=request.registry.settings[
-                'registration.access_denied_url']
-        )
+        return HTTPFound(location=request.access_denied_url)
 
     # dbentry check:
     if view is not 'finished' and view is not 'confirm':
-        if 'true' in request.registry.settings[
-                'registration.finish_on_submit']:
+        if request.finish_on_submit:
             if PartyTicket.has_token(userdata['token']):
                 print('dbentry check: ticket already exists. redirecting...')
                 return HTTPFound(location=request.route_url('finished'))
