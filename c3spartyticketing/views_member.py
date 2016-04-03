@@ -152,6 +152,8 @@ def party_view(request):
                 'formerror': True,
                 'gvonly': gvonly
             }
+            # Todo: create a test (in test_views_webdriver) that covers this
+            # by submitting a non-validating set of field values
 
         # ## derived values
 
