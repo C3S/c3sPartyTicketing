@@ -109,7 +109,7 @@ def nonmember_view(request):
             print 'about to validate form input'
             appstruct = form.validate(controls)
             print 'done validating form input'
-            print("the appstruct from the form: %s \n") % appstruct
+            print("the appstruct from the form: %s \n" % appstruct)
             # for thing in appstruct:
             #     print(u"the thing: %s") % thing
             #     print(u"type: %s") % type(thing)
