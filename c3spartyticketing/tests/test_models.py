@@ -374,6 +374,27 @@ class PartyTicketTests(unittest.TestCase):
         self.assertTrue(u'ABCDEFGHIK' in result)
         self.assertTrue(u'0987654321' in result)
 
+    def test_get_all_names(self):
+        """
+        Test the 'get all names' classmethod.
+        """
+        instance = self._makeOne()
+        self.session.add(instance)
+        instance2 = self._makeAnotherOne()
+        self.session.add(instance2)
+        myClass = self._getTargetClass()
+
+        result = myClass.get_all_names()
+        self.assertTrue(len(result) is 3)
+        print("the result: {}".format(result))
+        # Todo: fix this... unicode foo...
+        # self.assertTrue(
+        #    str(u'SomeLastnäme'.encode('utf-8').decode('utf-8')) in result)
+        self.assertTrue('SomeLastname' in str(result))
+        self.assertTrue('ABCDEFGHIK' in str(result))  # SomeLastnäme 1
+        self.assertTrue('0987654321' in str(result))  # SomeLastnäme 2
+        self.assertTrue('ABCDEFGFOO' in str(result))  # SomeLastname
+
     def test_get_number(self):
         """
         Test the 'get number' classmethod.
