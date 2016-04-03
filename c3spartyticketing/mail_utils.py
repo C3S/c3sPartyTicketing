@@ -99,7 +99,7 @@ def make_payment_reception_email(request, ticket):
     Gets an email subject and body to confirm reception of payment.
     """
     return (
-        get_template_text('payment_reception_email_subject', ticket.locale),
+        get_template_text('payment_reception_email_subject', ticket.locale).rstrip(),
         get_template_text(
             'payment_reception_email_body',
             ticket.locale).format(
