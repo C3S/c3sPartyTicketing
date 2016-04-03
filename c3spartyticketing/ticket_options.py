@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from pyramid.i18n import TranslationStringFactory
+# from pyramid.i18n import TranslationStringFactory
 
-_ = TranslationStringFactory('c3spartyticketing')
+# _ = TranslationStringFactory('c3spartyticketing')
+
+from c3spartyticketing.views import _
 
 
 def get_ticket_gv_options(request):
@@ -47,13 +49,10 @@ def get_ticket_bc_options(request):
     Options for BarCamp Tickets.
     """
     ticket_bc_options = (
-        ('attendance', _(
-            u'I will attend the BarCamp.'
-        ) + u' (€{})'.format(request.bc_cost)),
-        ('buffet', _(
-            u'I\'d like to have coffee and cake during '
-            u'and buffet after the BarCamp.'
-        ) + u' (€{})'.format(request.bc_food_cost))
+        ('attendance', (_(u"I will attend the BarCamp. (€0)"))),  #  + u' (€{})foo'.format(request.bc_cost))),
+        ('buffet', (_(
+            u"I'd like to have coffee and cake during "
+            u"and buffet after the BarCamp. (€12)")))  #  + u' (€{})'.format(request.bc_food_cost)))
     )
     return ticket_bc_options
 
@@ -63,14 +62,10 @@ def get_ticket_support_options(request):
     Supporter Ticket Options.
     """
     ticket_support_options = (
-        (1, _(u'Supporter Ticket') + u' (€{})'.format(
-            request.supporter_M)),
-        (2, _(u'Supporter Ticket L') + u' (€{})'.format(
-            request.supporter_L)),
-        (3, _(u'Supporter Ticket XL') + u' (€{})'.format(
-            request.supporter_XL)),
-        (4, _(u'Supporter Ticket XXL') + u' (€{})'.format(
-            request.supporter_XXL))
+        (1, _(u'Supporter Ticket (€5)')),
+        (2, _(u'Supporter Ticket L (€10)')),
+        (3, _(u'Supporter Ticket XL (€20)')),
+        (4, _(u'Supporter Ticket XXL (€50)')),
     )
     return ticket_support_options
 

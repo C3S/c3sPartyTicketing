@@ -1,10 +1,7 @@
 # -*- coding: utf-8  -*-
 from datetime import date
-import os
 from pyramid import testing
 from sqlalchemy import engine_from_config
-#import subprocess
-#from subprocess import CalledProcessError
 import transaction
 import unittest
 
@@ -63,8 +60,9 @@ class TestUtilities(unittest.TestCase):
                 ticket_tshirt_size=u'xxl',
                 ticket_all=False,
                 ticket_support=False,
-                ticket_support_x=False,
+                ticket_support_l=False,
                 ticket_support_xl=False,
+                ticket_support_xxl=False,
                 support=0,
                 discount=0,
                 the_total=75,

@@ -1,29 +1,26 @@
-          <!-- ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## -->
-          <div class="alert alert-success">
-            <h1 style="color:#000;">
-              <span i18n:translate="">General Assembly</span>
-            </h1>
-
-            <div id="getting-started-gv" style="color:#999"></div>
-            <script type="text/javascript">
-              $('#getting-started-gv').countdown('${request.assembly_counter}', function(event) {
-              $(this).html(event.strftime('<span i18n:translate="">Starts in</span> '
-              + '<span>%w</span> <span i18n:translate="">weeks</span> '
-              + '<span>%d</span> <span i18n:translate="">days(s)</span> '
-              + '%H:%M:%S'));
-              });
-            </script>
-
-            <h2>
-              <span>${request.assembly_date}</span>
-              <small>${request.assembly_timespan}</small>
-            </h2>
-
-            <!-- ASSEMBLY AFTERPARTY TEMPLATE can go here-->
-
-            <tal:block metal:use-macro="load: location.c3s_hq.pt">
-              <!-- C3S HQ LOCATION TEMPLATE -->
-            </tal:block>
-
-          </div>
-          <!-- ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="c3spartyticketing">
+  <!-- ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## -->
+  <div class="alert alert-success">
+    <h1 style="color:#000;"><span i18n:translate="">General Assembly</span></h1>
+    <div id="getting-started-gv" style="color:#999"></div>
+    <script type="text/javascript">
+      $('#getting-started-gv').countdown('${request.assembly_counter}', function(event) {
+      $(this).html(event.strftime('<span i18n:translate="start">Starts in</span> '
+      + '<span>%w</span> <span i18n:translate="weeks">weeks</span> '
+      + '<span>%d</span> <span i18n:translate="days">days(s)</span> '
+      + '%H:%M:%S'));
+      });
+    </script>
+    <h2>
+      <span>${request.assembly_date}</span>
+      <small>${request.assembly_timespan}</small>
+    </h2>
+    <!-- ASSEMBLY AFTERPARTY TEMPLATE can go here-->
+    <tal:block metal:use-macro="load: location.c3s_hq.pt">
+      <!-- C3S HQ LOCATION TEMPLATE -->
+    </tal:block>
+  </div>
+  <!-- ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## -->
+</html>

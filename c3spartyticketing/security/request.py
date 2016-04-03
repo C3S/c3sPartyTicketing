@@ -10,6 +10,8 @@ from pyramid.decorator import reify
 from pyramid.request import Request
 from pyramid.security import unauthenticated_userid
 
+from c3spartyticketing.event_config import cfg
+
 from c3spartyticketing.mail_utils import (
     format_date,
     format_time,
@@ -49,49 +51,61 @@ class RequestWithUserAttribute(Request):
 
         # /end of ### Making A 'User Object' Available as a Request Attribute
 
-    # things that cost money
+    @reify
+    def access_denied_url(request):
+        """Returns the url to show when access is denied
+        """
+        return cfg['registration']['access_denied_url']
+
+    @reify
+    def finish_on_submit(request):
+        return cfg['registration']['finish_on_submit']
+
+    # things that cost money or not
     @reify
     def bc_cost(request):
         """
         Returns the cost of the attendance to the barcamp
         """
-        return request.registry.settings['registration.bc_cost']
+        return cfg['bc']['cost']
 
     @reify
     def bc_food_cost(request):
         """
         Returns the cost of the food served at the barcamp
         """
-        return request.registry.settings['registration.bc_food_cost']
+        return cfg['bc']['food_cost']
 
+    # supporter ticket options
     @reify
     def supporter_M(request):
         """
         Returns the cost of the food served at the barcamp
         """
-        return request.registry.settings['registration.supporter_M_cost']
+        return cfg['support']['M_cost']
 
     @reify
     def supporter_L(request):
         """
         Returns the cost of the food served at the barcamp
         """
-        return request.registry.settings['registration.supporter_L_cost']
+        return cfg['support']['L_cost']
 
     @reify
     def supporter_XL(request):
         """
         Returns the cost of the food served at the barcamp
         """
-        return request.registry.settings['registration.supporter_XL_cost']
+        return cfg['support']['XL_cost']
 
     @reify
     def supporter_XXL(request):
         """
         Returns the cost of the food served at the barcamp
         """
-        return request.registry.settings['registration.supporter_XXL_cost']
+        return cfg['support']['XXL_cost']
 
+    # dates
     @reify
     def fully_paid_date(request):
         """
@@ -99,124 +113,9 @@ class RequestWithUserAttribute(Request):
         """
         return format_date(
             datetime.strptime(
-                request.registry.settings['registration.fully_paid_date'],
+                cfg['registration']['fully_paid_date'],
                 '%Y-%m-%d').date(),
             request.locale_name)
-
-    # locations
-    # hpz
-    @reify
-    def hpz_address(request):
-        """
-        Returns the address of HPZ location
-        """
-        # print(u"request.registry.settings['registration.hpz_address']"
-        #      ".encode('utf-8'): {} ".format(
-        #          request.registry.settings[
-        #              'registration.hpz_address'].decode('utf-8')))
-
-        return request.registry.settings[
-            'registration.hpz_address'].decode('utf-8')
-
-    @reify
-    def hpz_transport(request):
-        """
-        Returns the public transport info of HPZ location
-        """
-        return request.registry.settings['registration.hpz_public_transport']
-
-    @reify
-    def hpz_shortname(request):
-        """
-        Returns the short name of HPZ location
-        """
-        return request.registry.settings['registration.hpz_shortname']
-
-    @reify
-    def hpz_name(request):
-        """
-        Returns the name of HPZ location
-        """
-        return request.registry.settings['registration.hpz_name']
-
-    @reify
-    def hpz_city(request):
-        """
-        Returns the name of HPZ city, e.g. 'Düsseldorf'
-        """
-        return request.registry.settings[
-            'registration.hpz_city'].decode('utf-8')
-
-    @reify
-    def hpz_map_small(request):
-        """
-        Returns the name of HPZ location
-        """
-        return request.registry.settings['registration.hpz_map_small']
-
-    @reify
-    def hpz_map_URL(request):
-        """
-        Returns the name of HPZ location
-        """
-        return request.registry.settings['registration.hpz_map_URL']
-
-    # c3s hq
-    @reify
-    def c3shq_address(request):
-        """
-        Returns the address of HPZ location
-        """
-        # print(u"request.registry.settings['registration.hpz_address']"
-        #      ".encode('utf-8'): {} ".format(
-        #          request.registry.settings[
-        #              'registration.c3shq_address'].decode('utf-8')))
-
-        return request.registry.settings[
-            'registration.c3shq_address'].decode('utf-8')
-
-    @reify
-    def c3shq_transport(request):
-        """
-        Returns the public transport info of HPZ location
-        """
-        return request.registry.settings['registration.c3shq_public_transport']
-
-    @reify
-    def c3shq_shortname(request):
-        """
-        Returns the short name of HPZ location
-        """
-        return request.registry.settings['registration.c3shq_shortname']
-
-    @reify
-    def c3shq_name(request):
-        """
-        Returns the name of HPZ location
-        """
-        return request.registry.settings['registration.c3shq_name']
-
-    @reify
-    def c3shq_city(request):
-        """
-        Returns the name of HPZ city, e.g. 'Düsseldorf'
-        """
-        return request.registry.settings[
-            'registration.c3shq_city'].decode('utf-8')
-
-    @reify
-    def c3shq_map_small(request):
-        """
-        Returns the name of HPZ location
-        """
-        return request.registry.settings['registration.c3shq_map_small']
-
-    @reify
-    def c3shq_map_URL(request):
-        """
-        Returns the name of HPZ location
-        """
-        return request.registry.settings['registration.c3shq_map_URL']
 
     # registration dates
     @reify
@@ -226,8 +125,7 @@ class RequestWithUserAttribute(Request):
         """
         return format_date(
             datetime.strptime(
-                request.registry.settings['registration.end'],
-                '%Y-%m-%d').date(),
+                request.registry.settings['registration.end'], '%Y-%m-%d').date(),
             request.locale_name)
 
     @reify
@@ -237,9 +135,96 @@ class RequestWithUserAttribute(Request):
         """
         return format_date(
             datetime.strptime(
-                request.registry.settings['registration.invitation_date'],
-                '%Y-%m-%d').date(),
+                request.registry.settings['registration.invitation_date'], '%Y-%m-%d').date(),
             request.locale_name)
+
+    # locations
+    # hpz
+    @reify
+    def bc_address(request):
+        """
+        Returns the address of HPZ location
+        """
+        return cfg['bc']['address']
+
+    @reify
+    def bc_transport(request):
+        """
+        Returns the public transport info of HPZ location
+        """
+        return cfg['bc']['public_transport']
+
+    @reify
+    def bc_shortname(request):
+        """
+        Returns the short name of HPZ location
+        """
+        return cfg['bc']['venue_shortname']
+
+    @reify
+    def bc_name(request):
+        """
+        Returns the name of HPZ location
+        """
+        return cfg['bc']['venue_name']
+
+    @reify
+    def bc_city(request):
+        """
+        Returns the name of HPZ city, e.g. 'Düsseldorf'
+        """
+        return cfg['bc']['city']
+
+    @reify
+    def bc_map_url(request):
+        """
+        Returns the name of HPZ location
+        """
+        return cfg['bc']['map_url']
+
+    # c3s hq
+    @reify
+    def ga_address(request):
+        """
+        Returns the address of HPZ location
+        """
+        return cfg['ga']['address']
+
+    @reify
+    def ga_transport(request):
+        """
+        Returns the public transport info of HPZ location
+        """
+        return cfg['ga']['public_transport']
+
+    @reify
+    def ga_venue_shortname(request):
+        """
+        Returns the short name of HPZ location
+        """
+        return cfg['ga']['venue_shortname']
+
+    @reify
+    def ga_venue_name(request):
+        """
+        Returns the name of HPZ location
+        """
+        return cfg['ga']['venue_name']
+
+    @reify
+    def ga_city(request):
+        """
+        Returns the name of HPZ city, e.g. 'Düsseldorf'
+        """
+        return cfg['ga']['city']
+
+    @reify
+    def ga_map_url(request):
+        """
+        Returns the name of HPZ location
+        """
+        return cfg['ga']['map_url']
+
 
     # BarCamp
     @reify
@@ -248,9 +233,7 @@ class RequestWithUserAttribute(Request):
         Returns the BarCamp Date string ('2016-04-16') formatted to locale.
         """
         return format_date(
-            datetime.strptime(
-                request.registry.settings['registration.bc_date'],
-                '%Y-%m-%d').date(),
+            datetime.strptime(cfg['bc']['date'], '%Y-%m-%d').date(),
             request.locale_name)
 
     @reify
@@ -261,29 +244,20 @@ class RequestWithUserAttribute(Request):
         return (u"{} -- {}".format(
             format_time(  # format start time to locale
                 datetime.strptime(  # parse from settings string
-                    request.registry.settings['registration.bc_time'],
-                    '%H:%M').time(),
+                    cfg['bc']['time'], '%H:%M').time(),
                 request.locale_name),
             format_time(  # format end time to locale
                 datetime.strptime(  # parse from settings string
-                    request.registry.settings['registration.bc_end_time'],
-                    '%H:%M').time(),
+                    cfg['bc']['end_time'], '%H:%M').time(),
                 request.locale_name)
         ))
-
-    @reify
-    def barcamp_duration_str(request):
-        """
-        Returns the BarCamp duration string ('12am - 8pm')
-        """
-        return request.registry.settings['registration.bc_duration_str']
 
     @reify
     def barcamp_time(request):
         """
         Returns the BarCamp start time ('12:00')
         """
-        return request.registry.settings['registration.bc_time']
+        return cfg['bc']['time']
 
     @reify
     def barcamp_counter(request):
@@ -292,13 +266,9 @@ class RequestWithUserAttribute(Request):
         
         The string shall look like '2016/06/12 12:00'.
         """
-        _date = dateutil.parser.parse(
-            request.registry.settings['registration.bc_date']).date()
-        _time = dateutil.parser.parse(
-            request.registry.settings['registration.bc_time']).time()
-        string_for_counter = _date.strftime(
-            '%Y/%m/%d') + ' ' + _time.strftime('%H:%M')
-        return string_for_counter
+        _date = dateutil.parser.parse(cfg['bc']['date']).date()
+        _time = dateutil.parser.parse(cfg['bc']['time']).time()
+        return _date.strftime('%Y/%m/%d') + ' ' + _time.strftime('%H:%M')
 
     # general assembly
     @reify
@@ -307,9 +277,7 @@ class RequestWithUserAttribute(Request):
         Returns the Assembly Date string ('2016-04-16') formatted to locale.
         """
         return format_date(
-            datetime.strptime(
-                request.registry.settings['registration.gv_date'],
-                '%Y-%m-%d').date(),
+            datetime.strptime(cfg['ga']['date'], '%Y-%m-%d').date(),
             request.locale_name)
 
     @reify
@@ -320,13 +288,11 @@ class RequestWithUserAttribute(Request):
         return (u"{} -- {}".format(
             format_time(  # format start time to locale
                 datetime.strptime(  # parse from settings string
-                    request.registry.settings['registration.gv_time'],
-                    '%H:%M').time(),
+                    cfg['ga']['time'], '%H:%M').time(),
                 request.locale_name),
             format_time(  # format end time to locale
                 datetime.strptime(  # parse from settings string
-                    request.registry.settings['registration.gv_end_time'],
-                    '%H:%M').time(),
+                    cfg['ga']['end_time'], '%H:%M').time(),
                 request.locale_name)
         ))
 
@@ -335,7 +301,7 @@ class RequestWithUserAttribute(Request):
         """
         Returns the Assembly start time ('12:00')
         """
-        return request.registry.settings['registration.gv_time']
+        return cfg['ga']['time']
 
     @reify
     def assembly_counter(request):
@@ -344,11 +310,7 @@ class RequestWithUserAttribute(Request):
         
         The string shall look like '2016/06/12 12:00'.
         """
-        _date = dateutil.parser.parse(
-            request.registry.settings['registration.gv_date']).date()
-        _time = dateutil.parser.parse(
-            request.registry.settings['registration.gv_time']).time()
-        string_for_counter = _date.strftime(
-            '%Y/%m/%d') + ' ' + _time.strftime('%H:%M')
-        return string_for_counter
+        _date = dateutil.parser.parse(cfg['ga']['date']).date()
+        _time = dateutil.parser.parse(cfg['ga']['time']).time()
+        return _date.strftime('%Y/%m/%d') + ' ' + _time.strftime('%H:%M')
         
