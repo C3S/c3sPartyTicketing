@@ -1,10 +1,7 @@
 # -*- coding: utf-8  -*-
 from datetime import date
-import os
 from pyramid import testing
 from sqlalchemy import engine_from_config
-#import subprocess
-#from subprocess import CalledProcessError
 import transaction
 import unittest
 

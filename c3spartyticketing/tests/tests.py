@@ -33,7 +33,7 @@ class TestViews(unittest.TestCase):
         """
         test the load_user view
         """
-        from c3spartyticketing.views import load_user
+        from c3spartyticketing.load_user import load_user
         self.config.add_route('party_view', '/')
         self.config.add_route('error_page', '/error')
         request = testing.DummyRequest()
@@ -65,8 +65,9 @@ class TestViews(unittest.TestCase):
         """
         test the load_user view with VALID information
         """
-        from c3spartyticketing.views import load_user
+        from c3spartyticketing.load_user import load_user
         self.config.add_route('party', '/')
+        self.config.add_route('error_page', '/error')
         request = testing.DummyRequest()
         request.registry.settings = {
             'yes_auth_token': '1234567890ABCDEFGHIJKL',
@@ -90,7 +91,8 @@ class TestViews(unittest.TestCase):
         # print dir(result)
         self.assertTrue('The resource was found at' in str(result))
         # self.assertTrue('https://yes.c3s.cc' in result.location)
-        # self.assertTrue('https://yes.c3s.cc' in result.wsgi_response.location)
+        # self.assertTrue(
+        #    'https://yes.c3s.cc' in result.wsgi_response.location)
         self.assertTrue('302' in result.status)
 
         # print result.headers
@@ -122,12 +124,17 @@ class TestViews(unittest.TestCase):
             request.session['userdata']['mtype']
         )
 
+        self.assertEqual(
+            False,
+            request.session['userdata']['is_legalentity']
+        )
+
         # off to another view: party_view!
-        #from c3spartyticketing.views import party_view
-        #request.registry.settings['registration.end'] = '2014-08-08'
-        #request.registry.settings['registration.finish_on_submit'] = 'false'
-        #res2 = party_view(request)
-        #print res2
+        # from c3spartyticketing.views import party_view
+        # request.registry.settings['registration.end'] = '2014-08-08'
+        # request.registry.settings['registration.finish_on_submit'] = 'false'
+        # res2 = party_view(request)
+        # print res2
 
 
 #         self.assertTrue(result['lastname'] is 'bar')
@@ -174,7 +181,8 @@ class TestViews(unittest.TestCase):
 
 #     def test_success_check_email_redirect(self):
 #         """
-#         test the success_check_email view redirection when appstruct is missing
+#         test the success_check_email view redirection
+#         when appstruct is missing
 #         """
 #         from c3smembership.views import success_check_email
 #         self.config.add_route('join', '/')
@@ -230,7 +238,8 @@ class TestViews(unittest.TestCase):
 #     #     self.assertEqual(result['result_msg'], 'something went wrong.')
 #     #     self.assertEqual(result['firstname'], '')
 #     #     self.assertEqual(result['lastname'], '')
-#     #     self.assertEqual(result['post_url'], '/verify/MMMMMMMMMMMMMMMMM@shri.de/ABCDEFGHIJ')
+#     #     self.assertEqual(result['post_url'],
+#     #         '/verify/MMMMMMMMMMMMMMMMM@shri.de/ABCDEFGHIJ')
 #     #     self.assertEqual(result['namepart'], '')
 #     #     self.assertEqual(result['correct'], False)
 
@@ -352,8 +361,9 @@ class TestViews(unittest.TestCase):
 # #                 # go ahead with the tests:
 # #                 # feed the test data to the form/view function
 # #                 result = declare_intent(request)
-                
-# #                 # at this point -if the test fails- we cannot be sure, whether
+
+# #                 # at this point -if the test fails-
+# #                 #  we cannot be sure, whether
 # #                 # we actually got the PDF or the form we tried to submit
 # #                 # failed validation, e.g. because the requirements weren't
 # #                 # fulfilled. let's see...
