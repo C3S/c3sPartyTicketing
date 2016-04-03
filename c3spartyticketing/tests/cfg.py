@@ -29,5 +29,12 @@ cfg = {
         'logSection': True,
         'screenshot': True,
         'screenshotPath': './c3spartyticketing/tests/screenshots/'
+    },
+    'access_denied_url': '/barcamp',
+    'support': {
+        'm': 5,
+        'l': 10,
+        'xl': 20,
+        'xxl': 50,
     }
 }

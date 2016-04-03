@@ -251,38 +251,23 @@ class TicketMemberFormAccessTests(SeleniumTestBaseTicketing):
         # route: root
         self.cli.get(self.srv.url)
         self.screen('ticket')
-        self.assertTrue(
-            self.cli.current_url.endswith(
-                server.appSettings['registration.access_denied_url']
-            )
-        )
+        self.assertTrue(self.cli.current_url.endswith(cfg['access_denied_url']))
         self.checkErrorPage()
         # route: confirm
         self.cli.get(self.srv.url+'confirm')
         self.screen('confirm')
         self.assertTrue(
-            self.cli.current_url.endswith(
-                server.appSettings['registration.access_denied_url']
-            )
-        )
+            self.cli.current_url.endswith(cfg['access_denied_url']))
         self.checkErrorPage()
         # route: success
         self.cli.get(self.srv.url+'success')
         self.screen('success')
-        self.assertTrue(
-            self.cli.current_url.endswith(
-                server.appSettings['registration.access_denied_url']
-            )
-        )
+        self.assertTrue(self.cli.current_url.endswith(cfg['access_denied_url']))
         self.checkErrorPage()
         # route: finished
         self.cli.get(self.srv.url+'finished')
         self.screen('finished')
-        self.assertTrue(
-            self.cli.current_url.endswith(
-                server.appSettings['registration.access_denied_url']
-            )
-        )
+        self.assertTrue(self.cli.current_url.endswith(cfg['access_denied_url']))
         self.checkErrorPage()
 
     def test_access_with_token_not_in_db(self):
