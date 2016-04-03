@@ -275,20 +275,20 @@ def make_qr_code_pdf_pdflatex(_ticket, _url):
 
     _tex_vars['representsOne'] = False
     _tex_vars['representsOneName'] = ' '
-    if _ticket.represents_id1:
-        _ticket_rep1 = PartyTicket.get_by_id(int(_ticket.represents_id1))
-        if _ticket_rep1 is not None:
-            _tex_vars['representsOne'] = True
-            _tex_vars['representsOneName'] = _ticket_rep1.firstname + ' ' \
-                + _ticket_rep1.lastname
+    # if _ticket.represents_id1:
+    #     _ticket_rep1 = PartyTicket.get_by_id(int(_ticket.represents_id1))
+    #     if _ticket_rep1 is not None:
+    #         _tex_vars['representsOne'] = True
+    #         _tex_vars['representsOneName'] = _ticket_rep1.firstname + ' ' \
+    #             + _ticket_rep1.lastname
     _tex_vars['representsTwo'] = False
     _tex_vars['representsTwoName'] = ' '
-    if _ticket.represents_id2:
-        _ticket_rep2 = PartyTicket.get_by_id(int(_ticket.represents_id2))
-        if _ticket_rep2 is not None:
-            _tex_vars['representsTwo'] = True
-            _tex_vars['representsTwoName'] = _ticket_rep2.firstname + ' ' \
-                + _ticket_rep2.lastname
+    # if _ticket.represents_id2:
+    #     _ticket_rep2 = PartyTicket.get_by_id(int(_ticket.represents_id2))
+    #     if _ticket_rep2 is not None:
+    #         _tex_vars['representsTwo'] = True
+    #         _tex_vars['representsTwoName'] = _ticket_rep2.firstname + ' ' \
+    #             + _ticket_rep2.lastname
 
     # generate tex command for pdflatex
     tex_cmd = ''
