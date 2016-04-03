@@ -484,10 +484,10 @@ def add_ticket(request):
 
             # map supporter tickets to price
             the_support = {
-                1: int(request.support_M),
-                2: int(request.support_L),
-                3: int(request.support_XL),
-                4: int(request.support_XXL),
+                1: int(request.supporter_M),
+                2: int(request.supporter_L),
+                3: int(request.supporter_XL),
+                4: int(request.supporter_XXL),
             }
 
             # guest auto calc
@@ -535,17 +535,17 @@ def add_ticket(request):
             _the_total = 0
             _discount = 0
             _support = 0
-            if appstruct['ticket']['ticket_all']:
-                print("all active")
-                _discount = the_discounts.get('ticket_all')
-                _the_total = the_values.get('ticket_all')
-            else:
-                if 'attendance' in appstruct['ticket']['ticket_bc']:
-                    _the_total += the_values.get('ticket_bc_attendance')
-                if 'buffet' in appstruct['ticket']['ticket_bc']:
-                    _the_total += the_values.get('ticket_bc_buffet')
-                if appstruct['ticket']['ticket_tshirt']:
-                    _the_total += the_values.get('ticket_tshirt')
+            # if appstruct['ticket']['ticket_all']:
+            #    print("all active")
+            #    _discount = the_discounts.get('ticket_all')
+            #    _the_total = the_values.get('ticket_all')
+            # else:
+            if 'attendance' in appstruct['ticket']['ticket_bc']:
+                _the_total += the_values.get('ticket_bc_attendance')
+            if 'buffet' in appstruct['ticket']['ticket_bc']:
+                _the_total += the_values.get('ticket_bc_buffet')
+            # if appstruct['ticket']['ticket_tshirt']:
+            #        _the_total += the_values.get('ticket_tshirt')
             for support in appstruct['ticket']['ticket_support']:
                 _the_total += the_support.get(int(support))
                 _support += the_support.get(int(support))
