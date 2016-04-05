@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-05 15:08+0200\n"
-"PO-Revision-Date: 2016-04-05 14:59+0200\n"
+"POT-Creation-Date: 2016-04-05 20:36+0200\n"
+"PO-Revision-Date: 2016-04-05 20:38+0200\n"
 "Last-Translator: Christoph Scheid <christoph.scheid@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -557,16 +557,16 @@ msgid "you should have received a confirmation e-mail from"
 msgstr "Du solltest gleich eine Email bekommen von"
 
 #: c3spartyticketing/templates/success.pt:51
-msgid "noreply@c3s.cc"
-msgstr "noreply@c3s.cc"
+msgid "tickets@c3s.cc"
+msgstr "tickets@c3s.cc"
 
 #: c3spartyticketing/templates/success.pt:51
 msgid "that features the subject"
 msgstr "mit dem Betreff"
 
 #: c3spartyticketing/templates/success.pt:52
-msgid "C3S BarCamp 2016: your order"
-msgstr "C3S BarCamp 2016: Deine Bestellung"
+msgid "C3S General Assembly & Barcamp 2016: your participation & order"
+msgstr "C3S Generalversammlung & Barcamp 2016: Deine Teilnahme & Bestellung"
 
 #: c3spartyticketing/templates/success.pt:54
 msgid ""
@@ -629,6 +629,12 @@ msgid ""
 "a participation in the BarCamp."
 msgstr ""
 "Du hast Deine Teilnahme an der Generalversammlung und dem Barcamp abgesagt."
+
+#~ msgid "noreply@c3s.cc"
+#~ msgstr "noreply@c3s.cc"
+
+#~ msgid "C3S BarCamp 2016: your order"
+#~ msgstr "C3S BarCamp 2016: Deine Bestellung"
 
 #~ msgid ""
 #~ "After receiving your payment, we are going to send you an email with your "
@@ -894,9 +900,6 @@ msgstr ""
 
 #~ msgid "freiLand, Friedrich-Engels-Straße 22, 14473 Potsdam"
 #~ msgstr "freiLand, Friedrich-Engels-Straße 22, 14473 Potsdam"
-
-#~ msgid "C3S General Assembly & Barcamp 2014: your participation & order"
-#~ msgstr "C3S Generalversammlung & Barcamp 2014: Deine Teilnahme & Bestellung"
 
 #~ msgid "C3S General Assembly & Barcamp 2014: your participation"
 #~ msgstr "C3S Generalversammlung & Barcamp 2014: Deine Teilnahme"

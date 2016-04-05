@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2016-04-05 15:08+0200\n"
+"POT-Creation-Date: 2016-04-05 20:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -530,7 +530,7 @@ msgid "you should have received a confirmation e-mail from"
 msgstr ""
 
 #: ./c3spartyticketing/templates/success.pt:51
-msgid "noreply@c3s.cc"
+msgid "tickets@c3s.cc"
 msgstr ""
 
 #: ./c3spartyticketing/templates/success.pt:51
@@ -538,7 +538,7 @@ msgid "that features the subject"
 msgstr ""
 
 #: ./c3spartyticketing/templates/success.pt:52
-msgid "C3S BarCamp 2016: your order"
+msgid "C3S General Assembly & Barcamp 2016: your participation & order"
 msgstr ""
 
 #: ./c3spartyticketing/templates/success.pt:54
