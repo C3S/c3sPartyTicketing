@@ -55,14 +55,6 @@
           (<span i18n:translate="">Important</span>: <strong i18n:translate="">Referral Code</strong>!)
         </p>
         <p>
-          <span i18n:translate="">After receiving</span> <strong i18n:translate="">your payment</strong><span i18n:translate="">, we are going to send you an email with your ticket(s).
-          </span>
-          <br />
-          <span i18n:translate="">Your order has to be fully paid by</span>
-          <strong>${request.fully_paid_date}</strong>
-          <span i18n:translate="">at latest. The date of entry of payment on our account applies.</span>
-        </p>
-        <p>
           <span i18n:translate="">In case you did not receive our e-mail, please send a note to</span>
           <a href="mailto:office@c3s.cc">office@c3s.cc</a>.
         </p>

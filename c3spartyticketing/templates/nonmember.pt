@@ -46,8 +46,8 @@
 
       <div style="font-size:12px; margin-top:40px; color:#999;">
         <p class="alert alert-info"> 
-          <span i18n:translate="">
-          If you already are a member of the C3S, please use your personal link which you received by e-mail.
+          <span i18n:translate="">If you already are a member of the C3S, please use your personal link which you received by e-mail.</span>
+
         </p>
         <p i18n:translate="">Please scroll down for filling in the form.</p>
       </div>
