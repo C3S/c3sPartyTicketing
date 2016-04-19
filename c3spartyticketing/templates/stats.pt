@@ -180,38 +180,38 @@
           </table>
 
           
-          <h2>Extras</h2>
+          <!--<h2>Extras</h2>-->
 
-          <h3>T-Shirts (${stats.extras.tshirts.total})</h3>
-          <table class="table table-striped">
-            <tr>
-              <td></td>
-              <td><b>S</b></td>
-              <td><b>M</b></td>
-              <td><b>L</b></td>
-              <td><b>XL</b></td>
-              <td><b>XXL</b></td>
-              <td><b>XXXL</b></td>
-            </tr>
-            <tr>
-              <td><b>female</b></td>
-              <td>${stats.extras.tshirts.female.S}</td>
-              <td>${stats.extras.tshirts.female.M}</td>
-              <td>${stats.extras.tshirts.female.L}</td>
-              <td>${stats.extras.tshirts.female.XL}</td>
-              <td>${stats.extras.tshirts.female.XXL}</td>
-              <td>${stats.extras.tshirts.female.XXXL}</td>
-            </tr>
-            <tr>
-              <td><b>male</b></td>
-              <td>${stats.extras.tshirts.male.S}</td>
-              <td>${stats.extras.tshirts.male.M}</td>
-              <td>${stats.extras.tshirts.male.L}</td>
-              <td>${stats.extras.tshirts.male.XL}</td>
-              <td>${stats.extras.tshirts.male.XXL}</td>
-              <td>${stats.extras.tshirts.male.XXXL}</td>
-            </tr>
-          </table>
+          <!--<h3>T-Shirts (${stats.extras.tshirts.total})</h3>-->
+          <!--<table class="table table-striped">-->
+            <!--<tr>-->
+              <!--<td></td>-->
+              <!--<td><b>S</b></td>-->
+              <!--<td><b>M</b></td>-->
+              <!--<td><b>L</b></td>-->
+              <!--<td><b>XL</b></td>-->
+              <!--<td><b>XXL</b></td>-->
+              <!--<td><b>XXXL</b></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td><b>female</b></td>-->
+              <!--<td>${stats.extras.tshirts.female.S}</td>-->
+              <!--<td>${stats.extras.tshirts.female.M}</td>-->
+              <!--<td>${stats.extras.tshirts.female.L}</td>-->
+              <!--<td>${stats.extras.tshirts.female.XL}</td>-->
+              <!--<td>${stats.extras.tshirts.female.XXL}</td>-->
+              <!--<td>${stats.extras.tshirts.female.XXXL}</td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+              <!--<td><b>male</b></td>-->
+              <!--<td>${stats.extras.tshirts.male.S}</td>-->
+              <!--<td>${stats.extras.tshirts.male.M}</td>-->
+              <!--<td>${stats.extras.tshirts.male.L}</td>-->
+              <!--<td>${stats.extras.tshirts.male.XL}</td>-->
+              <!--<td>${stats.extras.tshirts.male.XXL}</td>-->
+              <!--<td>${stats.extras.tshirts.male.XXXL}</td>-->
+            <!--</tr>-->
+          <!--</table>-->
 
 
           <h2>Abrechnung</h2>
@@ -228,6 +228,9 @@
             <span style="color:green">
               ${stats.accounting.order.sum_tickets_paid} €
             </span><br />
+            Summe bezahlte Essensbestellungen: ${stats.paid_food_total} €<br />
+
+            Summe bezahlte Supportzahlungen: ${stats.paid_support_total} €
           </p>
 
           <br /><br />

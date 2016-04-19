@@ -57,6 +57,11 @@ def stats_view(request):
     # _num_open_tickets = int(_number_of_tickets) - int(_num_passengers)
     # _num_tickets_unpaid = PartyTicket.get_num_unpaid()
 
+    # berechnungen für Buchführung
+    stats['paid_food_total'] = PartyTicket.paid_food_total()
+    stats['paid_support_total'] = PartyTicket.paid_support_total()
+
+
     return {
         'stats': stats
     }

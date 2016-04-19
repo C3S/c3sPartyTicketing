@@ -42,6 +42,8 @@ from sqlalchemy.orm import (
 )
 from zope.sqlalchemy import ZopeTransactionExtension
 
+from c3spartyticketing.event_config import cfg
+
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 crypt = cryptacular.bcrypt.BCRYPTPasswordManager()
@@ -569,6 +571,32 @@ class PartyTicket(Base):
             if item.payment_received:
                 _num = _num + item.num_tickets
         return _num
+
+    @classmethod
+    def paid_food_total(cls):
+        """return amount of food paid for already"""
+        _all = DBSession.query(cls).all()
+        _amount = 0
+        for item in _all:
+            if item.payment_received and item.ticket_bc_buffet:
+                _amount = _amount + cfg['bc']['food_cost']
+        return _amount
+
+    @classmethod
+    def paid_support_total(cls):
+        """return amount of support paid for already"""
+        _all = DBSession.query(cls).all()
+        _amount = 0
+        for item in _all:
+            if (item.payment_received and item.ticket_support):
+                _amount = _amount + int(cfg['support']['M_cost'])
+            if (item.payment_received and item.ticket_support_l):
+                _amount = _amount + int(cfg['support']['L_cost'])
+            if (item.payment_received and item.ticket_support_xl):
+                _amount = _amount + int(cfg['support']['XL_cost'])
+            if (item.payment_received and item.ticket_support_xxl):
+                _amount = _amount + int(cfg['support']['XXL_cost'])
+        return _amount
 
     # ticket categories
     # totals
