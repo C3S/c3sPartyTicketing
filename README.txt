@@ -1,14 +1,21 @@
-c3sPartyTicketing README
-==================
+ c3sPartyTicketing README
+==========================
 
 Getting Started
 ---------------
 
-- cd <directory containing this file>
+- git clone git@github.com:C3S/c3sPartyTicketing.git 
+- cd c3sPartyTicketing
 
-- $VENV/bin/python setup.py develop
+- git branch -a # show branches to checkout the latest one, e.g.:
+- git checkout -b C3Sevents_2017_01_GvBc --track origin/C3Sevents_2017_01_GvBc
 
-- $VENV/bin/initialize_c3sPartyTicketing_db development.ini
+- git branch C3Sevents_2018_01_GvBc # create your new branch
+- git checkout C3Sevents_2018_01_GvBc
 
-- $VENV/bin/pserve development.ini
+- pip install virtualenv # setup own python environment
+- virtualenv env
 
+- env/bin/python setup.py develop
+- env/bin/initialize_c3sPartyTicketing_db development.ini # initialize database
+- env/bin/pserve development.ini # run web service
