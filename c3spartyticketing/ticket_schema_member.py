@@ -169,7 +169,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 ),
                 title=_(u"Total"),
                 description=_(
-                    u'Your order has to be fully paid by 14.04.2016 at the '
+                    u'Your order has to be fully paid by 01.04.2017 at the '
                     u'latest (payment receipt on our account applies). '
                     u'Money transfer is the only payment method. Payment '
                     u'information will be sent to you shortly by e-mail.'

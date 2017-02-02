@@ -49,7 +49,7 @@
         <p>
           <span i18n:translate="">you should have received a confirmation e-mail from</span>
           <strong i18n:translate="">tickets@c3s.cc</strong> <span i18n:translate="">that features the subject</span>
-          "<strong i18n:translate="">C3S General Assembly & Barcamp 2016: your participation & order</strong>".
+          "<strong i18n:translate="">C3S General Assembly & Barcamp 2017: your participation & order</strong>".
           <br />
           <span i18n:translate="">This e-mail contains all relevant information for the payment of your order.</span>
           (<span i18n:translate="">Important</span>: <strong i18n:translate="">Referral Code</strong>!)
