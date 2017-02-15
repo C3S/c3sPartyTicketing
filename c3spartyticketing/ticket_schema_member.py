@@ -150,8 +150,8 @@ def ticket_member_schema(request, appstruct, readonly=False):
             missing='',
             description=_(
                 u'These ticket options are selectable indepently from the '
-                u'other options. They help the cooperative to '
-                u'bear the costs occasioned by the events. '
+                u'other options. This is a good occasion to support the C3S '
+                u'financially. '
                 u'You may choose more than one supporter ticket.'
             ),
             oid="ticket_support"

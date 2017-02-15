@@ -51,8 +51,8 @@ def get_ticket_bc_options(request):
     ticket_bc_options = (
         ('attendance', (_(u"I will attend the BarCamp. (€0)"))),  #  + u' (€{})foo'.format(request.bc_cost))),
         ('buffet', (_(
-            u"I'd like to have coffee and cake during "
-            u"and buffet after the BarCamp. (€12)")))  #  + u' (€{})'.format(request.bc_food_cost)))
+            u"I'd like to have a seat reservation in an "
+            u"Italian restaurant after the BarCamp. (€0)")))  #  + u' (€{})'.format(request.bc_food_cost)))
     )
     return ticket_bc_options
 

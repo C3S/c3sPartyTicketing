@@ -78,7 +78,9 @@ def load_user(request):
             request.registry.settings['yes_api_url'],
             data,
             headers=_auth_header,
+            verify=False,
         )
+        print("REMOVE verify=False IN load_user!!! JUST FOR TESTING!!!!!!!!!!!!!!!!")
     except ConnectionError, ce:
         print("we hit a ConnectionError. report to staff immediately!")
         mailer = get_mailer(request)
