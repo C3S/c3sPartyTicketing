@@ -496,10 +496,10 @@ def success_view(request):
 
     #######################################################################
     usermail_gv_transaction_subject = \
-        u'C3S General Assembly & Barcamp 2016: your participation & order'
+        u'C3S General Assembly & Barcamp 2017: your participation & order'
     if lang == "de":
         usermail_gv_transaction_subject = (
-            u'C3S Generalversammlung & Barcamp 2016: '
+            u'C3S Generalversammlung & Barcamp 2017: '
             u'Deine Teilnahme & Bestellung')
     usermail_gv_transaction = render(
         'templates/mails/usermail_gv_transaction-'+lang+'.pt',
@@ -514,10 +514,10 @@ def success_view(request):
 
     #######################################################################
     usermail_gv_notransaction_subject = \
-        u'C3S General Assembly & Barcamp 2016: your participation'
+        u'C3S General Assembly & Barcamp 2017: your participation'
     if lang == "de":
         usermail_gv_notransaction_subject = \
-            u'C3S Generalversammlung & Barcamp 2016: Deine Teilnahme'
+            u'C3S Generalversammlung & Barcamp 2017: Deine Teilnahme'
     usermail_gv_notransaction = render(
         'templates/mails/usermail_gv_notransaction-'+lang+'.pt',
         {
@@ -529,11 +529,11 @@ def success_view(request):
 
     #######################################################################
     usermail_notgv_bc_subject = (
-        u'C3S General Assembly & Barcamp 2016: your BarCamp ticket / '
+        u'C3S General Assembly & Barcamp 2017: your BarCamp ticket / '
         u'your cancellation of the general assembly')
     if lang == "de":
         usermail_notgv_bc_subject = (
-            u'C3S Generalversammlung & Barcamp 2016: Dein Barcamp-Ticket / '
+            u'C3S Generalversammlung & Barcamp 2017: Dein Barcamp-Ticket / '
             u'Deine Absage der Generalversammlung')
     usermail_notgv_bc = render(
         'templates/mails/usermail_notgv_bc-'+lang+'.pt',
@@ -548,10 +548,10 @@ def success_view(request):
 
     #######################################################################
     usermail_notgv_notbc_transaction_subject = \
-        u'C3S General Assembly & Barcamp 2016: your cancellation / your order'
+        u'C3S General Assembly & Barcamp 2017: your cancellation / your order'
     if lang == "de":
         usermail_notgv_notbc_transaction_subject = (
-            u'C3S Generalversammlung & Barcamp 2016: '
+            u'C3S Generalversammlung & Barcamp 2017: '
             'Deine Absage / Deine Bestellung')
     usermail_notgv_notbc_transaction = render(
         'templates/mails/usermail_notgv_notbc_transaction-'+lang+'.pt',
@@ -566,10 +566,10 @@ def success_view(request):
 
     #######################################################################
     usermail_notgv_notbc_notransaction_subject = (
-        u'C3S General Assembly & Barcamp 2016: your cancellation')
+        u'C3S General Assembly & Barcamp 2017: your cancellation')
     if lang == "de":
         usermail_notgv_notbc_notransaction_subject = (
-            'C3S Generalversammlung & Barcamp 2016: Deine Absage')
+            'C3S Generalversammlung & Barcamp 2017: Deine Absage')
     usermail_notgv_notbc_notransaction = render(
         'templates/mails/usermail_notgv_notbc_notransaction-'+lang+'.pt',
         {
