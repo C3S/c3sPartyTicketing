@@ -38,6 +38,6 @@ cfg = {
         'finish_on_submit': False,
         'access_denied_url': '/barcamp',
         'invitation_date': '2017-01-31',
-        'fully_paid_date': '2017-04-10',
+        'fully_paid_date': '2017-02-28',
     },
 }
