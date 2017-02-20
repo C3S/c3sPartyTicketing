@@ -124,7 +124,7 @@
     <div class="row" tal:condition="not canceled">
 
         <div class="col-md-6">
-          <tal:block metal:use-macro="load: barcamp.hpz.pt">
+          <tal:block metal:use-macro="load: barcamp.c3shq.pt">
             <!-- BARCAMP TEMPLATE -->
           </tal:block>
         </div>

@@ -11,6 +11,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 requires = [
     'alembic',
     'Babel',
+    'Chameleon==2.22',
     'cryptacular',
     'deform',
     'gnupg',
@@ -18,19 +19,19 @@ requires = [
     #'lingua==1.6',
     'lingua',
     'Pillow==2.4.0',  # fork of PIL; needed for qrcode
-    'pyramid',
+    'pyramid==1.6',
     'pyramid_beaker',
     'pyramid_chameleon',
-    'pyramid_debugtoolbar',
+    'pyramid_debugtoolbar==0.14',
     'pyramid_mailer',
-    'pyramid_tm',
+    'pyramid_tm==0.11',
     'python-dateutil',
     'qrcode',
     'repoze.sendmail<4.2',  # pin down, see
     # https://github.com/repoze/repoze.sendmail/issues/31
     'requests',
-    'SQLAlchemy',
-    'transaction',
+    'SQLAlchemy==1.0.9',
+    'transaction==1.4.3',
     'unicodecsv',
     'waitress',
     'zope.sqlalchemy',
