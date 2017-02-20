@@ -28,7 +28,8 @@ requires = [
     'python-dateutil',
     'qrcode',
     'repoze.sendmail<4.2',  # pin down, see
-    # https://github.com/repoze/repoze.sendmail/issues/31
+    # https://github.com/repoze/repoze.sendmail/issues/31+    
+    'raven',
     'requests',
     'SQLAlchemy==1.0.9',
     'transaction==1.4.3',
