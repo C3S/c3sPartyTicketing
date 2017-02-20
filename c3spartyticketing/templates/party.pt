@@ -68,7 +68,7 @@
 
         <div class="col-md-6">
 
-          <tal:block metal:use-macro="load: barcamp.hpz.pt">
+          <tal:block metal:use-macro="load: barcamp.c3shq.pt">
             <!-- HPZ BARCAMP TEMPLATE -->
           </tal:block>
         </div>

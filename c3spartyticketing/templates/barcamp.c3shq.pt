@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="c3spartyticketing">
+  <!-- ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** -->
+  <div class="alert alert-success">
+    <h1 i18n:translate="" style="color:#000;">BarCamp</h1>    
+    <div id="getting-started-bc" style="color:#999"></div>
+    <script type="text/javascript">
+      $('#getting-started-bc').countdown('${request.barcamp_counter}', function(event) {
+      $(this).html(event.strftime('<span i18n:translate="start">Starts in</span> '
+      + '<span>%w</span> <span i18n:translate="weeks">week(s)</span> '
+      + '<span>%d</span> <span i18n:translate="days">day(s)</span> '
+      + '%H:%M:%S'));
+      });
+    </script>
+    <h2>
+      <span i18n:translate="">${request.barcamp_date}</span>
+      <small i18n:translate="">${request.barcamp_timespan}</small>
+    </h2> 
+    <tal:block metal:use-macro="load: location.c3s_hq.pt">
+      <!-- HPZ LOCATION TEMPLATE -->
+    </tal:block>
+  </div>
+  <!-- ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** -->
+</html>
