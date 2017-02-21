@@ -277,12 +277,12 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
             default=u'''
             <div class="help-block">
                 <strong>Please note:</strong>
-                You may only nominate as your voting representative members
+                You may only nominate as your representative members
                 of the cooperative, your spouse, parents, children or
                 siblings. Each representative may represent two members
-                at most (see § 13 (6), sentence 3, of the articles of
-                <a href='http://url.c3s.cc/statutes' target='_blank'>
-                    association
+                at most (see § 13 (6), sentence 3, of the 
+                <a href='https://url.c3s.cc/statutes' target='_blank'>
+                    articles of association
                 </a>).
                 Registered civil partners are treated as spouses.
                 <br>
@@ -293,10 +293,18 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                 original document.
                 <br>
                 Download authorization form:
-                <a href='http://url.c3s.cc/auprivateR' target='_blank'>
-                    http://url.c3s.cc/authorization
+                <a href='https://url.c3s.cc/auprivater' target='_blank'>
+                    for regular members,
                 </a>
+                <a href='https://url.c3s.cc/auprivatei' target='_blank'>
+                    for investing members,
+                </a>
+                <a href='https://url.c3s.cc/aucorporate' target='_blank'>
+                    for corporations
+                </a>
+
             </div>''',
+
             oid='rep-note'
         )
         if get_locale_name(request) == 'de':
@@ -328,9 +336,16 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                 Original.
                 <br>
                 Download für den Vordruck einer Abstimmungs-Vollmacht:
-                <a href='http://url.c3s.cc/vmprivatO' target='_blank'>
-                    http://url.c3s.cc/vollmacht
+                <a href='http://url.c3s.cc/vmprivato' target='_blank'>
+                    Für ordentliche Mitglieder,
                 </a>
+                <a href='http://url.c3s.cc/vmprivati' target='_blank'>
+                    für investierende Mitglieder,
+                </a>
+                <a href='http://url.c3s.cc/vmkoerperschaft' target='_blank'>
+                    für Körperschaften
+                </a>
+
             </div>''',
                 oid='rep-note'
             )

@@ -26,7 +26,7 @@
       <h3><small i18n:translate="">Hello</small> ${firstname} ${lastname} !</h3>
 
       <p i18n:translate="">
-        You will receive more information on your order and how to pay in an e-mail.
+        You will receive more information on your order and (if applicable) how to pay in an e-mail.
       </p>
       <hr />
       <h2 i18n:translate="" style="color:#666; margin-left:40px;">See you soon,</h2>

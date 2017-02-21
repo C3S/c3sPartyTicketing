@@ -79,7 +79,7 @@
           <span i18n:translate="">please contact our team at office@c3s.cc until </span>${request.fully_paid_date}.
         </p>
         <p i18n:translate="">
-          You will receive more information on your order and how to pay in an e-mail.
+          You will receive more information on your order and (if applicable) how to pay in an e-mail.
         </p>
         <hr />
         <h2 i18n:translate="" style="color:#666; margin-left:40px;">See you soon,</h2>
@@ -96,7 +96,7 @@
           <span i18n:translate="">please contact our team at office@c3s.cc until </span> ${request.fully_paid_date}.
         </p>
         <p i18n:translate="">
-          You will receive more information on your order and how to pay in an e-mail.
+          You will receive more information on your order and (if applicable) how to pay in an e-mail.
         </p>
         <hr />
         <h2 i18n:translate="" style="color:#666; margin-left:40px;">See you soon,</h2>
