@@ -487,9 +487,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
                     We will send the tickets in time by e-mail
                 </strong><br />
                 You can't edit the order form after hitting the button
-                "Submit & Buy" below. However, you can click the personal
-                link you received as part of the invitation link. There you
-                can view but not edit your order. A refund of your
+                "Submit & Buy" below. A refund of your
                 money once transferred is not possible. 
                 If you have any questions please contact
                 <a href="mailto:office@c3s.cc" class="alert-link">
@@ -514,9 +512,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 </strong><br />
                 Sobald Du das Bestellformular mit dem Button "Absenden &
                 Kaufen" unten absendest, kannst Du an der Bestellung im
-                Formular keine Änderung mehr vornehmen. Du kannst Deine
-                Bestellung jedoch unter Deinem persönlichen Link aus der
-                Einladungs-Mail weiterhin aufrufen und anschauen. Eine
+                Formular keine Änderung mehr vornehmen. Eine
                 Erstattung der überwiesenen Summe ist nicht möglich. 
                 Falls Du Fragen
                 zu Deiner Bestellung hast, wende Dich bitte an

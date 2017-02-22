@@ -1,6 +1,6 @@
 Hallo ${firstname} ${lastname} !
 
-Wir haben Deine Bestellung erhalten. Bitte überweise
+Du hast ein Supporter Ticket bestellt. Danke dafür! 
 
             ${the_total} Euro
 
@@ -13,14 +13,12 @@ Verwendungszweck:	Barcamp 2017 ${email_confirm_code}
 BIC:			GENO DE F1 ETK
 IBAN:			DE79 8309 4495 0003 2643 78
 
-Sobald Deine Zahlung auf unserem Konto eingeht, schicken wir Dir eine
-Email mit dem bestellten Ticket.
+Wenn Deine Zahlung auf unserem Konto eingegangen ist, schicken wir Dir
+eine Eingangsbestätigung.
 
-Deine Bestellung muss spätestens zum ${fully_paid_date} vollständig 
-bezahlt sein. Es gilt der Zahlungseingang auf unserem Konto.
+Eine Rückerstattung der überwiesenen Summe ist nicht möglich.
 
-Das Ticket versenden wir rechtzeitig per Email.
-
+Bei Fragen wende Dich bitte an office@c3s.cc
 
     Bis bald!
 
