@@ -27,7 +27,8 @@ requires = [
     'pyramid_tm==0.11',
     'python-dateutil',
     'qrcode',
-    'repoze.sendmail<4.2',  # pin down, see
+    'repoze.sendmail',
+    # <4.2',  # pin down, see
     # https://github.com/repoze/repoze.sendmail/issues/31    
     'raven',
     'requests',
