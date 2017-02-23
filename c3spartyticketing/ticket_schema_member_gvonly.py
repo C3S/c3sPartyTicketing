@@ -277,12 +277,12 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
             default=u'''
             <div class="help-block">
                 <strong>Please note:</strong>
-                You may only nominate as your voting representative members
+                You may only nominate as your representative members
                 of the cooperative, your spouse, parents, children or
                 siblings. Each representative may represent two members
-                at most (see § 13 (6), sentence 3, of the articles of
-                <a href='http://url.c3s.cc/statutes' target='_blank'>
-                    association
+                at most (see § 13 (6), sentence 3, of the 
+                <a href='https://url.c3s.cc/statutes' target='_blank'>
+                    articles of association
                 </a>).
                 Registered civil partners are treated as spouses.
                 <br>
@@ -293,10 +293,18 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                 original document.
                 <br>
                 Download authorization form:
-                <a href='http://url.c3s.cc/auprivateR' target='_blank'>
-                    http://url.c3s.cc/authorization
+                <a href='https://url.c3s.cc/auprivater' target='_blank'>
+                    for regular members,
                 </a>
+                <a href='https://url.c3s.cc/auprivatei' target='_blank'>
+                    for investing members,
+                </a>
+                <a href='https://url.c3s.cc/aucorporate' target='_blank'>
+                    for corporations
+                </a>
+
             </div>''',
+
             oid='rep-note'
         )
         if get_locale_name(request) == 'de':
@@ -328,9 +336,16 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                 Original.
                 <br>
                 Download für den Vordruck einer Abstimmungs-Vollmacht:
-                <a href='http://url.c3s.cc/vmprivatO' target='_blank'>
-                    http://url.c3s.cc/vollmacht
+                <a href='http://url.c3s.cc/vmprivato' target='_blank'>
+                    Für ordentliche Mitglieder,
                 </a>
+                <a href='http://url.c3s.cc/vmprivati' target='_blank'>
+                    für investierende Mitglieder,
+                </a>
+                <a href='http://url.c3s.cc/vmkoerperschaft' target='_blank'>
+                    für Körperschaften
+                </a>
+
             </div>''',
                 oid='rep-note'
             )
@@ -355,9 +370,6 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
             ),
             default=u'''
             <div class="alert alert-info" role="alert">
-                <strong>
-                    From 14th August on only limited registration!
-                </strong><br />
                 <br />
                 There's no option to register for the BarCamp anymore.
                 However, you may
@@ -380,19 +392,12 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                 ),
                 default=u'''
             <div class="alert alert-info" role="alert">
-                <strong>
-                    Seit 14. August nur noch eingeschränkte Anmeldung!
-                </strong><br />
                 <br />
                 Die Möglichkeit zur Anmeldung fürs Barcamp
                 besteht leider nicht mehr.
                 Für die Generalversammlung kannst Du Dich jedoch nach wie
                 vor anmelden. Die Teilnahme ist kostenlos. Wir bitten Dich
                 aber, Dich aus Planungsgründen umgehend anzumelden.<br />
-                <br />
-                Wir werden im Rahmen der Generalversammlung Restbestände der
-                T-Shirts zum Verkauf anbieten. Wir können Dir aber nicht
-                garantieren, dass die passende Größe darunter ist.<br />
                 <br />
                 Für das Barcamp besteht keine Möglichkeit, ein Ticket direkt
                 vor Ort zu kaufen.
@@ -429,9 +434,7 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                     We will send tickets and vouchers in time by e-mail
                 </strong><br />
                 You can't edit the order form after hitting the button
-                "Submit & Buy" below. However, you can click the personal
-                link you received as part of the invitation link. There you
-                can view but not edit your order. If you have any questions
+                "Submit & Buy" below. If you have any questions
                 please contact
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
@@ -456,9 +459,7 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                 </strong><br />
                 Sobald Du das Bestellformular mit dem Button "Absenden &
                 Kaufen" unten absendest, kannst Du an der Bestellung im
-                Formular keine Änderung mehr vornehmen. Du kannst Deine
-                Bestellung jedoch unter Deinem persönlichen Link aus der
-                Einladungs-Mail weiterhin aufrufen und anschauen. Falls Du
+                Formular keine Änderung mehr vornehmen. Falls Du
                 Fragen zu Deiner Bestellung hast, wende Dich bitte an
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc

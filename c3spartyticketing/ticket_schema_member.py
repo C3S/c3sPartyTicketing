@@ -365,9 +365,15 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 a copy, fax, scan, or picture. We can only accept the
                 original document.
                 <br>
-                Download 
+                Download authorization form:
                 <a href='https://url.c3s.cc/auprivater' target='_blank'>
-                authorization form
+                    for regular members,
+                </a>
+                <a href='https://url.c3s.cc/auprivatei' target='_blank'>
+                    for investing members,
+                </a>
+                <a href='https://url.c3s.cc/aucorporate' target='_blank'>
+                    for corporations
                 </a>
             </div>''',
             oid='rep-note'
@@ -400,9 +406,15 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 Kopie, kein Fax, kein Scan, kein Bild, sondern das
                 Original.
                 <br>
-                Download für den 
-                <a href='https://url.c3s.cc/vmprivato' target='_blank'>
-                    Vordruck einer Vollmacht
+                Download für den Vordruck einer Abstimmungs-Vollmacht:
+                <a href='http://url.c3s.cc/vmprivato' target='_blank'>
+                    Für ordentliche Mitglieder,
+                </a>
+                <a href='http://url.c3s.cc/vmprivati' target='_blank'>
+                    für investierende Mitglieder,
+                </a>
+                <a href='http://url.c3s.cc/vmkoerperschaft' target='_blank'>
+                    für Körperschaften
                 </a>
             </div>''',
                 oid='rep-note'
@@ -475,12 +487,9 @@ def ticket_member_schema(request, appstruct, readonly=False):
                     We will send the tickets in time by e-mail
                 </strong><br />
                 You can't edit the order form after hitting the button
-                "Submit & Buy" below. However, you can click the personal
-                link you received as part of the invitation link. There you
-                can view but not edit your order. A full refund of your
-                money once transferred is not possible. Only in case the
-                BarCamp is cancelled by C3S SCE a refund for food is 
-                possible. If you have any questions please contact
+                "Submit & Buy" below. A refund of your
+                money once transferred is not possible. 
+                If you have any questions please contact
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
                 </a>
@@ -503,12 +512,9 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 </strong><br />
                 Sobald Du das Bestellformular mit dem Button "Absenden &
                 Kaufen" unten absendest, kannst Du an der Bestellung im
-                Formular keine Änderung mehr vornehmen. Du kannst Deine
-                Bestellung jedoch unter Deinem persönlichen Link aus der
-                Einladungs-Mail weiterhin aufrufen und anschauen. Eine
-                Erstattung der überwiesenen Summe ist nicht möglich. Nur
-                im Fall der Absage des Barcamps durch die C3S SCE werden
-                die Kosten für das Essen erstattet. Falls Du Fragen
+                Formular keine Änderung mehr vornehmen. Eine
+                Erstattung der überwiesenen Summe ist nicht möglich. 
+                Falls Du Fragen
                 zu Deiner Bestellung hast, wende Dich bitte an
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc

@@ -1,6 +1,7 @@
 Hallo ${firstname} ${lastname} !
 
-Wir haben Deine Bestellung erhalten. Bitte überweise
+Du hast ein Supporter Ticket bestellt. Danke dafür! 
+Bitte überweise 
 
             ${the_total} Euro
 
@@ -13,16 +14,10 @@ Verwendungszweck:	Versammlung und Barcamp 2017 ${email_confirm_code}
 BIC:			GENO DE F1 ETK
 IBAN:			DE79 8309 4495 0003 2643 78
 
-
 Wenn Deine Zahlung auf unserem Konto eingegangen ist, schicken wir Dir
-das/die Ticket(s) und/oder Gutscheine für Deine weiteren Bestellungen
-rechtzeitig zu. Deine Bestellung muss spätestens zum ${fully_paid_date}
-vollständig bezahlt sein. Es gilt der Zahlungseingang auf unserem Konto.
+eine Eingangsbestätigung.
 
-Du kannst Deine Bestellung unter Deinem persönlichen Link aus der
-Einladungs-Mail weiterhin aufrufen und anschauen. Eine Erstattung der
-überwiesenen Summe ist nicht möglich. Nur im Fall der Absage des
-Barcamps durch die C3S SCE werden die Kosten für das Essen rückerstattet.
+Eine Rückerstattung der überwiesenen Summe ist nicht möglich.
 
 Bei Fragen wende Dich bitte an office@c3s.cc
 
