@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-15 13:26+0100\n"
-"PO-Revision-Date: 2017-02-15 13:36+0100\n"
+"POT-Creation-Date: 2017-02-23 18:19+0100\n"
+"PO-Revision-Date: 2017-02-23 18:22+0100\n"
 "Last-Translator: Thomas Mielke <thomas.mielke@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -170,20 +170,21 @@ msgstr "Land"
 msgid "My representative is..."
 msgstr "Mein(e) Bevollmächtigte(r) ist:"
 
-#: c3spartyticketing/ticket_schema_member_gvonly.py:408
+#: c3spartyticketing/ticket_schema_member_gvonly.py:413
 #: c3spartyticketing/edit_ticket.py:459 c3spartyticketing/new_ticket.py:393
-#: c3spartyticketing/ticket_schema_member.py:450
+#: c3spartyticketing/ticket_schema_member.py:462
 #: c3spartyticketing/ticket_schema_nonmember.py:244
 msgid "Ticket Information"
 msgstr "Ticketinformationen"
 
-#: c3spartyticketing/ticket_schema_member_gvonly.py:413
-#: c3spartyticketing/ticket_schema_member.py:454
+#: c3spartyticketing/ticket_schema_member_gvonly.py:418
+#: c3spartyticketing/ticket_schema_member.py:466
 msgid "Representative"
 msgstr "Bevollmächtigte(r)"
 
 #: c3spartyticketing/edit_ticket.py:201 c3spartyticketing/new_ticket.py:168
 #: c3spartyticketing/templates/barcamp.hpz.pt:6
+#: c3spartyticketing/templates/barcamp.c3shq.pt:6
 msgid "BarCamp"
 msgstr "Barcamp"
 
@@ -251,11 +252,11 @@ msgstr "Gesamtbetrag"
 #: c3spartyticketing/ticket_schema_member.py:171
 #: c3spartyticketing/ticket_schema_nonmember.py:173
 msgid ""
-"Your order has to be fully paid by 14.04.2016 at the latest (payment receipt "
+"Your order has to be fully paid by 01.04.2017 at the latest (payment receipt "
 "on our account applies). Money transfer is the only payment method. Payment "
 "information will be sent to you shortly by e-mail."
 msgstr ""
-"Deine Bestellung muss spätestens bis zum 14.04.2016 vollständig bezahlt sein "
+"Deine Bestellung muss spätestens bis zum 01.04.2017 vollständig bezahlt sein "
 "(Zahlungseingang auf unserem Konto). Die Zahlung erfolgt ausschließlich per "
 "Banküberweisung. Die Zahlungsinformationen werden dir per Email zugeschickt."
 
@@ -304,8 +305,8 @@ msgid ""
 "I'd like to have a seat reservation in an Italian restaurant after the "
 "BarCamp. (€0)"
 msgstr ""
-"Ich würde gern einen nach dem Barcamp in einem italienischen Restaurant "
-"essen gehen und dafür einen Platz reservieren. (€ 0)"
+"Ich würde gern nach dem Barcamp in einem italienischen Restaurant essen "
+"gehen und dafür einen Platz reservieren. (€ 0)"
 
 #: c3spartyticketing/ticket_options.py:65
 msgid "Supporter Ticket (€5)"
@@ -433,8 +434,8 @@ msgid "that features the subject"
 msgstr "mit dem Betreff"
 
 #: c3spartyticketing/templates/success.pt:52
-msgid "C3S General Assembly & Barcamp 2016: your participation & order"
-msgstr "C3S Generalversammlung & Barcamp 2016: Deine Teilnahme & Bestellung"
+msgid "C3S General Assembly & Barcamp 2017: your participation & order"
+msgstr "C3S Generalversammlung & Barcamp 2017: Deine Teilnahme & Bestellung"
 
 #: c3spartyticketing/templates/success.pt:54
 msgid ""
@@ -494,10 +495,11 @@ msgstr "melde Dich bitte bei unserem Team unter office@c3s.cc bis zum"
 #: c3spartyticketing/templates/success.pt:98
 #: c3spartyticketing/templates/nonmember_success.pt:28
 msgid ""
-"You will receive more information on your order and how to pay in an e-mail."
+"You will receive more information on your order and (if applicable) how to "
+"pay in an e-mail."
 msgstr ""
-"Weitere Informationen zu Deiner Bestellung und wie Du bezahlen kannst, "
-"erhältst Du in einer Email."
+"Weitere Informationen zu Deiner Bestellung und wie Du gegebenenfalls "
+"bezahlen kannst, erhältst Du in einer Email."
 
 #: c3spartyticketing/templates/success.pt:85
 #: c3spartyticketing/templates/success.pt:102
@@ -615,6 +617,7 @@ msgstr ""
 #. Default: Starts in
 #: c3spartyticketing/templates/barcamp.hpz.pt:10
 #: c3spartyticketing/templates/assembly.c3shq.pt:10
+#: c3spartyticketing/templates/barcamp.c3shq.pt:10
 msgid "start"
 msgstr "Beginnt in"
 
@@ -622,6 +625,7 @@ msgstr "Beginnt in"
 #. Default: weeks
 #: c3spartyticketing/templates/barcamp.hpz.pt:11
 #: c3spartyticketing/templates/assembly.c3shq.pt:11
+#: c3spartyticketing/templates/barcamp.c3shq.pt:11
 msgid "weeks"
 msgstr "Wochen"
 
@@ -629,6 +633,7 @@ msgstr "Wochen"
 #. Default: days(s)
 #: c3spartyticketing/templates/barcamp.hpz.pt:12
 #: c3spartyticketing/templates/assembly.c3shq.pt:12
+#: c3spartyticketing/templates/barcamp.c3shq.pt:12
 msgid "days"
 msgstr "Tag(en)"
 

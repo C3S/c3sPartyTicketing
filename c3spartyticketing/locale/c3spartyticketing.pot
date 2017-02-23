@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-02-15 13:26+0100\n"
+"POT-Creation-Date: 2017-02-23 18:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -171,20 +171,21 @@ msgstr ""
 msgid "My representative is..."
 msgstr ""
 
-#: ./c3spartyticketing/ticket_schema_member_gvonly.py:408
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:413
 #: ./c3spartyticketing/edit_ticket.py:459 ./c3spartyticketing/new_ticket.py:393
-#: ./c3spartyticketing/ticket_schema_member.py:450
+#: ./c3spartyticketing/ticket_schema_member.py:462
 #: ./c3spartyticketing/ticket_schema_nonmember.py:244
 msgid "Ticket Information"
 msgstr ""
 
-#: ./c3spartyticketing/ticket_schema_member_gvonly.py:413
-#: ./c3spartyticketing/ticket_schema_member.py:454
+#: ./c3spartyticketing/ticket_schema_member_gvonly.py:418
+#: ./c3spartyticketing/ticket_schema_member.py:466
 msgid "Representative"
 msgstr ""
 
 #: ./c3spartyticketing/edit_ticket.py:201 ./c3spartyticketing/new_ticket.py:168
 #: ./c3spartyticketing/templates/barcamp.hpz.pt:6
+#: ./c3spartyticketing/templates/barcamp.c3shq.pt:6
 msgid "BarCamp"
 msgstr ""
 
@@ -249,7 +250,7 @@ msgstr ""
 #: ./c3spartyticketing/ticket_schema_member.py:171
 #: ./c3spartyticketing/ticket_schema_nonmember.py:173
 msgid ""
-"Your order has to be fully paid by 14.04.2016 at the latest (payment receipt "
+"Your order has to be fully paid by 01.04.2017 at the latest (payment receipt "
 "on our account applies). Money transfer is the only payment method. Payment "
 "information will be sent to you shortly by e-mail."
 msgstr ""
@@ -421,7 +422,7 @@ msgid "that features the subject"
 msgstr ""
 
 #: ./c3spartyticketing/templates/success.pt:52
-msgid "C3S General Assembly & Barcamp 2016: your participation & order"
+msgid "C3S General Assembly & Barcamp 2017: your participation & order"
 msgstr ""
 
 #: ./c3spartyticketing/templates/success.pt:54
@@ -476,7 +477,8 @@ msgstr ""
 #: ./c3spartyticketing/templates/success.pt:98
 #: ./c3spartyticketing/templates/nonmember_success.pt:28
 msgid ""
-"You will receive more information on your order and how to pay in an e-mail."
+"You will receive more information on your order and (if applicable) how to "
+"pay in an e-mail."
 msgstr ""
 
 #: ./c3spartyticketing/templates/success.pt:85
@@ -582,6 +584,7 @@ msgstr ""
 #. Default: Starts in
 #: ./c3spartyticketing/templates/barcamp.hpz.pt:10
 #: ./c3spartyticketing/templates/assembly.c3shq.pt:10
+#: ./c3spartyticketing/templates/barcamp.c3shq.pt:10
 msgid "start"
 msgstr ""
 
@@ -589,6 +592,7 @@ msgstr ""
 #. Default: weeks
 #: ./c3spartyticketing/templates/barcamp.hpz.pt:11
 #: ./c3spartyticketing/templates/assembly.c3shq.pt:11
+#: ./c3spartyticketing/templates/barcamp.c3shq.pt:11
 msgid "weeks"
 msgstr ""
 
@@ -596,5 +600,6 @@ msgstr ""
 #. Default: days(s)
 #: ./c3spartyticketing/templates/barcamp.hpz.pt:12
 #: ./c3spartyticketing/templates/assembly.c3shq.pt:12
+#: ./c3spartyticketing/templates/barcamp.c3shq.pt:12
 msgid "days"
 msgstr ""

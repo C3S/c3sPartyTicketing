@@ -26,7 +26,7 @@ Getting Started
 Translations
 ------------
 
-After changes of texts in code or templates:
+After changes of texts in code or templates, recreate the .pot file:
 -> env/bin/pot-create -o c3spartyticketing/locale/c3spartyticketing.pot c3spartyticketing
 
 Every time the .pot file changed, recreate the .po files for all languages
