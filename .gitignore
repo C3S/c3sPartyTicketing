@@ -21,3 +21,4 @@ lib/
 local/
 pyramid.pid
 utils/plantuml.jar
+.vscode
