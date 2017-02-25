@@ -1,19 +1,16 @@
-Hallo {salutation} !
+Hallo {salutation}!
 
-Mit dieser Mail erhältst Du Dein(e) Ticket(s).
-Es gibt mehrere Möglichkeiten, das Ticket mitzubringen:
+Mit dieser Mail erhältst Du Dein Ticket.
 
-1) Bringe einfach diesen Code mit: {ticket_email_confirm_code}
+Du brauchst es nicht unbedingt mitzubringen, du wirst eingelassen,
+wenn dein Name auf der Anmeldeliste steht. 
 
-2) Lade die mobile version für dein Smartphone (oder Tablet).
+Aber es listet auf, wofür du dich angemeldet hast und wann welche
+Veranstaltung wo statt findet. 
 
-   {ticket_url_mobile}
-
-3) Lade Dein Ticket herunter und drucke es aus.
-   Wir scannen dann den QR-Code.
+Also lade Dein Ticket am besten herunter und bringe es mit:
 
    {ticket_url}
-
 
 Bis bald!
 

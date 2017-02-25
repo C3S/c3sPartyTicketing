@@ -1,19 +1,16 @@
-Hallo {salutation} !
+Hallo {salutation}!
 
-This e-mail contains your ticket(s). 
-There are several options to bring the ticket:
+This e-mail contains your ticket. 
 
-1) Simply bring the code: {ticket_email_confirm_code}
+You don't have to bring it necessarily, you are admitted if
+your name is on the registration list.
 
-2) Download the mobile version to the device of your choice --
-   mobile phone or tablet:
+But it lists for which events you have registered an when you
+should be where.
 
-   {ticket_url_mobile}
-
-3) Download the ticket and print it. We will scan the QR-code.
+Therefore download the ticket and take it with you:
 
    {ticket_url}
-
 
 See you soon!
 

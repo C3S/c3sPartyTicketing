@@ -151,7 +151,7 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
             ),
             missing='',
             description=_(
-                u'These ticket options are selectable indepently from the '
+                u'These ticket options are selectable independently from the '
                 u'other options. They help the cooperative to '
                 u'bear the costs occasioned by the events. '
                 u'You may choose more than one supporter ticket. '
@@ -286,7 +286,7 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
                     Wir versenden die Tickets rechtzeitig per E-Mail.
                 </strong><br />
                 Sobald Du das Bestellformular mit dem Button "Absenden" oder 
-                "Absenden & Kaufen" unten absendest, kannst Du an der Bestellung im
+                "Absenden + Kaufen" unten absendest, kannst Du an der Bestellung im
                 Formular keine Änderung mehr vornehmen. Die Erstattung einer 
                 überwiesenen Summe ist nicht möglich. Falls Du Fragen
                 zu Deiner Bestellung hast, wende Dich bitte an

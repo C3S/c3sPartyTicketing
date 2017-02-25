@@ -431,10 +431,10 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
             default=u'''
             <div class="alert alert-info" role="alert">
                 <strong>
-                    We will send tickets and vouchers in time by e-mail
+                    We will send tickets in time by e-mail
                 </strong><br />
                 You can't edit the order form after hitting the button
-                "Submit & Buy" below. If you have any questions
+                "Submit" or "Submit & Buy" below. If you have any questions
                 please contact
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
@@ -454,11 +454,11 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                 default=u'''
             <div class="alert alert-info" role="alert">
                 <strong>
-                    Wir versenden die Tickets und Gutscheine rechtzeitig per
+                    Wir versenden die Tickets rechtzeitig per
                     Email.
                 </strong><br />
-                Sobald Du das Bestellformular mit dem Button "Absenden &
-                Kaufen" unten absendest, kannst Du an der Bestellung im
+                Sobald Du das Bestellformular mit dem Button "Absenden"
+                oder "Absenden & Kaufen" unten absendest, kannst Du an der Bestellung im
                 Formular keine Änderung mehr vornehmen. Falls Du
                 Fragen zu Deiner Bestellung hast, wende Dich bitte an
                 <a href="mailto:office@c3s.cc" class="alert-link">

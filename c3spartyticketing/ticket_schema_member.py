@@ -149,7 +149,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
             ),
             missing='',
             description=_(
-                u'These ticket options are selectable indepently from the '
+                u'These ticket options are selectable independently from the '
                 u'other options. This is a good occasion to support the C3S '
                 u'financially. '
                 u'You may choose more than one supporter ticket.'
@@ -487,7 +487,7 @@ def ticket_member_schema(request, appstruct, readonly=False):
                     We will send the tickets in time by e-mail
                 </strong><br />
                 You can't edit the order form after hitting the button
-                "Submit & Buy" below. A refund of your
+                "Submit" or "Submit & Buy" below. A refund of your
                 money once transferred is not possible. 
                 If you have any questions please contact
                 <a href="mailto:office@c3s.cc" class="alert-link">
@@ -510,10 +510,10 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 <strong>
                     Wir versenden die Tickets rechtzeitig per Email.
                 </strong><br />
-                Sobald Du das Bestellformular mit dem Button "Absenden &
-                Kaufen" unten absendest, kannst Du an der Bestellung im
-                Formular keine Änderung mehr vornehmen. Eine
-                Erstattung der überwiesenen Summe ist nicht möglich. 
+                Sobald Du das Bestellformular mit dem Button "Absenden"
+                oder "Absenden & Kaufen" unten absendest, kannst Du an der Bestellung im
+                Formular keine Änderung mehr vornehmen. Die
+                Erstattung einer überwiesenen Summe ist nicht möglich. 
                 Falls Du Fragen
                 zu Deiner Bestellung hast, wende Dich bitte an
                 <a href="mailto:office@c3s.cc" class="alert-link">
