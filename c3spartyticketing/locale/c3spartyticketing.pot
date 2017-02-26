@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2017-02-23 18:19+0100\n"
+"POT-Creation-Date: 2017-02-26 16:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -237,9 +237,9 @@ msgstr ""
 
 #: ./c3spartyticketing/ticket_schema_member.py:151
 msgid ""
-"These ticket options are selectable indepently from the other options. This "
-"is a good occasion to support the C3S financially. You may choose more than "
-"one supporter ticket."
+"These ticket options are selectable independently from the other options. "
+"This is a good occasion to support the C3S financially. You may choose more "
+"than one supporter ticket."
 msgstr ""
 
 #: ./c3spartyticketing/ticket_schema_member.py:170
@@ -321,9 +321,9 @@ msgstr ""
 
 #: ./c3spartyticketing/ticket_schema_nonmember.py:153
 msgid ""
-"These ticket options are selectable indepently from the other options. They "
-"help the cooperative to bear the costs occasioned by the events. You may "
-"choose more than one supporter ticket. "
+"These ticket options are selectable independently from the other options. "
+"They help the cooperative to bear the costs occasioned by the events. You may"
+" choose more than one supporter ticket. "
 msgstr ""
 
 #: ./c3spartyticketing/templates/end.pt:17
@@ -386,10 +386,6 @@ msgid "thank you"
 msgstr ""
 
 #: ./c3spartyticketing/templates/party.pt:55
-msgid "If possible, please respond by April 9th."
-msgstr ""
-
-#: ./c3spartyticketing/templates/party.pt:57
 #: ./c3spartyticketing/templates/nonmember.pt:52
 msgid "Please scroll down for filling in the form."
 msgstr ""

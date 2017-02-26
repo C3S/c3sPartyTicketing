@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-23 18:19+0100\n"
-"PO-Revision-Date: 2017-02-23 18:22+0100\n"
+"POT-Creation-Date: 2017-02-26 16:18+0100\n"
+"PO-Revision-Date: 2017-02-26 16:23+0100\n"
 "Last-Translator: Thomas Mielke <thomas.mielke@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -236,9 +236,9 @@ msgstr "Ticket ID der vertretenen Person (2)"
 
 #: c3spartyticketing/ticket_schema_member.py:151
 msgid ""
-"These ticket options are selectable indepently from the other options. This "
-"is a good occasion to support the C3S financially. You may choose more than "
-"one supporter ticket."
+"These ticket options are selectable independently from the other options. "
+"This is a good occasion to support the C3S financially. You may choose more "
+"than one supporter ticket."
 msgstr ""
 "Diese Ticketoptionen können unabhängig von den anderen Optionen gewählt "
 "werden. Dies ist eine gute Gelegenheit die C3S finanziell zu unterstützen. "
@@ -330,9 +330,9 @@ msgstr "Zumindest eine Option muss ausgewählt sein."
 
 #: c3spartyticketing/ticket_schema_nonmember.py:153
 msgid ""
-"These ticket options are selectable indepently from the other options. They "
-"help the cooperative to bear the costs occasioned by the events. You may "
-"choose more than one supporter ticket. "
+"These ticket options are selectable independently from the other options. "
+"They help the cooperative to bear the costs occasioned by the events. You "
+"may choose more than one supporter ticket. "
 msgstr ""
 "Diese Ticketoptionen können unabhängig von den anderen Optionen gewählt "
 "werden. Sie helfen der Genossenschaft, die Kosten der Veranstaltungen zu "
@@ -398,10 +398,6 @@ msgid "thank you"
 msgstr "danke"
 
 #: c3spartyticketing/templates/party.pt:55
-msgid "If possible, please respond by April 9th."
-msgstr "Antworte bitte wenn möglich bis 09. April."
-
-#: c3spartyticketing/templates/party.pt:57
 #: c3spartyticketing/templates/nonmember.pt:52
 msgid "Please scroll down for filling in the form."
 msgstr "Bitte zum Formular herunterscrollen."
@@ -636,6 +632,9 @@ msgstr "Wochen"
 #: c3spartyticketing/templates/barcamp.c3shq.pt:12
 msgid "days"
 msgstr "Tag(en)"
+
+#~ msgid "If possible, please respond by April 9th."
+#~ msgstr "Antworte bitte wenn möglich bis 09. April."
 
 #~ msgid ""
 #~ "I'd like to have coffee and cake during and buffet after the BarCamp. "
