@@ -684,6 +684,7 @@ def success_view(request):
         'lastname': appstruct['ticket']['lastname'],
         'transaction': (appstruct['ticket']['the_total'] > 0),
         'canceled': (appstruct['ticket']['ticket_gv'] == 3),
+        'represented': (appstruct['ticket']['ticket_gv'] == 2),
         'bc_attendance': appstruct['ticket']['ticket_bc']
     }
 

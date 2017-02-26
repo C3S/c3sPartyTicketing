@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-26 17:20+0100\n"
-"PO-Revision-Date: 2017-02-26 19:47+0100\n"
+"POT-Creation-Date: 2017-02-27 00:46+0100\n"
+"PO-Revision-Date: 2017-02-27 00:47+0100\n"
 "Last-Translator: Thomas Mielke <thomas.mielke@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -274,7 +274,7 @@ msgstr ""
 
 #: c3spartyticketing/ticket_options.py:20
 msgid "I will not attend the C3S SCE General Assembly."
-msgstr "Ich werde an der Generalversammlung nicht teilnehmen."
+msgstr "Ich werde nicht an der Generalversammlung teilnehmen."
 
 #: c3spartyticketing/ticket_options.py:39
 msgid "a member of C3S SCE"
@@ -453,18 +453,24 @@ msgid "Thank you for your order at C3S SCE!"
 msgstr "Vielen Dank für Deine Bestellung bei der C3S SCE!"
 
 #: c3spartyticketing/templates/success.pt:63
-#: c3spartyticketing/templates/success.pt:69
+#: c3spartyticketing/templates/success.pt:74
 msgid "Your C3S-Team"
 msgstr "Das C3S-Team"
 
-#: c3spartyticketing/templates/success.pt:68
+#: c3spartyticketing/templates/success.pt:69
 msgid ""
 "Many thanks for attending the general assembly -- looking forward to meet "
 "you there!"
 msgstr ""
 "Vielen Dank für Deine Zusage zur Generalversammlung -- wir sehen uns dort!"
 
-#: c3spartyticketing/templates/success.pt:74
+#: c3spartyticketing/templates/success.pt:72
+msgid ""
+"Many thanks for sending your representative to the the general assembly."
+msgstr ""
+"Vielen Dank, dass Du einen Vertreter zur Generalversammlung entsendest."
+
+#: c3spartyticketing/templates/success.pt:79
 msgid ""
 "you have cancelled your participation at the C3S General Assembly. However, "
 "you are attending the BarCamp."
@@ -472,23 +478,23 @@ msgstr ""
 "Du hast Deine Teilnahme an der Generalversammlung abgesagt, nimmst aber am "
 "Barcamp teil."
 
-#: c3spartyticketing/templates/success.pt:78
-#: c3spartyticketing/templates/success.pt:95
-#: c3spartyticketing/templates/success.pt:112
+#: c3spartyticketing/templates/success.pt:83
+#: c3spartyticketing/templates/success.pt:100
+#: c3spartyticketing/templates/success.pt:117
 msgid ""
 "If you did cancel by mistake or you would like to decide the other way "
 "around,"
 msgstr ""
 "Falls Du irrtümlich abgesagt hast oder Du Dich anders entscheiden möchtest,"
 
-#: c3spartyticketing/templates/success.pt:79
-#: c3spartyticketing/templates/success.pt:96
-#: c3spartyticketing/templates/success.pt:113
+#: c3spartyticketing/templates/success.pt:84
+#: c3spartyticketing/templates/success.pt:101
+#: c3spartyticketing/templates/success.pt:118
 msgid "please contact our team at office@c3s.cc until"
 msgstr "melde Dich bitte bei unserem Team unter office@c3s.cc bis zum"
 
-#: c3spartyticketing/templates/success.pt:81
-#: c3spartyticketing/templates/success.pt:98
+#: c3spartyticketing/templates/success.pt:86
+#: c3spartyticketing/templates/success.pt:103
 #: c3spartyticketing/templates/nonmember_success.pt:28
 msgid ""
 "You will receive more information on your order and (if applicable) how to "
@@ -497,24 +503,24 @@ msgstr ""
 "Weitere Informationen zu Deiner Bestellung und wie Du gegebenenfalls "
 "bezahlen kannst, erhältst Du in einer Email."
 
-#: c3spartyticketing/templates/success.pt:85
-#: c3spartyticketing/templates/success.pt:102
-#: c3spartyticketing/templates/success.pt:116
+#: c3spartyticketing/templates/success.pt:90
+#: c3spartyticketing/templates/success.pt:107
+#: c3spartyticketing/templates/success.pt:121
 #: c3spartyticketing/templates/nonmember_end.pt:31
 #: c3spartyticketing/templates/nonmember_success.pt:32
 msgid "See you soon,"
 msgstr "Bis zum nächsten Mal,"
 
-#: c3spartyticketing/templates/success.pt:86
-#: c3spartyticketing/templates/success.pt:103
-#: c3spartyticketing/templates/success.pt:117
+#: c3spartyticketing/templates/success.pt:91
+#: c3spartyticketing/templates/success.pt:108
+#: c3spartyticketing/templates/success.pt:122
 #: c3spartyticketing/templates/nonmember_end.pt:32
 #: c3spartyticketing/templates/nonmember_success.pt:33
 msgid "Your C3S Team"
 msgstr "Dein C3S-Team"
 
-#: c3spartyticketing/templates/success.pt:91
-#: c3spartyticketing/templates/success.pt:108
+#: c3spartyticketing/templates/success.pt:96
+#: c3spartyticketing/templates/success.pt:113
 msgid ""
 "you have cancelled your participation in the C3S General Assembly as well as "
 "a participation in the BarCamp."
