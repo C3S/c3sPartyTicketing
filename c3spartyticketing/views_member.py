@@ -535,8 +535,12 @@ def success_view(request):
         usermail_notgv_bc_subject = (
             u'C3S Generalversammlung & Barcamp 2017: Dein Barcamp-Ticket / '
             u'Deine Absage der Generalversammlung')
+    if appstruct['ticket']['the_total'] == 0:
+        to_transact_or_not_to_transact = 'notransaction'
+    else:
+        to_transact_or_not_to_transact = 'transaction'
     usermail_notgv_bc = render(
-        'templates/mails/usermail_notgv_bc-'+lang+'.pt',
+        'templates/mails/usermail_notgv_bc_'+to_transact_or_not_to_transact+'-'+lang+'.pt',
         {
             'firstname': appstruct['ticket']['firstname'],
             'lastname': appstruct['ticket']['lastname'],

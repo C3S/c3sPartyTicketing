@@ -1,0 +1,11 @@
+Hello ${firstname} ${lastname} !
+
+you have cancelled your participation in the C3S General Assembly. However, 
+you are attending the BarCamp.
+
+If you did cancel by mistake or you would like to decide the other way around,
+please contact our team at office@c3s.cc until ${fully_paid_date}.
+
+   See you soon!
+ 
+   Your C3S team
