@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-26 17:20+0100\n"
-"PO-Revision-Date: 2017-02-26 17:24+0100\n"
+"PO-Revision-Date: 2017-02-26 19:47+0100\n"
 "Last-Translator: Thomas Mielke <thomas.mielke@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -484,9 +484,8 @@ msgstr ""
 #: c3spartyticketing/templates/success.pt:79
 #: c3spartyticketing/templates/success.pt:96
 #: c3spartyticketing/templates/success.pt:113
-#, fuzzy
 msgid "please contact our team at office@c3s.cc until"
-msgstr "melde Dich bitte bei unserem Team unter office@c3s.cc bis zum "
+msgstr "melde Dich bitte bei unserem Team unter office@c3s.cc bis zum"
 
 #: c3spartyticketing/templates/success.pt:81
 #: c3spartyticketing/templates/success.pt:98

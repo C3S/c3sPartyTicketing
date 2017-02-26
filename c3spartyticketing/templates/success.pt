@@ -76,7 +76,7 @@
         </p>
         <p>
           <span i18n:translate="">If you did cancel by mistake or you would like to decide the other way around,</span><br />
-          <span i18n:translate="">please contact our team at office@c3s.cc until </span>${request.fully_paid_date}.
+          <span i18n:translate="">please contact our team at office@c3s.cc until </span> ${request.fully_paid_date}.
         </p>
         <p i18n:translate="">
           You will receive more information on your order and (if applicable) how to pay in an e-mail.
