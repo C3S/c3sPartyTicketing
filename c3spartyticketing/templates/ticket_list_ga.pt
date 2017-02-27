@@ -61,11 +61,11 @@
         </td>
         <td>${ticket.the_total}</td>
         <td>
-          <div tal:condition="ticket.the_total == 0 and not ticket.payment_received">
-            ok
-          </div>
-          <div tal:condition="ticket.the_total is not 0 and not ticket.payment_received">
+          <div tal:condition="ticket.the_total <> 0 and not ticket.payment_received">
             NEIN
+          </div>
+          <div tal:condition="ticket.the_total == 0 and not ticket.payment_received">
+            
           </div>
           <div tal:condition="ticket.payment_received">
             ja
