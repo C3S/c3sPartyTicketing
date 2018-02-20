@@ -377,9 +377,9 @@ def nonmember_success_view(request):
     If the total is 0 because the barcamp is free, then send mail,
     but no transfer information. choose a different template
     """
-    usermail_nonmember_subject = u'C3S Barcamp 2016: your order'
+    usermail_nonmember_subject = u'C3S Barcamp: your order'
     if lang == "de":
-        usermail_nonmember_subject = 'C3S Barcamp 2016: Deine Bestellung'
+        usermail_nonmember_subject = 'C3S Barcamp: Deine Bestellung'
     if request.session['derivedvalues']['the_total'] == 0:
         usermail_nonmember = render(
             'templates/mails/usermail_nonmember-free-' + lang + '.pt',
