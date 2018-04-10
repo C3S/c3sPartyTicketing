@@ -59,8 +59,8 @@
 
       <div class="row" tal:condition="not formerror and not reedit">
 
-        <tal:block metal:use-macro="load: barcamp.hpz.pt">
-          <!-- HPZ BARCAMP TEMPLATE -->
+        <tal:block metal:use-macro="load: barcamp.c3shq.pt">
+          <!-- C3S HQ BARCAMP TEMPLATE -->
         </tal:block>
 
       </div>
