@@ -16,6 +16,8 @@ from c3spartyticketing import ticket_options
 
 _ = TranslationStringFactory('c3spartyticketing')
 
+from c3spartyticketing.event_config import cfg
+
 
 def ticket_nonmember_schema(request, appstruct, readonly=False):
     """
@@ -171,10 +173,11 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
                 ),
                 title=_(u"Total"),
                 description=_(
-                    u'Your order has to be fully paid by 01.04.2017 at the '
-                    u'latest (payment receipt on our account applies). '
-                    u'Money transfer is the only payment method. Payment '
-                    u'information will be sent to you shortly by e-mail.'
+                    u'Your order has to be fully paid by {}'
+                    u' (payment receipt on our account applies). '
+                    u'Money transfer is the only payment method.'
+                    u'Payment information will be sent to you shortly by e-mail.'
+                ).format(cfg['registration']['fully_paid_date']
                 ),
                 oid="the-total",
             )
