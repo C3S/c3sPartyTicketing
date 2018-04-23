@@ -13,6 +13,8 @@ from pyramid.i18n import (
 )
 
 from c3spartyticketing import ticket_options
+from c3spartyticketing.event_config import cfg
+from datetime import datetime
 
 _ = TranslationStringFactory('c3spartyticketing')
 
@@ -161,6 +163,11 @@ def ticket_member_schema(request, appstruct, readonly=False):
             if not appstruct['ticket']['ticket_support']:
                 ticket_support = None
         if readonly and appstruct['ticket']['the_total'] > 0:
+            paytilldate = datetime.strptime(cfg['registration']['fully_paid_date'], '%Y-%m-%d')
+            if locale_name == 'de':
+                paytillstr = paytilldate.strftime("%d.%m.%Y")
+            else:
+                paytillstr = paytilldate.strftime("%d %B %Y")
             the_total = colander.SchemaNode(
                 colander.Decimal(quant='1.00'),
                 widget=deform.widget.TextInputWidget(
@@ -168,11 +175,11 @@ def ticket_member_schema(request, appstruct, readonly=False):
                     readonly_template="forms/textinput_money.pt",
                 ),
                 title=_(u"Total"),
-                description=_(
-                    u'Your order has to be fully paid by 01.04.2017 at the '
-                    u'latest (payment receipt on our account applies). '
-                    u'Money transfer is the only payment method. Payment '
-                    u'information will be sent to you shortly by e-mail.'
+                description=_(u'Your order has to be fully paid by '
+                    u'${date} (payment receipt on our account applies). '
+                    u'Money transfer is the only payment method. '
+                    u'Payment information will be sent to you shortly by e-mail.', 
+                    mapping={u"date": paytillstr}
                 ),
                 oid="the-total",
             )
