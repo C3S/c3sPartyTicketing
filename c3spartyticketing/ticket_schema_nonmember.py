@@ -175,7 +175,7 @@ def ticket_nonmember_schema(request, appstruct, readonly=False):
             if locale_name == 'de':
                 paytillstr = paytilldate.strftime("%d.%m.%Y")
             else:
-                paytillstr = paytilldate.strftime("%d. %B %Y")
+                paytillstr = paytilldate.strftime("%d %B %Y")
             the_total = colander.SchemaNode(
                 colander.Decimal(quant='1.00'),
                 widget=deform.widget.TextInputWidget(
