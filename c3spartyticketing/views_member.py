@@ -322,7 +322,7 @@ def confirm_view(request):
         schema,
         buttons=[
             deform.Button('confirmed', button_submit_text),
-            deform.Button('reedit', _(u'Wait, I might have to change...'))
+            deform.Button('reedit', _(u'Update data'))
         ],
         # use_ajax=True,
         renderer=zpt_renderer

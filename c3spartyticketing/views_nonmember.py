@@ -254,7 +254,7 @@ def nonmember_confirm_view(request):
         schema,
         buttons=[
             deform.Button('confirmed', button_submit_text),
-            deform.Button('reedit', _(u'Wait, I might have to change...'))
+            deform.Button('reedit', _(u'Update data'))
         ],
         renderer=zpt_renderer
     )
