@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-23 16:43+0200\n"
-"PO-Revision-Date: 2018-04-23 16:44+0100\n"
+"POT-Creation-Date: 2018-04-24 15:39+0200\n"
+"PO-Revision-Date: 2018-04-24 15:40+0100\n"
 "Last-Translator: Thomas Mielke <thomas.mielke@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -208,8 +208,8 @@ msgid "Ticket ID of represented person (2) ..."
 msgstr "Ticket ID der vertretenen Person (2)"
 
 #: c3spartyticketing/ticket_options.py:15
-msgid "I will attend the C3S SCE General Assembly."
-msgstr "Ich werde an der Generalversammlung teilnehmen."
+msgid "Yes, I will attend the C3S SCE General Assembly."
+msgstr "Ja, ich werde an der Generalversammlung teilnehmen."
 
 #: c3spartyticketing/ticket_options.py:16
 msgid ""
@@ -220,8 +220,8 @@ msgstr ""
 "lasse mich vertreten."
 
 #: c3spartyticketing/ticket_options.py:20
-msgid "I will not attend the C3S SCE General Assembly."
-msgstr "Ich werde nicht an der Generalversammlung teilnehmen."
+msgid "No, I will not attend the C3S SCE General Assembly."
+msgstr "Nein, ich werde nicht an der Generalversammlung teilnehmen."
 
 #: c3spartyticketing/ticket_options.py:39
 msgid "a member of C3S SCE"
@@ -244,16 +244,16 @@ msgid "my sibling"
 msgstr "mein Geschwisterteil"
 
 #: c3spartyticketing/ticket_options.py:52
-msgid "I will attend the BarCamp. (€0)"
-msgstr "Ich nehme am Barcamp teil. (€ 0)"
+msgid "Yes, I will attend the BarCamp."
+msgstr "Ja, ich nehme am Barcamp teil."
 
 #: c3spartyticketing/ticket_options.py:53
 msgid ""
 "I'd like to have a seat reservation in an Italian restaurant after the "
-"BarCamp. (€0)"
+"BarCamp."
 msgstr ""
 "Ich würde gern nach dem Barcamp in einem italienischen Restaurant essen "
-"gehen und dafür einen Platz reservieren. (€ 0)"
+"gehen und dafür einen Platz reservieren. "
 
 #: c3spartyticketing/ticket_options.py:65
 msgid "Supporter Ticket (€5)"
@@ -640,6 +640,9 @@ msgstr ""
 "Spam-Ordner nach unserer Mail! Du musst die Bestellung (und Dein Ticket) vor "
 "Antritt Deiner Reise bezahlen!"
 
+#~ msgid "Yes, I will attend the BarCamp. (€0)"
+#~ msgstr "Ja, ich nehme am Barcamp teil. (€ 0)"
+
 #~ msgid "Wait, I might have to change..."
 #~ msgstr "Warte, ich will nochmal ändern..."
 
@@ -718,9 +721,6 @@ msgstr ""
 
 #~ msgid "Supporter Ticket XXL"
 #~ msgstr "Supporter Ticket XXL"
-
-#~ msgid "I will attend the BarCamp."
-#~ msgstr "Ich nehme am Barcamp teil."
 
 #~ msgid "Gender selection for T-shirt is mandatory."
 #~ msgstr "Der Schnitt des T-Shirts muss angegeben werden."
