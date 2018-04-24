@@ -12,12 +12,12 @@ def get_ticket_gv_options(request):
     Options for the General Assembly.
     """
     ticket_gv_options = (
-        (1, _(u'I will attend the C3S SCE General Assembly.')),
+        (1, _(u'Yes, I will attend the C3S SCE General Assembly.')),
         (2, _(
             u'I will not attend the C3S SCE General Assembly personally. '
             u'I will be represented by an authorized person.'
         )),
-        (3, _(u'I will not attend the C3S SCE General Assembly.'))
+        (3, _(u'No, I will not attend the C3S SCE General Assembly.'))
     )
     return ticket_gv_options
 
@@ -49,10 +49,10 @@ def get_ticket_bc_options(request):
     Options for BarCamp Tickets.
     """
     ticket_bc_options = (
-        ('attendance', (_(u"I will attend the BarCamp. (€0)"))),  #  + u' (€{})foo'.format(request.bc_cost))),
+        ('attendance', (_(u"Yes, I will attend the BarCamp."))),  #  + u' (€{})foo'.format(request.bc_cost))),
         ('buffet', (_(
             u"I'd like to have a seat reservation in an "
-            u"Italian restaurant after the BarCamp. (€0)")))  #  + u' (€{})'.format(request.bc_food_cost)))
+            u"Italian restaurant after the BarCamp.")))  #  + u' (€{})'.format(request.bc_food_cost)))
     )
     return ticket_bc_options
 
