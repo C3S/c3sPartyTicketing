@@ -16,7 +16,7 @@ auf unser Konto:
 Bank:			EthikBank eG
 Kontoinhaber:		C3S SCE
 Betrag:			€ ${the_total}
-Verwendungszweck:	Versammlung und Barcamp 2017 ${email_confirm_code}
+Verwendungszweck:	Versammlung und Barcamp ${email_confirm_code}
 BIC:			GENO DE F1 ETK
 IBAN:			DE79 8309 4495 0003 2643 78
 
