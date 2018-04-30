@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-24 15:39+0200\n"
-"PO-Revision-Date: 2018-04-24 15:40+0100\n"
+"POT-Creation-Date: 2018-04-30 12:22+0200\n"
+"PO-Revision-Date: 2018-04-30 12:22+0100\n"
 "Last-Translator: Thomas Mielke <thomas.mielke@c3s.cc>\n"
 "Language-Team: de <LL@li.org>\n"
 "Language: de\n"
@@ -384,8 +384,8 @@ msgid "that features the subject"
 msgstr "mit dem Betreff"
 
 #: c3spartyticketing/templates/success.pt:52
-msgid "C3S General Assembly & Barcamp 2017: your participation & order"
-msgstr "C3S Generalversammlung & Barcamp 2017: Deine Teilnahme & Bestellung"
+msgid "C3S General Assembly & Barcamp: your participation & order"
+msgstr "C3S Generalversammlung & Barcamp: Deine Teilnahme & Bestellung"
 
 #: c3spartyticketing/templates/success.pt:54
 msgid ""

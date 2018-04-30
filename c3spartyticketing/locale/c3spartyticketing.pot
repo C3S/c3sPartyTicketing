@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2018-04-24 15:39+0200\n"
+"POT-Creation-Date: 2018-04-30 12:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -370,7 +370,7 @@ msgid "that features the subject"
 msgstr ""
 
 #: ./c3spartyticketing/templates/success.pt:52
-msgid "C3S General Assembly & Barcamp 2017: your participation & order"
+msgid "C3S General Assembly & Barcamp: your participation & order"
 msgstr ""
 
 #: ./c3spartyticketing/templates/success.pt:54
