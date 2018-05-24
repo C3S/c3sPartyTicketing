@@ -42,6 +42,11 @@
            i18n:name=""
            i18n:translate=""
            href="https://www.c3s.cc/en/impressum/">Imprint</a>
+        &amp;
+        <a i18n:attributes="href"
+           i18n:name=""
+           i18n:translate=""
+           href="https://www.c3s.cc/en/datenschutz#dsgvo-ticketing">Data protection information</a>
       </div>
     </tal:block>
   </body>

@@ -496,6 +496,10 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 You can't edit the order form after hitting the button
                 "Submit" or "Submit & Buy" below. A refund of your
                 money once transferred is not possible. 
+                For information regarding privacy protection, please 
+                <a href='https://www.c3s.cc/datenschutz#dsgvo-ticketing' target='_blank'>
+                visit our privacy page
+                </a>
                 If you have any questions please contact
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
@@ -521,8 +525,11 @@ def ticket_member_schema(request, appstruct, readonly=False):
                 oder "Absenden & Kaufen" unten absendest, kannst Du an der Bestellung im
                 Formular keine Änderung mehr vornehmen. Die
                 Erstattung einer überwiesenen Summe ist nicht möglich. 
-                Falls Du Fragen
-                zu Deiner Bestellung hast, wende Dich bitte an
+                Für Informationen zum Datenschutz 
+                <a href='https://www.c3s.cc/datenschutz#dsgvo-ticketing' target='_blank'>
+                klicke hier
+                </a>.
+                Falls Du Fragen zu Deiner Bestellung hast, wende Dich bitte an
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
                 </a>

@@ -434,7 +434,12 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                     We will send tickets in time by e-mail
                 </strong><br />
                 You can't edit the order form after hitting the button
-                "Submit" or "Submit & Buy" below. If you have any questions
+                "Submit" or "Submit & Buy" below. 
+                For information regarding privacy protection, please 
+                <a href='https://www.c3s.cc/datenschutz#dsgvo-ticketing' target='_blank'>
+                visit our privacy page
+                </a>
+                If you have any questions
                 please contact
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
@@ -459,8 +464,12 @@ def ticket_member_gvonly_schema(request, appstruct, readonly=False):
                 </strong><br />
                 Sobald Du das Bestellformular mit dem Button "Absenden"
                 oder "Absenden & Kaufen" unten absendest, kannst Du an der Bestellung im
-                Formular keine Änderung mehr vornehmen. Falls Du
-                Fragen zu Deiner Bestellung hast, wende Dich bitte an
+                Formular keine Änderung mehr vornehmen. 
+                Für Informationen zum Datenschutz 
+                <a href='https://www.c3s.cc/datenschutz#dsgvo-ticketing' target='_blank'>
+                klicke hier
+                </a>.
+                Falls Du Fragen zu Deiner Bestellung hast, wende Dich bitte an
                 <a href="mailto:office@c3s.cc" class="alert-link">
                     office@c3s.cc
                 </a>
